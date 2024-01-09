@@ -4,6 +4,7 @@ import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
+import 'package:commercepal/features/forgot_password/forgot_password.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_cubit.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_state.dart';
 import 'package:commercepal/features/reset_password/presentation/reset_pass_page.dart';
@@ -64,8 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Image.asset(
                         Assets.appIcon,
-                        width: 100,
-                        height: 100,
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        height: MediaQuery.of(context).size.height * 0.25,
                       ),
                       Text(
                         "Login to continue",
@@ -115,8 +116,11 @@ class _LoginPageState extends State<LoginPage> {
                           const Spacer(),
                           InkWell(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, ResetPassPage.routeName);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgotPassword()));
                             },
                             child: Text(
                               "Forgot password?",

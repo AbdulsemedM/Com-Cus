@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/features/forgot_password/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
@@ -72,6 +73,8 @@ class _VerifyOTPState extends State<VerifyOTP> {
             ),
             !loading && myOTP != null
                 ? ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.colorPrimaryDark),
                     onPressed: () async {
                       if (myOTP!.isNotEmpty) {
                         bool done = await sendOTP();

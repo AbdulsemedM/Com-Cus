@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -139,6 +140,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                           child: loading
                               ? CircularProgressIndicator()
                               : ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          AppColors.colorPrimaryDark),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
                                       bool done = await sendPassword();
