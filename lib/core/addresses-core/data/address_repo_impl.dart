@@ -67,8 +67,8 @@ class AddressRepoImpl implements AddressRepo {
         "subCity": subCity,
         "phoneNumber": user.details?.phoneNumber ?? '',
         "physicalAddress": physicalName,
-        "latitude": "-1",
-        "longitude": "-1"
+        "latitude": "",
+        "longitude": ""
       };
 
       final response =

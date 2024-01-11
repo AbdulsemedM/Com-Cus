@@ -5,6 +5,7 @@ enum EndPoints {
   categories,
   subCategories,
   products,
+  productsDetails,
   searchProduct,
   login,
   addresses,
@@ -70,6 +71,8 @@ extension Url on EndPoints {
       case EndPoints.subCategories:
         return '$baseUrl/get-sub-categories';
       case EndPoints.products:
+        return "$baseUrl/get-list-products";
+      case EndPoints.productsDetails:
         return "$baseUrl/get-products";
       case EndPoints.searchProduct:
         return "$baseUrl/search-products";

@@ -422,15 +422,16 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
             child: BlocConsumer<CartCoreCubit, CartCoreState>(
               listener: (context, state) {
                 if (state is CartCoreStateData) {
-                  displaySnack(context,  "${widget.selectedProductDetails.productName} has been added to cart");
+                  displaySnack(context,
+                      "${widget.selectedProductDetails.productName} has been added to cart");
                 }
               },
               builder: (context, state) {
                 return widget.selectedProductDetails.quantity! > 0
                     ? ProductPriceWidget(
                         displayVoucher: false,
-                        totalPrice:
-                            widget.selectedProductDetails.priceBasedOnSubProducts.formatCurrency(widget.selectedProductDetails.currency),
+                        totalPrice: 
+                        widget.selectedProductDetails.priceBasedOnSubProducts.formatCurrency(widget.selectedProductDetails.currency),
                         subTitle:
                             "Delivery Estimate ${widget.selectedProductDetails.deliveryDate}",
                         buttonText: "Add to cart",

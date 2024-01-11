@@ -1,5 +1,6 @@
 import 'package:commercepal/app/data/network/api_provider.dart';
 import 'package:commercepal/app/data/network/end_points.dart';
+import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:commercepal/features/products/data/dto/Products_dto.dart';
 import 'package:commercepal/features/products/domain/product.dart';
 import 'package:injectable/injectable.dart';
@@ -36,6 +37,17 @@ class ProductsRepositoryImpl implements ProductRepository {
         if (prodObjs.details?.isEmpty == true) {
           throw 'No products found';
         }
+        // print("hererererere");
+
+        // print(EndPoints.products.url);
+        // print(queryString);
+        // print(subCatId);
+
+        print(prodObjs.details!
+            .where((element) => element.quantity != 0)
+            .map((e) => e.toProduct())
+            .toList()[0]
+            .currency);
         return prodObjs.details!
             .where((element) => element.quantity != 0)
             .map((e) => e.toProduct())

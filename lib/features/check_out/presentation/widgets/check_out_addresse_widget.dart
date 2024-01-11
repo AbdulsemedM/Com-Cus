@@ -30,6 +30,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var sHeight = MediaQuery.of(context).size.height * 1;
     return BlocProvider(
       create: (context) => getIt<CheckOutCubit>()..fetchAddresses(),
       child: BlocBuilder<CheckOutCubit, CheckOutState>(
@@ -48,9 +49,68 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, AddAddressPage.routeName)
-                          .then((value) =>
-                              {ctx.read<CheckOutCubit>().fetchAddresses()});
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Fill Address'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize
+                                  .min, // Set the mainAxisSize to min
+                              children: [
+                                const Text(
+                                    'How do you want to fill the address?'),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: sHeight * 0.02,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              AppColors.colorPrimaryDark),
+                                      child: Text("Automatically"),
+                                    ),
+                                    SizedBox(
+                                      height: sHeight * 0.02,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pushNamed(context,
+                                                AddAddressPage.routeName)
+                                            .then((value) => {
+                                                  ctx
+                                                      .read<CheckOutCubit>()
+                                                      .fetchAddresses()
+                                                });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              AppColors.colorPrimaryDark),
+                                      child: Text("Manually"),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(false); // User does not confirm
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: Text("Add address",
                         style: Theme.of(context)

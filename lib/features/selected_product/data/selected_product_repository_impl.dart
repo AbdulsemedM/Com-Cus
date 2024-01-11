@@ -20,8 +20,14 @@ class SelectedProductPageRepositoryImpl implements SelectedProductRepo {
       final hasUserSwitchedToBusiness =
           await sessionRepo.hasUserSwitchedToBusiness();
       final response = await apiProvider.get(
-          "${hasUserSwitchedToBusiness ? EndPoints.businessProducts.url : EndPoints.products.url}?product=$prodId");
+          "${hasUserSwitchedToBusiness ? EndPoints.businessProducts.url : EndPoints.productsDetails.url}?product=$prodId");
+
+      print(hasUserSwitchedToBusiness
+          ? EndPoints.businessProducts.url
+          : EndPoints.productsDetails.url);
       if (response['statusCode'] == "000") {
+        print(response);
+
         final productObj = SelectedProductDto.fromJson(response);
         // TODO: add check if product exists, anyway this '.first' handles the exception for us
         return productObj.details!.first;
