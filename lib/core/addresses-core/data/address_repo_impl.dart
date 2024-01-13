@@ -54,8 +54,14 @@ class AddressRepoImpl implements AddressRepo {
   }
 
   @override
-  Future<String> addAddress(String subCity, String physicalName, num cityId,
-      num countryId, String country) async {
+  Future<String> addAddress(
+      String subCity,
+      String physicalName,
+      num cityId,
+      num countryId,
+      String country,
+      String? latitude,
+      String? longitude) async {
     try {
       final uString = await prefsData.readData(PrefsKeys.user.name);
       final user = UserModel.fromJson(jsonDecode(uString!));
@@ -67,8 +73,8 @@ class AddressRepoImpl implements AddressRepo {
         "subCity": subCity,
         "phoneNumber": user.details?.phoneNumber ?? '',
         "physicalAddress": physicalName,
-        "latitude": "",
-        "longitude": ""
+        "latitude": latitude,
+        "longitude": longitude
       };
 
       final response =

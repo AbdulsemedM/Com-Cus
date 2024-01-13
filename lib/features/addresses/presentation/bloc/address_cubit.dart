@@ -34,7 +34,7 @@ class AddressCubit extends Cubit<AddressState> {
   }
 
   void addAddress(String subCity, String physicalAddress, num? cityId,
-      num? countryId, String? country) async {
+      num? countryId, String? country, String? latitude, String? longitude) async {
     try {
       if (cityId == null || countryId == null) {
         emit(const AddressState.error("Please select your city"));
@@ -48,7 +48,7 @@ class AddressCubit extends Cubit<AddressState> {
 
       emit(const AddressState.loading());
       final response = await addressRepo.addAddress(
-          subCity, physicalAddress, cityId, countryId, country);
+          subCity, physicalAddress, cityId, countryId, country, latitude, longitude);
       emit(AddressState.success(response));
     } catch (e) {
       emit(AddressState.error(e.toString()));

@@ -1,4 +1,5 @@
 import 'package:commercepal/features/addresses/presentation/edit_address_page.dart';
+import 'package:commercepal/features/addresses/presentation/search_places.dart';
 import 'package:commercepal/features/check_out/data/models/address.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,7 +68,16 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                       height: sHeight * 0.02,
                                     ),
                                     ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pushNamed(context,
+                                                SearchPlacesScreen.routeName)
+                                            .then((value) => {
+                                                  ctx
+                                                      .read<CheckOutCubit>()
+                                                      .fetchAddresses()
+                                                });
+                                      },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor:
                                               AppColors.colorPrimaryDark),

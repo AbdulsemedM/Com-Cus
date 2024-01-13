@@ -1,4 +1,5 @@
 import 'package:commercepal/features/addresses/presentation/addresses_page.dart';
+import 'package:commercepal/features/addresses/presentation/search_places.dart';
 import 'package:commercepal/features/cash_payment/presentation/cash_payment_page.dart';
 import 'package:commercepal/features/change_password/presentation/change_password_page.dart';
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
@@ -52,6 +53,7 @@ final Map<String, WidgetBuilder> routes = {
   SpecialOrderPage.routeName: (context) => const SpecialOrderPage(),
   ListSpecialOrdersPage.routeName: (context) => const ListSpecialOrdersPage(),
   CustomerLoanPage.routeName: (context) => const CustomerLoanPage(),
+  SearchPlacesScreen.routeName: (context) => const SearchPlacesScreen(),
 };
 
 void redirectUserToLogin() {

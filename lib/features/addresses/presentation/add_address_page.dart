@@ -125,7 +125,9 @@ class _AddAddressPageState extends State<AddAddressPage> {
                                 _physicalAddress!,
                                 _cityId,
                                 _countryId,
-                                _countryName);
+                                _countryName,
+                                "",
+                                "");
                           }
                         }),
                   ],
