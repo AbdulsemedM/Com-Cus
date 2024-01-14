@@ -11,6 +11,9 @@ import 'package:commercepal/features/validate_phone_email/presentation/validate_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:translator/translator.dart';
 
 import '../../../../app/di/injector.dart';
 import '../../../../core/models/user_model.dart';
@@ -20,13 +23,24 @@ import '../../../user_orders/presentation/user_orders_page.dart';
 import 'user_menu_item.dart';
 import 'widgets/personal_business_acc_widegt.dart';
 
-class UserDataWidget extends StatelessWidget {
+class UserDataWidget extends StatefulWidget {
   final UserModel userModel;
   final Function onRefresh;
 
-  const UserDataWidget(
-      {Key? key, required this.userModel, required this.onRefresh})
+  UserDataWidget({Key? key, required this.userModel, required this.onRefresh})
       : super(key: key);
+
+  @override
+  _UserDataWidgetState createState() => _UserDataWidgetState();
+}
+
+class _UserDataWidgetState extends State<UserDataWidget> {
+  GoogleTranslator tr = GoogleTranslator();
+  var loading = false;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +54,14 @@ class UserDataWidget extends StatelessWidget {
               // update dashboard bottom nav bar
               context.read<DashboardCubit>().checkIfUserIsABusiness();
             },
-            child: Text(
-              "Log Out",
-              textAlign: TextAlign.right,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(color: AppColors.colorPrimary, fontSize: 14.sp),
-            ),
+            child: loading
+                ? CircularProgressIndicator()
+                : Text(
+                    "Logout",
+                    textAlign: TextAlign.right,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColors.colorPrimary, fontSize: 14.sp),
+                  ),
           ),
           const SizedBox(
             height: 12,
@@ -58,7 +72,7 @@ class UserDataWidget extends StatelessWidget {
             decoration: const BoxDecoration(
                 shape: BoxShape.circle, color: AppColors.colorPrimary),
             child: Text(
-              "${userModel.details?.firstName?[0]}${userModel.details?.lastName?[0]}",
+              "${widget.userModel.details?.firstName?[0]}${widget.userModel.details?.lastName?[0]}",
               style: TextStyle(color: Colors.white, fontSize: 30.sp),
             ),
           ),
@@ -66,7 +80,7 @@ class UserDataWidget extends StatelessWidget {
             height: 8,
           ),
           Text(
-            "${userModel.details?.firstName} ${userModel.details?.lastName}",
+            "${widget.userModel.details?.firstName} ${widget.userModel.details?.lastName}",
             style: Theme.of(context)
                 .textTheme
                 .titleMedium
@@ -134,8 +148,16 @@ class UserDataWidget extends StatelessWidget {
             onClick: () {
               Navigator.pushNamed(context, ChangePasswordPage.routeName)
                   .then((value) {
-                onRefresh.call();
+                widget.onRefresh.call();
               });
+            },
+          ),
+          const Divider(),
+          UserMenuItem(
+            icon: FontAwesomeIcons.language,
+            title: "Change Language",
+            onClick: () {
+              buildLanguageDialog(context);
             },
           ),
           const Divider(),
@@ -164,7 +186,7 @@ class UserDataWidget extends StatelessWidget {
             title: "Delete your account",
             onClick: () {
               displaySnackWithAction(
-                  context, "Your account will deleted", "Continue", () {
+                  context, "Your account will be deleted", "Continue", () {
                 displaySnack(context, "Account deleted successfully");
                 context.read<UserCubit>().logOutUser();
 
@@ -201,11 +223,11 @@ class UserDataWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                "${userModel.details?.firstName} ${userModel.details?.lastName}",
-                "${userModel.details?.email}",
-                "${userModel.details?.phoneNumber}",
-                "${userModel.details?.country}",
-                "${userModel.details?.city}",
+                "${widget.userModel.details?.firstName} ${widget.userModel.details?.lastName}",
+                "${widget.userModel.details?.email}",
+                "${widget.userModel.details?.phoneNumber}",
+                "${widget.userModel.details?.country}",
+                "${widget.userModel.details?.city}",
               ]
                   .map((e) => Padding(
                         padding: const EdgeInsets.only(top: 5),
@@ -226,38 +248,101 @@ class UserDataWidget extends StatelessWidget {
   _buildPromptWidgets(BuildContext context) {
     return Column(
       children: [
-        if (userModel.authStatus?.isEmailValidated == 0)
+        if (widget.userModel.authStatus?.isEmailValidated == 0)
           const SizedBox(
             height: 10,
           ),
-        if (userModel.authStatus?.isEmailValidated == 0)
+        if (widget.userModel.authStatus?.isEmailValidated == 0)
           PromptWidget(
             text: "Validate your email",
             onClick: () {
               Navigator.pushNamed(context, ValidatePhoneEmailPage.routeName,
-                      arguments: {"email": userModel.details?.email ?? ""})
-                  .then((value) {
-                onRefresh.call();
+                  arguments: {
+                    "email": widget.userModel.details?.email ?? ""
+                  }).then((value) {
+                widget.onRefresh.call();
               });
             },
           ),
-        if (userModel.authStatus?.isPhoneValidated == 0)
+        if (widget.userModel.authStatus?.isPhoneValidated == 0)
           const SizedBox(
             height: 10,
           ),
-        if (userModel.authStatus?.isPhoneValidated == 0)
+        if (widget.userModel.authStatus?.isPhoneValidated == 0)
           PromptWidget(
             text: "Validate your phone number",
             onClick: () {
               Navigator.pushNamed(context, ValidatePhoneEmailPage.routeName,
                   arguments: {
-                    "phoneNumber": userModel.details?.phoneNumber ?? ""
+                    "phoneNumber": widget.userModel.details?.phoneNumber ?? ""
                   }).then((value) {
-                onRefresh.call();
+                widget.onRefresh.call();
               });
             },
           ),
       ],
     );
+  }
+
+  final List locale = [
+    {'name': 'English', 'locale': Locale('en', 'US')},
+    {'name': 'ٱلْعَرَبِيَّة', 'locale': Locale('ar', 'SA')},
+    {'name': 'አማርኛ', 'locale': Locale('am', 'ET')},
+    {'name': 'Somali', 'locale': Locale('en', 'US')},
+    {'name': 'Afaan Oromoo', 'locale': Locale('or', 'ET')},
+  ];
+  buildLanguageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (builder) {
+        return AlertDialog(
+          title: Text('Choose Language'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    child: Text(locale[index]['name']),
+                    onTap: () async {
+                      // Get the selected locale and call the setLanguage method
+                      String selectedLocale = locale[index]['name'];
+                      // print(selectedLocale);
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setString("lang", selectedLocale);
+                      print(selectedLocale);
+                      Navigator.pop(context);
+                      // setState(() {});
+                    },
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider(
+                  color: AppColors.colorPrimary,
+                );
+              },
+              itemCount: locale.length,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<String> trans(String text) async {
+    setState(() {
+      loading = true;
+    });
+    Translation trns =
+        await tr.translate(text, to: 'am'); //translating to hi = hindi
+    print(trns);
+    setState(() {
+      loading = false;
+    });
+    return trns.text;
   }
 }

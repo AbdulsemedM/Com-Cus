@@ -1,9 +1,11 @@
 import 'package:commercepal/app/di/injector.dart';
+import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/routes.dart';
 import 'package:commercepal/app/utils/app_theme.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,6 +17,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor:
+          AppColors.colorPrimary, // Set your desired status bar color
+    ));
     return ScreenUtilInit(
         designSize: const Size(428, 926),
         minTextAdapt: true,

@@ -54,8 +54,15 @@ dependencies:
   google_maps_flutter: ^2.2.0
   permission_handler: ^11.0.1
   geocoding: ^2.1.1
-  # google_api_headers: ^1.6.0
-  # google_maps_webservice: ^0.0.20-nullsafety.5
+  font_awesome_flutter: ^10.6.0
+  shared_preferences:
+    ^2.2.2
+    # Allows Google Translate without billing
+  translator: ^0.1.5
+  google_translator: ^1.0.0
+
+  # Unescape html characters
+  html_unescape:
 
 dev_dependencies:
   flutter_test:
