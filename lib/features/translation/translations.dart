@@ -1,3 +1,4 @@
+import 'package:google_translate/components/google_translate.dart';
 import 'package:translator/translator.dart';
 
 class Translations {
@@ -26,10 +27,23 @@ class Translations {
     }
   }
 
-  static translateText(String text, String targetLanguage) async {
-    Translation translation =
-        await GoogleTranslator().translate(text, to: targetLanguage);
-    print(translation.text);
-    return translation.text;
+  // static translateText(String text, String targetLanguage) async {
+  //   Translation translation =
+  //       await GoogleTranslator().translate(text, to: targetLanguage);
+  //   print(translation.text);
+  //   return translation.text;
+  // }
+
+  // final GoogleTranslator _translator = GoogleTranslator();
+
+  Future<String> translateText(text, sourceLanguage, targetLanguage) async {
+    GoogleTranslate googleTranslate = GoogleTranslate();
+    final String result = await googleTranslate.translate(
+      text,
+      sourceLanguage: sourceLanguage,
+      targetLanguage: targetLanguage,
+    );
+
+    return result;
   }
 }

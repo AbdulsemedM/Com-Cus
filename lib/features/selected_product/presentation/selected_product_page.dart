@@ -430,8 +430,8 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                 return widget.selectedProductDetails.quantity! > 0
                     ? ProductPriceWidget(
                         displayVoucher: false,
-                        totalPrice: 
-                        widget.selectedProductDetails.priceBasedOnSubProducts.formatCurrency(widget.selectedProductDetails.currency),
+                        totalPrice: "ETB ${widget.selectedProductDetails.priceBasedOnSubProducts}",
+                        // widget.selectedProductDetails.priceBasedOnSubProducts.formatCurrency(widget.selectedProductDetails.currency),
                         subTitle:
                             "Delivery Estimate ${widget.selectedProductDetails.deliveryDate}",
                         buttonText: "Add to cart",

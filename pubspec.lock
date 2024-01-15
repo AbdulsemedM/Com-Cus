@@ -736,6 +736,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.20-nullsafety.5"
+  google_translate:
+    dependency: "direct main"
+    description:
+      name: google_translate
+      sha256: "980539d12b3ca28a0b1c5c027f9f46daa69469c9d0e88fb0ffa5e835d5b092ca"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   google_translator:
     dependency: "direct main"
     description:

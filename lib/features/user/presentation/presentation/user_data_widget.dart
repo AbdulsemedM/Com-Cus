@@ -54,14 +54,14 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               // update dashboard bottom nav bar
               context.read<DashboardCubit>().checkIfUserIsABusiness();
             },
-            child: loading
-                ? CircularProgressIndicator()
-                : Text(
-                    "Logout",
-                    textAlign: TextAlign.right,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.colorPrimary, fontSize: 14.sp),
-                  ),
+            child: Text(
+              "Logout",
+              textAlign: TextAlign.right,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(color: AppColors.colorPrimary, fontSize: 14.sp),
+            ),
           ),
           const SizedBox(
             height: 12,

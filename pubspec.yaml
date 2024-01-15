@@ -60,6 +60,7 @@ dependencies:
     # Allows Google Translate without billing
   translator: ^0.1.5
   google_translator: ^1.0.0
+  google_translate: ^0.0.3
 
   # Unescape html characters
   html_unescape:
