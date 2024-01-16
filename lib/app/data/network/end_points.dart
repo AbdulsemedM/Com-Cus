@@ -42,7 +42,8 @@ enum EndPoints {
   businessProducts,
   businessSearchProducts,
   businessDeliveryFee,
-  businessCheckOut
+  businessCheckOut,
+  amole
 }
 
 extension Url on EndPoints {
@@ -148,6 +149,8 @@ extension Url on EndPoints {
         return '$businessBaseUrl/order/assign-delivery-address';
       case EndPoints.businessCheckOut:
         return "$businessBaseUrl/order/check-out";
+      case EndPoints.amole:
+        return "$payments/amole/fulfillment";
       default:
         throw Exception('Url not set');
     }

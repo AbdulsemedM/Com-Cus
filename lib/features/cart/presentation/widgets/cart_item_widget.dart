@@ -3,6 +3,7 @@ import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../app/utils/app_colors.dart';
 import '../../../../core/cart-core/bloc/cart_core_cubit.dart';
@@ -26,6 +27,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
   @override
   void initState() {
     super.initState();
+    prints(widget.cartItem);
+    _deleteCartItem();
     setState(() {
       _quantity = widget.cartItem.quantity ?? 1;
     });
@@ -99,7 +102,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 Row(
                   children: [
                     Text(
-                      widget.cartItem.price.formatCurrency(widget.cartItem.currency),
+                      widget.cartItem.price
+                          .formatCurrency(widget.cartItem.currency),
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium
@@ -166,5 +170,20 @@ class _CartItemWidgetState extends State<CartItemWidget> {
         ],
       ),
     );
+  }
+
+  void _deleteCartItem() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? isdone = prefs.getString("epg_done");
+    print(isdone);
+    if (isdone == 'yes') {
+      context.read<CartCoreCubit>().deleteItem(widget.cartItem);
+      prefs.setString("epg_done", "no");
+    }
+  }
+
+  void prints(CartItem myc) {
+    print("herererer");
+    print(myc.currency);
   }
 }

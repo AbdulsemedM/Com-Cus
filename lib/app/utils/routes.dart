@@ -1,16 +1,20 @@
 import 'package:commercepal/features/addresses/presentation/addresses_page.dart';
 import 'package:commercepal/features/addresses/presentation/search_places.dart';
 import 'package:commercepal/features/cash_payment/presentation/cash_payment_page.dart';
+import 'package:commercepal/features/cbe_birr/cbe_birr.dart';
 import 'package:commercepal/features/change_password/presentation/change_password_page.dart';
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
+import 'package:commercepal/features/epg/epg_payment.dart';
 import 'package:commercepal/features/order_tracking/presentation/order_tracking_page.dart';
+import 'package:commercepal/features/otp_payments/presentation/otp_payment_page.dart';
 import 'package:commercepal/features/payment/presentation/payment_page.dart';
 import 'package:commercepal/features/products/presentation/products_page.dart';
 import 'package:commercepal/features/selected_product/presentation/selected_product_page.dart';
 import 'package:commercepal/features/special_order/presentantion/special_order_page.dart';
 import 'package:commercepal/features/splash/splash_page.dart';
 import 'package:commercepal/features/sub_categories/presentation/sub_categories_page.dart';
+import 'package:commercepal/features/tele_birr/tele_birr.dart';
 import 'package:commercepal/features/user_orders/presentation/user_orders_page.dart';
 import 'package:commercepal/features/user_registration/presentation/user_registration_page.dart';
 import 'package:commercepal/features/validate_phone_email/presentation/validate_phone_email_page.dart';
@@ -54,6 +58,10 @@ final Map<String, WidgetBuilder> routes = {
   ListSpecialOrdersPage.routeName: (context) => const ListSpecialOrdersPage(),
   CustomerLoanPage.routeName: (context) => const CustomerLoanPage(),
   SearchPlacesScreen.routeName: (context) => const SearchPlacesScreen(),
+  OtpPaymentPage.routeName: (context) => const OtpPaymentPage(),
+  EPGPayment.routeName: (context) => const EPGPayment(),
+  TeleBirrPayment.routeName: (context) => const TeleBirrPayment(),
+  CBEBirrPayment.routeName: (context) => const CBEBirrPayment()
 };
 
 void redirectUserToLogin() {

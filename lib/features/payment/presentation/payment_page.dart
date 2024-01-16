@@ -8,6 +8,8 @@ import 'package:commercepal/core/customer_loan/data/dto/financial_mark_ups_dto.d
 import 'package:commercepal/features/cash_payment/presentation/cash_payment_page.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_loading_widget.dart';
+import 'package:commercepal/features/epg/epg_payment.dart';
+import 'package:commercepal/features/otp_payments/presentation/otp_payment_page.dart';
 import 'package:commercepal/features/payment/data/dto/payment_modes_dto.dart';
 import 'package:commercepal/features/payment/presentation/bloc/payment_cubit.dart';
 import 'package:commercepal/features/payment/presentation/bloc/payment_state.dart';
@@ -87,8 +89,7 @@ class PaymentPage extends StatelessWidget {
                                                   item, context);
                                             },
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(0),
+                                              padding: const EdgeInsets.all(0),
                                               child: Column(
                                                 children: [
                                                   Container(
@@ -148,6 +149,16 @@ class PaymentPage extends StatelessWidget {
         "cash_type": e.name,
         "payment_instruction": e.paymentInstruction
       });
+    } else if (e.name!.toLowerCase().contains("amole") == true) {
+      Navigator.pushNamed(context, OtpPaymentPage.routeName, arguments: {
+        "cash_type": e.paymentType,
+        "payment_instruction": e.paymentInstruction
+      });
+    } else if (e.name!.toLowerCase().contains("epg") == true) {
+      Navigator.pushNamed(
+        context,
+        EPGPayment.routeName,
+      );
     } else if (e.paymentMode == PaymentMode.loan) {
       _showModalBottomSheet(context, e.id!, (MarkUpItem markUpItem) {
         Navigator.pushNamed(context, CustomerLoanPage.routeName, arguments: {
