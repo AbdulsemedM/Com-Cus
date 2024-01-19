@@ -27,12 +27,13 @@ class Translations {
     }
   }
 
-  // static translateText(String text, String targetLanguage) async {
-  //   Translation translation =
-  //       await GoogleTranslator().translate(text, to: targetLanguage);
-  //   print(translation.text);
-  //   return translation.text;
-  // }
+  static Future<String> translatedText(
+      String text, String targetLanguage) async {
+    Translation translation =
+        await GoogleTranslator().translate(text, to: targetLanguage);
+    print(translation.text);
+    return translation.text;
+  }
 
   // final GoogleTranslator _translator = GoogleTranslator();
 

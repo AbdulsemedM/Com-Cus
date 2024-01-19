@@ -1,4 +1,6 @@
 import 'package:commercepal/core/cities-core/data/dto/city_core_dto.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,6 +23,32 @@ class SelectCityWidget extends StatefulWidget {
 }
 
 class _SelectCityWidgetState extends State<SelectCityWidget> {
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    subcityHint = Translations.translatedText(
+        " -Select City- ", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    cHint = await subcityHint;
+    print("herrerererere");
+    print(cHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var subcityHint;
+  String cHint = '';
+  var loading = false;
   final List<City> _citiesList = [City(cityName: "--")];
 
   String? _dropdownValue;
@@ -61,7 +89,7 @@ class _SelectCityWidgetState extends State<SelectCityWidget> {
                   child: DropdownButton<String>(
                     value: _dropdownValue,
                     isExpanded: true,
-                    hint: const Text(" - Select city -"),
+                    hint: Text(cHint),
                     icon: const Icon(Icons.arrow_drop_down_outlined),
                     elevation: 16,
                     style: Theme.of(context).textTheme.titleMedium,

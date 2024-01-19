@@ -1,3 +1,4 @@
+import 'package:another_stepper/another_stepper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/di/injector.dart';
@@ -10,12 +11,12 @@ import 'package:commercepal/features/order_tracking/presentation/bloc/order_trac
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class OrderTrackingPage extends StatelessWidget {
   static const routeName = "/order_tracking_page";
 
   const OrderTrackingPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final Map args = ModalRoute.of(context)?.settings.arguments as Map;
@@ -37,6 +38,40 @@ class OrderTrackingPage extends StatelessWidget {
                   orElse: () => const HomeLoadingWidget(),
                   error: (String error) => HomeErrorWidget(error: error),
                   trackingData: (data) {
+                    List<IconData> icons = [
+                      Icons.payments_outlined,
+                      Icons.inventory_outlined,
+                      Icons.contact_emergency_outlined,
+                      Icons.local_shipping_outlined,
+                      Icons.check_circle
+                    ];
+                    List<StepperData> stepperData = [];
+                    for (final val
+                        in data.orderItems?.first.shipmentStatusList ?? []) {
+                      stepperData.add(
+                        StepperData(
+                          title: StepperText(
+                            "${val.shipmentStatusWord}",
+                            textStyle: const TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                          subtitle: StepperText(
+                              DateFormat('MMMM d, y').format(DateTime.parse(val.shipStatusDate))),
+                          iconWidget: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: const BoxDecoration(
+                                color: Color(0xFF890c4d),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30))),
+                            child: Icon(
+                                icons.elementAt(
+                                    (stepperData.length) % icons.length),
+                                color: Colors.white),
+                          ),
+                        ),
+                      );
+                    }
                     return SafeArea(
                       child: ListView(
                         children: [
@@ -117,8 +152,9 @@ class OrderTrackingPage extends StatelessWidget {
                                   children: [
                                     Text(
                                       "${data.orderItems?.first.product?.productName}",
-                                      style:
-                                          Theme.of(context).textTheme.titleMedium,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
                                     ),
                                     const SizedBox(
                                       height: 4,
@@ -137,8 +173,8 @@ class OrderTrackingPage extends StatelessWidget {
                                             .titleMedium
                                             ?.copyWith(
                                                 fontWeight: FontWeight.normal,
-                                                color:
-                                                    AppColors.secondaryTextColor),
+                                                color: AppColors
+                                                    .secondaryTextColor),
                                       ),
                                       TextSpan(
                                         text: "ETB ${data.totalPrice}",
@@ -167,65 +203,21 @@ class OrderTrackingPage extends StatelessWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: data
-                                  .orderItems?.first.shipmentStatusList?.length,
-                              itemBuilder: (ctx, index) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(2),
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                  color: AppColors.colorPrimary,
-                                                  width: 1)),
-                                          child: Container(
-                                            height: 12,
-                                            width: 12,
-                                            decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: AppColors.colorPrimary),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "${data.orderItems?.first.shipmentStatusList![index].shipmentStatusWord}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall
-                                                    ?.copyWith(
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.normal),
-                                              ),
-                                              const SizedBox(
-                                                height: 4,
-                                              ),
-                                              Text(
-                                                "${data.orderItems?.first.shipmentStatusList![index].shipStatusDate}",
-                                                style:
-                                                    TextStyle(fontSize: 12.sp),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ))
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: AnotherStepper(
+                              stepperList: stepperData,
+                              stepperDirection: Axis.vertical,
+                              iconWidth: 40,
+                              iconHeight: 40,
+                              activeBarColor: const Color(0xFFa96687),
+                              inActiveBarColor: Colors.grey,
+                              inverted: false,
+                              verticalGap: 23,
+                              activeIndex: stepperData.length,
+                              barThickness: 4,
+                            ),
+                          ),
                         ],
                       ),
                     );

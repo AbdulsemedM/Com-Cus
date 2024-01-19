@@ -1,8 +1,11 @@
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/features/addresses/presentation/bloc/address_state.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:translator/translator.dart';
 
 import '../../../core/cities-core/presentation/select_city_widget.dart';
 import '../../../core/cities-core/presentation/select_country_widget.dart';
@@ -21,6 +24,37 @@ class AddAddressPage extends StatefulWidget {
 
 class _AddAddressPageState extends State<AddAddressPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var loading = false;
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Physical address", GlobalStrings.getGlobalString());
+    subcityHint = Translations.translatedText(
+        "Sub city", GlobalStrings.getGlobalString());
+    addAddHint = Translations.translatedText(
+        "Add Address", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    cHint = await subcityHint;
+    aHint = await addAddHint;
+    print("herrerererere");
+    print(pHint);
+    print(cHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
 
   String? _subCity;
   String? _physicalAddress;
@@ -28,6 +62,12 @@ class _AddAddressPageState extends State<AddAddressPage> {
   String? _countryName;
   num? _cityId;
   num? _countryId;
+  var physicalAddressHintFuture;
+  var subcityHint;
+  var addAddHint;
+  String pHint = '';
+  String cHint = '';
+  String aHint = '';
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +75,12 @@ class _AddAddressPageState extends State<AddAddressPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: false,
-        title: Text(
-          "Add address",
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        title: loading
+            ? CircularProgressIndicator()
+            : Text(
+                aHint,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
       ),
       body: BlocProvider(
         create: (context) => getIt<AddressCubit>(),
@@ -80,39 +122,41 @@ class _AddAddressPageState extends State<AddAddressPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (v) {
-                          if (v?.isEmpty == true) {
-                            return "Sub city is required";
-                          }
-                          return null;
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          setState(() {
-                            _subCity = value;
-                          });
-                        },
-                        decoration: buildInputDecoration("Sub city")),
+                    if (!loading)
+                      TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (v) {
+                            if (v?.isEmpty == true) {
+                              return "Sub city is required";
+                            }
+                            return null;
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          onChanged: (value) {
+                            setState(() {
+                              _subCity = value;
+                            });
+                          },
+                          decoration: buildInputDecoration(cHint)),
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (v) {
-                          if (v?.isEmpty == true) {
-                            return "Physical address is required";
-                          }
-                          return null;
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          setState(() {
-                            _physicalAddress = value;
-                          });
-                        },
-                        decoration: buildInputDecoration("Physical address")),
+                    if (!loading)
+                      TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (v) {
+                            if (v?.isEmpty == true) {
+                              return "Physical address is required";
+                            }
+                            return null;
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          onChanged: (value) {
+                            setState(() {
+                              _physicalAddress = value;
+                            });
+                          },
+                          decoration: buildInputDecoration(pHint)),
                     const SizedBox(
                       height: 20,
                     ),

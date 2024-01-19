@@ -1,4 +1,6 @@
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -91,10 +93,30 @@ class AppTheme {
       actions: [
         TextButton(
           onPressed: onActionClicked,
-          child: Text(
-            actionText,
-            style: const TextStyle(
-                fontSize: 18, color: AppColors.secondaryTextColor),
+          child: FutureBuilder<String>(
+            future: Translations.translatedText(
+                actionText,
+                GlobalStrings
+                    .getGlobalString()), // Replace 'en' with the desired language code
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Text(
+                  snapshot.data ?? 'Default Text',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: AppColors.secondaryTextColor,
+                  ),
+                );
+              } else {
+                return Text(
+                  'Loading...', // Or any loading indicator
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: AppColors.secondaryTextColor,
+                  ),
+                );
+              }
+            },
           ),
         )
       ],

@@ -1,4 +1,6 @@
 import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,21 +26,52 @@ class PersonalBusinessAccWidget extends StatelessWidget {
           }
         },
         builder: (ctx, state) {
-          return AppButtonWidget(
-            isLoading: state is DashboardLoadingState,
-            onClick: () async {
-              ctx.read<DashboardCubit>().toggleBusinessUserAcc();
+          return FutureBuilder<String>(
+            future: _getButtonText(context, state),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return AppButtonWidget(
+                  isLoading: state is DashboardLoadingState,
+                  onClick: () async {
+                    ctx.read<DashboardCubit>().toggleBusinessUserAcc();
 
-              Future.delayed(const Duration(seconds: 1)).then((value) {
-                Navigator.popAndPushNamed(context, DashboardPage.routeName);
-              });
+                    Future.delayed(const Duration(seconds: 1)).then((value) {
+                      Navigator.popAndPushNamed(
+                        context,
+                        DashboardPage.routeName,
+                      );
+                    });
+                  },
+                  text: snapshot.data ?? 'Default Text',
+                );
+              } else {
+                return AppButtonWidget(
+                  onClick: () async {
+                    ctx.read<DashboardCubit>().toggleBusinessUserAcc();
+
+                    Future.delayed(const Duration(seconds: 1)).then((value) {
+                      Navigator.popAndPushNamed(
+                          context, DashboardPage.routeName);
+                    });
+                  },
+                  isLoading: state is DashboardLoadingState,
+                  text: 'Loading...', // Or any loading indicator
+                );
+              }
             },
-            text: state is DashboardUserSwicthedState && state.switched
-                ? "Switch To Personal"
-                : "Switch To Business",
           );
         },
       ),
     );
+  }
+
+  Future<String> _getButtonText(
+      BuildContext context, DashboardState state) async {
+    // Adjust this part to get the appropriate translation based on the current state
+    return state is DashboardUserSwicthedState && state.switched
+        ? await Translations.translatedText(
+            "Switch To Personal", GlobalStrings.getGlobalString())
+        : await Translations.translatedText(
+            "Switch To Business", GlobalStrings.getGlobalString());
   }
 }

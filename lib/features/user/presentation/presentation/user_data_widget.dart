@@ -4,6 +4,8 @@ import 'package:commercepal/features/addresses/presentation/addresses_page.dart'
 import 'package:commercepal/features/change_password/presentation/change_password_page.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_state.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user/presentation/bloc/user_cubit.dart';
 import 'package:commercepal/features/user/presentation/bloc/user_state.dart';
 import 'package:commercepal/features/user/presentation/presentation/widgets/prompt_widget.dart';
@@ -13,10 +15,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:translator/translator.dart';
 
 import '../../../../app/di/injector.dart';
 import '../../../../core/models/user_model.dart';
+import '../../../../core/translator/translator.dart';
 import '../../../dashboard/bloc/dashboard_cubit.dart';
 import '../../../special_order/presentantion/list_special_orders_page.dart';
 import '../../../user_orders/presentation/user_orders_page.dart';
@@ -31,16 +33,30 @@ class UserDataWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _UserDataWidgetState createState() => _UserDataWidgetState();
+  State<UserDataWidget> createState() => _UserDataWidgetState();
 }
 
 class _UserDataWidgetState extends State<UserDataWidget> {
-  GoogleTranslator tr = GoogleTranslator();
-  var loading = false;
+  List<String> list = <String>['en', 'am', 'so', 'om', 'ar'];
+  String dropdownValue = "";
+  String langCode = 'en';
+
   @override
   void initState() {
     super.initState();
+    setState(() {
+      dropdownValue = list.first;
+    });
+    // setLangCode();
   }
+
+  // void setLangCode() async {
+  //   setState(() async {
+  //     langCode = await getStoredLang();
+  //   });
+  //   print("hereerlang");
+  //   print(langCode);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +70,28 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               // update dashboard bottom nav bar
               context.read<DashboardCubit>().checkIfUserIsABusiness();
             },
-            child: Text(
-              "Logout",
-              textAlign: TextAlign.right,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(color: AppColors.colorPrimary, fontSize: 14.sp),
+            child: FutureBuilder<String>(
+              future: Translations.translatedText(
+                  "Log Out", GlobalStrings.getGlobalString()),
+              //  translatedText("Log Out", 'en', dropdownValue),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Text(
+                    snapshot.data ?? 'Default Text',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColors.colorPrimary, fontSize: 14.sp),
+                    textAlign: TextAlign.right,
+                  );
+                } else {
+                  return Text(
+                    'Loading...',
+                    textAlign: TextAlign.right,
+                  ); // Or any loading indicator
+                }
+              },
             ),
           ),
+
           const SizedBox(
             height: 12,
           ),
@@ -71,10 +100,33 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             padding: const EdgeInsets.all(30),
             decoration: const BoxDecoration(
                 shape: BoxShape.circle, color: AppColors.colorPrimary),
-            child: Text(
-              "${widget.userModel.details?.firstName?[0]}${widget.userModel.details?.lastName?[0]}",
-              style: TextStyle(color: Colors.white, fontSize: 30.sp),
+            child: FutureBuilder<String>(
+              future: Translations.translatedText(
+                  "${widget.userModel.details?.firstName?[0]}${widget.userModel.details?.lastName?[0]}",
+                  'en'),
+              // translateText(
+              //     "${widget.userModel.details?.firstName?[0]}${widget.userModel.details?.lastName?[0]}",
+              //     'en',
+              //     dropdownValue),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Text(
+                    snapshot.data ?? 'Default Text',
+                    style: TextStyle(color: Colors.white, fontSize: 30.sp),
+                    textAlign: TextAlign.right,
+                  );
+                } else {
+                  return Text(
+                    'Loading...',
+                    textAlign: TextAlign.right,
+                  ); // Or any loading indicator
+                }
+              },
             ),
+            // Text(
+            //   "${widget.userModel.details?.firstName?[0]}${widget.userModel.details?.lastName?[0]}",
+            //   style: TextStyle(color: Colors.white, fontSize: 30.sp),
+            // ),
           ),
           const SizedBox(
             height: 8,
@@ -87,6 +139,38 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 ?.copyWith(fontSize: 20.sp),
             textAlign: TextAlign.center,
           ),
+          // FutureBuilder<String>(
+          //   future: "${widget.userModel.details?.firstName} ${widget.userModel.details?.lastName}",
+          //   // translateText(
+          //   //     "${widget.userModel.details?.firstName} ${widget.userModel.details?.lastName}",
+          //   //     'en',
+          //   //     dropdownValue),
+          //   builder: (context, snapshot) {
+          //     if (snapshot.connectionState == ConnectionState.done) {
+          //       return Text(
+          //         snapshot.data ?? 'Default Text',
+          //         style: Theme.of(context)
+          //             .textTheme
+          //             .titleMedium
+          //             ?.copyWith(fontSize: 20.sp),
+          //         textAlign: TextAlign.center,
+          //       );
+          //     } else {
+          //       return Text(
+          //         'Loading...',
+          //         textAlign: TextAlign.center,
+          //       ); // Or any loading indicator
+          //     }
+          //   },
+          // ),
+          // Text(
+          //   "${widget.userModel.details?.firstName} ${widget.userModel.details?.lastName}",
+          //   style: Theme.of(context)
+          //       .textTheme
+          //       .titleMedium
+          //       ?.copyWith(fontSize: 20.sp),
+          //   textAlign: TextAlign.center,
+          // ),
           const SizedBox(
             height: 10,
           ),
@@ -121,6 +205,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           UserMenuItem(
             icon: Icons.production_quantity_limits_outlined,
             title: "Special Orders",
+            language: dropdownValue,
             onClick: () {
               Navigator.pushNamed(context, ListSpecialOrdersPage.routeName);
             },
@@ -129,6 +214,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           UserMenuItem(
             icon: Icons.list_alt_outlined,
             title: "My Orders",
+            language: dropdownValue,
             onClick: () {
               Navigator.pushNamed(context, UserOrdersPage.routeName);
             },
@@ -137,6 +223,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           UserMenuItem(
             icon: Icons.maps_home_work_outlined,
             title: "Addresses",
+            language: dropdownValue,
             onClick: () {
               Navigator.pushNamed(context, AddressesPage.routeName);
             },
@@ -145,19 +232,12 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           UserMenuItem(
             icon: Icons.password_outlined,
             title: "Change Password",
+            language: dropdownValue,
             onClick: () {
               Navigator.pushNamed(context, ChangePasswordPage.routeName)
                   .then((value) {
                 widget.onRefresh.call();
               });
-            },
-          ),
-          const Divider(),
-          UserMenuItem(
-            icon: FontAwesomeIcons.language,
-            title: "Change Language",
-            onClick: () {
-              buildLanguageDialog(context);
             },
           ),
           const Divider(),
@@ -173,6 +253,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 return UserMenuItem(
                   icon: Icons.edit_document,
                   title: "Privacy Policy",
+                  language: dropdownValue,
                   onClick: () {
                     ctx.read<UserCubit>().openPrivatePolicy();
                   },
@@ -184,9 +265,10 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           UserMenuItem(
             icon: Icons.delete,
             title: "Delete your account",
+            language: dropdownValue,
             onClick: () {
               displaySnackWithAction(
-                  context, "Your account will be deleted", "Continue", () {
+                  context, "Your account will deleted", "Continue", () {
                 displaySnack(context, "Account deleted successfully");
                 context.read<UserCubit>().logOutUser();
 
@@ -195,6 +277,70 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             },
           ),
           const Divider(),
+          UserMenuItem(
+            icon: FontAwesomeIcons.language,
+            title: "Change Language",
+            language: dropdownValue,
+            onClick: () {
+              buildLanguageDialog(context);
+            },
+          ),
+          //language dropdown
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           const FaIcon(FontAwesomeIcons.language,
+          //               color: Colors.black45),
+          //           const SizedBox(width: 5),
+          //           SizedBox(
+          //             width: MediaQuery.sizeOf(context).width * 0.5,
+          //             child: FutureBuilder<String>(
+          //               future: Translations.translatedText(
+          //                   'Language', 'am'), // Adjust language code as needed
+          //               builder: (context, snapshot) {
+          //                 if (snapshot.connectionState ==
+          //                     ConnectionState.done) {
+          //                   return Text(
+          //                     snapshot.data ?? 'Default Text',
+          //                     // Add your styling here
+          //                   );
+          //                 } else {
+          //                   return Text(
+          //                     'Loading...', // Or any loading indicator
+          //                     // Add your styling here
+          //                   );
+          //                 }
+          //               },
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //       DropdownButton<String>(
+          //         value: dropdownValue,
+          //         icon: const Icon(Icons.arrow_downward),
+          //         elevation: 16,
+          //         style: const TextStyle(color: Colors.grey),
+          //         onChanged: (String? value) {
+          //           // This is called when the user selects an item.
+          //           setState(() {
+          //             dropdownValue = value!;
+          //           });
+          //         },
+          //         items: list.map<DropdownMenuItem<String>>((String value) {
+          //           return DropdownMenuItem<String>(
+          //             value: value,
+          //             child: Text(value),
+          //           );
+          //         }).toList(),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           const SizedBox(
             height: 30,
           ),
@@ -202,11 +348,31 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             padding: const EdgeInsets.all(10.0),
             child: Row(
               children: [
-                Text('Personal Details',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(color: AppColors.secondaryTextColor)),
+                FutureBuilder<String>(
+                  future: Translations.translatedText(
+                      'Personal Details',
+                      GlobalStrings
+                          .getGlobalString()), // Adjust language code as needed
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Text(
+                        snapshot.data ?? 'Default Text',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(color: AppColors.secondaryTextColor),
+                      );
+                    } else {
+                      return Text(
+                        'Loading...', // Or any loading indicator
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(color: AppColors.secondaryTextColor),
+                      );
+                    }
+                  },
+                ),
                 const Spacer(),
                 // Text(
                 //   'Edit',
@@ -248,101 +414,125 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   _buildPromptWidgets(BuildContext context) {
     return Column(
       children: [
-        if (widget.userModel.authStatus?.isEmailValidated == 0)
+        if (widget.userModel.authStatus?.isEmailValidated == 0) ...[
           const SizedBox(
             height: 10,
           ),
-        if (widget.userModel.authStatus?.isEmailValidated == 0)
-          PromptWidget(
-            text: "Validate your email",
-            onClick: () {
-              Navigator.pushNamed(context, ValidatePhoneEmailPage.routeName,
-                  arguments: {
-                    "email": widget.userModel.details?.email ?? ""
-                  }).then((value) {
-                widget.onRefresh.call();
-              });
+          FutureBuilder<String>(
+            future: _getPromptText("Validate your email",
+                widget.userModel.details?.email ?? "", context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return PromptWidget(
+                  text: snapshot.data ?? 'Default Text',
+                  onClick: () {
+                    Navigator.pushNamed(
+                        context, ValidatePhoneEmailPage.routeName, arguments: {
+                      "email": widget.userModel.details?.email ?? ""
+                    }).then((value) {
+                      widget.onRefresh.call();
+                    });
+                  },
+                );
+              } else {
+                return PromptWidget(
+                  text: 'Loading...', // Or any loading indicator
+                  onClick: () {}, // Handle onClick accordingly
+                );
+              }
             },
           ),
-        if (widget.userModel.authStatus?.isPhoneValidated == 0)
+        ],
+        if (widget.userModel.authStatus?.isPhoneValidated == 0) ...[
           const SizedBox(
             height: 10,
           ),
-        if (widget.userModel.authStatus?.isPhoneValidated == 0)
-          PromptWidget(
-            text: "Validate your phone number",
-            onClick: () {
-              Navigator.pushNamed(context, ValidatePhoneEmailPage.routeName,
-                  arguments: {
-                    "phoneNumber": widget.userModel.details?.phoneNumber ?? ""
-                  }).then((value) {
-                widget.onRefresh.call();
-              });
+          FutureBuilder<String>(
+            future: _getPromptText("Validate your phone number",
+                widget.userModel.details?.phoneNumber ?? "", context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return PromptWidget(
+                  text: snapshot.data ?? 'Default Text',
+                  onClick: () {
+                    Navigator.pushNamed(
+                        context, ValidatePhoneEmailPage.routeName, arguments: {
+                      "phoneNumber": widget.userModel.details?.phoneNumber ?? ""
+                    }).then((value) {
+                      widget.onRefresh.call();
+                    });
+                  },
+                );
+              } else {
+                return PromptWidget(
+                  text: 'Loading...', // Or any loading indicator
+                  onClick: () {}, // Handle onClick accordingly
+                );
+              }
             },
           ),
+        ],
       ],
     );
   }
 
-  final List locale = [
-    {'name': 'English', 'locale': Locale('en', 'US')},
-    {'name': 'ٱلْعَرَبِيَّة', 'locale': Locale('ar', 'SA')},
-    {'name': 'አማርኛ', 'locale': Locale('am', 'ET')},
-    {'name': 'Somali', 'locale': Locale('en', 'US')},
-    {'name': 'Afaan Oromoo', 'locale': Locale('or', 'ET')},
-  ];
-  buildLanguageDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (builder) {
-        return AlertDialog(
-          title: Text('Choose Language'),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    child: Text(locale[index]['name']),
-                    onTap: () async {
-                      // Get the selected locale and call the setLanguage method
-                      String selectedLocale = locale[index]['name'];
-                      // print(selectedLocale);
-                      final SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      await prefs.setString("lang", selectedLocale);
-                      print(selectedLocale);
-                      Navigator.pop(context);
-                      // setState(() {});
-                    },
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return Divider(
-                  color: AppColors.colorPrimary,
-                );
-              },
-              itemCount: locale.length,
-            ),
-          ),
-        );
-      },
-    );
+  Future<String> _getPromptText(
+      String baseText, String dynamicValue, BuildContext context) async {
+    // Adjust this part to get the appropriate translation based on the dynamic value or any other logic
+    String translatedText = await Translations.translatedText(
+        baseText, GlobalStrings.getGlobalString());
+    return translatedText.replaceAll('%s', dynamicValue);
   }
 
-  Future<String> trans(String text) async {
-    setState(() {
-      loading = true;
-    });
-    Translation trns =
-        await tr.translate(text, to: 'am'); //translating to hi = hindi
-    print(trns);
-    setState(() {
-      loading = false;
-    });
-    return trns.text;
+  final List locale = [
+    {'name': 'English', 'locale': "en"},
+    {'name': 'አማርኛ', 'locale': "am"},
+    {'name': 'Somali', 'locale': 'sm'},
+    {'name': 'Afaan Oromoo', 'locale': 'or'},
+    {'name': 'ٱلْعَرَبِيَّة', 'locale': 'ar'},
+  ];
+
+  buildLanguageDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Text('Choose Language'),
+            content: Container(
+              width: double.maxFinite,
+              child: ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        child: Text(locale[index]['name']),
+                        onTap: () async {
+                          String selectedLocale =
+                              locale[index]['locale'].toString();
+                          print(selectedLocale);
+                          GlobalStrings.setGlobalString(selectedLocale);
+                          setState(() {
+                            langCode = selectedLocale;
+                          });
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          await prefs.setString("lang", selectedLocale);
+                          // await prefs.setBool('repeat', true);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      color: AppColors.colorPrimaryDark,
+                    );
+                  },
+                  itemCount: locale.length),
+            ),
+          );
+        });
   }
 }

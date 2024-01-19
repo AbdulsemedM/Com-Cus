@@ -9,6 +9,7 @@ import 'package:commercepal/features/login/presentation/bloc/login_cubit.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_state.dart';
 import 'package:commercepal/features/reset_password/presentation/reset_pass_page.dart';
 import 'package:commercepal/features/set_password/presentation/user_set_password_page.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/user_registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,10 +69,31 @@ class _LoginPageState extends State<LoginPage> {
                         width: MediaQuery.of(context).size.width * 0.5,
                         height: MediaQuery.of(context).size.height * 0.25,
                       ),
-                      Text(
-                        "Login to continue",
-                        style: Theme.of(context).textTheme.titleMedium,
+                      FutureBuilder<String>(
+                        future: Translations.translatedText("Login to continue",
+                            'en'), // Adjust language code as needed
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return snapshot.data != null
+                                ? Text(
+                                    snapshot.data!,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  )
+                                : Text('Default Text',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium);
+                          } else {
+                            return Text('Loading...',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium); // Or any loading indicator
+                          }
+                        },
                       ),
+
                       const SizedBox(
                         height: 20,
                       ),

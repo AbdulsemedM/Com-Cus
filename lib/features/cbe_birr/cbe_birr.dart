@@ -1,18 +1,19 @@
 import 'dart:convert';
 
-import 'package:commercepal/app/data/network/api_provider.dart';
+// import 'package:commercepal/app/data/network/api_provider.dart';
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
-import 'package:commercepal/core/cart-core/dao/cart_dao.dart';
-import 'package:commercepal/core/cart-core/domain/cart_item.dart';
+// import 'package:commercepal/core/cart-core/dao/cart_dao.dart';
+// import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
-import 'package:commercepal/features/otp_payments/data/otp_payment_repo_imp.dart';
-import 'package:floor/floor.dart';
+// import 'package:commercepal/features/otp_payments/data/otp_payment_repo_imp.dart';
+// import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../core/cart-core/dao/cart_dao.dart';
+import 'package:url_launcher/url_launcher.dart';
+// import '../../../core/cart-core/dao/cart_dao.dart';
 
 class CBEBirrPayment extends StatefulWidget {
   static const routeName = "/cbebirr_payment";
@@ -34,7 +35,7 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "EPG Pay",
+          "CBE BIRR Pay",
           style: TextStyle(fontSize: sWidth * 0.05),
         ),
       ),
@@ -112,6 +113,7 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                                           .replaceFirst(RegExp(r'^\+'), '');
                                       print(pNumber);
                                     }
+                                    await sendData();
                                   }
                                 },
                                 child: const Text("Submit"),
@@ -129,23 +131,24 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
     );
   }
 
-  Future<bool> sendPassword({int retryCount = 0}) async {
+  Future<bool> sendData({int retryCount = 0}) async {
     try {
       setState(() {
         loading = true;
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      print(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         bool isit = await hasUserSwitchedToBusiness();
         final orderRef = await prefsData.readData("order_ref");
+        print(orderRef);
         Map<String, dynamic> payload = {
           "ServiceCode": "CHECKOUT",
-          "PaymentType": "EPG",
-          "PaymentMode": "EPG",
+          "PaymentType": "CBE-BIRR",
+          "PaymentMode": "CBE-BIRR",
           "UserType": isit ? "C" : "B",
-          "PhoneNumber": pNumber,
           "OrderRef": orderRef,
           "Currency": "ETB"
         };
@@ -166,9 +169,11 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("epg_done", "yes");
+          print(data['PaymentUrl']);
           setState(() {
             loading = false;
           });
+          launchUrl(data['PaymentUrl']);
           return true;
           // Handle the case when statusCode is '000'
         } else {
@@ -177,7 +182,7 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
             // Retry after num + 1 seconds
             await Future.delayed(Duration(seconds: retryCount++));
             // Call the function again with an increased retryCount
-            await sendPassword(retryCount: retryCount + 1);
+            await sendData(retryCount: retryCount + 1);
           } else {
             // Retry limit reached, handle accordingly
             setState(() {
@@ -207,6 +212,20 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
       return currentSelection == "YES";
     } catch (e) {
       rethrow;
+    }
+  }
+
+  void launchUrl(String myUrl) async {
+    try {
+      String url = myUrl;
+
+      // if (await canLaunch(url)) {
+      await launch(url);
+      // } else {
+      // print("Could not launch $url");
+      // }
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

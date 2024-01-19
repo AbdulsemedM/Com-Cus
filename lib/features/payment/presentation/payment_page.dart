@@ -6,6 +6,7 @@ import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/core/customer_loan/data/dto/financial_mark_ups_dto.dart';
 import 'package:commercepal/features/cash_payment/presentation/cash_payment_page.dart';
+import 'package:commercepal/features/cbe_birr/cbe_birr.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_loading_widget.dart';
 import 'package:commercepal/features/epg/epg_payment.dart';
@@ -167,6 +168,11 @@ class PaymentPage extends StatelessWidget {
           "markUp": markUpItem
         });
       });
+    } else if (e.name!.toLowerCase().contains("cbe birr") == true) {
+      Navigator.pushNamed(
+        context,
+        CBEBirrPayment.routeName,
+      );
     } else {
       Navigator.pushNamed(context, CashPaymentPage.routeName, arguments: {
         "cash_type": e.paymentType,

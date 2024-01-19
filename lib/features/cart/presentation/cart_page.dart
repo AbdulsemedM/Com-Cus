@@ -9,6 +9,8 @@ import 'package:commercepal/features/cart/presentation/widgets/cart_item_widget.
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/login/presentation/login_page.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,18 +26,50 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  @override
   void initState() {
     super.initState();
+    fetchHints();
   }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    Shopping = Translations.translatedText(
+        "Shopping Cart", GlobalStrings.getGlobalString());
+    items =
+        Translations.translatedText("Item", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    sCart = await Shopping;
+    it = await items;
+    print("herrerererere");
+    print(sCart);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var Shopping;
+  String sCart = '';
+  var items;
+  String it = '';
+  var loading = false;
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CartCoreCubit, CartCoreState>(
-      listener: (ctx, state) {
+      listener: (ctx, state) async {
         if (state is CartCoreStateSuccess) {
+          String mess = await setMyState(state.success);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(state.success),
+            content: Text(mess),
           ));
         }
         if (state is CartCoreStateLoginUser) {
@@ -56,17 +90,22 @@ class _CartPageState extends State<CartPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
-                  child: Text(
-                    "Shopping Cart",
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.normal,
-                        color: AppColors.secondaryTextColor),
-                  ),
+                  child: loading
+                      ? CircularProgressIndicator()
+                      : Text(
+                          sCart,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge
+                              ?.copyWith(
+                                  fontWeight: FontWeight.normal,
+                                  color: AppColors.secondaryTextColor),
+                        ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8),
                   child: Text(
-                    "${cartItems.map((e) => e.quantity).fold(0, (previousValue, element) => previousValue + element!)} item(s)",
+                    "${cartItems.map((e) => e.quantity).fold(0, (previousValue, element) => previousValue + element!)} ${loading ? '' : it}",
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium
@@ -104,17 +143,13 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  // void _deleteCartItem() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String? isdone = prefs.getString("epg_done");
-  //   print(isdone);
-  //   // context.read<CartCoreCubit>().deleteItem(widget.cartItem);
-  // }
-
-  // void prints(List<CartItem> myc) {
-  //   print("herererer");
-  //   for (var i in myc) {
-  //     print(i.id);
-  //   }
-  // }
+  Future<String> setMyState(String mymess) async {
+    try {
+      String trans = await Translations.translatedText(
+          mymess, GlobalStrings.getGlobalString());
+      return trans;
+    } catch (e) {
+      return mymess;
+    }
+  }
 }

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/utils/app_bloc_observer.dart';
 import 'package:commercepal/app/di/injector.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
@@ -20,7 +21,8 @@ void main() async {
       statusBarColor: Colors.white, // status bar color
     ));
   }
-
+  String lang = await getStoredLang();
+  GlobalStrings.setGlobalString(lang);
   Bloc.observer = AppBlocObserver();
   runApp(const App());
 }
