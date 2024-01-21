@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/di/injector.dart';
@@ -15,6 +13,8 @@ import 'package:commercepal/features/payment/data/dto/payment_modes_dto.dart';
 import 'package:commercepal/features/payment/presentation/bloc/payment_cubit.dart';
 import 'package:commercepal/features/payment/presentation/bloc/payment_state.dart';
 import 'package:commercepal/features/sahay_payment/presentation/sahay_pay_page.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,19 +22,39 @@ import '../../../app/utils/assets.dart';
 import '../../customer_loan/presentation/customer_loan_page.dart';
 import 'loan_payment_period_bs.dart';
 
-class PaymentPage extends StatelessWidget {
+class PaymentPage extends StatefulWidget {
   static const routeName = "/payment_page";
 
   const PaymentPage({Key? key}) : super(key: key);
 
   @override
+  _PaymentPageState createState() => _PaymentPageState();
+}
+
+class _PaymentPageState extends State<PaymentPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          'Payment modes',
-          style: Theme.of(context).textTheme.titleMedium,
+        title: FutureBuilder<String>(
+          future: Translations.translatedText(
+              'Payment modes', GlobalStrings.getGlobalString()),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading..."); // Loading indicator while translating
+            } else if (snapshot.hasError) {
+              return Text('Payment Modes');
+            } else {
+              return Text(
+                snapshot.data ?? 'Payment modes',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: Colors.black),
+              );
+            }
+          },
         ),
         centerTitle: false,
       ),
@@ -44,99 +64,106 @@ class PaymentPage extends StatelessWidget {
           listener: (context, state) {},
           builder: (ctx, state) {
             return state.maybeWhen(
-                orElse: () => const HomeLoadingWidget(),
-                error: (error) => HomeErrorWidget(error: error),
-                paymentMethods: (paymentModes) => Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ListView(
-                        children: paymentModes
-                            .map((e) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      e.name ?? '',
+              orElse: () => const HomeLoadingWidget(),
+              error: (error) => HomeErrorWidget(error: error),
+              paymentMethods: (paymentModes) => Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView(
+                  children: paymentModes
+                      .map((e) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FutureBuilder<String>(
+                                future: Translations.translatedText(
+                                    e.name ?? '',
+                                    GlobalStrings.getGlobalString()),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Text(
+                                        "Loading..."); // Loading indicator while translating
+                                  } else if (snapshot.hasError) {
+                                    return Text(e.name ?? '');
+                                  } else {
+                                    return Text(
+                                      snapshot.data ?? e.name ?? '',
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium
                                           ?.copyWith(color: Colors.black),
-                                    ),
-                                    const SizedBox(
-                                      height: 18,
-                                    ),
-                                    Container(
-                                      height: e.items!.length > 3
-                                          ? MediaQuery.of(context).size.height *
-                                              0.25
-                                          : MediaQuery.of(context).size.height *
-                                              0.12,
-                                      child: GridView.builder(
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount:
-                                              3, // Number of items in each row
-                                          crossAxisSpacing:
-                                              4.0, // Spacing between columns
-                                          mainAxisSpacing:
-                                              0, // Spacing between rows
-                                        ),
-                                        itemCount: e.items!.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          var item = e.items![index];
+                                    );
+                                  }
+                                },
+                              ),
+                              const SizedBox(
+                                height: 18,
+                              ),
+                              Container(
+                                height: e.items!.length > 3
+                                    ? MediaQuery.of(context).size.height * 0.25
+                                    : MediaQuery.of(context).size.height * 0.12,
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount:
+                                        3, // Number of items in each row
+                                    crossAxisSpacing:
+                                        4.0, // Spacing between columns
+                                    mainAxisSpacing: 0, // Spacing between rows
+                                  ),
+                                  itemCount: e.items!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    var item = e.items![index];
 
-                                          return InkWell(
-                                            onTap: () {
-                                              _redirectUserBasedOnPaymentMethod(
-                                                  item, context);
-                                            },
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(0),
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            12),
-                                                    height: 60,
-                                                    width: 60,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: AppColors.bg1,
-                                                    ),
-                                                    child: item.iconUrl ==
-                                                            "loan.png"
-                                                        ? Image.asset(
-                                                            Assets.bank)
-                                                        : CachedNetworkImage(
-                                                            imageUrl:
-                                                                item.iconUrl ??
-                                                                    '',
-                                                          ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(item.name ?? ''),
-                                                ],
+                                    return InkWell(
+                                      onTap: () {
+                                        _redirectUserBasedOnPaymentMethod(
+                                            item, context);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(0),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(12),
+                                              height: 60,
+                                              width: 60,
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: AppColors.bg1,
                                               ),
+                                              child: item.iconUrl == "loan.png"
+                                                  ? Image.asset(Assets.bank)
+                                                  : CachedNetworkImage(
+                                                      imageUrl:
+                                                          item.iconUrl ?? '',
+                                                    ),
                                             ),
-                                          );
-                                        },
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(item.name ?? ''),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Divider(),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                  ],
-                                ))
-                            .toList(),
-                      ),
-                    ));
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Divider(),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ))
+                      .toList(),
+                ),
+              ),
+            );
           },
         ),
       ),
@@ -183,12 +210,13 @@ class PaymentPage extends StatelessWidget {
   }
 }
 
-_showModalBottomSheet(
+void _showModalBottomSheet(
     BuildContext context, num institutionId, Function onPeriodClicked) {
   showModalBottomSheet(
-      context: context,
-      builder: (ctx) => LoanPaymentPeriodBs(
-            institutionId: institutionId,
-            onPeriodClicked: onPeriodClicked,
-          ));
+    context: context,
+    builder: (ctx) => LoanPaymentPeriodBs(
+      institutionId: institutionId,
+      onPeriodClicked: onPeriodClicked,
+    ),
+  );
 }

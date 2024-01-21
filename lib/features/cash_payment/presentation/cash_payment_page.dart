@@ -8,6 +8,8 @@ import 'package:commercepal/core/widgets/commercepal_app_bar.dart';
 import 'package:commercepal/features/cash_payment/presentation/bloc/cash_payment_cubit.dart';
 import 'package:commercepal/features/cash_payment/presentation/bloc/cash_payment_state.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,11 +48,40 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
     }
   }
 
+  var loading = false;
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Phone Number", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+
+    print(pHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var physicalAddressHintFuture;
+  String pHint = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildCommerceAppBar(context, "$_cashTypeName Payment", null, false),
+      appBar:
+          buildCommerceAppBar(context, "$_cashTypeName Payment", null, false),
       body: BlocProvider(
         create: (context) => getIt<CashPaymentCubit>(),
         child: BlocConsumer<CashPaymentCubit, CashPaymentState>(
@@ -83,27 +114,47 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
                     const SizedBox(
                       height: 10,
                     ),
-                    const Text('Enter your phone number below'),
+                    FutureBuilder<String>(
+                      future: Translations.translatedText(
+                          'Enter your phone number below',
+                          GlobalStrings.getGlobalString()),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Text(
+                              "Loading..."); // Loading indicator while translating
+                        } else if (snapshot.hasError) {
+                          return Text('Enter your phone number below');
+                        } else {
+                          return Text(
+                            snapshot.data ?? 'Enter your phone number below',
+                          );
+                        }
+                      },
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      keyboardType: TextInputType.phone,
-                      enabled: !_validatePayment,
-                      validator: (v) {
-                        if (v?.isEmpty == true) {
-                          return "Phone number is required";
-                        }
-                        return null;
-                      },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      onChanged: (value) {
-                        setState(() {
-                          _phoneNumber = value;
-                        });
-                      },
-                      decoration: buildInputDecoration("Phone number"),
-                    ),
+                    loading
+                        ? const Text('Loading...')
+                        : TextFormField(
+                            keyboardType: TextInputType.phone,
+                            enabled: !_validatePayment,
+                            validator: (v) {
+                              if (v?.isEmpty == true) {
+                                return "Phone number is required";
+                              }
+                              return null;
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              setState(() {
+                                _phoneNumber = value;
+                              });
+                            },
+                            decoration: buildInputDecoration(pHint),
+                          ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -138,9 +189,22 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Payment Instructions",
-              style: Theme.of(context).textTheme.titleMedium,
+            FutureBuilder<String>(
+              future: Translations.translatedText(
+                  'Payment Instruction', GlobalStrings.getGlobalString()),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text(
+                      "Loading..."); // Loading indicator while translating
+                } else if (snapshot.hasError) {
+                  return Text('Payment Instruction');
+                } else {
+                  return Text(
+                    snapshot.data ?? 'Payment Instruction',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  );
+                }
+              },
             ),
             const SizedBox(
               height: 10,
@@ -150,7 +214,23 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
               children: _instructions
                   .map((e) => Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("- $e"),
+                        child: FutureBuilder<String>(
+                          future: Translations.translatedText(
+                              '- $e', GlobalStrings.getGlobalString()),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Text(
+                                  "Loading..."); // Loading indicator while translating
+                            } else if (snapshot.hasError) {
+                              return Text('- $e');
+                            } else {
+                              return Text(
+                                snapshot.data ?? '- $e',
+                              );
+                            }
+                          },
+                        ),
                       ))
                   .toList(),
             )

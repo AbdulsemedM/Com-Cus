@@ -1,4 +1,6 @@
 import 'package:commercepal/app/app.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/widgets/app_button.dart';
@@ -15,9 +17,21 @@ class SpecialOrderPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text(
-          "Add special order",
-          style: Theme.of(context).textTheme.titleMedium,
+        title: FutureBuilder<String>(
+          future: Translations.translatedText(
+              "Add special Order", GlobalStrings.getGlobalString()),
+          //  translatedText("Log Out", 'en', dropdownValue),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Text(
+                snapshot.data ?? 'Default Text',
+              );
+            } else {
+              return Text(
+                'Loading...',
+              ); // Or any loading indicator
+            }
+          },
         ),
       ),
       backgroundColor: Colors.white,

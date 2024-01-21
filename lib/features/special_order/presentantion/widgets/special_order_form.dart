@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/features/special_order/presentantion/bloc/special_order_state.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,6 +21,64 @@ class SpecialOrderForm extends StatefulWidget {
 }
 
 class _SpecialOrderFormState extends State<SpecialOrderForm> {
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Name of product", GlobalStrings.getGlobalString());
+    subcityHint = Translations.translatedText(
+        "Product Price", GlobalStrings.getGlobalString());
+    addAddHint = Translations.translatedText(
+        "Link to product", GlobalStrings.getGlobalString());
+    productHint = Translations.translatedText(
+        "Product Description", GlobalStrings.getGlobalString());
+    totalHint = Translations.translatedText(
+        "Pick Image", GlobalStrings.getGlobalString());
+    shippmentHint = Translations.translatedText(
+        "Shipmment Status", GlobalStrings.getGlobalString());
+    proccessingHint = Translations.translatedText(
+        "Proccessing on Warehouse", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    cHint = await subcityHint;
+    aHint = await addAddHint;
+    prHint = await productHint;
+    tHint = await totalHint;
+    sHint = await shippmentHint;
+    prHint = await proccessingHint;
+    print("herrerererere");
+    print(pHint);
+    print(cHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var physicalAddressHintFuture;
+  var subcityHint;
+  var addAddHint;
+  var productHint;
+  var totalHint;
+  var shippmentHint;
+  var proccessingHint;
+  String pHint = '';
+  String cHint = '';
+  String aHint = '';
+  String prHint = '';
+  String tHint = '';
+  String sHint = '';
+  String pwHint = '';
+  var loading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ImagePicker? _imagePicker = ImagePicker();
   XFile? _image;
@@ -52,84 +112,101 @@ class _SpecialOrderFormState extends State<SpecialOrderForm> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextFormField(
-                      validator: (v) {
-                        if (v?.isEmpty == true) {
-                          return "Name is required";
-                        }
-                        return null;
-                      },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      onChanged: (value) {
-                        setState(() {
-                          _pName = value;
-                        });
-                      },
-                      decoration: buildInputDecoration("Name of product"),
-                    ),
+                    loading
+                        ? const Text("Loading...")
+                        : TextFormField(
+                            validator: (v) {
+                              if (v?.isEmpty == true) {
+                                return "Name is required";
+                              }
+                              return null;
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              setState(() {
+                                _pName = value;
+                              });
+                            },
+                            decoration: buildInputDecoration(pHint),
+                          ),
                     const SizedBox(
                       height: 16,
                     ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      validator: (v) {
-                        if (v?.isEmpty == true) {
-                          return "Price of product is required";
-                        }
-                        return null;
-                      },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      onChanged: (value) {
-                        setState(() {
-                          _amount = value;
-                        });
-                      },
-                      decoration: buildInputDecoration("Product Price"),
-                    ),
+                    loading
+                        ? const Text("Loading...")
+                        : TextFormField(
+                            keyboardType: TextInputType.number,
+                            validator: (v) {
+                              if (v?.isEmpty == true) {
+                                return "Price of product is required";
+                              }
+                              return null;
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              setState(() {
+                                _amount = value;
+                              });
+                            },
+                            decoration: buildInputDecoration(cHint),
+                          ),
                     const SizedBox(
                       height: 16,
                     ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      validator: (v) {
-                        if (v?.isEmpty == true) {
-                          return "Link to product is required";
-                        }
-                        return null;
-                      },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      onChanged: (value) {
-                        setState(() {
-                          _linkToProduct = value;
-                        });
-                      },
-                      decoration: buildInputDecoration("Link to product"),
-                    ),
+                    loading
+                        ? const Text("Loading...")
+                        : TextFormField(
+                            keyboardType: TextInputType.number,
+                            validator: (v) {
+                              if (v?.isEmpty == true) {
+                                return "Link to product is required";
+                              }
+                              return null;
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              setState(() {
+                                _linkToProduct = value;
+                              });
+                            },
+                            decoration: buildInputDecoration(aHint),
+                          ),
                     const SizedBox(
                       height: 16,
                     ),
-                    TextFormField(
-                      validator: (v) {
-                        if (v?.isEmpty == true) {
-                          return "Product description is required";
-                        }
-                        return null;
-                      },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      onChanged: (value) {
-                        setState(() {
-                          _pDescription = value;
-                        });
-                      },
-                      decoration: buildInputDecoration("Product Description"),
-                    ),
+                    loading
+                        ? const Text("Loading...")
+                        : TextFormField(
+                            validator: (v) {
+                              if (v?.isEmpty == true) {
+                                return "Product description is required";
+                              }
+                              return null;
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              setState(() {
+                                _pDescription = value;
+                              });
+                            },
+                            decoration: buildInputDecoration(prHint),
+                          ),
                     const SizedBox(
                       height: 16,
                     ),
-                    Text(
-                      "Pick image",
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
+                    loading
+                        ? Text(
+                            "Loading...",
+                            style: Theme.of(context).textTheme.bodySmall,
+                          )
+                        : Text(
+                            tHint,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                     const SizedBox(
                       height: 8,
                     ),

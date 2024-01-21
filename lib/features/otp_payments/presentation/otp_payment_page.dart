@@ -4,6 +4,8 @@ import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/core/widgets/commercepal_app_bar.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,6 +48,34 @@ class _OtpPaymentPageState extends State<OtpPaymentPage> {
     }
   }
 
+  var loading = false;
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Phone Number", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+
+    print(pHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var physicalAddressHintFuture;
+  String pHint = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,26 +116,46 @@ class _OtpPaymentPageState extends State<OtpPaymentPage> {
                     children: [
                       _buildPaymentInstructions(),
                       if (_paymentInstructions.isNotEmpty) Divider(),
-                      const Text('Enter your phone number below'),
+                      FutureBuilder<String>(
+                        future: Translations.translatedText(
+                            'Enter your phone number below',
+                            GlobalStrings.getGlobalString()),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Text(
+                                "Loading..."); // Loading indicator while translating
+                          } else if (snapshot.hasError) {
+                            return Text('Enter your phone number below');
+                          } else {
+                            return Text(
+                              snapshot.data ?? 'Enter your phone number below',
+                            );
+                          }
+                        },
+                      ),
                       const SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        keyboardType: TextInputType.phone,
-                        validator: (v) {
-                          if (v?.isEmpty == true) {
-                            return "Phone number is required";
-                          }
-                          return null;
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          setState(() {
-                            _phoneNumber = value;
-                          });
-                        },
-                        decoration: buildInputDecoration("Phone number"),
-                      ),
+                      loading
+                          ? Container()
+                          : TextFormField(
+                              keyboardType: TextInputType.phone,
+                              validator: (v) {
+                                if (v?.isEmpty == true) {
+                                  return "Phone number is required";
+                                }
+                                return null;
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              onChanged: (value) {
+                                setState(() {
+                                  _phoneNumber = value;
+                                });
+                              },
+                              decoration: buildInputDecoration(pHint),
+                            ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -143,12 +193,25 @@ class _OtpPaymentPageState extends State<OtpPaymentPage> {
         const SizedBox(
           height: 5,
         ),
-        Text(
-          'Enter OTP sent to the above phone number',
-          style: Theme.of(context)
-              .textTheme
-              .titleSmall
-              ?.copyWith(color: AppColors.secondaryTextColor),
+        FutureBuilder<String>(
+          future: Translations.translatedText(
+              'Enter OTP sent to the above phone number',
+              GlobalStrings.getGlobalString()),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading..."); // Loading indicator while translating
+            } else if (snapshot.hasError) {
+              return Text('Enter OTP sent to the above phone number');
+            } else {
+              return Text(
+                snapshot.data ?? 'Enter OTP sent to the above phone number',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(color: AppColors.secondaryTextColor),
+              );
+            }
+          },
         ),
         const SizedBox(
           height: 5,

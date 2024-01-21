@@ -3,6 +3,8 @@ import 'package:commercepal/features/addresses/presentation/bloc/address_cubit.d
 import 'package:commercepal/features/addresses/presentation/bloc/address_state.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_loading_widget.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,19 +37,49 @@ class _AddressesPageState extends State<AddressesPage> {
           return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
-                title: Text(
-                  "Your addresses",
-                  style: Theme.of(context).textTheme.titleMedium,
+                title: FutureBuilder<String>(
+                  future: Translations.translatedText(
+                      "Your Addresses", GlobalStrings.getGlobalString()),
+                  //  translatedText("Log Out", 'en', dropdownValue),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Text(
+                        snapshot.data ?? 'Default Text',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      );
+                    } else {
+                      return Text(
+                        'Loading...',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ); // Or any loading indicator
+                    }
+                  },
                 ),
                 centerTitle: false,
                 actions: [
                   TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, AddAddressPage.routeName)
-                            .then((value) =>
-                            context.read<AddressCubit>().fetchAddresses());
+                    onPressed: () {
+                      Navigator.pushNamed(context, AddAddressPage.routeName)
+                          .then((value) =>
+                              context.read<AddressCubit>().fetchAddresses());
+                    },
+                    child: FutureBuilder<String>(
+                      future: Translations.translatedText(
+                          "Add", GlobalStrings.getGlobalString()),
+                      //  translatedText("Log Out", 'en', dropdownValue),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return Text(
+                            snapshot.data ?? 'Default Text',
+                          );
+                        } else {
+                          return Text(
+                            'Loading...',
+                          ); // Or any loading indicator
+                        }
                       },
-                      child: const Text("Add"))
+                    ),
+                  )
                 ],
               ),
               body: state.maybeWhen(

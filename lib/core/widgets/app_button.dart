@@ -32,7 +32,7 @@ class _AppButtonWidgetState extends State<AppButtonWidget> {
     });
 
     subcityHint = Translations.translatedText(
-        widget.text, GlobalStrings.getGlobalString());
+        widget.text ?? "Submit", GlobalStrings.getGlobalString());
 
     // Use await to get the actual string value from the futures
     cHint = await subcityHint;

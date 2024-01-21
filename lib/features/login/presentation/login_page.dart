@@ -9,6 +9,7 @@ import 'package:commercepal/features/login/presentation/bloc/login_cubit.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_state.dart';
 import 'package:commercepal/features/reset_password/presentation/reset_pass_page.dart';
 import 'package:commercepal/features/set_password/presentation/user_set_password_page.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/user_registration_page.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,45 @@ class _LoginPageState extends State<LoginPage> {
 
   String? _emailOrPhone;
   String? _pass;
+
+  var loading = false;
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Password", GlobalStrings.getGlobalString());
+    subcityHint = Translations.translatedText(
+        "Email or Phone Number", GlobalStrings.getGlobalString());
+    addAddHint = Translations.translatedText(
+        "Forgot password", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    cHint = await subcityHint;
+    aHint = await addAddHint;
+    print("herrerererere");
+    print(pHint);
+    print(cHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var physicalAddressHintFuture;
+  var subcityHint;
+  var addAddHint;
+  String pHint = '';
+  String cHint = '';
+  String aHint = '';
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +110,10 @@ class _LoginPageState extends State<LoginPage> {
                         height: MediaQuery.of(context).size.height * 0.25,
                       ),
                       FutureBuilder<String>(
-                        future: Translations.translatedText("Login to continue",
-                            'en'), // Adjust language code as needed
+                        future: Translations.translatedText(
+                            "Login to continue",
+                            GlobalStrings
+                                .getGlobalString()), // Adjust language code as needed
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
@@ -97,41 +139,46 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 20,
                       ),
-                      TextFormField(
-                          validator: (v) {
-                            if (v?.isEmpty == true) {
-                              return "Email or phone number is required";
-                            }
-                            return null;
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          onChanged: (value) {
-                            setState(() {
-                              _emailOrPhone = value;
-                            });
-                          },
-                          decoration:
-                              buildInputDecoration("Email Or Phone number")),
+                      loading
+                          ? const Text("Loading...")
+                          : TextFormField(
+                              validator: (v) {
+                                if (v?.isEmpty == true) {
+                                  return "Email or phone number is required";
+                                }
+                                return null;
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              onChanged: (value) {
+                                setState(() {
+                                  _emailOrPhone = value;
+                                });
+                              },
+                              decoration: buildInputDecoration(cHint)),
                       const SizedBox(
                         height: 16,
                       ),
-                      TextFormField(
-                        obscureText: true,
-                        keyboardType: TextInputType.visiblePassword,
-                        validator: (v) {
-                          if (v?.isEmpty == true) {
-                            return "Password is required";
-                          }
-                          return null;
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          setState(() {
-                            _pass = value;
-                          });
-                        },
-                        decoration: buildInputDecoration("Password"),
-                      ),
+                      loading
+                          ? const Text("Loading...")
+                          : TextFormField(
+                              obscureText: true,
+                              keyboardType: TextInputType.visiblePassword,
+                              validator: (v) {
+                                if (v?.isEmpty == true) {
+                                  return "Password is required";
+                                }
+                                return null;
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              onChanged: (value) {
+                                setState(() {
+                                  _pass = value;
+                                });
+                              },
+                              decoration: buildInputDecoration(pHint),
+                            ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
@@ -144,14 +191,17 @@ class _LoginPageState extends State<LoginPage> {
                                       builder: (context) =>
                                           const ForgotPassword()));
                             },
-                            child: Text(
-                              "Forgot password?",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                      color: AppColors.secondaryTextColor),
-                            ),
+                            child: loading
+                                ? const Text("Loading...")
+                                : Text(
+                                    aHint,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                            color:
+                                                AppColors.secondaryTextColor),
+                                  ),
                           ),
                         ],
                       ),
@@ -177,12 +227,39 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushNamed(
                                 context, UserRegistrationPage.routeName);
                           },
-                          child: Text(
-                            "Create Account?",
-                            style: TextStyle(
-                              color: AppColors.colorPrimaryDark,
-                              decoration: TextDecoration.underline,
-                            ),
+                          child: FutureBuilder<String>(
+                            future: Translations.translatedText(
+                                "Create Account",
+                                GlobalStrings
+                                    .getGlobalString()), // Adjust language code as needed
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                return snapshot.data != null
+                                    ? Text(
+                                        snapshot.data!,
+                                        style: const TextStyle(
+                                          color: AppColors.colorPrimaryDark,
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                      )
+                                    : const Text(
+                                        'Default Text',
+                                        style: TextStyle(
+                                          color: AppColors.colorPrimaryDark,
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                      );
+                              } else {
+                                return const Text(
+                                  'Loading...',
+                                  style: TextStyle(
+                                    color: AppColors.colorPrimaryDark,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ); // Or any loading indicator
+                              }
+                            },
                           ),
                         ),
                       )

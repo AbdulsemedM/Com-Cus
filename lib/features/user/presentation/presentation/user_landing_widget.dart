@@ -1,3 +1,5 @@
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user/presentation/bloc/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,10 +25,24 @@ class UserLandingWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Login to access your account details and orders",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(),
+            child: FutureBuilder<String>(
+              future: Translations.translatedText(
+                  "Login to access your account details and orders",
+                  GlobalStrings.getGlobalString()),
+              //  translatedText("Log Out", 'en', dropdownValue),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Text(
+                    snapshot.data ?? 'Default Text',
+                    textAlign: TextAlign.right,
+                  );
+                } else {
+                  return Text(
+                    'Loading...',
+                    textAlign: TextAlign.right,
+                  ); // Or any loading indicator
+                }
+              },
             ),
           ),
           Padding(

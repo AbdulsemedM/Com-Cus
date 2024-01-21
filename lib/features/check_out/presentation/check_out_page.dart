@@ -7,6 +7,8 @@ import 'package:commercepal/features/check_out/presentation/bloc/check_out_cubit
 import 'package:commercepal/features/check_out/presentation/bloc/check_out_state.dart';
 import 'package:commercepal/features/check_out/presentation/widgets/check_out_addresse_widget.dart';
 import 'package:commercepal/features/payment/presentation/payment_page.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,20 +16,52 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/cart-core/domain/cart_item.dart';
 import '../data/models/address.dart';
 
-class CheckOutPage extends StatelessWidget {
+class CheckOutPage extends StatefulWidget {
   static const routeName = "/check_out_page";
 
   const CheckOutPage({Key? key}) : super(key: key);
 
   @override
+  _CheckOutPageState createState() => _CheckOutPageState();
+}
+
+class _CheckOutPageState extends State<CheckOutPage> {
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    items = Translations.translatedText(
+        "Check out", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    it = await items;
+    print("herrerererere");
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var items;
+  String it = '';
+  var loading = false;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text(
-          "Check out",
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        title: loading
+            ? Text("Loading")
+            : Text(
+                it,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
       ),
       body: const CheckOutPageDataWidget(),
     );
@@ -47,6 +81,47 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   String? _total;
   String? _shippingFee;
   bool _isUserBusiness = true;
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    OrderSumm = Translations.translatedText(
+        "Order Summary", GlobalStrings.getGlobalString());
+    ShipFee = Translations.translatedText(
+        "Shipping Fee", GlobalStrings.getGlobalString());
+    OrderTot = Translations.translatedText(
+        "Order Total", GlobalStrings.getGlobalString());
+    ShipBill = Translations.translatedText(
+        "Continue", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    OSumm = await OrderSumm;
+    SFee = await ShipFee;
+    OTot = await OrderTot;
+    SBill = await ShipBill;
+    print("herrerererere");
+    print(OSumm);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var OrderSumm;
+  String OSumm = '';
+  var ShipFee;
+  String SFee = '';
+  var OrderTot;
+  String OTot = '';
+  var ShipBill;
+  String SBill = '';
+  var loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -101,13 +176,15 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                 child: ListView(
                   // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Order Summary",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(fontSize: 20.sp),
-                    ),
+                    loading
+                        ? const Text("Loading...")
+                        : Text(
+                            OSumm,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(fontSize: 20.sp),
+                          ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -149,13 +226,16 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Shipping Fee",
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(color: AppColors.secondaryTextColor),
-                        ),
+                        loading
+                            ? const Text("Loading...")
+                            : Text(
+                                SFee,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                        color: AppColors.secondaryTextColor),
+                              ),
                         if (_shippingFee == null)
                           const SizedBox(
                             height: 12,
@@ -185,11 +265,13 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Order Total",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith()),
+                        loading
+                            ? const Text("Loading...")
+                            : Text(OTot,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith()),
                         Text(
                           _total ?? '...',
                           style: Theme.of(context)
@@ -230,13 +312,16 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Order Total",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayMedium
-                                    ?.copyWith(
-                                        fontSize: 16.sp,
-                                        color: AppColors.secondaryTextColor)),
+                            loading
+                                ? const Text("Loading...")
+                                : Text(OTot,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium
+                                        ?.copyWith(
+                                            fontSize: 16.sp,
+                                            color:
+                                                AppColors.secondaryTextColor)),
                             const SizedBox(
                               height: 4,
                             ),
@@ -258,7 +343,9 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateColor.resolveWith(
                                     (states) => AppColors.colorPrimary)),
-                            child: const Text("Continue"),
+                            child: loading
+                                ? const Text("Loading...")
+                                : Text(SBill),
                           ),
                         )
                       ],

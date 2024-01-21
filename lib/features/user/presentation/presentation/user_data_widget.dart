@@ -487,7 +487,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   final List locale = [
     {'name': 'English', 'locale': "en"},
     {'name': 'አማርኛ', 'locale': "am"},
-    {'name': 'Somali', 'locale': 'sm'},
+    {'name': 'Somali', 'locale': 'tr'},
     {'name': 'Afaan Oromoo', 'locale': 'or'},
     {'name': 'ٱلْعَرَبِيَّة', 'locale': 'ar'},
   ];
@@ -520,7 +520,8 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                               await SharedPreferences.getInstance();
                           await prefs.setString("lang", selectedLocale);
                           // await prefs.setBool('repeat', true);
-                          Navigator.pop(context);
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              DashboardPage.routeName, (route) => false);
                         },
                       ),
                     );

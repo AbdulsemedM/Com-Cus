@@ -7,6 +7,8 @@ import 'package:commercepal/app/utils/app_colors.dart';
 // import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 // import 'package:commercepal/features/otp_payments/data/otp_payment_repo_imp.dart';
 // import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
@@ -49,11 +51,29 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                       const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
                   child: Column(
                     children: [
-                      const Row(
+                      Row(
                         children: [
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text("Phone Number"),
+                            child: FutureBuilder<String>(
+                              future: Translations.translatedText(
+                                  'Enter your phone number below',
+                                  GlobalStrings.getGlobalString()),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Text(
+                                      "Loading..."); // Loading indicator while translating
+                                } else if (snapshot.hasError) {
+                                  return Text('Enter your phone number below');
+                                } else {
+                                  return Text(
+                                    snapshot.data ??
+                                        'Enter your phone number below',
+                                  );
+                                }
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -116,10 +136,26 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                                     await sendData();
                                   }
                                 },
-                                child: const Text("Submit"),
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         AppColors.colorPrimaryDark),
+                                child: FutureBuilder<String>(
+                                  future: Translations.translatedText('Submit',
+                                      GlobalStrings.getGlobalString()),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Text(
+                                          "Loading..."); // Loading indicator while translating
+                                    } else if (snapshot.hasError) {
+                                      return Text('Submit');
+                                    } else {
+                                      return Text(
+                                        snapshot.data ?? 'Submit',
+                                      );
+                                    }
+                                  },
+                                ),
                               ),
                             )
                     ],

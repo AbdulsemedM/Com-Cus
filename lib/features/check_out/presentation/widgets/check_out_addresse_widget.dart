@@ -1,6 +1,8 @@
 import 'package:commercepal/features/addresses/presentation/edit_address_page.dart';
 import 'package:commercepal/features/addresses/presentation/search_places.dart';
 import 'package:commercepal/features/check_out/data/models/address.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,6 +30,81 @@ class CheckOutAddressesWidget extends StatefulWidget {
 
 class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
   final AddressSelectedChoices _addSelected = AddressSelectedChoices.notSelcted;
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    AddAddr = Translations.translatedText(
+        "Add address", GlobalStrings.getGlobalString());
+    Edit = Translations.translatedText("Edit", GlobalStrings.getGlobalString());
+    Country = Translations.translatedText(
+        "Country: ", GlobalStrings.getGlobalString());
+    City =
+        Translations.translatedText("City: ", GlobalStrings.getGlobalString());
+    SubCounty = Translations.translatedText(
+        "Sub-county: ", GlobalStrings.getGlobalString());
+    ShippBill = Translations.translatedText(
+        "Shipping and Billing", GlobalStrings.getGlobalString());
+    FillAdd = Translations.translatedText(
+        "Fill Address", GlobalStrings.getGlobalString());
+    HowDo = Translations.translatedText("How do you want to fill the address?",
+        GlobalStrings.getGlobalString());
+    Automatic = Translations.translatedText(
+        "Automatically", GlobalStrings.getGlobalString());
+    Manual = Translations.translatedText(
+        "Manually", GlobalStrings.getGlobalString());
+    Cancel =
+        Translations.translatedText("Cancel", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    AAdd = await AddAddr;
+    Ed = await Edit;
+    Co = await Country;
+    Ci = await City;
+    SC = await SubCounty;
+    SBill = await ShippBill;
+    FAdd = await FillAdd;
+    HDO = await HowDo;
+    Aut = await Automatic;
+    Man = await Manual;
+    Can = await Cancel;
+    print("herrerererere");
+    print(AAdd);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var AddAddr;
+  String AAdd = '';
+  var Edit;
+  String Ed = '';
+  var Country;
+  String Co = '';
+  var City;
+  String Ci = '';
+  var SubCounty;
+  String SC = '';
+  var ShippBill;
+  String SBill = '';
+  var FillAdd;
+  String FAdd = '';
+  var HowDo;
+  String HDO = '';
+  var Automatic;
+  String Aut = '';
+  var Manual;
+  String Man = '';
+  var Cancel;
+  String Can = '';
+  var loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,26 +118,28 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Shipping & Billing",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(fontSize: 20.sp),
-                  ),
+                  loading
+                      ? const Text("Loading...")
+                      : Text(
+                          SBill,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge
+                              ?.copyWith(fontSize: 20.sp),
+                        ),
                   InkWell(
                     onTap: () {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: const Text('Fill Address'),
+                            title:
+                                loading ? const Text("Loading...") : Text(FAdd),
                             content: Column(
                               mainAxisSize: MainAxisSize
                                   .min, // Set the mainAxisSize to min
                               children: [
-                                const Text(
-                                    'How do you want to fill the address?'),
+                                loading ? const Text("Loading...") : Text(HDO),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -81,7 +160,9 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor:
                                               AppColors.colorPrimaryDark),
-                                      child: Text("Automatically"),
+                                      child: loading
+                                          ? const Text("Loading...")
+                                          : Text(Aut),
                                     ),
                                     SizedBox(
                                       height: sHeight * 0.02,
@@ -100,7 +181,9 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor:
                                               AppColors.colorPrimaryDark),
-                                      child: Text("Manually"),
+                                      child: loading
+                                          ? const Text("Loading...")
+                                          : Text(Man),
                                     ),
                                   ],
                                 )
@@ -112,21 +195,25 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                   Navigator.of(context)
                                       .pop(false); // User does not confirm
                                 },
-                                child: const Text(
-                                  'Cancel',
-                                  style: TextStyle(color: Colors.red),
-                                ),
+                                child: loading
+                                    ? const Text("Loading...")
+                                    : Text(
+                                        Can,
+                                        style: TextStyle(color: Colors.red),
+                                      ),
                               ),
                             ],
                           );
                         },
                       );
                     },
-                    child: Text("Add address",
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(color: AppColors.colorPrimary)),
+                    child: loading
+                        ? const Text("Loading...")
+                        : Text(AAdd,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: AppColors.colorPrimary)),
                   ),
                 ],
               ),
@@ -178,7 +265,9 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                             RichText(
                                                 text: TextSpan(children: [
                                               TextSpan(
-                                                  text: "Country: ",
+                                                  text: loading
+                                                      ? "Loading..."
+                                                      : Co,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleSmall
@@ -198,7 +287,9 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                             RichText(
                                                 text: TextSpan(children: [
                                               TextSpan(
-                                                  text: "City: ",
+                                                  text: loading
+                                                      ? "Loading..."
+                                                      : Ci,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleSmall
@@ -218,7 +309,9 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                             RichText(
                                                 text: TextSpan(children: [
                                               TextSpan(
-                                                  text: "Sub-county: ",
+                                                  text: loading
+                                                      ? "Loading..."
+                                                      : SC,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleSmall
@@ -244,16 +337,18 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                                     .read<CheckOutCubit>()
                                                     .fetchAddresses());
                                           },
-                                          child: Text(
-                                            'Edit',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displaySmall
-                                                ?.copyWith(
-                                                    color:
-                                                        AppColors.colorPrimary,
-                                                    fontSize: 16.sp),
-                                          ),
+                                          child: loading
+                                              ? const Text("Loading...")
+                                              : Text(
+                                                  Ed,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall
+                                                      ?.copyWith(
+                                                          color: AppColors
+                                                              .colorPrimary,
+                                                          fontSize: 16.sp),
+                                                ),
                                         ),
                                       ),
                                     ),

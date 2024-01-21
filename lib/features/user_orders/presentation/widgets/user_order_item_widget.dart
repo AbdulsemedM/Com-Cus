@@ -1,3 +1,5 @@
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -48,12 +50,38 @@ class UserOrderItemWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Paid Via",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(fontSize: 10.sp),
+                    FutureBuilder<String>(
+                      future: Translations.translatedText(
+                          "Paid Via",
+                          GlobalStrings
+                              .getGlobalString()), // Adjust language code as needed
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return snapshot.data != null
+                              ? Text(
+                                  snapshot.data!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(fontSize: 10.sp),
+                                )
+                              : Text(
+                                  'Default Text',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(fontSize: 10.sp),
+                                );
+                        } else {
+                          return Text(
+                            'Loading...',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(fontSize: 10.sp),
+                          ); // Or any loading indicator
+                        }
+                      },
                     ),
                     Text(
                       order.paymentMethod ?? '..',
@@ -74,12 +102,40 @@ class UserOrderItemWidget extends StatelessWidget {
             Divider(),
             Padding(
               padding: const EdgeInsets.all(6.0),
-              child: Text(
-                "Order Summary",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(fontSize: 12.sp, color: AppColors.colorPrimary),
+              child: FutureBuilder<String>(
+                future: Translations.translatedText(
+                    "Order Summary",
+                    GlobalStrings
+                        .getGlobalString()), // Adjust language code as needed
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return snapshot.data != null
+                        ? Text(
+                            snapshot.data!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                    fontSize: 12.sp,
+                                    color: AppColors.colorPrimary),
+                          )
+                        : Text(
+                            'Default Text',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                    fontSize: 12.sp,
+                                    color: AppColors.colorPrimary),
+                          );
+                  } else {
+                    return Text(
+                      'Loading...',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontSize: 12.sp, color: AppColors.colorPrimary),
+                    ); // Or any loading indicator
+                  }
+                },
               ),
             )
           ],

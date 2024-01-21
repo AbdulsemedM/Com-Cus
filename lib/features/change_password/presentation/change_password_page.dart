@@ -5,6 +5,8 @@ import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:commercepal/features/change_password/presentation/bloc/change_password_cubit.dart';
 import 'package:commercepal/features/change_password/presentation/bloc/change_password_state.dart';
 import 'package:commercepal/features/login/presentation/login_page.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,15 +29,61 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   String? _oldPassword;
 
   bool _togglePassText = true;
+  var loading = false;
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "New Password", GlobalStrings.getGlobalString());
+    oldHintFuture = Translations.translatedText(
+        "Old Password", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    oHint = await oldHintFuture;
+
+    print(pHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var physicalAddressHintFuture;
+  var oldHintFuture;
+  String pHint = '';
+  String oHint = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text(
-          "Change your password",
-          style: Theme.of(context).textTheme.titleMedium,
+        title: FutureBuilder<String>(
+          future: Translations.translatedText(
+              "Change your password", GlobalStrings.getGlobalString()),
+          //  translatedText("Log Out", 'en', dropdownValue),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Text(
+                snapshot.data ?? 'Default Text',
+                style: Theme.of(context).textTheme.titleMedium,
+              );
+            } else {
+              return Text(
+                'Loading...',
+                style: Theme.of(context).textTheme.titleMedium,
+              ); // Or any loading indicator
+            }
+          },
         ),
       ),
       body: BlocProvider(
@@ -61,61 +109,67 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                      obscureText: true,
-                      keyboardType: TextInputType.visiblePassword,
-                      validator: (v) {
-                        if (v?.isEmpty == true) {
-                          return "Old password is required";
-                        }
-                        return null;
-                      },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      onChanged: (value) {
-                        setState(() {
-                          _oldPassword = value;
-                        });
-                      },
-                      decoration: buildInputDecoration("Old Password"),
-                    ),
+                    loading
+                        ? const Text("Loading...")
+                        : TextFormField(
+                            obscureText: true,
+                            keyboardType: TextInputType.visiblePassword,
+                            validator: (v) {
+                              if (v?.isEmpty == true) {
+                                return "Old password is required";
+                              }
+                              return null;
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              setState(() {
+                                _oldPassword = value;
+                              });
+                            },
+                            decoration: buildInputDecoration(oHint),
+                          ),
                     const SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      obscureText: _togglePassText,
-                      validator: (v) {
-                        if (v?.isEmpty == true) {
-                          return "New Password is required";
-                        }
-                        if (v!.length < 6) {
-                          return "Password should be at least 6 characters";
-                        }
+                    loading
+                        ? const Text("Loading...")
+                        : TextFormField(
+                            obscureText: _togglePassText,
+                            validator: (v) {
+                              if (v?.isEmpty == true) {
+                                return "New Password is required";
+                              }
+                              if (v!.length < 6) {
+                                return "Password should be at least 6 characters";
+                              }
 
-                        if (!v.isStrongPass()) {
-                          return "Password must have at least one special character, a number & a capital letter";
-                        }
-                        return null;
-                      },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      onChanged: (value) {
-                        setState(() {
-                          _newPassword = value;
-                        });
-                      },
-                      decoration: buildInputDecoration("New Password").copyWith(
-                          suffixIcon: GestureDetector(
-                        onTap: () {
-                          _togglePassText = !_togglePassText;
-                          setState(() {});
-                        },
-                        child: Icon(
-                          _togglePassText
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Colors.grey,
-                        ),
-                      )),
-                    ),
+                              if (!v.isStrongPass()) {
+                                return "Password must have at least one special character, a number & a capital letter";
+                              }
+                              return null;
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              setState(() {
+                                _newPassword = value;
+                              });
+                            },
+                            decoration: buildInputDecoration(pHint).copyWith(
+                                suffixIcon: GestureDetector(
+                              onTap: () {
+                                _togglePassText = !_togglePassText;
+                                setState(() {});
+                              },
+                              child: Icon(
+                                _togglePassText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.grey,
+                              ),
+                            )),
+                          ),
                     const SizedBox(
                       height: 20,
                     ),

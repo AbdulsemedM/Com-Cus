@@ -1,4 +1,6 @@
 import 'package:commercepal/features/addresses/presentation/edit_address_page.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,11 +57,25 @@ class AddressItemWidget extends StatelessWidget {
                       .then((value) =>
                           {context.read<AddressCubit>().fetchAddresses()});
                 },
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "Edit",
-                    style: TextStyle(color: AppColors.colorPrimary),
+                  child: FutureBuilder<String>(
+                    future: Translations.translatedText(
+                        "Edit", GlobalStrings.getGlobalString()),
+                    //  translatedText("Log Out", 'en', dropdownValue),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return Text(
+                          snapshot.data ?? 'Default Text',
+                          style: const TextStyle(color: AppColors.colorPrimary),
+                        );
+                      } else {
+                        return const Text(
+                          'Loading...',
+                          style: TextStyle(color: AppColors.colorPrimary),
+                        ); // Or any loading indicator
+                      }
+                    },
                   ),
                 ),
               ),
@@ -91,9 +107,26 @@ class AddressItemWidget extends StatelessWidget {
                                   strokeWidth: 1,
                                 ),
                               )
-                            : const Text(
-                                "Delete",
-                                style: TextStyle(color: AppColors.colorPrimary),
+                            : FutureBuilder<String>(
+                                future: Translations.translatedText(
+                                    "Delete", GlobalStrings.getGlobalString()),
+                                //  translatedText("Log Out", 'en', dropdownValue),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    return Text(
+                                      snapshot.data ?? 'Default Text',
+                                      style: const TextStyle(
+                                          color: AppColors.colorPrimary),
+                                    );
+                                  } else {
+                                    return const Text(
+                                      'Loading...',
+                                      style: TextStyle(
+                                          color: AppColors.colorPrimary),
+                                    ); // Or any loading indicator
+                                  }
+                                },
                               ),
                       ),
                     );

@@ -4,6 +4,8 @@ import 'package:commercepal/app/utils/assets.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/features/cart/presentation/cart_page.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_state.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +48,45 @@ class _DashboardPageState extends State<DashboardPage> {
     // use this to refresh the carts state
     context.read<CartCoreCubit>().getItems();
     super.initState();
+    fetchHints();
+  }
+
+  var physicalAddressHintFuture;
+  var subcityHint;
+  var addAddHint;
+  var userHint;
+  String pHint = '';
+  String cHint = '';
+  String aHint = '';
+  String uHint = '';
+  var loading = false;
+  @override
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture =
+        Translations.translatedText("Home", GlobalStrings.getGlobalString());
+    subcityHint = Translations.translatedText(
+        "Category", GlobalStrings.getGlobalString());
+    addAddHint =
+        Translations.translatedText("Cart", GlobalStrings.getGlobalString());
+    userHint =
+        Translations.translatedText("User", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    cHint = await subcityHint;
+    aHint = await addAddHint;
+    uHint = await userHint;
+    print("herrerererere");
+    print(pHint);
+    print(cHint);
+
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -104,7 +145,7 @@ class _DashboardPageState extends State<DashboardPage> {
               items: [
                 if (!_hasUserSwitchedToBusiness)
                   BottomNavigationBarItem(
-                      label: "Home",
+                      label: pHint,
                       icon: SvgPicture.asset(
                         Assets.home,
                         color: _selectedTab == 0
@@ -112,20 +153,22 @@ class _DashboardPageState extends State<DashboardPage> {
                             : AppColors.secondaryTextColor,
                       )),
                 BottomNavigationBarItem(
-                    label: "Categories",
+                    label: cHint,
                     icon: SvgPicture.asset(
                       Assets.category,
-                      color: _selectedTab == (_hasUserSwitchedToBusiness ? 0 : 1)
-                          ? AppColors.colorPrimary
-                          : AppColors.secondaryTextColor,
+                      color:
+                          _selectedTab == (_hasUserSwitchedToBusiness ? 0 : 1)
+                              ? AppColors.colorPrimary
+                              : AppColors.secondaryTextColor,
                     )),
                 BottomNavigationBarItem(
-                    label: "Cart",
+                    label: aHint,
                     icon: Stack(
                       children: [
                         SvgPicture.asset(
                           Assets.cart,
-                          color: _selectedTab == (_hasUserSwitchedToBusiness ? 1 : 2)
+                          color: _selectedTab ==
+                                  (_hasUserSwitchedToBusiness ? 1 : 2)
                               ? AppColors.colorPrimary
                               : AppColors.secondaryTextColor,
                         ),
@@ -154,12 +197,13 @@ class _DashboardPageState extends State<DashboardPage> {
                       ],
                     )),
                 BottomNavigationBarItem(
-                    label: "User",
+                    label: uHint,
                     icon: SvgPicture.asset(
                       Assets.user,
-                      color: _selectedTab == (_hasUserSwitchedToBusiness ? 2 : 3)
-                          ? AppColors.colorPrimary
-                          : AppColors.secondaryTextColor,
+                      color:
+                          _selectedTab == (_hasUserSwitchedToBusiness ? 2 : 3)
+                              ? AppColors.colorPrimary
+                              : AppColors.secondaryTextColor,
                     )),
               ],
               currentIndex: _selectedTab,

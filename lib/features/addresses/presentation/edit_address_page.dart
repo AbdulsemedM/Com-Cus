@@ -2,6 +2,8 @@ import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/addresses-core/data/dto/addresses_dto.dart';
 import 'package:commercepal/features/addresses/presentation/bloc/address_state.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,6 +24,40 @@ class EditAddressPage extends StatefulWidget {
 
 class _EditAddressPageState extends State<EditAddressPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var loading = false;
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Physical address", GlobalStrings.getGlobalString());
+    subcityHint = Translations.translatedText(
+        "Sub city", GlobalStrings.getGlobalString());
+    addAddHint = Translations.translatedText(
+        "Add Address", GlobalStrings.getGlobalString());
+    EditAddress = Translations.translatedText(
+        "Edit Address", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    cHint = await subcityHint;
+    aHint = await addAddHint;
+    eAddr = await EditAddress;
+    print("herrerererere");
+    print(pHint);
+    print(cHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
 
   String? _subCity;
   String? _physicalAddress;
@@ -29,6 +65,14 @@ class _EditAddressPageState extends State<EditAddressPage> {
   String? _countryName;
   num? _cityId;
   num? _countryId;
+  var physicalAddressHintFuture;
+  var subcityHint;
+  var addAddHint;
+  var EditAddress;
+  String pHint = '';
+  String cHint = '';
+  String aHint = '';
+  String eAddr = '';
 
   AddressItem? _addressItem;
 
@@ -52,10 +96,12 @@ class _EditAddressPageState extends State<EditAddressPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: false,
-        title: Text(
-          "Edit address",
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        title: loading
+            ? const Text("Loading...")
+            : Text(
+                eAddr,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
       ),
       body: BlocProvider(
         create: (context) => getIt<AddressCubit>(),
@@ -98,41 +144,47 @@ class _EditAddressPageState extends State<EditAddressPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                        initialValue: _addressItem?.subCity,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (v) {
-                          if (v?.isEmpty == true) {
-                            return "Sub city is required";
-                          }
-                          return null;
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          setState(() {
-                            _subCity = value;
-                          });
-                        },
-                        decoration: buildInputDecoration("Sub city")),
+                    loading
+                        ? Container()
+                        : TextFormField(
+                            initialValue: _addressItem?.subCity,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (v) {
+                              if (v?.isEmpty == true) {
+                                return "Sub city is required";
+                              }
+                              return null;
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              setState(() {
+                                _subCity = value;
+                              });
+                            },
+                            decoration: buildInputDecoration(cHint)),
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                        initialValue: _addressItem?.physicalAddress,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (v) {
-                          if (v?.isEmpty == true) {
-                            return "Physical address is required";
-                          }
-                          return null;
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          setState(() {
-                            _physicalAddress = value;
-                          });
-                        },
-                        decoration: buildInputDecoration("Physical address")),
+                    loading
+                        ? Container()
+                        : TextFormField(
+                            initialValue: _addressItem?.physicalAddress,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (v) {
+                              if (v?.isEmpty == true) {
+                                return "Physical address is required";
+                              }
+                              return null;
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              setState(() {
+                                _physicalAddress = value;
+                              });
+                            },
+                            decoration: buildInputDecoration(pHint)),
                     const SizedBox(
                       height: 20,
                     ),
