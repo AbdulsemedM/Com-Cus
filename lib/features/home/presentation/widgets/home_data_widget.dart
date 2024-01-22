@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/sub_categories/presentation/sub_categories_page.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -30,6 +34,69 @@ class HomePageDataWidget extends StatefulWidget {
 }
 
 class _HomePageDataWidgetState extends State<HomePageDataWidget> {
+  var loading = false;
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Commercepal", GlobalStrings.getGlobalString());
+    subcityHint = Translations.translatedText(
+        "Originals", GlobalStrings.getGlobalString());
+    addAddHint =
+        Translations.translatedText("Flash", GlobalStrings.getGlobalString());
+    saleHint =
+        Translations.translatedText("Sale", GlobalStrings.getGlobalString());
+    topHint =
+        Translations.translatedText("Top", GlobalStrings.getGlobalString());
+    dealHint =
+        Translations.translatedText("Deals", GlobalStrings.getGlobalString());
+    specialHint =
+        Translations.translatedText("Special", GlobalStrings.getGlobalString());
+    orderHint =
+        Translations.translatedText("Order", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    cHint = await subcityHint;
+    aHint = await addAddHint;
+    bHint = await saleHint;
+    dHint = await topHint;
+    eHint = await dealHint;
+    fHint = await specialHint;
+    gHint = await orderHint;
+    print("herrerererere");
+    print(pHint);
+    print(cHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var physicalAddressHintFuture;
+  var subcityHint;
+  var addAddHint;
+  var saleHint;
+  var topHint;
+  var dealHint;
+  var specialHint;
+  var orderHint;
+  String pHint = '';
+  String cHint = '';
+  String aHint = '';
+  String bHint = '';
+  String dHint = '';
+  String eHint = '';
+  String fHint = '';
+  String gHint = '';
   final CarouselController _controller = CarouselController();
   int _current = 0;
 
@@ -208,6 +275,7 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
   Widget _buildMostPopular() {
     final mostPopular = widget.schema.schemaSections
         ?.where((element) => element.key == "most_popular");
+
     return mostPopular?.isNotEmpty == true
         ? Column(
             children: [
@@ -298,24 +366,24 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const TopCategoryWidget(
-              title: "CommercePal",
-              subTitle: "Originals",
+            TopCategoryWidget(
+              title: loading ? "Loading..." : pHint,
+              subTitle: loading ? "Loading..." : cHint,
               imagePng: Assets.commercepalOriginPng,
             ),
-            const TopCategoryWidget(
-              title: "Flash",
-              subTitle: "Sale",
+            TopCategoryWidget(
+              title: loading ? "Loading..." : aHint,
+              subTitle: loading ? "Loading..." : bHint,
               imagePng: Assets.flashSale,
             ),
-            const TopCategoryWidget(
-              title: "Top",
-              subTitle: "Deals",
+            TopCategoryWidget(
+              title: loading ? "Loading..." : dHint,
+              subTitle: loading ? "Loading..." : eHint,
               imagePng: Assets.topDeals,
             ),
             TopCategoryWidget(
-              title: "Special",
-              subTitle: "Order",
+              title: loading ? "Loading..." : fHint,
+              subTitle: loading ? "Loading..." : gHint,
               imagePng: Assets.specialOrder,
               onClick: () {
                 Navigator.pushNamed(context, ListSpecialOrdersPage.routeName);

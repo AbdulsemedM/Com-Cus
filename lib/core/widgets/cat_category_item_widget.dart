@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,7 +24,7 @@ class CatCategoryItemWidget extends StatelessWidget {
           height: 60,
           padding: const EdgeInsets.all(12),
           decoration:
-          const BoxDecoration(color: AppColors.bg1, shape: BoxShape.circle),
+              const BoxDecoration(color: AppColors.bg1, shape: BoxShape.circle),
           child: CachedNetworkImage(
             placeholder: (_, __) => Container(
               color: AppColors.bg1,
@@ -37,14 +39,30 @@ class CatCategoryItemWidget extends StatelessWidget {
           height: 5,
         ),
         Expanded(
-          child: Text(title,
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  ?.copyWith(fontSize: 12.sp)),
+          child: FutureBuilder<String>(
+            future: Translations.translatedText(
+                title, GlobalStrings.getGlobalString()),
+            //  translatedText("Log Out", 'en', dropdownValue),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Text(snapshot.data ?? 'Default Text',
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        ?.copyWith(fontSize: 12.sp));
+              } else {
+                return Text('Loading...',
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                        fontSize: 12.sp)); // Or any loading indicator
+              }
+            },
+          ),
         ),
         const SizedBox(
           height: 10,

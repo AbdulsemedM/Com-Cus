@@ -1,6 +1,8 @@
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/validate_phone_email/presentation/blocs/validate_cubit.dart';
 import 'package:commercepal/features/validate_phone_email/presentation/blocs/validate_state.dart';
 import 'package:flutter/material.dart';
@@ -64,9 +66,25 @@ class _ValidatePhoneEmailPageState extends State<ValidatePhoneEmailPage>
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text(
-          "Validate your ${_email != null ? 'email' : 'phone number'}",
-          style: Theme.of(context).textTheme.titleMedium,
+        title: FutureBuilder<String>(
+          future: Translations.translatedText(
+              "Validate your ${_email != null ? 'email' : 'phone number'}",
+              GlobalStrings.getGlobalString()),
+          //  translatedText("Log Out", 'en', dropdownValue),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Text(
+                snapshot.data ?? 'Default Text',
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.right,
+              );
+            } else {
+              return Text(
+                'Loading...',
+                style: Theme.of(context).textTheme.titleMedium,
+              ); // Or any loading indicator
+            }
+          },
         ),
       ),
       body: BlocProvider(

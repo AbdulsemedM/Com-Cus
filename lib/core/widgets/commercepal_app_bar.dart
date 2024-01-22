@@ -1,3 +1,5 @@
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -6,12 +8,10 @@ import '../../app/utils/assets.dart';
 import '../cart-core/cart_widget.dart';
 
 AppBar buildCommerceAppBar(BuildContext context,
-    [String? title, String? subTitle, bool displayCart = true]) =>
+        [String? title, String? subTitle, bool displayCart = true]) =>
     AppBar(
       centerTitle: false,
-      actions:   [
-       if(displayCart) CartWidget()
-      ],
+      actions: [if (displayCart) CartWidget()],
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -20,24 +20,48 @@ AppBar buildCommerceAppBar(BuildContext context,
               height: 10,
             ),
           if (title != null)
-            Text(
-              title!,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .titleMedium,
+            FutureBuilder<String>(
+              future: Translations.translatedText(
+                  title!, GlobalStrings.getGlobalString()),
+              //  translatedText("Log Out", 'en', dropdownValue),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Text(
+                    snapshot.data ?? 'Default Text',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  );
+                } else {
+                  return Text(
+                    'Loading...',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ); // Or any loading indicator
+                }
+              },
             ),
           if (subTitle != null)
             const SizedBox(
               height: 4,
             ),
           if (subTitle != null)
-            Text(subTitle,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(color: AppColors.secondaryTextColor)),
+            FutureBuilder<String>(
+              future: Translations.translatedText(
+                  subTitle!, GlobalStrings.getGlobalString()),
+              //  translatedText("Log Out", 'en', dropdownValue),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Text(snapshot.data ?? 'Default Text',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(color: AppColors.secondaryTextColor));
+                } else {
+                  return Text('Loading...',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: AppColors
+                              .secondaryTextColor)); // Or any loading indicator
+                }
+              },
+            ),
         ],
       ),
     );

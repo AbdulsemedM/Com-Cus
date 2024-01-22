@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/core/cart-core/domain/cart_item.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -102,7 +104,9 @@ class ProductItemWidget extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
-                            product.offerPrice.toString().formatCurrency(product.currency),
+                            product.offerPrice
+                                .toString()
+                                .formatCurrency(product.currency),
                             style: Theme.of(context)
                                 .textTheme
                                 .headline2
@@ -115,7 +119,8 @@ class ProductItemWidget extends StatelessWidget {
                         if (product.isDiscounted.toString() == "1")
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
-                            child: Text("${product.currency} ${product.offerPrice}",
+                            child: Text(
+                                "${product.currency} ${product.offerPrice}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline2
@@ -133,26 +138,45 @@ class ProductItemWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           vertical: 4.0, horizontal: 9),
                       child: ElevatedButton(
-                          onPressed: () {
-                            if (product.subProducts != null &&
-                                product.subProducts! > 1) {
-                              onItemClick?.call(product);
+                        onPressed: () {
+                          if (product.subProducts != null &&
+                              product.subProducts! > 1) {
+                            onItemClick?.call(product);
+                          } else {
+                            context
+                                .read<CartCoreCubit>()
+                                .addCartItem(product.toCartItem());
+                          }
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => AppColors.colorPrimary)),
+                        child: FutureBuilder<String>(
+                          future: Translations.translatedText(
+                              "Add to cart", GlobalStrings.getGlobalString()),
+                          //  translatedText("Log Out", 'en', dropdownValue),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return Text(
+                                snapshot.data ?? 'Default Text',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: Colors.white),
+                              );
                             } else {
-                              context
-                                  .read<CartCoreCubit>()
-                                  .addCartItem(product.toCartItem());
+                              return Text(
+                                'Loading...',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: Colors.white),
+                              ); // Or any loading indicator
                             }
                           },
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateColor.resolveWith(
-                                  (states) => AppColors.colorPrimary)),
-                          child: Text(
-                            "Add to cart",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(color: Colors.white),
-                          )),
+                        ),
+                      ),
                     ),
                   if (product.quantity! == 0)
                     Container(

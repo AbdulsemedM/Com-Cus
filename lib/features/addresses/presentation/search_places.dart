@@ -5,6 +5,8 @@ import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/addresses/presentation/bloc/address_cubit.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geocoding/geocoding.dart';
@@ -50,7 +52,24 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
     return Scaffold(
       key: homeScaffoldKey,
       appBar: AppBar(
-        title: const Text("Google Search Places"),
+        title: FutureBuilder<String>(
+          future: Translations.translatedText(
+              "Google search places", GlobalStrings.getGlobalString()),
+          //  translatedText("Log Out", 'en', dropdownValue),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Text(
+                snapshot.data ?? 'Default Text',
+                style: const TextStyle(color: AppColors.colorPrimary),
+              );
+            } else {
+              return const Text(
+                'Loading...',
+                style: TextStyle(color: AppColors.colorPrimary),
+              ); // Or any loading indicator
+            }
+          },
+        ),
       ),
       body: SafeArea(
         child: Stack(
@@ -91,14 +110,47 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                             Navigator.pop(context);
                           }
                         },
-                        child: const Text("Add Location")),
+                        child: FutureBuilder<String>(
+                          future: Translations.translatedText(
+                              "Add Location", GlobalStrings.getGlobalString()),
+                          //  translatedText("Log Out", 'en', dropdownValue),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return Text(
+                                snapshot.data ?? 'Default Text',
+                              );
+                            } else {
+                              return const Text(
+                                'Loading...',
+                              ); // Or any loading indicator
+                            }
+                          },
+                        ),
+                      ),
               ],
             ),
             ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.colorPrimaryDark),
-                onPressed: _handlePressButton,
-                child: const Text("Search Places")),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.colorPrimaryDark),
+              onPressed: _handlePressButton,
+              child: FutureBuilder<String>(
+                future: Translations.translatedText(
+                    "Search places", GlobalStrings.getGlobalString()),
+                //  translatedText("Log Out", 'en', dropdownValue),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return Text(
+                      snapshot.data ?? 'Default Text',
+                    );
+                  } else {
+                    return const Text(
+                      'Loading...',
+                    ); // Or any loading indicator
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),

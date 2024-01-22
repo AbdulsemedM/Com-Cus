@@ -13,6 +13,8 @@ import 'package:commercepal/features/dashboard/widgets/home_search_field_widget.
 import 'package:commercepal/features/products/domain/product.dart';
 import 'package:commercepal/features/selected_product/presentation/bloc/selected_product_cubit.dart';
 import 'package:commercepal/features/selected_product/presentation/bloc/selected_product_state.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -228,9 +230,27 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: _buildTitle("Product Variations"),
                         ),
-                      Text(widget.selectedProductDetails.features.keys
-                              .elementAt(index) ??
-                          ""),
+                      FutureBuilder<String>(
+                        future: Translations.translatedText(
+                            widget.selectedProductDetails.features.keys
+                                    .elementAt(index) ??
+                                "",
+                            GlobalStrings.getGlobalString()),
+                        //  translatedText("Log Out", 'en', dropdownValue),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return Text(
+                              snapshot.data ?? 'Default Text',
+                              textAlign: TextAlign.right,
+                            );
+                          } else {
+                            return Text(
+                              'Loading...',
+                            ); // Or any loading indicator
+                          }
+                        },
+                      ),
                       const SizedBox(
                         height: 6,
                       ),
@@ -430,7 +450,8 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                 return widget.selectedProductDetails.quantity! > 0
                     ? ProductPriceWidget(
                         displayVoucher: false,
-                        totalPrice: "ETB ${widget.selectedProductDetails.priceBasedOnSubProducts}",
+                        totalPrice:
+                            "ETB ${widget.selectedProductDetails.priceBasedOnSubProducts}",
                         // widget.selectedProductDetails.priceBasedOnSubProducts.formatCurrency(widget.selectedProductDetails.currency),
                         subTitle:
                             "Delivery Estimate ${widget.selectedProductDetails.deliveryDate}",
