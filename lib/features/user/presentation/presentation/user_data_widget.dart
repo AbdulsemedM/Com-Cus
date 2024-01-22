@@ -18,7 +18,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../app/di/injector.dart';
 import '../../../../core/models/user_model.dart';
-import '../../../../core/translator/translator.dart';
 import '../../../dashboard/bloc/dashboard_cubit.dart';
 import '../../../special_order/presentantion/list_special_orders_page.dart';
 import '../../../user_orders/presentation/user_orders_page.dart';
@@ -77,7 +76,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Text(
-                    snapshot.data ?? 'Default Text',
+                    snapshot.data ?? 'Log Out',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppColors.colorPrimary, fontSize: 14.sp),
                     textAlign: TextAlign.right,
@@ -111,7 +110,8 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Text(
-                    snapshot.data ?? 'Default Text',
+                    snapshot.data ??
+                        '${widget.userModel.details?.firstName?[0]}${widget.userModel.details?.lastName?[0]}',
                     style: TextStyle(color: Colors.white, fontSize: 30.sp),
                     textAlign: TextAlign.right,
                   );
@@ -356,7 +356,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return Text(
-                        snapshot.data ?? 'Default Text',
+                        snapshot.data ?? 'Personal Details',
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium
@@ -487,7 +487,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   final List locale = [
     {'name': 'English', 'locale': "en"},
     {'name': 'አማርኛ', 'locale': "am"},
-    {'name': 'Somali', 'locale': 'tr'},
+    {'name': 'Somali', 'locale': 'so'},
     {'name': 'Afaan Oromoo', 'locale': 'or'},
     {'name': 'ٱلْعَرَبِيَّة', 'locale': 'ar'},
   ];
@@ -498,7 +498,22 @@ class _UserDataWidgetState extends State<UserDataWidget> {
         builder: (builder) {
           return AlertDialog(
             backgroundColor: Colors.white,
-            title: Text('Choose Language'),
+            title: FutureBuilder<String>(
+              future: Translations.translatedText(
+                  "Choose Language", GlobalStrings.getGlobalString()),
+              //  translatedText("Log Out", 'en', dropdownValue),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Text(
+                    snapshot.data ?? 'Default Text',
+                  );
+                } else {
+                  return Text(
+                    'Loading...',
+                  ); // Or any loading indicator
+                }
+              },
+            ),
             content: Container(
               width: double.maxFinite,
               child: ListView.separated(
@@ -520,6 +535,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                               await SharedPreferences.getInstance();
                           await prefs.setString("lang", selectedLocale);
                           // await prefs.setBool('repeat', true);
+                          // ignore: use_build_context_synchronously
                           Navigator.pushNamedAndRemoveUntil(context,
                               DashboardPage.routeName, (route) => false);
                         },

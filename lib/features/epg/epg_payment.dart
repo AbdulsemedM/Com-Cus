@@ -7,11 +7,14 @@ import 'package:commercepal/app/utils/app_colors.dart';
 // import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 // import 'package:commercepal/features/otp_payments/data/otp_payment_repo_imp.dart';
 // import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import '../../../core/cart-core/dao/cart_dao.dart';
 
 class EPGPayment extends StatefulWidget {
@@ -24,6 +27,42 @@ class EPGPayment extends StatefulWidget {
 }
 
 class _EPGPaymentState extends State<EPGPayment> {
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Enter your phone number below", GlobalStrings.getGlobalString());
+    // subcityHint = Translations.translatedText(
+    //     "Sub city", GlobalStrings.getGlobalString());
+    // addAddHint = Translations.translatedText(
+    //     "Add Address", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    // cHint = await subcityHint;
+    // aHint = await addAddHint;
+    // print("herrerererere");
+    // print(pHint);
+    // print(cHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var physicalAddressHintFuture;
+  // var subcityHint;
+  // var addAddHint;
+  String pHint = '';
+  // String cHint = '';
+  // String aHint = '';
   final GlobalKey<FormState> myKey = GlobalKey();
   String? pNumber;
   var loading = false;
@@ -48,11 +87,11 @@ class _EPGPaymentState extends State<EPGPayment> {
                       const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
                   child: Column(
                     children: [
-                      const Row(
+                      Row(
                         children: [
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text("Phone Number"),
+                            child: loading ? Text("Loading...") : Text(pHint),
                           ),
                         ],
                       ),
@@ -112,12 +151,30 @@ class _EPGPaymentState extends State<EPGPayment> {
                                           .replaceFirst(RegExp(r'^\+'), '');
                                       print(pNumber);
                                     }
+                                    var done = await sendPassword();
+                                    if (done) {}
                                   }
                                 },
-                                child: const Text("Submit"),
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         AppColors.colorPrimaryDark),
+                                child: FutureBuilder<String>(
+                                  future: Translations.translatedText("Submit",
+                                      GlobalStrings.getGlobalString()),
+                                  //  translatedText("Log Out", 'en', dropdownValue),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.done) {
+                                      return Text(
+                                        snapshot.data ?? 'Default Text',
+                                      );
+                                    } else {
+                                      return Text(
+                                        'Loading...',
+                                      ); // Or any loading indicator
+                                    }
+                                  },
+                                ),
                               ),
                             )
                     ],
@@ -169,6 +226,7 @@ class _EPGPaymentState extends State<EPGPayment> {
           setState(() {
             loading = false;
           });
+          launchUrl(data['PaymentUrl']);
           return true;
           // Handle the case when statusCode is '000'
         } else {
@@ -207,6 +265,20 @@ class _EPGPaymentState extends State<EPGPayment> {
       return currentSelection == "YES";
     } catch (e) {
       rethrow;
+    }
+  }
+
+  void launchUrl(String myUrl) async {
+    try {
+      String url = myUrl;
+
+      // if (await canLaunch(url)) {
+      await launch(url);
+      // } else {
+      // print("Could not launch $url");
+      // }
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

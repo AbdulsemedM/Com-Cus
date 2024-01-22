@@ -33,6 +33,7 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
   String? _cashTypeName;
   bool _validatePayment = false;
   List<String> _instructions = [];
+  List<String> _paymentInstructionsT = [];
 
   @override
   void didChangeDependencies() {
@@ -44,6 +45,7 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
     if (args['payment_instruction'] != null) {
       _instructions =
           (args['payment_instruction'] as String).convertStringToList('data');
+      instr(_instructions);
       setState(() {});
     }
   }
@@ -55,6 +57,22 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
     fetchHints();
   }
 
+  void instr(List<String> trr) async {
+    print("funcallled");
+    for (var e in trr) {
+      addAddHint =
+          await Translations.translatedText(e, GlobalStrings.getGlobalString());
+      print("funtranslated");
+      aHint = await addAddHint;
+      print(aHint);
+      setState(() {
+        _paymentInstructionsT.add(addAddHint);
+      });
+    }
+    // print(_paymentInstructionsT);
+    // _paymentInstructionsT.add(aHint);
+  }
+
   void fetchHints() async {
     setState(() {
       loading = true;
@@ -63,8 +81,19 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
     physicalAddressHintFuture = Translations.translatedText(
         "Phone Number", GlobalStrings.getGlobalString());
 
+    subcityHint = Translations.translatedText(
+        "Payment Instructions", GlobalStrings.getGlobalString());
+    enterHint = Translations.translatedText(
+        "Enter your phone number below", GlobalStrings.getGlobalString());
+    validateHint = Translations.translatedText(
+        "Finished making your hello cash payment! Press below button to complete your payment",
+        GlobalStrings.getGlobalString());
+
     // Use await to get the actual string value from the futures
     pHint = await physicalAddressHintFuture;
+    cHint = await subcityHint;
+    bHint = await enterHint;
+    dHint = await validateHint;
 
     print(pHint);
 
@@ -74,7 +103,15 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
   }
 
   var physicalAddressHintFuture;
+  var subcityHint;
+  var addAddHint;
+  var enterHint;
+  var validateHint;
   String pHint = '';
+  String cHint = '';
+  String aHint = '';
+  String bHint = '';
+  String dHint = '';
 
   @override
   Widget build(BuildContext context) {
@@ -114,24 +151,7 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
                     const SizedBox(
                       height: 10,
                     ),
-                    FutureBuilder<String>(
-                      future: Translations.translatedText(
-                          'Enter your phone number below',
-                          GlobalStrings.getGlobalString()),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Text(
-                              "Loading..."); // Loading indicator while translating
-                        } else if (snapshot.hasError) {
-                          return Text('Enter your phone number below');
-                        } else {
-                          return Text(
-                            snapshot.data ?? 'Enter your phone number below',
-                          );
-                        }
-                      },
-                    ),
+                    Text(bHint),
                     const SizedBox(
                       height: 10,
                     ),
@@ -189,48 +209,16 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FutureBuilder<String>(
-              future: Translations.translatedText(
-                  'Payment Instruction', GlobalStrings.getGlobalString()),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text(
-                      "Loading..."); // Loading indicator while translating
-                } else if (snapshot.hasError) {
-                  return Text('Payment Instruction');
-                } else {
-                  return Text(
-                    snapshot.data ?? 'Payment Instruction',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  );
-                }
-              },
-            ),
+            Text(cHint),
             const SizedBox(
               height: 10,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: _instructions
+              children: _paymentInstructionsT
                   .map((e) => Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: FutureBuilder<String>(
-                          future: Translations.translatedText(
-                              '- $e', GlobalStrings.getGlobalString()),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Text(
-                                  "Loading..."); // Loading indicator while translating
-                            } else if (snapshot.hasError) {
-                              return Text('- $e');
-                            } else {
-                              return Text(
-                                snapshot.data ?? '- $e',
-                              );
-                            }
-                          },
-                        ),
+                        child: Text("- $e"),
                       ))
                   .toList(),
             )
@@ -253,8 +241,7 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
         const SizedBox(
           height: 10,
         ),
-        const Text(
-            'Finished making your hello cash payment! Press below button to complete your payment'),
+        Text(dHint),
         const SizedBox(
           height: 10,
         ),

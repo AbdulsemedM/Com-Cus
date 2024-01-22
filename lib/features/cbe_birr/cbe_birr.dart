@@ -27,6 +27,43 @@ class CBEBirrPayment extends StatefulWidget {
 }
 
 class _CBEBirrPaymentState extends State<CBEBirrPayment> {
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Enter your phone number below", GlobalStrings.getGlobalString());
+    // subcityHint = Translations.translatedText(
+    //     "Sub city", GlobalStrings.getGlobalString());
+    // addAddHint = Translations.translatedText(
+    //     "Add Address", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    // cHint = await subcityHint;
+    // aHint = await addAddHint;
+    // print("herrerererere");
+    // print(pHint);
+    // print(cHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var physicalAddressHintFuture;
+  // var subcityHint;
+  // var addAddHint;
+  String pHint = '';
+  // String cHint = '';
+  // String aHint = '';
   final GlobalKey<FormState> myKey = GlobalKey();
   String? pNumber;
   var loading = false;
@@ -54,27 +91,9 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                       Row(
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.0),
-                            child: FutureBuilder<String>(
-                              future: Translations.translatedText(
-                                  'Enter your phone number below',
-                                  GlobalStrings.getGlobalString()),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Text(
-                                      "Loading..."); // Loading indicator while translating
-                                } else if (snapshot.hasError) {
-                                  return Text('Enter your phone number below');
-                                } else {
-                                  return Text(
-                                    snapshot.data ??
-                                        'Enter your phone number below',
-                                  );
-                                }
-                              },
-                            ),
-                          ),
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              child:
+                                  loading ? Text("Loading...") : Text(pHint)),
                         ],
                       ),
                       TextFormField(

@@ -31,6 +31,57 @@ class _SahayPayPageState extends State<SahayPayPage> {
   String? _displayConfirmation;
   bool _displayOtp = false;
   List<String> _paymentInstructions = [];
+  List<String> _paymentInstructionsT = [];
+
+  void instr(List<String> trr) async {
+    print("funcallled");
+    for (var e in trr) {
+      addAddHint =
+          await Translations.translatedText(e, GlobalStrings.getGlobalString());
+      print("funtranslated");
+      aHint = await addAddHint;
+      print(aHint);
+      setState(() {
+        _paymentInstructionsT.add(addAddHint);
+      });
+    }
+    // print(_paymentInstructionsT);
+    // _paymentInstructionsT.add(aHint);
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Phone Number", GlobalStrings.getGlobalString());
+    subcityHint = Translations.translatedText(
+        "Payment Instructions", GlobalStrings.getGlobalString());
+    enterHint = Translations.translatedText(
+        "Enter your phone number below", GlobalStrings.getGlobalString());
+    nameHint = Translations.translatedText(
+        "User name", GlobalStrings.getGlobalString());
+    secondHint = Translations.translatedText(
+        "Enter OTP sent to the above phone number",
+        GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    cHint = await subcityHint;
+    bHint = await enterHint;
+    dHint = await nameHint;
+    eHint = await secondHint;
+    // aHint =  _paymentInstructionsT;
+    print("herrerererere");
+    print(pHint);
+    print(cHint);
+    print(aHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -39,6 +90,8 @@ class _SahayPayPageState extends State<SahayPayPage> {
     if (args['payment_instruction'] != null) {
       _paymentInstructions =
           (args['payment_instruction'] as String).convertStringToList('data');
+      instr(_paymentInstructions);
+
       setState(() {});
     }
   }
@@ -50,26 +103,18 @@ class _SahayPayPageState extends State<SahayPayPage> {
     fetchHints();
   }
 
-  void fetchHints() async {
-    setState(() {
-      loading = true;
-    });
-
-    physicalAddressHintFuture = Translations.translatedText(
-        "Phone Number", GlobalStrings.getGlobalString());
-
-    // Use await to get the actual string value from the futures
-    pHint = await physicalAddressHintFuture;
-
-    print(pHint);
-
-    setState(() {
-      loading = false;
-    });
-  }
-
   var physicalAddressHintFuture;
+  var subcityHint;
+  var addAddHint;
+  var enterHint;
+  var nameHint;
+  var secondHint;
   String pHint = '';
+  String cHint = '';
+  String aHint = '';
+  String bHint = '';
+  String dHint = '';
+  String eHint = '';
 
   @override
   Widget build(BuildContext context) {
@@ -112,24 +157,7 @@ class _SahayPayPageState extends State<SahayPayPage> {
                   children: [
                     _buildPaymentInstructions(),
                     if (_paymentInstructions.isNotEmpty) Divider(),
-                    FutureBuilder<String>(
-                      future: Translations.translatedText(
-                          'Enter your phone number below',
-                          GlobalStrings.getGlobalString()),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Text(
-                              "Loading..."); // Loading indicator while translating
-                        } else if (snapshot.hasError) {
-                          return Text('Enter your phone number below');
-                        } else {
-                          return Text(
-                            snapshot.data ?? 'Enter your phone number below',
-                          );
-                        }
-                      },
-                    ),
+                    Text(bHint),
                     const SizedBox(
                       height: 10,
                     ),
@@ -190,24 +218,12 @@ class _SahayPayPageState extends State<SahayPayPage> {
         const SizedBox(
           height: 5,
         ),
-        FutureBuilder<String>(
-          future: Translations.translatedText(
-              'User name', GlobalStrings.getGlobalString()),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Loading..."); // Loading indicator while translating
-            } else if (snapshot.hasError) {
-              return Text('User name');
-            } else {
-              return Text(
-                snapshot.data ?? 'User name',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(color: AppColors.secondaryTextColor),
-              );
-            }
-          },
+        Text(
+          dHint,
+          style: Theme.of(context)
+              .textTheme
+              .titleSmall
+              ?.copyWith(color: AppColors.secondaryTextColor),
         ),
         const SizedBox(
           height: 5,
@@ -242,25 +258,12 @@ class _SahayPayPageState extends State<SahayPayPage> {
         const SizedBox(
           height: 5,
         ),
-        FutureBuilder<String>(
-          future: Translations.translatedText(
-              'Enter OTP sent to the above phone number',
-              GlobalStrings.getGlobalString()),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Loading..."); // Loading indicator while translating
-            } else if (snapshot.hasError) {
-              return Text('Enter OTP sent to the above phone number');
-            } else {
-              return Text(
-                snapshot.data ?? 'Enter OTP sent to the above phone number',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(color: AppColors.secondaryTextColor),
-              );
-            }
-          },
+        Text(
+          eHint,
+          style: Theme.of(context)
+              .textTheme
+              .titleSmall
+              ?.copyWith(color: AppColors.secondaryTextColor),
         ),
         const SizedBox(
           height: 5,
@@ -294,6 +297,12 @@ class _SahayPayPageState extends State<SahayPayPage> {
 
   Widget _buildPaymentInstructions() {
     if (_paymentInstructions.isNotEmpty) {
+      // final trr = Translations.translatedText(
+      //     'Payment Instruction', GlobalStrings.getGlobalString());
+      // final trrr = _paymentInstructions.map((e) =>
+      //     Translations.translatedText('- $e', GlobalStrings.getGlobalString()));
+      print("mytransssss");
+      print(_paymentInstructionsT);
       return Container(
         padding: const EdgeInsets.all(10),
         decoration:
@@ -301,48 +310,19 @@ class _SahayPayPageState extends State<SahayPayPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FutureBuilder<String>(
-              future: Translations.translatedText(
-                  'Payment Instruction', GlobalStrings.getGlobalString()),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text(
-                      "Loading..."); // Loading indicator while translating
-                } else if (snapshot.hasError) {
-                  return Text('Payment Instruction');
-                } else {
-                  return Text(
-                    snapshot.data ?? 'Payment Instruction',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  );
-                }
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(cHint),
             ),
             const SizedBox(
               height: 10,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: _paymentInstructions
+              children: _paymentInstructionsT
                   .map((e) => Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: FutureBuilder<String>(
-                          future: Translations.translatedText(
-                              '- $e', GlobalStrings.getGlobalString()),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Text(
-                                  "Loading..."); // Loading indicator while translating
-                            } else if (snapshot.hasError) {
-                              return Text('- $e');
-                            } else {
-                              return Text(
-                                snapshot.data ?? '- $e',
-                              );
-                            }
-                          },
-                        ),
+                        child: Text("- $e"),
                       ))
                   .toList(),
             ),
