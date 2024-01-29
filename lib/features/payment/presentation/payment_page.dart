@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/customer_loan/data/dto/financial_mark_ups_dto.dart';
 import 'package:commercepal/features/cash_payment/presentation/cash_payment_page.dart';
 import 'package:commercepal/features/cbe_birr/cbe_birr.dart';
@@ -187,6 +188,8 @@ class _PaymentPageState extends State<PaymentPage> {
         context,
         EPGPayment.routeName,
       );
+    } else if (e.name!.toLowerCase().contains("telebirr") == true) {
+      displaySnack(context, "will be available soon.");
     } else if (e.paymentMode == PaymentMode.loan) {
       _showModalBottomSheet(context, e.id!, (MarkUpItem markUpItem) {
         Navigator.pushNamed(context, CustomerLoanPage.routeName, arguments: {

@@ -51,11 +51,17 @@ class _LoginPageState extends State<LoginPage> {
         "Email or Phone Number", GlobalStrings.getGlobalString());
     addAddHint = Translations.translatedText(
         "Forgot password", GlobalStrings.getGlobalString());
+    LoginHint = Translations.translatedText(
+        "Login to continue", GlobalStrings.getGlobalString());
+    cAccountHint = Translations.translatedText(
+        "Create Account", GlobalStrings.getGlobalString());
 
     // Use await to get the actual string value from the futures
     pHint = await physicalAddressHintFuture;
     cHint = await subcityHint;
     aHint = await addAddHint;
+    lHint = await LoginHint;
+    caHint = await cAccountHint;
     print("herrerererere");
     print(pHint);
     print(cHint);
@@ -68,7 +74,11 @@ class _LoginPageState extends State<LoginPage> {
   var physicalAddressHintFuture;
   var subcityHint;
   var addAddHint;
+  var LoginHint;
+  var cAccountHint;
+  String caHint = '';
   String pHint = '';
+  String lHint = '';
   String cHint = '';
   String aHint = '';
 
@@ -109,32 +119,12 @@ class _LoginPageState extends State<LoginPage> {
                         width: MediaQuery.of(context).size.width * 0.5,
                         height: MediaQuery.of(context).size.height * 0.25,
                       ),
-                      FutureBuilder<String>(
-                        future: Translations.translatedText(
-                            "Login to continue",
-                            GlobalStrings
-                                .getGlobalString()), // Adjust language code as needed
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return snapshot.data != null
-                                ? Text(
-                                    snapshot.data!,
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  )
-                                : Text('Default Text',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium);
-                          } else {
-                            return Text('Loading...',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium); // Or any loading indicator
-                          }
-                        },
-                      ),
+                      loading
+                          ? Text("Loading...")
+                          : Text(
+                              lHint,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
 
                       const SizedBox(
                         height: 20,
@@ -227,40 +217,15 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushNamed(
                                 context, UserRegistrationPage.routeName);
                           },
-                          child: FutureBuilder<String>(
-                            future: Translations.translatedText(
-                                "Create Account",
-                                GlobalStrings
-                                    .getGlobalString()), // Adjust language code as needed
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                return snapshot.data != null
-                                    ? Text(
-                                        snapshot.data!,
-                                        style: const TextStyle(
-                                          color: AppColors.colorPrimaryDark,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                      )
-                                    : const Text(
-                                        'Default Text',
-                                        style: TextStyle(
-                                          color: AppColors.colorPrimaryDark,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                      );
-                              } else {
-                                return const Text(
-                                  'Loading...',
-                                  style: TextStyle(
+                          child: loading
+                              ? Text('Loading...')
+                              : Text(
+                                  caHint,
+                                  style: const TextStyle(
                                     color: AppColors.colorPrimaryDark,
                                     decoration: TextDecoration.underline,
                                   ),
-                                ); // Or any loading indicator
-                              }
-                            },
-                          ),
+                                ),
                         ),
                       )
                     ],

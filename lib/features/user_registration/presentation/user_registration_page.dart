@@ -2,6 +2,8 @@ import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/cities-core/presentation/select_city_widget.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/bloc/user_registration_cubit.dart';
 import 'package:commercepal/features/user_registration/presentation/bloc/user_registration_state.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,54 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
   String? _email;
   String? _phoneNumber;
   String? _city;
+  var loading = false;
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
+  void fetchHints() async {
+    setState(() {
+      loading = true;
+    });
+
+    physicalAddressHintFuture = Translations.translatedText(
+        "Creat Account", GlobalStrings.getGlobalString());
+    subcityHint = Translations.translatedText(
+        "First name", GlobalStrings.getGlobalString());
+    addAddHint = Translations.translatedText(
+        "Last name", GlobalStrings.getGlobalString());
+    phoneHint = Translations.translatedText(
+        "Phone number", GlobalStrings.getGlobalString());
+    emailHint = Translations.translatedText(
+        "Email address (Optional)", GlobalStrings.getGlobalString());
+
+    // Use await to get the actual string value from the futures
+    pHint = await physicalAddressHintFuture;
+    cHint = await subcityHint;
+    aHint = await addAddHint;
+    dHint = await phoneHint;
+    eHint = await emailHint;
+    print("herrerererere");
+    print(pHint);
+    print(cHint);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  var physicalAddressHintFuture;
+  var subcityHint;
+  var addAddHint;
+  var phoneHint;
+  var emailHint;
+  String pHint = '';
+  String cHint = '';
+  String aHint = '';
+  String dHint = '';
+  String eHint = '';
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +86,12 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: false,
-        title: Text(
-          "Create Account",
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        title: loading
+            ? const Text("Loading...")
+            : Text(
+                pHint,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
       ),
       body: BlocProvider(
         create: (context) => getIt<UserRegistrationCubit>(),
@@ -138,7 +190,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                 _fName = value;
               });
             },
-            decoration: buildInputDecoration("First Name"),
+            decoration: buildInputDecoration(loading ? "Loading..." : cHint),
           ),
         ),
         const SizedBox(
@@ -159,7 +211,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                 _sName = value;
               });
             },
-            decoration: buildInputDecoration("Second Name"),
+            decoration: buildInputDecoration(loading ? "Loading..." : aHint),
           ),
         ),
       ],
@@ -181,7 +233,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
           _phoneNumber = value;
         });
       },
-      decoration: buildInputDecoration("Phone number"),
+      decoration: buildInputDecoration(loading ? "Loading..." : dHint),
     );
   }
 
@@ -197,8 +249,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
           _email = value;
         });
       },
-      decoration: buildInputDecoration("Email Address (Optional)"),
+      decoration: buildInputDecoration(loading ? "Loading..." : eHint),
     );
   }
-
 }
