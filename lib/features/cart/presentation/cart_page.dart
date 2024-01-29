@@ -1,10 +1,7 @@
-import 'dart:ffi';
-
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_state.dart';
-import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/features/cart/presentation/widgets/cart_item_widget.dart';
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
@@ -14,7 +11,6 @@ import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/widgets/product_price_widget.dart';
 

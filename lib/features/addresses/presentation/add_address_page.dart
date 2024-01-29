@@ -5,8 +5,6 @@ import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:translator/translator.dart';
-
 import '../../../core/cities-core/presentation/select_city_widget.dart';
 import '../../../core/cities-core/presentation/select_country_widget.dart';
 import '../../../core/widgets/app_button.dart';

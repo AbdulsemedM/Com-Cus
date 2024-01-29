@@ -14,7 +14,8 @@ class CashPaymentRepoImpl implements CashPaymentRepo {
   final CartDao cartDao;
   final SessionRepo sessionRepo;
 
-  CashPaymentRepoImpl(this.apiProvider, this.prefsData, this.cartDao, this.sessionRepo);
+  CashPaymentRepoImpl(
+      this.apiProvider, this.prefsData, this.cartDao, this.sessionRepo);
 
   @override
   Future<String> cashCheckOut(String phoneNumber, String cashType) async {
@@ -74,7 +75,6 @@ class CashPaymentRepoImpl implements CashPaymentRepo {
       } else {
         throw response['statusMessage'];
       }
-      return "";
     } catch (e) {
       rethrow;
     }

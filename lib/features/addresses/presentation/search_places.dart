@@ -4,7 +4,6 @@ import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
-import 'package:commercepal/features/addresses/presentation/bloc/address_cubit.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
@@ -311,7 +310,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
 
     setState(() {});
 
-    googleMapController!
+    googleMapController
         .animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 14.0));
   }
 

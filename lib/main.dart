@@ -8,7 +8,6 @@ import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
-import 'package:translator/translator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
