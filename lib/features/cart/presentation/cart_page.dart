@@ -119,7 +119,8 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
                 ProductPriceWidget(
-                  subTitle: "Delivery Charges: ${cartItems.first.currency} 0",
+                  subTitle:
+                      "Delivery Charges: ${cartItems.first.currency ?? "ETB"} 0",
                   totalPrice: cartItems
                       .map((e) => e.quantity! * double.parse(e.price!))
                       .fold(

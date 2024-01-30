@@ -99,7 +99,9 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
                                     ),
                               ),
                               TextSpan(
-                                text: " ${widget.totalPrice}",
+                                text: widget.totalPrice!.startsWith("null")
+                                    ? " ETB ${widget.totalPrice!.substring(4)}"
+                                    : ' ${widget.totalPrice}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium

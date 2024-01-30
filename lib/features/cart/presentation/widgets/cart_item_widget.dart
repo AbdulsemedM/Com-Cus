@@ -102,8 +102,9 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 Row(
                   children: [
                     Text(
-                      widget.cartItem.price
-                          .formatCurrency(widget.cartItem.currency),
+                      '${widget.cartItem.currency ?? "ETB"} ${widget.cartItem.price}',
+                      // widget.cartItem.price
+                      //     .formatCurrency(widget.cartItem.currency),
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium
