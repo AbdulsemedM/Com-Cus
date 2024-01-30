@@ -167,7 +167,10 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                                       return Text(
                                           "Loading..."); // Loading indicator while translating
                                     } else if (snapshot.hasError) {
-                                      return Text('Submit');
+                                      return Text(
+                                        'Submit',
+                                        style: TextStyle(color: Colors.white),
+                                      );
                                     } else {
                                       return Text(
                                         snapshot.data ?? 'Submit',

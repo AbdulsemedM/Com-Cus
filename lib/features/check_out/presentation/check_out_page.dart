@@ -345,7 +345,10 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                                     (states) => AppColors.colorPrimary)),
                             child: loading
                                 ? const Text("Loading...")
-                                : Text(SBill),
+                                : Text(
+                                    SBill,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                           ),
                         )
                       ],

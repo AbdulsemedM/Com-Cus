@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +86,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                             color: AppColors.colorPrimaryDark,
                           )))
                       : SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.8,
+                          height: MediaQuery.of(context).size.height * 0.75,
                           child: GoogleMap(
                             initialCameraPosition: initialCameraPosition,
                             markers: markersList,
@@ -105,8 +107,10 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                               latitude.toString(), longitude.toString());
                           print(add);
                           if (add == "No street address found") {
+                            displaySnack(context, "Please try again.");
                           } else {
-                            Navigator.pop(context);
+                            Navigator.popAndPushNamed(
+                                context, CheckOutPage.routeName);
                           }
                         },
                         child: FutureBuilder<String>(
@@ -118,10 +122,12 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                                 ConnectionState.done) {
                               return Text(
                                 snapshot.data ?? 'Default Text',
+                                style: TextStyle(color: Colors.white),
                               );
                             } else {
                               return const Text(
                                 'Loading...',
+                                style: TextStyle(color: Colors.white),
                               ); // Or any loading indicator
                             }
                           },
@@ -141,10 +147,12 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return Text(
                       snapshot.data ?? 'Default Text',
+                      style: TextStyle(color: Colors.white),
                     );
                   } else {
                     return const Text(
                       'Loading...',
+                      style: TextStyle(color: Colors.white),
                     ); // Or any loading indicator
                   }
                 },
@@ -319,7 +327,9 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
       setState(() {
         loading = true;
       });
+      print("here we go");
       var status = await Permission.location.request();
+      print(status.isPermanentlyDenied);
       if (status.isGranted) {
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
@@ -328,10 +338,11 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
         setState(() {
           latitude = position.latitude;
           longitude = position.longitude;
+          print(latitude);
+          print(longitude);
           if (latitude != null && longitude != null) {
             initialCameraPosition = CameraPosition(
                 target: LatLng(latitude!, longitude!), zoom: 14.0);
-                
           } else {
             initialCameraPosition =
                 CameraPosition(target: LatLng(9.0192, 38.7525), zoom: 14.0);
@@ -340,6 +351,14 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
         });
         print(latitude);
         print(longitude);
+      } else {
+        setState(() {
+          latitude = 9.0192;
+          longitude = 38.7525;
+          initialCameraPosition =
+              CameraPosition(target: LatLng(9.0192, 38.7525), zoom: 14.0);
+          loading = false;
+        });
       }
     } catch (e) {
       setState(() {

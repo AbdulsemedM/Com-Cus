@@ -137,7 +137,12 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
                           .colorPrimary, // Replace with appropriate color
                     ),
                   ),
-                  child: loading ? CircularProgressIndicator() : Text(bText),
+                  child: loading
+                      ? CircularProgressIndicator()
+                      : Text(
+                          bText,
+                          style: TextStyle(color: Colors.white),
+                        ),
                 )
               ],
             ),

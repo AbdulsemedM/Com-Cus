@@ -76,7 +76,10 @@ class _AppButtonWidgetState extends State<AppButtonWidget> {
               )
             : loading
                 ? CircularProgressIndicator()
-                : Text(cHint),
+                : Text(
+                    cHint,
+                    style: TextStyle(color: Colors.white),
+                  ),
       ),
     );
   }

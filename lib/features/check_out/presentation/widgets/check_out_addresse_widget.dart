@@ -162,7 +162,11 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                               AppColors.colorPrimaryDark),
                                       child: loading
                                           ? const Text("Loading...")
-                                          : Text(Aut),
+                                          : Text(
+                                              Aut,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                     ),
                                     SizedBox(
                                       height: sHeight * 0.02,
@@ -183,7 +187,11 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                               AppColors.colorPrimaryDark),
                                       child: loading
                                           ? const Text("Loading...")
-                                          : Text(Man),
+                                          : Text(
+                                              Man,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                     ),
                                   ],
                                 )
