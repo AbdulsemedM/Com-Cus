@@ -331,6 +331,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
           if (latitude != null && longitude != null) {
             initialCameraPosition = CameraPosition(
                 target: LatLng(latitude!, longitude!), zoom: 14.0);
+                
           } else {
             initialCameraPosition =
                 CameraPosition(target: LatLng(9.0192, 38.7525), zoom: 14.0);
