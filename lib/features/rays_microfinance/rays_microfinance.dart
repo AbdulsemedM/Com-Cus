@@ -178,7 +178,10 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                               backgroundColor: AppColors.colorPrimaryDark),
                           child: loading
                               ? const Text('...')
-                              : Text(loanRef == null ? aHint : bHint)),
+                              : Text(
+                                  loanRef == null ? aHint : bHint,
+                                  style: TextStyle(color: Colors.white),
+                                )),
                     )
             ],
           ),
