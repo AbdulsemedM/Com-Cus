@@ -13,6 +13,7 @@ import 'package:commercepal/features/otp_payments/presentation/otp_payment_page.
 import 'package:commercepal/features/payment/data/dto/payment_modes_dto.dart';
 import 'package:commercepal/features/payment/presentation/bloc/payment_cubit.dart';
 import 'package:commercepal/features/payment/presentation/bloc/payment_state.dart';
+import 'package:commercepal/features/rays_microfinance/rays_microfinance.dart';
 import 'package:commercepal/features/sahay_payment/presentation/sahay_pay_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
@@ -190,7 +191,13 @@ class _PaymentPageState extends State<PaymentPage> {
       );
     } else if (e.name!.toLowerCase().contains("telebirr") == true) {
       displaySnack(context, "will be available soon.");
+    } else if (e.name!.toLowerCase().contains("rays microfinance") == true) {
+      Navigator.pushNamed(
+        context,
+        RaysMicrofinance.routeName,
+      );
     } else if (e.paymentMode == PaymentMode.loan) {
+      print(e.name!.toLowerCase());
       _showModalBottomSheet(context, e.id!, (MarkUpItem markUpItem) {
         Navigator.pushNamed(context, CustomerLoanPage.routeName, arguments: {
           "name": "Loan payment via ${e.name}",

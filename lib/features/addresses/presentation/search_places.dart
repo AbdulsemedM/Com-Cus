@@ -61,7 +61,8 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
             if (snapshot.connectionState == ConnectionState.done) {
               return Text(
                 snapshot.data ?? 'Default Text',
-                style: const TextStyle(color: AppColors.colorPrimary),
+                style: const TextStyle(
+                    color: AppColors.colorPrimary, fontSize: 20),
               );
             } else {
               return const Text(
@@ -135,27 +136,41 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                       ),
               ],
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.colorPrimaryDark),
-              onPressed: _handlePressButton,
-              child: FutureBuilder<String>(
-                future: Translations.translatedText(
-                    "Search places", GlobalStrings.getGlobalString()),
-                //  translatedText("Log Out", 'en', dropdownValue),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return Text(
-                      snapshot.data ?? 'Default Text',
-                      style: TextStyle(color: Colors.white),
-                    );
-                  } else {
-                    return const Text(
-                      'Loading...',
-                      style: TextStyle(color: Colors.white),
-                    ); // Or any loading indicator
-                  }
-                },
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.06,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.colorPrimary),
+                  onPressed: _handlePressButton,
+                  child: Row(
+                    children: [
+                      Icon(Icons.search),
+                      FutureBuilder<String>(
+                        future: Translations.translatedText(
+                            "Search places", GlobalStrings.getGlobalString()),
+                        //  translatedText("Log Out", 'en', dropdownValue),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return Text(
+                              snapshot.data ?? 'Default Text',
+                              style: TextStyle(color: Colors.white),
+                            );
+                          } else {
+                            return const Text(
+                              'Loading...',
+                              style: TextStyle(color: Colors.white),
+                            ); // Or any loading indicator
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],

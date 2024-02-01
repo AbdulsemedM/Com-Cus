@@ -56,7 +56,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
     HowDo = Translations.translatedText("How do you want to fill the address?",
         GlobalStrings.getGlobalString());
     Automatic = Translations.translatedText(
-        "Automatically", GlobalStrings.getGlobalString());
+        "From Map", GlobalStrings.getGlobalString());
     Manual = Translations.translatedText(
         "Manually", GlobalStrings.getGlobalString());
     Cancel =

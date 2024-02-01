@@ -10,6 +10,7 @@ import 'package:commercepal/features/order_tracking/presentation/order_tracking_
 import 'package:commercepal/features/otp_payments/presentation/otp_payment_page.dart';
 import 'package:commercepal/features/payment/presentation/payment_page.dart';
 import 'package:commercepal/features/products/presentation/products_page.dart';
+import 'package:commercepal/features/rays_microfinance/rays_microfinance.dart';
 import 'package:commercepal/features/selected_product/presentation/selected_product_page.dart';
 import 'package:commercepal/features/special_order/presentantion/special_order_page.dart';
 import 'package:commercepal/features/splash/splash_page.dart';
@@ -61,7 +62,8 @@ final Map<String, WidgetBuilder> routes = {
   OtpPaymentPage.routeName: (context) => const OtpPaymentPage(),
   EPGPayment.routeName: (context) => const EPGPayment(),
   TeleBirrPayment.routeName: (context) => const TeleBirrPayment(),
-  CBEBirrPayment.routeName: (context) => const CBEBirrPayment()
+  CBEBirrPayment.routeName: (context) => const CBEBirrPayment(),
+  RaysMicrofinance.routeName: (context) => const RaysMicrofinance(),
 };
 
 void redirectUserToLogin() {

@@ -152,7 +152,10 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                                           .replaceFirst(RegExp(r'^\+'), '');
                                       print(pNumber);
                                     }
-                                    await sendData();
+                                    final prefsData = getIt<PrefsData>();
+                                    final isUserLoggedIn = await prefsData
+                                        .contains(PrefsKeys.userToken.name);
+                                    // await sendData();
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
