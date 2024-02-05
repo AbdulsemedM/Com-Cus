@@ -61,7 +61,7 @@ final Map<String, WidgetBuilder> routes = {
   SearchPlacesScreen.routeName: (context) => const SearchPlacesScreen(),
   OtpPaymentPage.routeName: (context) => const OtpPaymentPage(),
   EPGPayment.routeName: (context) => const EPGPayment(),
-  TeleBirrPayment.routeName: (context) => const TeleBirrPayment(),
+  // TeleBirrPayment.routeName: (context) => const TeleBirrPayment(),
   CBEBirrPayment.routeName: (context) => const CBEBirrPayment(),
   RaysMicrofinance.routeName: (context) => const RaysMicrofinance(),
 };

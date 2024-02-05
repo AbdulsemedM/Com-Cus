@@ -48,49 +48,55 @@ class _SelectedProductOptionsState extends State<SelectedProductOptions> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FutureBuilder<String>(
-                      future: Translations.translatedText(
-                          widget.title, GlobalStrings.getGlobalString()),
-                      //  translatedText("Log Out", 'en', dropdownValue),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return Text(
-                            snapshot.data ?? 'Default Text',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                    color: Colors.black, fontSize: 18.sp),
-                          );
-                        } else {
-                          return Text(
-                            'Loading...',
-                            textAlign: TextAlign.right,
-                          ); // Or any loading indicator
-                        }
-                      },
+                    Text(
+                      widget.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(color: Colors.black, fontSize: 18.sp),
                     ),
+                    // FutureBuilder<String>(
+                    //   future: Translations.translatedText(
+                    //       widget.title, GlobalStrings.getGlobalString()),
+                    //   //  translatedText("Log Out", 'en', dropdownValue),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.connectionState == ConnectionState.done) {
+                    //       return Text(
+                    //         snapshot.data ?? 'Default Text',
+                    //         style: Theme.of(context)
+                    //             .textTheme
+                    //             .titleMedium
+                    //             ?.copyWith(
+                    //                 color: Colors.black, fontSize: 18.sp),
+                    //       );
+                    //     } else {
+                    //       return Text(
+                    //         'Loading...',
+                    //         textAlign: TextAlign.right,
+                    //       ); // Or any loading indicator
+                    //     }
+                    //   },
+                    // ),
                     const SizedBox(
                       height: 4,
                     ),
-                    if (widget.subTitle != null)
-                      FutureBuilder<String>(
-                        future: Translations.translatedText(
-                            widget.subTitle!, GlobalStrings.getGlobalString()),
-                        //  translatedText("Log Out", 'en', dropdownValue),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return Text(
-                              snapshot.data ?? 'Default Text',
-                            );
-                          } else {
-                            return Text(
-                              'Loading...',
-                            ); // Or any loading indicator
-                          }
-                        },
-                      ),
+                    if (widget.subTitle != null) Text(widget.subTitle!),
+                    // FutureBuilder<String>(
+                    //   future: Translations.translatedText(
+                    //       widget.subTitle!, GlobalStrings.getGlobalString()),
+                    //   //  translatedText("Log Out", 'en', dropdownValue),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.connectionState == ConnectionState.done) {
+                    //       return Text(
+                    //         snapshot.data ?? 'Default Text',
+                    //       );
+                    //     } else {
+                    //       return Text(
+                    //         'Loading...',
+                    //       ); // Or any loading indicator
+                    //     }
+                    //   },
+                    // ),
                   ],
                 ),
                 const Spacer(),

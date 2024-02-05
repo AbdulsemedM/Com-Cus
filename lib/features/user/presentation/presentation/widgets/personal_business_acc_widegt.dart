@@ -20,41 +20,56 @@ class PersonalBusinessAccWidget extends StatefulWidget {
 }
 
 class _PersonalBusinessAccWidgetState extends State<PersonalBusinessAccWidget> {
+  String switched = '';
+  var laoding = true;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (ctx) => getIt<DashboardCubit>()..hasUserSwitchedAccounts(),
+      create: (context) => getIt<DashboardCubit>()..hasUserSwitchedAccounts(),
       child: BlocConsumer<DashboardCubit, DashboardState>(
         listener: (ctx, state) {
           if (state is DashboardSuccessState) {
             displaySnack(context, "Switching your account...");
           }
+          if (state is DashboardUserSwicthedState) {
+            print("heree wew go");
+            if (state.switched) {
+              if (mounted) {
+                setState(() {
+                  switched = "Switch To Personal";
+                  laoding = false;
+                });
+              }
+            } else {
+              if (mounted) {
+                setState(() {
+                  switched = "Switch To Business";
+                  laoding = false;
+                });
+              }
+            }
+          }
         },
         builder: (ctx, state) {
-          return AppButtonWidget(
-            isLoading: state is DashboardLoadingState,
-            onClick: () async {
-              ctx.read<DashboardCubit>().toggleBusinessUserAcc();
+          return laoding
+              ? CircularProgressIndicator()
+              : AppButtonWidget(
+                  isLoading: state is DashboardLoadingState,
+                  onClick: () async {
+                    if (mounted) {
+                      ctx.read<DashboardCubit>().toggleBusinessUserAcc();
 
-              Future.delayed(const Duration(seconds: 1)).then((value) {
-                Navigator.popAndPushNamed(context, DashboardPage.routeName);
-              });
-            },
-            text: state is DashboardUserSwicthedState && state.switched
-                ? "Switch To Personal"
-                : "Switch To Business",
-          );
+                      Future.delayed(const Duration(seconds: 1)).then((value) {
+                        Navigator.popAndPushNamed(
+                            context, DashboardPage.routeName);
+                      });
+                    }
+                  },
+                  text: switched,
+                );
         },
       ),
     );
   }
-
-  // _getButtonText(BuildContext context, DashboardState state) async {
-  //   // Adjust this part to get the appropriate translation based on the current state
-  //   if (state is DashboardUserSwicthedState && state.switched) {
-  //     return cHint;
-  //   } else {
-  //     return pHint;
-  //   }
-  // }
 }

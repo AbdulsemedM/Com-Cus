@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,8 @@ class CartItemWidget extends StatefulWidget {
 
 class _CartItemWidgetState extends State<CartItemWidget> {
   int _quantity = 0;
+  FocusNode amountFocus = FocusNode();
+  TextEditingController amount = TextEditingController();
 
   @override
   void initState() {
@@ -112,6 +115,57 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                     ),
                     const Spacer(),
                     Container(
+                        height: 40,
+                        width: 70,
+                        child: TextFormField(
+                          onTapOutside: (event) {
+                            amountFocus.unfocus();
+                            amount.clear();
+                          },
+                          onChanged: (value) {
+                            String inputValue = amount.text;
+                            int? parsedValue = parsePositiveInteger(inputValue);
+                            if (parsedValue != null) {
+                              setState(() {
+                                _quantity = parsedValue;
+                              });
+                              context
+                                  .read<CartCoreCubit>()
+                                  .changeCartItemQuantity(
+                                      widget.cartItem, _quantity);
+                            }
+                          },
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(5),
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          controller: amount,
+                          focusNode: amountFocus,
+                          // maxLength: 5,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            // labelText: "Phone Number*".tr,
+                          ),
+                          onEditingComplete: () {
+                            String inputValue = amount.text;
+                            int? parsedValue = parsePositiveInteger(inputValue);
+                            if (parsedValue != null) {
+                              setState(() {
+                                _quantity = parsedValue;
+                              });
+                              context
+                                  .read<CartCoreCubit>()
+                                  .changeCartItemQuantity(
+                                      widget.cartItem, _quantity);
+                            }
+                            amount.clear();
+                          },
+                        )),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 6),
                       decoration: const BoxDecoration(color: AppColors.bg1),
@@ -186,5 +240,20 @@ class _CartItemWidgetState extends State<CartItemWidget> {
   void prints(CartItem myc) {
     print("herererer");
     print(myc.currency);
+  }
+
+  int? parsePositiveInteger(String value) {
+    try {
+      int parsedValue = int.parse(value);
+      if (parsedValue >= 0) {
+        return parsedValue;
+      } else {
+        // Handle negative values
+        return parsedValue * -1;
+      }
+    } catch (e) {
+      // Handle non-integer values
+      return null;
+    }
   }
 }

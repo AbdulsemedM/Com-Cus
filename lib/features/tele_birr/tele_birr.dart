@@ -1,24 +1,24 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:commercepal/app/data/network/api_provider.dart';
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
-import 'package:commercepal/core/cart-core/dao/cart_dao.dart';
-import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
-import 'package:commercepal/features/otp_payments/data/otp_payment_repo_imp.dart';
-import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../core/cart-core/dao/cart_dao.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:image/image.dart' as img;
 
 class TeleBirrPayment extends StatefulWidget {
   static const routeName = "/telebirr_payment";
 
+  // final String url;
   const TeleBirrPayment({super.key});
-
   @override
   State<TeleBirrPayment> createState() => _TeleBirrPaymentState();
 }
@@ -27,125 +27,177 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
   final GlobalKey<FormState> myKey = GlobalKey();
   String? pNumber;
   var loading = false;
+  String? message;
+  String url = '';
+  final ScreenshotController screenshotController = ScreenshotController();
+  late WebViewController _webViewController;
+  @override
+  void initState() {
+    super.initState();
+    fetchTelebirr();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var sHeight = MediaQuery.of(context).size.height * 1;
+    // var sHeight = MediaQuery.of(context).size.height * 1;
     var sWidth = MediaQuery.of(context).size.width * 1;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "EPG Pay",
+          "Telebirr Pay",
           style: TextStyle(fontSize: sWidth * 0.05),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Form(
-                key: myKey,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Container(
+                width: sWidth,
+                decoration: BoxDecoration(border: Border.all()),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Text("Payment Instructions"),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child:
+                            Text("-Make the QR Code at the middle of the box."),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                            "-Press the 'Capture Screenshot' button below."),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                            "-You will get the captured QR Code in the gallery."),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                            "-Go to your Telebirr app and goto 'Scan QR'."),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("-Choose your QR Code from the Gallery'."),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            !loading && url != ''
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Your app content goes here
+
+                      const SizedBox(height: 20.0),
+                      // Display captured screenshot
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text("Phone Number"),
+                          Screenshot(
+                            controller: screenshotController,
+                            child: Container(
+                              color: Colors.blue,
+                              width: 250.0,
+                              height: 250.0,
+                              child: WebView(
+                                gestureNavigationEnabled: true,
+                                initialUrl: url,
+                                javascriptMode: JavascriptMode.unrestricted,
+                                onWebViewCreated:
+                                    (WebViewController webViewController) {
+                                  _webViewController = webViewController;
+
+                                  // Enable zooming gestures using JavaScript
+                                  _webViewController.evaluateJavascript('''
+                                    document.querySelector('meta[name="viewport"]').content = 'width=device-width, initial-scale=1, maximum-scale=5.0, user-scalable=yes';
+                                  ''');
+                                },
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                            filled: true,
-                            fillColor: AppColors.greyColor,
-                            focusedBorder: InputBorder.none,
-                            focusedErrorBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none),
-                        keyboardType: TextInputType.phone,
-                        onChanged: (value) {
-                          setState(() {
-                            pNumber = value;
-                          });
+                      SizedBox(height: 20.0),
+                      // Button to trigger screenshot capture
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.colorPrimaryDark),
+                        onPressed: () {
+                          _captureScreenshot();
                         },
-                        validator: (value) {
-                          // Define your regular expressions
-                          var regExp1 = RegExp(r'^0\d{9}$');
-                          var regExp2 = RegExp(r'^\+251\d{9}$');
-                          var regExp3 = RegExp(r'^\251\d{9}$');
-
-                          // Check if the entered value matches either expression
-                          if (!(regExp1.hasMatch(value!) ||
-                              regExp3.hasMatch(value) ||
-                              regExp2.hasMatch(value))) {
-                            return 'Enter a valid mobile number';
-                          }
-
-                          // Validation passed
-                          return null;
-                        },
+                        child: Text('Capture Screenshot'),
                       ),
-                      SizedBox(
-                        height: sHeight * 0.04,
-                      ),
-                      loading
-                          ? const CircularProgressIndicator(
-                              color: AppColors.colorPrimaryDark,
-                            )
-                          : SizedBox(
-                              width: sWidth,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  if (myKey.currentState!.validate()) {
-                                    setState(() {
-                                      loading = true;
-                                    });
-                                    var regExp1 = RegExp(r'^0\d{9}$');
-                                    var regExp2 = RegExp(r'^\+251\d{9}$');
-                                    if (regExp1.hasMatch(pNumber!)) {
-                                      pNumber = pNumber!
-                                          .replaceFirst(RegExp('^0'), '251');
-                                      print(pNumber);
-                                    } else if (regExp2.hasMatch(pNumber!)) {
-                                      pNumber = pNumber!
-                                          .replaceFirst(RegExp(r'^\+'), '');
-                                      print(pNumber);
-                                    }
-                                  }
-                                },
-                                child: const Text("Submit"),
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        AppColors.colorPrimaryDark),
-                              ),
-                            )
                     ],
-                  ),
-                ))
+                  )
+                : !loading && url == ''
+                    ? Text(message!)
+                    : Text("fetching")
           ],
         ),
       ),
     );
   }
 
-  Future<bool> sendPassword({int retryCount = 0}) async {
+  Future<void> _captureScreenshot() async {
+    // Capture the screenshot
+    screenshotController.capture().then((Uint8List? image) async {
+      if (image != null) {
+        // Convert Uint8List to Image
+        final img.Image decodedImage = img.decodeImage(image)!;
+
+        // Get the application documents directory
+        final directory = await getApplicationDocumentsDirectory();
+
+        // Include width and height in the file name
+        final fileName =
+            'screenshot_${decodedImage.width}x${decodedImage.height}.jpg';
+        final filePath = '${directory.path}/$fileName';
+
+        // Encode the image as PNG with transparency
+        File(filePath).writeAsBytesSync(img.encodePng(decodedImage));
+
+        // Save the screenshot to the gallery
+        GallerySaver.saveImage(filePath, albumName: 'YourAlbumName')
+            .then((result) {
+          if (result != null && result) {
+            print('Screenshot saved to gallery successfully!');
+          } else {
+            print('Failed to save screenshot to gallery.');
+          }
+        });
+      } else {
+        print('Failed to capture screenshot.');
+      }
+    });
+  }
+
+  Future<bool> fetchTelebirr({int retryCount = 0}) async {
     try {
       setState(() {
         loading = true;
       });
+      print('hereweare');
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      print(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
-        bool isit = await hasUserSwitchedToBusiness();
         final orderRef = await prefsData.readData("order_ref");
         Map<String, dynamic> payload = {
           "ServiceCode": "CHECKOUT",
-          "PaymentType": "EPG",
-          "PaymentMode": "EPG",
-          "UserType": isit ? "C" : "B",
-          "PhoneNumber": pNumber,
+          "PaymentType": "TELE-BIRR",
+          "PaymentMode": "TELE-BIRR",
+          "UserType": "C",
           "OrderRef": orderRef,
           "Currency": "ETB"
         };
@@ -164,23 +216,23 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
         print(data);
 
         if (data['statusCode'] == '000') {
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString("epg_done", "yes");
           setState(() {
+            url = data['PaymentUrl'];
+            message = data['statusMessage'] ?? '';
             loading = false;
           });
           return true;
-          // Handle the case when statusCode is '000'
         } else {
           // Retry logic
           if (retryCount < 5) {
             // Retry after num + 1 seconds
             await Future.delayed(Duration(seconds: retryCount++));
             // Call the function again with an increased retryCount
-            await sendPassword(retryCount: retryCount + 1);
+            await fetchTelebirr(retryCount: retryCount + 1);
           } else {
             // Retry limit reached, handle accordingly
             setState(() {
+              message = data['statusMessage'] ?? "Please try again later";
               loading = false;
             });
             return false;
@@ -190,23 +242,13 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
       }
       return false;
     } catch (e) {
+      message = e.toString();
       print(e.toString());
       setState(() {
         loading = false;
       });
       // Handle other exceptions
       return false;
-    }
-  }
-
-  Future<bool> hasUserSwitchedToBusiness() async {
-    try {
-      final prefsData = getIt<PrefsData>();
-      final currentSelection =
-          await prefsData.readData(PrefsKeys.userBusinessAcc.name);
-      return currentSelection == "YES";
-    } catch (e) {
-      rethrow;
     }
   }
 }

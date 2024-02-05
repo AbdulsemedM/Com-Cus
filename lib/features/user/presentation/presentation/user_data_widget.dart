@@ -180,6 +180,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 getIt<DashboardCubit>()..checkIfUserIsABusiness(),
             child: BlocBuilder<DashboardCubit, DashboardState>(
               builder: (ctx, state) {
+                // print(state.isBusiness);
                 return state is DashboardBusinessState && state.isBusiness
                     ? const Padding(
                         padding:

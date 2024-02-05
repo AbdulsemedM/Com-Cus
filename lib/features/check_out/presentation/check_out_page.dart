@@ -1,8 +1,6 @@
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
-import 'package:commercepal/app/utils/string_utils.dart';
-import 'package:commercepal/features/addresses/presentation/add_address_page.dart';
 import 'package:commercepal/features/check_out/presentation/bloc/check_out_cubit.dart';
 import 'package:commercepal/features/check_out/presentation/bloc/check_out_state.dart';
 import 'package:commercepal/features/check_out/presentation/widgets/check_out_addresse_widget.dart';
@@ -12,8 +10,6 @@ import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../core/cart-core/domain/cart_item.dart';
 import '../data/models/address.dart';
 
@@ -211,10 +207,10 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                                     Expanded(
                                         child: Text("x${cartItem.quantity}")),
                                     Expanded(
-                                      child: Text((double.parse(
-                                                  cartItem.price!) *
-                                              (cartItem.quantity ?? 1))
-                                          .formatCurrency(cartItem.currency)),
+                                      child: Text(
+                                          ((double.parse(cartItem.price!) *
+                                                  (cartItem.quantity ?? 1))
+                                              .toString())),
                                     )
                                   ],
                                 ),
@@ -246,7 +242,10 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                             ),
                           )
                         else
-                          Text(_shippingFee ?? "....",
+                          Text(
+                              _shippingFee != null
+                                  ? '${_shippingFee!.startsWith('null ') ? _shippingFee = _shippingFee!.replaceFirst("null ", "ETB ") : _shippingFee}'
+                                  : "....",
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -274,7 +273,9 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                                     .titleMedium
                                     ?.copyWith()),
                         Text(
-                          _total ?? '...',
+                          _total != null
+                              ? "${_total!.startsWith('null ') ? _total = _total!.replaceFirst("null ", "ETB ") : _total}"
+                              : '...',
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
@@ -326,7 +327,10 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                             const SizedBox(
                               height: 4,
                             ),
-                            Text("$_total",
+                            Text(
+                                _total != null
+                                    ? "${_total!.startsWith('null ') ? _total = _total!.replaceFirst("null ", "ETB ") : _total}"
+                                    : "",
                                 style: Theme.of(context)
                                     .textTheme
                                     .displayMedium
@@ -340,18 +344,18 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                           child: ElevatedButton(
                             onPressed: () async {
                               print(_total);
-                              RegExp regExp = RegExp(r'\b\d+(\.\d+)?\b');
-                              Iterable<Match> matches =
-                                  regExp.allMatches(_total!);
-                              for (Match match in matches) {
-                                // Extract the matched portion
-                                String numericPart = match.group(0)!;
-                                final SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                print(numericPart);
-                                prefs.setString("rays", numericPart);
-                                print("setted");
-                              }
+                              // RegExp regExp = RegExp(r'\b\d+(\.\d+)?\b');
+                              // Iterable<Match> matches =
+                              //     regExp.allMatches(_total!);
+                              // for (Match match in matches) {
+                              //   // Extract the matched portion
+                              //   String numericPart = match.group(0)!;
+                              //   final SharedPreferences prefs =
+                              //       await SharedPreferences.getInstance();
+                              //   print(numericPart);
+                              //   prefs.setString("rays", numericPart);
+                              //   print("setted");
+                              // }
                               ctx.read<CheckOutCubit>().validateCheckOut();
                             },
                             style: ButtonStyle(

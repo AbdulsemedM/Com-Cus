@@ -115,7 +115,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                       "Send",
                     ), // Button text
                   )
-                : Container(),
+                : CircularProgressIndicator(),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.02,
             ),

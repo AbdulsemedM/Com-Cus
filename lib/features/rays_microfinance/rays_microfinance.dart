@@ -71,6 +71,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
   String? loanRef;
   String? message;
   String? pNumber;
+  String? transRef;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,11 +82,14 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: loading ? const Text("Loading...") : Text(pHint)),
+              Row(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: loading ? const Text("Loading...") : Text(pHint)),
+                ],
+              ),
               Form(
                 key: myForm,
                 child: TextFormField(
@@ -116,9 +120,14 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                 ),
               ),
               if (loanRef != null)
-                Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: loading ? const Text("Loading...") : Text(cHint)),
+                Row(
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child:
+                            loading ? const Text("Loading...") : Text(cHint)),
+                  ],
+                ),
               if (loanRef != null)
                 TextFormField(
                   controller: otpController,
@@ -133,36 +142,54 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
-              loading
-                  ? const CircularProgressIndicator()
-                  : SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                          onPressed: () async {
-                            if (loanRef == null) {
-                              if (myForm.currentState!.validate()) {
-                                pNumber = pNumberController.text;
-                                var regExp1 = RegExp(r'^0\d{9}$');
-                                var regExp2 = RegExp(r'^\+251\d{9}$');
-                                if (regExp1.hasMatch(pNumber!)) {
-                                  pNumber = pNumber!
-                                      .replaceFirst(RegExp('^0'), '251');
-                                  print(pNumber);
-                                } else if (regExp2.hasMatch(pNumber!)) {
-                                  pNumber =
-                                      pNumber!.replaceFirst(RegExp(r'^\+'), '');
-                                  print(pNumber);
-                                }
-                                bool done = await sendData();
-                                if (done) {
-                                  displaySnack(context, message!);
-                                } else {
-                                  displaySnack(context, message!);
+              if (loanRef == null)
+                loading
+                    ? const CircularProgressIndicator()
+                    : SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              if (loanRef == null) {
+                                if (myForm.currentState!.validate()) {
+                                  pNumber = pNumberController.text;
+                                  var regExp1 = RegExp(r'^0\d{9}$');
+                                  var regExp2 = RegExp(r'^\+251\d{9}$');
+                                  if (regExp1.hasMatch(pNumber!)) {
+                                    pNumber = pNumber!
+                                        .replaceFirst(RegExp('^0'), '251');
+                                    print(pNumber);
+                                  } else if (regExp2.hasMatch(pNumber!)) {
+                                    pNumber = pNumber!
+                                        .replaceFirst(RegExp(r'^\+'), '');
+                                    print(pNumber);
+                                  }
+                                  bool done = await sendData();
+                                  if (done) {
+                                    displaySnack(context, message!);
+                                  } else {
+                                    displaySnack(context, message!);
+                                  }
                                 }
                               }
-                            } else if (loanRef != null) {
-                              String? otp = otpController.text;
-                              if (otp != null) {
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.colorPrimaryDark),
+                            child: loading
+                                ? const Text('...')
+                                : Text(
+                                    aHint,
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                      ),
+              if (loanRef != null)
+                loading
+                    ? const CircularProgressIndicator()
+                    : SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              if (loanRef != null) {
+                                String? otp = otpController.text;
                                 bool done = await verifyData();
                                 if (done) {
                                   displaySnack(context, message!);
@@ -172,17 +199,16 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                                   displaySnack(context, message!);
                                 }
                               }
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.colorPrimaryDark),
-                          child: loading
-                              ? const Text('...')
-                              : Text(
-                                  loanRef == null ? aHint : bHint,
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                    )
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.colorPrimaryDark),
+                            child: loading
+                                ? const Text('...')
+                                : Text(
+                                    bHint,
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                      )
             ],
           ),
         ),
@@ -196,34 +222,33 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         loading = true;
       });
       print('hereweare');
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? amount = prefs.getString("rays")!;
-      print(amount);
+      // final SharedPreferences prefs = await SharedPreferences.getInstance();
+      // String? amount = prefs.getString("rays")!;
+      // print(amount);
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       print(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final orderRef = await prefsData.readData("order_ref");
-        print(orderRef);
+        // print(token);
         Map<String, dynamic> payload = {
-          "FinancialCode": "FINANCIAL_RAYS_MFI",
-          "UserType": "H",
-          "UserId": 12,
-          "UserPhoneNumber": pNumber,
+          "ServiceCode": "LOAN-REQUEST",
+          "PaymentType": "FINANCIAL_RAYS_MFI",
+          "PaymentMode": "FINANCIAL_RAYS_MFI",
+          "PhoneNumber": pNumber,
+          "UserType": "B",
           "MarkUpId": 1,
-          "OrderRef": orderRef,
-          "PaymentRef": orderRef,
-          "Currency": "ETB",
           "LoanType": "COL",
-          "Amount": amount
+          "OrderRef": orderRef,
+          "Currency": "ETB"
         };
         print(payload);
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2087",
-            "/api/v1/financial/payment/request/rays",
+            "api.commercepal.com:2095",
+            "/payment/v1/request",
           ),
           body: jsonEncode(payload),
           headers: <String, String>{"Authorization": "Bearer $token"},
@@ -233,15 +258,13 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         print(data);
 
         if (data['statusCode'] == '000') {
-          // final SharedPreferences prefs = await SharedPreferences.getInstance();
-          // prefs.setString("epg_done", "yes");
-          // print(data['PaymentUrl']);
           setState(() {
             loanRef = data['LoanRef'];
             message = data['statusMessage'] ?? '';
+            transRef = data['TransRef'];
             loading = false;
           });
-          // launchUrl(data['PaymentUrl']);
+          // print(transRef);
           return true;
           // Handle the case when statusCode is '000'
         } else {
@@ -291,14 +314,15 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         Map<String, dynamic> payload = {
           "LoanRef": loanRef,
-          "otp": otpController.text
+          "otp": otpController.text,
+          "TransRef": transRef,
         };
         print(payload);
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2087",
-            "/api/v1/financial/payment/rays/confirm",
+            "api.commercepal.com:2095",
+            "/payment/v1/rays/confirm",
           ),
           body: jsonEncode(payload),
           headers: <String, String>{"Authorization": "Bearer $token"},
@@ -321,7 +345,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
             // Retry after num + 1 seconds
             await Future.delayed(Duration(seconds: retryCount++));
             // Call the function again with an increased retryCount
-            await sendData(retryCount: retryCount + 1);
+            await verifyData(retryCount: retryCount + 1);
           } else {
             // Retry limit reached, handle accordingly
             setState(() {

@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/customer_loan/data/dto/financial_mark_ups_dto.dart';
+import 'package:commercepal/core/data/prefs_data.dart';
+import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/cash_payment/presentation/cash_payment_page.dart';
 import 'package:commercepal/features/cbe_birr/cbe_birr.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
@@ -15,6 +19,7 @@ import 'package:commercepal/features/payment/presentation/bloc/payment_cubit.dar
 import 'package:commercepal/features/payment/presentation/bloc/payment_state.dart';
 import 'package:commercepal/features/rays_microfinance/rays_microfinance.dart';
 import 'package:commercepal/features/sahay_payment/presentation/sahay_pay_page.dart';
+import 'package:commercepal/features/tele_birr/tele_birr.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +28,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../app/utils/assets.dart';
 import '../../customer_loan/presentation/customer_loan_page.dart';
 import 'loan_payment_period_bs.dart';
+import 'package:http/http.dart' as http;
 
 class PaymentPage extends StatefulWidget {
   static const routeName = "/payment_page";
@@ -34,6 +40,9 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
+  var loading = false;
+  String? message;
+  String? url;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,7 +199,11 @@ class _PaymentPageState extends State<PaymentPage> {
         EPGPayment.routeName,
       );
     } else if (e.name!.toLowerCase().contains("telebirr") == true) {
-      displaySnack(context, "will be available soon.");
+      // displaySnack(context, 'Will be available soon.');
+      // if (url != null) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const TeleBirrPayment()));
+      // }
     } else if (e.name!.toLowerCase().contains("rays microfinance") == true) {
       Navigator.pushNamed(
         context,

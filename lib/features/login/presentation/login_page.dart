@@ -81,6 +81,7 @@ class _LoginPageState extends State<LoginPage> {
   String lHint = '';
   String cHint = '';
   String aHint = '';
+  bool obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                       loading
                           ? const Text("Loading...")
                           : TextFormField(
-                              obscureText: true,
+                              obscureText: obscureText,
                               keyboardType: TextInputType.visiblePassword,
                               validator: (v) {
                                 if (v?.isEmpty == true) {
@@ -167,7 +168,35 @@ class _LoginPageState extends State<LoginPage> {
                                   _pass = value;
                                 });
                               },
-                              decoration: buildInputDecoration(pHint),
+                              // decoration: buildInputDecoration(pHint),
+                              decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    // Based on passwordVisible state choose the icon
+                                    obscureText
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                    // Update the state i.e. toogle the state of passwordVisible variable
+                                    setState(() {
+                                      obscureText = !obscureText;
+                                    });
+                                  },
+                                ),
+                                filled: true,
+                                fillColor:
+                                    AppColors.fieldBorder.withOpacity(0.8),
+                                enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                errorBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                focusedErrorBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                hintText: "Enter your password",
+                              ),
                             ),
                       const SizedBox(height: 8),
                       Row(

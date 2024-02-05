@@ -28,6 +28,7 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   int _selectedTab = 0;
+  bool redirect = false;
   bool _hasUserSwitchedToBusiness = false;
 
   final List _dWidgets = [
@@ -97,6 +98,9 @@ class _DashboardPageState extends State<DashboardPage> {
       final args = ModalRoute.of(context)?.settings.arguments as Map;
       if (args.containsKey("redirect_to")) {
         if (args['redirect_to'] == 'cart') {
+          redirect = true;
+          print(_hasUserSwitchedToBusiness);
+          print("_hasUserSwitchedToBusiness");
           _selectedTab = _hasUserSwitchedToBusiness ? 1 : 2;
           setState(() {});
         }
@@ -124,9 +128,17 @@ class _DashboardPageState extends State<DashboardPage> {
           if (state is DashboardUserSwicthedState) {
             // adjust index to match new list
             if (state.switched) {
-              if (_selectedTab == 3) _selectedTab = _selectedTab - 1;
+              if (_selectedTab == 3) {
+                print(" Switched hererrer");
+                _selectedTab = _selectedTab - 1;
+              }
+              if (redirect) {
+                _selectedTab = _selectedTab - 1;
+              }
             } else {
-              if (_selectedTab == 2) _selectedTab = _selectedTab + 1;
+              ////////////////////////////////////////////////////////
+              // if (_selectedTab == 2) _selectedTab = _selectedTab + 1;
+              ////////////////////////////////////////////////////////
             }
             _hasUserSwitchedToBusiness = state.switched;
             setState(() {});

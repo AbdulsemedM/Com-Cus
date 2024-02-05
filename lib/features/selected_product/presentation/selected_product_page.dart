@@ -230,27 +230,33 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: _buildTitle("Product Variations"),
                         ),
-                      FutureBuilder<String>(
-                        future: Translations.translatedText(
-                            widget.selectedProductDetails.features.keys
-                                    .elementAt(index) ??
-                                "",
-                            GlobalStrings.getGlobalString()),
-                        //  translatedText("Log Out", 'en', dropdownValue),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return Text(
-                              snapshot.data ?? 'Default Text',
-                              textAlign: TextAlign.right,
-                            );
-                          } else {
-                            return Text(
-                              'Loading...',
-                            ); // Or any loading indicator
-                          }
-                        },
+                      Text(
+                        widget.selectedProductDetails.features.keys
+                                .elementAt(index) ??
+                            "",
+                        textAlign: TextAlign.right,
                       ),
+                      // FutureBuilder<String>(
+                      //   future: Translations.translatedText(
+                      //       widget.selectedProductDetails.features.keys
+                      //               .elementAt(index) ??
+                      //           "",
+                      //       GlobalStrings.getGlobalString()),
+                      //   //  translatedText("Log Out", 'en', dropdownValue),
+                      //   builder: (context, snapshot) {
+                      //     if (snapshot.connectionState ==
+                      //         ConnectionState.done) {
+                      //       return Text(
+                      //         snapshot.data ?? 'Default Text',
+                      //         textAlign: TextAlign.right,
+                      //       );
+                      //     } else {
+                      //       return Text(
+                      //         'Loading...',
+                      //       ); // Or any loading indicator
+                      //     }
+                      //   },
+                      // ),
                       const SizedBox(
                         height: 6,
                       ),

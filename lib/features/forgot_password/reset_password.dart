@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/features/login/presentation/login_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -65,7 +66,12 @@ class _ResetPasswordState extends State<ResetPassword> {
                         RegExp regex = new RegExp(pattern);
 
                         if (!regex.hasMatch(value!)) {
-                          return 'Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long';
+                          return '''Password must contain at least 
+                                    one uppercase letter, 
+                                    one lowercase letter, 
+                                    one digit, 
+                                    one special character, 
+                                    and be at least 8 characters''';
                         }
 
                         return null;
@@ -148,8 +154,11 @@ class _ResetPasswordState extends State<ResetPassword> {
                                       bool done = await sendPassword();
                                       if (done) {
                                         // ignore: use_build_context_synchronously
-                                        Navigator.popUntil(context,
-                                            ModalRoute.withName('/login'));
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LoginPage()));
                                       }
                                     }
                                   },
@@ -181,7 +190,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       final response = await http.post(
         Uri.https(
           "api.commercepal.com:2096",
-          "/prime/api/v1/password-reset",
+          "/prime/api/v1/reset-password",
         ),
         body: jsonEncode(payload),
         headers: <String, String>{"Authorization": "Bearer ${widget.jwttoken}"},
