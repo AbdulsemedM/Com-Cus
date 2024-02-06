@@ -367,7 +367,11 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TopCategoryWidget(
-              title: loading ? "Loading..." : pHint,
+              title: loading
+                  ? "Loading..."
+                  : (pHint.length > 10
+                      ? '${pHint.substring(0, 10)}...'
+                      : pHint),
               subTitle: loading ? "Loading..." : cHint,
               imagePng: Assets.commercepalOriginPng,
             ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/features/forgot_password/verify_otp.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   String? emailAddress;
   var loading = false;
+  String message = '';
   @override
   Widget build(BuildContext context) {
     var sHeight = MediaQuery.of(context).size.height * 1;
@@ -92,6 +94,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                           AppColors.colorPrimaryDark),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
+                                      var regExp1 = RegExp(r'^0\d{9}$');
+                                      var regExp2 = RegExp(r'^\+251\d{9}$');
+                                      if (regExp1.hasMatch(emailAddress!)) {
+                                        emailAddress = emailAddress!
+                                            .replaceFirst(RegExp('^0'), '251');
+                                        print(emailAddress);
+                                      } else if (regExp2
+                                          .hasMatch(emailAddress!)) {
+                                        emailAddress = emailAddress!
+                                            .replaceFirst(RegExp(r'^\+'), '');
+                                        print(emailAddress);
+                                      }
                                       bool done = await sendEmail();
                                       if (done) {
                                         // ignore: use_build_context_synchronously
@@ -101,6 +115,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                                 builder: (context) => VerifyOTP(
                                                       userName: emailAddress!,
                                                     )));
+                                      } else {
+                                        displaySnack(context, message);
                                       }
                                     }
                                   },
@@ -124,14 +140,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         loading = true;
       });
       Map<String, dynamic> payload = {
-        "email": emailAddress.toString(),
+        "user": emailAddress.toString(),
       };
       print(payload);
 
       final response = await http.post(
         Uri.https(
           "api.commercepal.com:2096",
-          "/prime/api/v1/password-reset",
+          "/prime/api/v1/password-type-reset",
         ),
         body: jsonEncode(payload),
         // headers: <String, String>{"Authorization": "Bearer $token"},
@@ -156,6 +172,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         } else {
           // Retry limit reached, handle accordingly
           setState(() {
+            message = data['statusMessage'];
             loading = false;
           });
           return false;
