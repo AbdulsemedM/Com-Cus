@@ -43,6 +43,10 @@ class Translations {
 
   static Future<String> translatedText(
       String text, String targetLanguage) async {
+    if (targetLanguage == 'en') {
+      return text; // Return the original text if target language is English
+    }
+
     final apiKey =
         "AIzaSyC2YukgrlGVdc0NZHY6JuRJK3GuIs5U4Ks"; // Replace with your API key
     final url = 'https://translation.googleapis.com/language/translate/v2';

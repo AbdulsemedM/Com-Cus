@@ -3,6 +3,7 @@ import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/assets.dart';
 import 'package:commercepal/core/session/presentation/session_bloc.dart';
+import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +33,8 @@ class _SplashPageState extends State<SplashPage> {
       create: (context) => getIt<SplashPageCubit>()..redirectToDashboard(),
       child: BlocListener<SplashPageCubit, SplashPageState>(
         listener: (context, state) {
-          state.whenOrNull(redirectToDashboard: () {
+          state.whenOrNull(redirectToDashboard: () async {
+            await translateStrings();
             Navigator.popAndPushNamed(context, DashboardPage.routeName);
           });
         },

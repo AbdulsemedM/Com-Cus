@@ -4,7 +4,9 @@ import 'package:commercepal/features/addresses/presentation/addresses_page.dart'
 import 'package:commercepal/features/change_password/presentation/change_password_page.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_state.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
+import 'package:commercepal/features/splash/splash_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user/presentation/bloc/user_cubit.dart';
 import 'package:commercepal/features/user/presentation/bloc/user_state.dart';
@@ -64,32 +66,40 @@ class _UserDataWidgetState extends State<UserDataWidget> {
       child: ListView(
         children: [
           InkWell(
-            onTap: () {
-              context.read<UserCubit>().logOutUser();
-              // update dashboard bottom nav bar
-              context.read<DashboardCubit>().checkIfUserIsABusiness();
-            },
-            child: FutureBuilder<String>(
-              future: Translations.translatedText(
-                  "Log Out", GlobalStrings.getGlobalString()),
-              //  translatedText("Log Out", 'en', dropdownValue),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Text(
-                    snapshot.data ?? 'Log Out',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.colorPrimary, fontSize: 14.sp),
-                    textAlign: TextAlign.right,
-                  );
-                } else {
-                  return Text(
-                    'Loading...',
-                    textAlign: TextAlign.right,
-                  ); // Or any loading indicator
-                }
+              onTap: () {
+                context.read<UserCubit>().logOutUser();
+                // update dashboard bottom nav bar
+                context.read<DashboardCubit>().checkIfUserIsABusiness();
               },
-            ),
-          ),
+              child: Text(
+                translatedStrings['logout']!,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: AppColors.colorPrimary, fontSize: 14.sp),
+                textAlign: TextAlign.right,
+              )
+              // FutureBuilder<String>(
+              //   future: Translations.translatedText(
+              //       "Log Out", GlobalStrings.getGlobalString()),
+              //   //  translatedText("Log Out", 'en', dropdownValue),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.done) {
+              //       return Text(
+              //         snapshot.data ?? 'Log Out',
+              //         style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              //             color: AppColors.colorPrimary, fontSize: 14.sp),
+              //         textAlign: TextAlign.right,
+              //       );
+              //     } else {
+              //       return Text(
+              //         'Loading...',
+              //         textAlign: TextAlign.right,
+              //       ); // Or any loading indicator
+              //     }
+              //   },
+              // ),
+              ),
 
           const SizedBox(
             height: 12,
@@ -205,7 +215,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           ),
           UserMenuItem(
             icon: Icons.production_quantity_limits_outlined,
-            title: "Special Orders",
+            title: translatedStrings['special_orders']!,
             language: dropdownValue,
             onClick: () {
               Navigator.pushNamed(context, ListSpecialOrdersPage.routeName);
@@ -214,7 +224,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           const Divider(),
           UserMenuItem(
             icon: Icons.list_alt_outlined,
-            title: "My Orders",
+            title: translatedStrings['my_orders']!,
             language: dropdownValue,
             onClick: () {
               Navigator.pushNamed(context, UserOrdersPage.routeName);
@@ -223,7 +233,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           const Divider(),
           UserMenuItem(
             icon: Icons.maps_home_work_outlined,
-            title: "Addresses",
+            title: translatedStrings['addresses']!,
             language: dropdownValue,
             onClick: () {
               Navigator.pushNamed(context, AddressesPage.routeName);
@@ -232,7 +242,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           const Divider(),
           UserMenuItem(
             icon: Icons.password_outlined,
-            title: "Change Password",
+            title: translatedStrings['change_password']!,
             language: dropdownValue,
             onClick: () {
               Navigator.pushNamed(context, ChangePasswordPage.routeName)
@@ -253,7 +263,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               builder: (ctx, state) {
                 return UserMenuItem(
                   icon: Icons.edit_document,
-                  title: "Privacy Policy",
+                  title: translatedStrings['privacy_policy']!,
                   language: dropdownValue,
                   onClick: () {
                     ctx.read<UserCubit>().openPrivatePolicy();
@@ -265,7 +275,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           const Divider(),
           UserMenuItem(
             icon: Icons.delete,
-            title: "Delete your account",
+            title: translatedStrings['delete_account']!,
             language: dropdownValue,
             onClick: () {
               displaySnackWithAction(
@@ -280,7 +290,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           const Divider(),
           UserMenuItem(
             icon: FontAwesomeIcons.language,
-            title: "Change Language",
+            title: translatedStrings['change_language']!,
             language: dropdownValue,
             onClick: () {
               buildLanguageDialog(context);
@@ -349,31 +359,38 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             padding: const EdgeInsets.all(10.0),
             child: Row(
               children: [
-                FutureBuilder<String>(
-                  future: Translations.translatedText(
-                      'Personal Details',
-                      GlobalStrings
-                          .getGlobalString()), // Adjust language code as needed
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return Text(
-                        snapshot.data ?? 'Personal Details',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(color: AppColors.secondaryTextColor),
-                      );
-                    } else {
-                      return Text(
-                        'Loading...', // Or any loading indicator
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(color: AppColors.secondaryTextColor),
-                      );
-                    }
-                  },
+                Text(
+                  translatedStrings['personal_details']!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(color: AppColors.secondaryTextColor),
                 ),
+                // FutureBuilder<String>(
+                //   future: Translations.translatedText(
+                //       'Personal Details',
+                //       GlobalStrings
+                //           .getGlobalString()), // Adjust language code as needed
+                //   builder: (context, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.done) {
+                //       return Text(
+                //         snapshot.data ?? 'Personal Details',
+                //         style: Theme.of(context)
+                //             .textTheme
+                //             .titleMedium
+                //             ?.copyWith(color: AppColors.secondaryTextColor),
+                //       );
+                //     } else {
+                //       return Text(
+                //         'Loading...', // Or any loading indicator
+                //         style: Theme.of(context)
+                //             .textTheme
+                //             .titleMedium
+                //             ?.copyWith(color: AppColors.secondaryTextColor),
+                //       );
+                //     }
+                //   },
+                // ),
                 const Spacer(),
                 // Text(
                 //   'Edit',
@@ -537,8 +554,9 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                           await prefs.setString("lang", selectedLocale);
                           // await prefs.setBool('repeat', true);
                           // ignore: use_build_context_synchronously
-                          Navigator.pushNamedAndRemoveUntil(context,
-                              DashboardPage.routeName, (route) => false);
+                          // await translateStrings();
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, SplashPage.routeName, (route) => false);
                         },
                       ),
                     );
