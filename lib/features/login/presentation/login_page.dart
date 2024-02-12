@@ -10,6 +10,7 @@ import 'package:commercepal/features/login/presentation/bloc/login_state.dart';
 import 'package:commercepal/features/reset_password/presentation/reset_pass_page.dart';
 import 'package:commercepal/features/set_password/presentation/user_set_password_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/user_registration_page.dart';
 import 'package:flutter/material.dart';
@@ -120,84 +121,85 @@ class _LoginPageState extends State<LoginPage> {
                         width: MediaQuery.of(context).size.width * 0.5,
                         height: MediaQuery.of(context).size.height * 0.25,
                       ),
-                      loading
-                          ? Text("Loading...")
-                          : Text(
-                              lHint,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                      // loading
+                      //     ? Text("Loading...")
+                      //     :
+                      Text(
+                        translatedStrings['continue']!,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
 
                       const SizedBox(
                         height: 20,
                       ),
-                      loading
-                          ? const Text("Loading...")
-                          : TextFormField(
-                              validator: (v) {
-                                if (v?.isEmpty == true) {
-                                  return "Email or phone number is required";
-                                }
-                                return null;
-                              },
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              onChanged: (value) {
-                                setState(() {
-                                  _emailOrPhone = value;
-                                });
-                              },
-                              decoration: buildInputDecoration(cHint)),
+                      // loading
+                      //     ? const Text("Loading...")
+                      //     :
+                      TextFormField(
+                          validator: (v) {
+                            if (v?.isEmpty == true) {
+                              return "Email or phone number is required";
+                            }
+                            return null;
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          onChanged: (value) {
+                            setState(() {
+                              _emailOrPhone = value;
+                            });
+                          },
+                          decoration: buildInputDecoration(
+                              translatedStrings['email_or_phone']!)),
                       const SizedBox(
                         height: 16,
                       ),
-                      loading
-                          ? const Text("Loading...")
-                          : TextFormField(
-                              obscureText: obscureText,
-                              keyboardType: TextInputType.visiblePassword,
-                              validator: (v) {
-                                if (v?.isEmpty == true) {
-                                  return "Password is required";
-                                }
-                                return null;
-                              },
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              onChanged: (value) {
-                                setState(() {
-                                  _pass = value;
-                                });
-                              },
-                              // decoration: buildInputDecoration(pHint),
-                              decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    // Based on passwordVisible state choose the icon
-                                    obscureText
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                  ),
-                                  onPressed: () {
-                                    // Update the state i.e. toogle the state of passwordVisible variable
-                                    setState(() {
-                                      obscureText = !obscureText;
-                                    });
-                                  },
-                                ),
-                                filled: true,
-                                fillColor:
-                                    AppColors.fieldBorder.withOpacity(0.8),
-                                enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                errorBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                focusedErrorBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                hintText: "Enter your password",
-                              ),
+                      // loading
+                      //     ? const Text("Loading...")
+                      //     :
+                      TextFormField(
+                        obscureText: obscureText,
+                        keyboardType: TextInputType.visiblePassword,
+                        validator: (v) {
+                          if (v?.isEmpty == true) {
+                            return "Password is required";
+                          }
+                          return null;
+                        },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onChanged: (value) {
+                          setState(() {
+                            _pass = value;
+                          });
+                        },
+                        // decoration: buildInputDecoration(pHint),
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              // Based on passwordVisible state choose the icon
+                              obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
+                            onPressed: () {
+                              // Update the state i.e. toogle the state of passwordVisible variable
+                              setState(() {
+                                obscureText = !obscureText;
+                              });
+                            },
+                          ),
+                          filled: true,
+                          fillColor: AppColors.fieldBorder.withOpacity(0.8),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
+                          errorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
+                          focusedErrorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
+                          hintText: translatedStrings['password']!,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
@@ -210,17 +212,18 @@ class _LoginPageState extends State<LoginPage> {
                                       builder: (context) =>
                                           const ForgotPassword()));
                             },
-                            child: loading
-                                ? const Text("Loading...")
-                                : Text(
-                                    aHint,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                            color:
-                                                AppColors.secondaryTextColor),
-                                  ),
+                            child:
+                                //  loading
+                                //     ? const Text("Loading...")
+                                //     :
+                                Text(
+                              translatedStrings['forgot_password']!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                      color: AppColors.secondaryTextColor),
+                            ),
                           ),
                         ],
                       ),
@@ -246,15 +249,17 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushNamed(
                                 context, UserRegistrationPage.routeName);
                           },
-                          child: loading
-                              ? Text('Loading...')
-                              : Text(
-                                  caHint,
-                                  style: const TextStyle(
-                                    color: AppColors.colorPrimaryDark,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
+                          child:
+                              // loading
+                              //     ? Text('Loading...')
+                              //     :
+                              Text(
+                            translatedStrings['create_account']!,
+                            style: const TextStyle(
+                              color: AppColors.colorPrimaryDark,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
                         ),
                       )
                     ],

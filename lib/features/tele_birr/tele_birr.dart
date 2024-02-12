@@ -212,7 +212,7 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
                     ],
                   )
                 : !loading && url == ''
-                    ? Text(message!)
+                    ? Text('')
                     : Text(dHint)
           ],
         ),

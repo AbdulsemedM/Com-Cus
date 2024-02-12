@@ -38,25 +38,33 @@ class UserMenuItem extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            FutureBuilder<String>(
-              future: Translations.translatedText(
-                  title, GlobalStrings.getGlobalString()),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Text(
-                    snapshot.data ?? 'Default Text',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.colorPrimary, fontSize: 14.sp),
-                    textAlign: TextAlign.right,
-                  );
-                } else {
-                  return Text(
-                    'Loading...',
-                    textAlign: TextAlign.right,
-                  ); // Or any loading indicator
-                }
-              },
+            Text(
+              title,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(color: AppColors.colorPrimary, fontSize: 14.sp),
+              textAlign: TextAlign.right,
             ),
+            // FutureBuilder<String>(
+            //   future: Translations.translatedText(
+            //       title, GlobalStrings.getGlobalString()),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.done) {
+            //       return Text(
+            //         snapshot.data ?? 'Default Text',
+            //         style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            //             color: AppColors.colorPrimary, fontSize: 14.sp),
+            //         textAlign: TextAlign.right,
+            //       );
+            //     } else {
+            //       return Text(
+            //         'Loading...',
+            //         textAlign: TextAlign.right,
+            //       ); // Or any loading indicator
+            //     }
+            //   },
+            // ),
             // Text(
             //   title,
             //   style: Theme.of(context)
