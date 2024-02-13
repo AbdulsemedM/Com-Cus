@@ -506,7 +506,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
     {'name': 'English', 'locale': "en"},
     {'name': 'አማርኛ', 'locale': "am"},
     {'name': 'Somali', 'locale': 'so'},
-    {'name': 'Afaan Oromoo', 'locale': 'om'},
+    // {'name': 'Afaan Oromoo', 'locale': 'om'},
     {'name': 'ٱلْعَرَبِيَّة', 'locale': 'ar'},
   ];
 

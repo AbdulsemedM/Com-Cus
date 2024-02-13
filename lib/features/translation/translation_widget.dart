@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:http/http.dart' as http;
 import 'package:html_unescape/html_unescape.dart';
+import 'package:translator/translator.dart';
 
 Map<String, String> translatedStrings = {};
 
@@ -35,8 +36,9 @@ Future<void> translateStrings() async {
   }
 
   // If language is not English, proceed with translation
-  final apiKey = 'AIzaSyC2YukgrlGVdc0NZHY6JuRJK3GuIs5U4Ks'; // Replace with your API key
-  final url = 'https://translation.googleapis.com/language/translate/v2';
+  // final apiKey =
+  //     'AIzaSyC2YukgrlGVdc0NZHY6JuRJK3GuIs5U4Ks'; // Replace with your API key
+  // final url = 'https://translation.googleapis.com/language/translate/v2';
   final stringsToTranslate = {
     // 'home': 'Home',
     // 'category': 'Category',
@@ -59,29 +61,34 @@ Future<void> translateStrings() async {
     // Add more strings here
   };
 
-  final unescape = HtmlUnescape();
+  // final unescape = HtmlUnescape();
 
   await Future.forEach(stringsToTranslate.entries, (entry) async {
     try {
-      final response = await http.post(
-        Uri.parse(url),
-        body: {
-          'q': entry.value,
-          'target': language, // Use the selected language
-          'key': apiKey,
-        },
-      );
+      print(entry.value);
+      Translation translation =
+          await GoogleTranslator().translate(entry.value, to: language);
+      translatedStrings[entry.key] = translation.text;
+      //////////////////////////////////////////////////////////////
+      // final response = await http.post(
+      //   Uri.parse(url),
+      //   body: {
+      //     'q': entry.value,
+      //     'target': language, // Use the selected language
+      //     'key': apiKey,
+      //   },
+      // );
 
-      if (response.statusCode == 200) {
-        final decoded = json.decode(response.body);
-        final translatedText =
-            decoded['data']['translations'][0]['translatedText'];
-        final unescapedText = unescape.convert(translatedText);
-        translatedStrings[entry.key] = unescapedText;
-        print(unescapedText);
-      } else {
-        throw Exception('Failed to translate text');
-      }
+      // if (response.statusCode == 200) {
+      //   final decoded = json.decode(response.body);
+      //   final translatedText =
+      //       decoded['data']['translations'][0]['translatedText'];
+      //   final unescapedText = unescape.convert(translatedText);
+      //   translatedStrings[entry.key] = unescapedText;
+      //   print(unescapedText);
+      // } else {
+      //   throw Exception('Failed to translate text');
+      // }
     } catch (e) {
       // If translation fails, store the original text
       translatedStrings[entry.key] = entry.value;
