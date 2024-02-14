@@ -295,12 +295,15 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
                     ? GridView(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 80,
-                                childAspectRatio: 1 / 2.4,
-                                crossAxisSpacing: 20,
-                                mainAxisSpacing: 20),
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 80,
+                            childAspectRatio:
+                                MediaQuery.of(context).size.height > 896
+                                    ? 0.2
+                                    : 1 / 2.4,
+                            // childAspectRatio: 1 / 2.4,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20),
                         children: mostPopular!.first.items!
                             .map((e) => Builder(
                                 builder: (ctx) => GestureDetector(

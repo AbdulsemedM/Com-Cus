@@ -13,6 +13,7 @@ class CategoryItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var sHeight = MediaQuery.of(context).size.height;
     return Column(
       children: [
         Container(
@@ -40,7 +41,7 @@ class CategoryItemWidget extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .bodyText2
-                  ?.copyWith(fontSize: 12.sp)),
+                  ?.copyWith(fontSize: sHeight > 896 ? 12 : 12.sp)),
         ),
         const SizedBox(
           height: 10,

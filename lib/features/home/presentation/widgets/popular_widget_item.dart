@@ -16,6 +16,7 @@ class PopularWidgetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var sHeight = MediaQuery.of(context).size.height;
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -55,7 +56,7 @@ class PopularWidgetItem extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .headline3
-                      ?.copyWith(fontSize: 14.sp),
+                      ?.copyWith(fontSize: sHeight > 896 ? 12 :  14.sp),
                 ),
               ),
               Spacer(),
@@ -68,7 +69,7 @@ class PopularWidgetItem extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
-                      ?.copyWith(fontSize: 12.sp),
+                      ?.copyWith(fontSize: sHeight > 896 ? 12 : 12.sp),
                 ),
               ),
               const SizedBox(
