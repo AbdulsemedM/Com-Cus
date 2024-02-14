@@ -16,6 +16,7 @@ class PopularWidgetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var sHeight = MediaQuery.of(context).size.height;
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -47,7 +48,7 @@ class PopularWidgetItem extends StatelessWidget {
                 height: 10,
               ),
               SizedBox(
-                width: 100,
+                width: sHeight > 896 ? 150 : 100,
                 child: Text(
                   schemaItem.name ?? "...",
                   overflow: TextOverflow.ellipsis,
