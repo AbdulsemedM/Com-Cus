@@ -29,7 +29,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
 
   void fetchHints() async {
     setState(() {
-      loading = true;
+      loading1 = true;
     });
 
     physicalAddressHintFuture = Translations.translatedText(
@@ -52,7 +52,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
     // print(cHint);
 
     setState(() {
-      loading = false;
+      loading1 = false;
     });
   }
 
@@ -68,10 +68,13 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
   final TextEditingController pNumberController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
   var loading = false;
+  var loading1 = false;
   String? loanRef;
   String? message;
   String? pNumber;
   String? transRef;
+  String? markup;
+  String? period;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +90,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                 children: [
                   Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: loading ? const Text("Loading...") : Text(pHint)),
+                      child: loading1 ? const Text("Loading...") : Text(pHint)),
                 ],
               ),
               Form(
@@ -120,12 +123,22 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                 ),
               ),
               if (loanRef != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text("Your loan markup value is $markup."),
+                ),
+              if (loanRef != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text("Your loan repayment period is $period."),
+                ),
+              if (loanRef != null)
                 Row(
                   children: [
                     Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child:
-                            loading ? const Text("Loading...") : Text(cHint)),
+                            loading1 ? const Text("Loading...") : Text(cHint)),
                   ],
                 ),
               if (loanRef != null)
@@ -253,6 +266,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
           body: jsonEncode(payload),
           headers: <String, String>{"Authorization": "Bearer $token"},
         );
+        print(token);
 
         var data = jsonDecode(response.body);
         print(data);
@@ -262,6 +276,8 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
             loanRef = data['LoanRef'];
             message = data['statusMessage'] ?? '';
             transRef = data['TransRef'];
+            period = data['loanPeriod'];
+            markup = data['loanMarkup'];
             loading = false;
           });
           // print(transRef);
@@ -349,7 +365,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
           } else {
             // Retry limit reached, handle accordingly
             setState(() {
-              message = data['statusMessage'] ?? "Please try again later";
+              message = data['statusDescription'] ?? "Please try again later";
               loading = false;
             });
             return false;
