@@ -48,7 +48,7 @@ class PopularWidgetItem extends StatelessWidget {
                 height: 10,
               ),
               SizedBox(
-                width: sHeight > 896 ? 150 : 100,
+                width: 100,
                 child: Text(
                   schemaItem.name ?? "...",
                   overflow: TextOverflow.ellipsis,
@@ -56,7 +56,7 @@ class PopularWidgetItem extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .headline3
-                      ?.copyWith(fontSize: 14.sp),
+                      ?.copyWith(fontSize: sHeight > 896 ? 12 :  14.sp),
                 ),
               ),
               Spacer(),
@@ -69,7 +69,7 @@ class PopularWidgetItem extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
-                      ?.copyWith(fontSize: 12.sp),
+                      ?.copyWith(fontSize: sHeight > 896 ? 12 : 12.sp),
                 ),
               ),
               const SizedBox(
