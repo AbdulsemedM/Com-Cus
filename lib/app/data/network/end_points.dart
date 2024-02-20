@@ -132,7 +132,7 @@ extension Url on EndPoints {
       case EndPoints.specialOrderImage:
         return '$baseUrlCustomer/order/special/upload-image';
       case EndPoints.mySpecialOrders:
-        return '$baseUrlCustomer/order/special/my-request-order';
+        return '$baseUrl2/special-orders/my-requests';
       case EndPoints.financialInstitutions:
         return '$financials/financial-institutions';
       case EndPoints.financialMarkUps:

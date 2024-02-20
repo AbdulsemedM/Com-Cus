@@ -2,8 +2,10 @@ import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/features/addresses/presentation/addresses_page.dart';
 import 'package:commercepal/features/change_password/presentation/change_password_page.dart';
+import 'package:commercepal/features/commercepal_coins/commecepal_coins.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_state.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
+import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
 import 'package:commercepal/features/splash/splash_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_widget.dart';
@@ -214,11 +216,23 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             height: 20,
           ),
           UserMenuItem(
+            icon: Icons.attach_money_outlined,
+            title: translatedStrings['commercepal_coins']!,
+            language: dropdownValue,
+            onClick: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CommecepalCoins()));
+            },
+          ),
+          const Divider(),
+          UserMenuItem(
             icon: Icons.production_quantity_limits_outlined,
             title: translatedStrings['special_orders']!,
             language: dropdownValue,
             onClick: () {
-              Navigator.pushNamed(context, ListSpecialOrdersPage.routeName);
+              // Navigator.pushNamed(context, ListSpecialOrdersPage.routeName);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NewSpecialOrders()));
             },
           ),
           const Divider(),

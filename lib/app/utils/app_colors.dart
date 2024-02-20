@@ -15,4 +15,6 @@ class AppColors {
 
   static const bg1 = Color(0xFFF5F5F5);
   static const priceBg = Color(0xFFF8F2FF);
+  static const purple = Color(0xFF741CEB);
+  static const colorAccent = Color(0xFF990E5E);
 }

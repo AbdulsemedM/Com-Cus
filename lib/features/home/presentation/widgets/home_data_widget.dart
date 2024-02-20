@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
+import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
 import 'package:commercepal/features/sub_categories/presentation/sub_categories_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
@@ -393,7 +394,10 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
               subTitle: loading ? "Loading..." : gHint,
               imagePng: Assets.specialOrder,
               onClick: () {
-                Navigator.pushNamed(context, ListSpecialOrdersPage.routeName);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NewSpecialOrders()));
               },
             )
           ],

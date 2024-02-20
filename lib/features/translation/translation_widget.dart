@@ -17,6 +17,7 @@ Future<void> translateStrings() async {
       // 'cart': 'Cart',
       // 'user': 'User',
       'logout': 'Log Out',
+      'commercepal_coins': 'Commecepal Coins',
       'special_orders': 'Special Orders',
       'my_orders': 'My Orders',
       'addresses': 'Addresses',
