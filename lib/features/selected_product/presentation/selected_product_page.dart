@@ -13,6 +13,7 @@ import 'package:commercepal/features/dashboard/widgets/home_search_field_widget.
 import 'package:commercepal/features/products/domain/product.dart';
 import 'package:commercepal/features/selected_product/presentation/bloc/selected_product_cubit.dart';
 import 'package:commercepal/features/selected_product/presentation/bloc/selected_product_state.dart';
+import 'package:commercepal/features/selected_product/presentation/widgets/add_product_review.dart';
 import 'package:commercepal/features/selected_product/presentation/widgets/review_product.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
@@ -423,12 +424,11 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                   child: _buildTitle("Reviews"),
                 ),
               ])),
-              // if (id != null)
               //   SliverToBoxAdapter(
-              //     child: SizedBox(child: 
-              //     ReviewProduct(pId: id!),
-              //     ),
+              //     child: SizedBox(child:
+              if (id != null) ReviewProduct(pId: id!),
               //   ),
+              // ),
               // if (widget.selectedProductDetails.reviews?.isNotEmpty == true)
               //   SliverList(
               //       delegate: SliverChildBuilderDelegate(
@@ -448,6 +448,16 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
               //                 rating: widget.selectedProductDetails
               //                     .reviews![index].rating,
               //               )))
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  // height: 50,
+                  child: id!.isNotEmpty
+                      ? AddProductReview(
+                          pId: id!,
+                        )
+                      : Container(),
+                ),
+              ),
             ],
           ),
         ),

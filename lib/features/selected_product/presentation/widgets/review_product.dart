@@ -70,7 +70,7 @@ class _ReviewProductState extends State<ReviewProduct> {
         final response = await http.get(
           Uri.https(
             "api.commercepal.com:2096",
-            "/prime/api/v1/product-reviews/by-product/1",
+            "/prime/api/v1/product-reviews/by-product/${widget.pId}",
           ),
           headers: <String, String>{
             'Authorization': 'Bearer $token',

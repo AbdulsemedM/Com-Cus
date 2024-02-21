@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../app/utils/app_colors.dart';
 
@@ -30,13 +31,13 @@ class ProductReviewItemWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title ?? "",
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontSize: 18.sp),
-          ),
+          // Text(
+          //   title ?? "",
+          //   style: Theme.of(context)
+          //       .textTheme
+          //       .titleMedium
+          //       ?.copyWith(fontSize: 18.sp),
+          // ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Row(
@@ -89,7 +90,7 @@ class ProductReviewItemWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              date ?? '',
+              DateFormat('dd MM yyyy').format(DateTime.parse(date ?? '')),
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
