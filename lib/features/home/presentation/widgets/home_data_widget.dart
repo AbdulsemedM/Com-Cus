@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
 import 'package:commercepal/features/sub_categories/presentation/sub_categories_page.dart';
@@ -378,16 +379,25 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
                       : pHint),
               subTitle: loading ? "Loading..." : cHint,
               imagePng: Assets.commercepalOriginPng,
+              onClick: () {
+                displaySnack(context, "Will be available soon.");
+              },
             ),
             TopCategoryWidget(
               title: loading ? "Loading..." : aHint,
               subTitle: loading ? "Loading..." : bHint,
               imagePng: Assets.flashSale,
+              onClick: () {
+                displaySnack(context, "Will be available soon.");
+              },
             ),
             TopCategoryWidget(
               title: loading ? "Loading..." : dHint,
               subTitle: loading ? "Loading..." : eHint,
               imagePng: Assets.topDeals,
+              onClick: () {
+                displaySnack(context, "Will be available soon.");
+              },
             ),
             TopCategoryWidget(
               title: loading ? "Loading..." : fHint,

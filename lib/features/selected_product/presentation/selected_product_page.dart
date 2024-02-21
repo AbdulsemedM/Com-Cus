@@ -13,6 +13,7 @@ import 'package:commercepal/features/dashboard/widgets/home_search_field_widget.
 import 'package:commercepal/features/products/domain/product.dart';
 import 'package:commercepal/features/selected_product/presentation/bloc/selected_product_cubit.dart';
 import 'package:commercepal/features/selected_product/presentation/bloc/selected_product_state.dart';
+import 'package:commercepal/features/selected_product/presentation/widgets/review_product.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
@@ -39,10 +40,13 @@ class SelectedProductPage extends StatefulWidget {
   State<SelectedProductPage> createState() => _SelectedProductPageState();
 }
 
+String? id;
+
 class _SelectedProductPageState extends State<SelectedProductPage> {
   @override
   Widget build(BuildContext context) {
     final Map args = ModalRoute.of(context)?.settings.arguments as Map;
+    id = args['p_id'].toString();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -419,25 +423,31 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                   child: _buildTitle("Reviews"),
                 ),
               ])),
-              if (widget.selectedProductDetails.reviews?.isNotEmpty == true)
-                SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                        childCount:
-                            widget.selectedProductDetails.reviews?.length,
-                        (context, index) => ProductReviewItemWidget(
-                              title: widget
-                                  .selectedProductDetails.reviews![index].title,
-                              name: widget.selectedProductDetails
-                                  .reviews![index].reviewerName,
-                              userImage: widget.selectedProductDetails
-                                  .reviews![index].reviewerProfileImageUrl,
-                              description: widget.selectedProductDetails
-                                  .reviews![index].description,
-                              date: widget
-                                  .selectedProductDetails.reviews![index].date,
-                              rating: widget.selectedProductDetails
-                                  .reviews![index].rating,
-                            )))
+              // if (id != null)
+              //   SliverToBoxAdapter(
+              //     child: SizedBox(child: 
+              //     ReviewProduct(pId: id!),
+              //     ),
+              //   ),
+              // if (widget.selectedProductDetails.reviews?.isNotEmpty == true)
+              //   SliverList(
+              //       delegate: SliverChildBuilderDelegate(
+              //           childCount:
+              //               widget.selectedProductDetails.reviews?.length,
+              //           (context, index) => ProductReviewItemWidget(
+              //                 title: widget
+              //                     .selectedProductDetails.reviews![index].title,
+              //                 name: widget.selectedProductDetails
+              //                     .reviews![index].reviewerName,
+              //                 userImage: widget.selectedProductDetails
+              //                     .reviews![index].reviewerProfileImageUrl,
+              //                 description: widget.selectedProductDetails
+              //                     .reviews![index].description,
+              //                 date: widget
+              //                     .selectedProductDetails.reviews![index].date,
+              //                 rating: widget.selectedProductDetails
+              //                     .reviews![index].rating,
+              //               )))
             ],
           ),
         ),

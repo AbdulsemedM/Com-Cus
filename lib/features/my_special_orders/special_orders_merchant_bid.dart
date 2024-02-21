@@ -52,13 +52,13 @@ class _MerchantBidsState extends State<MerchantBids> {
             SizedBox(
               height: sHeight * 0.9,
               child: !loading && myBids.isEmpty
-                  ? Column(
+                  ? const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [Center(child: Text("No bds found"))],
+                      children: [Center(child: Text("No bids found"))],
                     )
                   : loading && myBids.isEmpty
-                      ? Column(
+                      ? const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Center(

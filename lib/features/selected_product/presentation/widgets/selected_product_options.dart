@@ -22,6 +22,14 @@ class SelectedProductOptions extends StatefulWidget {
 
 class _SelectedProductOptionsState extends State<SelectedProductOptions> {
   bool _open = false;
+  @override
+  void initState() {
+    super.initState();
+    if (widget.title == 'Specifications') {
+      print(_open);
+      _open = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -204,7 +204,9 @@ class _NewSpecialOrdersState extends State<NewSpecialOrders> {
                                       },
                                     ),
                                     Text(
-                                      myOrders[index].status.toString(),
+                                      myOrders[index].status.toString() == '0'
+                                          ? "Order placed successfully"
+                                          : 'Order delivred successfully',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium
