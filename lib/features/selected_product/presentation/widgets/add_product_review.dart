@@ -112,7 +112,10 @@ class _AddProductReviewState extends State<AddProductReview> {
                                           "Something went wrong, please try again");
                                     }
                                   },
-                                  child: Text('Post')))
+                                  child: Text(
+                                    'Post',
+                                    style: TextStyle(color: AppColors.bgColor),
+                                  )))
                     ],
                   )),
                 )
