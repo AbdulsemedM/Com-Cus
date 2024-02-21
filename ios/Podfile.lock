@@ -19,13 +19,26 @@ PODS:
   - google_maps_flutter_ios (0.0.1):
     - Flutter
     - GoogleMaps (< 9.0)
-  - GoogleMaps (5.2.0):
-    - GoogleMaps/Maps (= 5.2.0)
-  - GoogleMaps/Base (5.2.0)
-  - GoogleMaps/Maps (5.2.0):
+  - GoogleMaps (6.2.1):
+    - GoogleMaps/Maps (= 6.2.1)
+  - GoogleMaps/Base (6.2.1)
+  - GoogleMaps/Maps (6.2.1):
     - GoogleMaps/Base
   - image_picker_ios (0.0.1):
     - Flutter
+  - onesignal_flutter (3.5.2):
+    - Flutter
+    - OneSignalXCFramework (= 3.12.7)
+  - OneSignalXCFramework (3.12.7):
+    - OneSignalXCFramework/OneSignalCore (= 3.12.7)
+    - OneSignalXCFramework/OneSignalExtension (= 3.12.7)
+    - OneSignalXCFramework/OneSignalOutcomes (= 3.12.7)
+  - OneSignalXCFramework/OneSignalCore (3.12.7)
+  - OneSignalXCFramework/OneSignalExtension (3.12.7):
+    - OneSignalXCFramework/OneSignalCore
+    - OneSignalXCFramework/OneSignalOutcomes
+  - OneSignalXCFramework/OneSignalOutcomes (3.12.7):
+    - OneSignalXCFramework/OneSignalCore
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -63,6 +76,8 @@ DEPENDENCIES:
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
+  - OneSignalXCFramework (< 6.0, >= 2.5.2)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -78,6 +93,7 @@ SPEC REPOS:
   trunk:
     - FMDB
     - GoogleMaps
+    - OneSignalXCFramework
     - PhoneNumberKit
     - Reachability
 
@@ -100,6 +116,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_maps_flutter_ios/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  onesignal_flutter:
+    :path: ".symlinks/plugins/onesignal_flutter/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -131,8 +149,10 @@ SPEC CHECKSUMS:
   geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
   geolocator_apple: 9157311f654584b9bb72686c55fc02a97b73f461
   google_maps_flutter_ios: d1318b4ff711612cab16862d7a87e31a7403d458
-  GoogleMaps: 025272d5876d3b32604e5c080dc25eaf68764693
+  GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  onesignal_flutter: 86b451a4f1d81cdc7a6f131d7b5bc2e44ae15227
+  OneSignalXCFramework: 0fca311799488cb50419c0b96594aa8df4300115
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
@@ -146,6 +166,6 @@ SPEC CHECKSUMS:
   url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
-PODFILE CHECKSUM: b314d48ca4f9ce545495d66d368103a4e07fa1be
+PODFILE CHECKSUM: 869103634f5303fbc1bdde79cfe9ef62a619c31c
 
 COCOAPODS: 1.14.3
