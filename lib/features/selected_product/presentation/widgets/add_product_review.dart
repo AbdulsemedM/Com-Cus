@@ -123,6 +123,7 @@ class _AddProductReviewState extends State<AddProductReview> {
 
   Future<bool> sendData({int retryCount = 0}) async {
     try {
+      print('here we go again...');
       setState(() {
         loading = true;
       });
@@ -174,6 +175,8 @@ class _AddProductReviewState extends State<AddProductReview> {
           }
         }
         return false;
+      } else {
+        displaySnack(context, "Please login first to review products");
       }
       return false;
     } catch (e) {

@@ -66,7 +66,7 @@ class _MerchantBidsState extends State<MerchantBids> {
                                 color: AppColors.colorPrimaryDark,
                               ),
                             ),
-                            Text("Fetching Transactions")
+                            Text("Fetching Bids")
                           ],
                         )
                       : SizedBox(

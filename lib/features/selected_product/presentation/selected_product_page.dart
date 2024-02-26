@@ -48,6 +48,7 @@ class _SelectedProductPageState extends State<SelectedProductPage> {
   Widget build(BuildContext context) {
     final Map args = ModalRoute.of(context)?.settings.arguments as Map;
     id = args['p_id'].toString();
+    print(id);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
