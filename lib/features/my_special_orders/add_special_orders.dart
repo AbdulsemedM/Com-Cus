@@ -227,12 +227,12 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                             return null;
                           },
                         ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
                         child: Text("Description"),
                       ),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             filled: true,
                             fillColor: AppColors.greyColor,
                             focusedBorder: InputBorder.none,
@@ -255,12 +255,12 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                           return null;
                         },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
                         child: Text("Link to product"),
                       ),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             filled: true,
                             fillColor: AppColors.greyColor,
                             focusedBorder: InputBorder.none,
@@ -273,21 +273,21 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                           });
                         },
                         validator: (value) {
-                          if (value?.isEmpty == true) {
-                            return 'Link is required';
-                          }
+                          // if (value?.isEmpty == true) {
+                          //   return 'Link is required';
+                          // }
                           // else if (!isValidEmail(value!)) {
                           //   return 'Please enter a valid email';
                           // }
                           return null;
                         },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
                         child: Text("Estimated Price"),
                       ),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             filled: true,
                             fillColor: AppColors.greyColor,
                             focusedBorder: InputBorder.none,
@@ -307,9 +307,9 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                           }
                         },
                       ),
-                      Text("Product Image"),
+                      const Text("Product Image"),
                       _image == null
-                          ? SizedBox(child: Text('JPG/PNG file'))
+                          ? const SizedBox(child: Text('JPG/PNG file'))
                           : SizedBox(
                               height: sHeight * 0.15,
                               child: Image.file(_image!)),
@@ -322,16 +322,16 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                               backgroundColor: AppColors.colorPrimaryDark,
                               onPressed: () => _getImage(ImageSource.gallery),
                               tooltip: 'Pick Image from Gallery',
-                              child: Icon(
+                              child: const Icon(
                                 Icons.photo,
                               ),
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             FloatingActionButton(
                               backgroundColor: AppColors.colorPrimaryDark,
                               onPressed: () => _getImage(ImageSource.camera),
                               tooltip: 'Take a Photo',
-                              child: Icon(
+                              child: const Icon(
                                 Icons.camera_alt,
                               ),
                             ),
@@ -339,7 +339,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                         ),
                       ),
                       loading
-                          ? CircularProgressIndicator(
+                          ? const CircularProgressIndicator(
                               color: AppColors.colorPrimaryDark,
                             )
                           : SizedBox(
@@ -353,8 +353,10 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                                         _image != null) {
                                       bool done = await verifyForm();
                                       if (done) {
+                                        // ignore: use_build_context_synchronously
                                         displaySnack(context,
                                             "Order Placed successfully.");
+                                        // ignore: use_build_context_synchronously
                                         Navigator.pop(context);
                                       } else {
                                         displaySnack(context,
