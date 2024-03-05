@@ -75,6 +75,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
   String? transRef;
   String? markup;
   String? period;
+  String? totalRepaymentAmount;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,6 +134,12 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                   child: Text("Your loan repayment period is $period."),
                 ),
               if (loanRef != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                      "The total repayment amount is $totalRepaymentAmount."),
+                ),
+              if (loanRef != null)
                 Row(
                   children: [
                     Padding(
@@ -150,7 +157,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                       focusedBorder: InputBorder.none,
                       focusedErrorBorder: InputBorder.none,
                       enabledBorder: InputBorder.none),
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.text,
                 ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
@@ -278,6 +285,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
             transRef = data['TransRef'];
             period = data['loanPeriod'];
             markup = data['loanMarkup'];
+            totalRepaymentAmount = data['totalRepaymentAmount'];
             loading = false;
           });
           // print(transRef);
