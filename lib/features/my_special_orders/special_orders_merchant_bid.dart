@@ -120,7 +120,7 @@ class _MerchantBidsState extends State<MerchantBids> {
                                           ),
                                         ),
                                         Text(
-                                            'Offer expires on ${DateFormat('dd MMM, HH:mm').format(DateTime.parse(myBids[index].offerExpirationDate))}',
+                                            'Offer expires on ${DateFormat('dd MMM,').format(DateTime.parse(myBids[index].offerExpirationDate))}',
                                             style: TextStyle(
                                                 fontSize: sWidth * 0.03))
                                       ],
@@ -157,10 +157,11 @@ class _MerchantBidsState extends State<MerchantBids> {
             'Content-Type': 'application/json; charset=UTF-8',
           },
         );
-        print('hererererer');
+        print(widget.specialOrderId);
         var datas = jsonDecode(response.body);
         print(datas);
         if (datas['statusCode'] == "000") {
+          myBids.clear();
           for (var i in datas['data']) {
             myBids.add(BidData(
               offerPrice: i['offerPrice'].toString() ?? '0',

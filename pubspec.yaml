@@ -3,7 +3,7 @@ description: An ecommerce site
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.9+37
+version: 1.0.11+41
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -67,6 +67,7 @@ dependencies:
   gallery_saver: ^2.0.1
   image: ^3.0.1
   onesignal_flutter: ^3.5.1
+  upgrader: ^9.0.0
 
   # Unescape html characters
   html_unescape:

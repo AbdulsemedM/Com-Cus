@@ -10,9 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:upgrader/upgrader.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter is initialized
+  Upgrader.clearSavedSettings();
 
   // Initialize OneSignal after Flutter is initialized
   await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
