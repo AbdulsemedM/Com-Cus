@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
+import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -294,6 +297,28 @@ class _MerchantBidsState extends State<MerchantBids> {
                           print(data);
 
                           if (data['statusCode'] == '000') {
+                            var unitPrice = data['data']['unitPrice'];
+                            var quantity = data['data']['quantity'];
+                            var productImage = data['data']['productImage'];
+                            var unique_id = data['data']['unique_id'];
+                            int productId = data['data']['productId'];
+                            var totalPrice = data['data']['totalPrice'];
+                            var subProductId = data['data']['subProductId'];
+
+                            CartItem myItem = CartItem(
+                                productId: productId,
+                                name: "Special Order",
+                                image: productImage,
+                                description: '-',
+                                price: totalPrice.toString(),
+                                currency: "ETB",
+                                subProductId: subProductId,
+                                quantity: quantity);
+                            context.read<CartCoreCubit>().addCartItem(myItem);
+                            debugPrint("added successfully");
+                            displaySnack(
+                                context, "Special order added to cart");
+
                             Navigator.pop(context);
                             fetchSpecialBids();
                             setState(() {

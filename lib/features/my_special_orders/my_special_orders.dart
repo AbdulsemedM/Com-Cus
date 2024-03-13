@@ -250,18 +250,19 @@ class _NewSpecialOrdersState extends State<NewSpecialOrders> {
         print(datas);
         if (datas['statusCode'] == "000") {
           for (var i in datas['data']) {
-            myOrders.add(mySpecialOrders(
-                status: i['status'] ?? 0,
-                requestDate: i['requestDate'] ?? '',
-                description: i['description'] ?? '',
-                productName: i['productName'] ?? '',
-                imageOne: i['imageOne'] ?? '',
-                specialOrderId: i['specialOrderId'] ?? '',
-                linkToProduct: i['linkToProduct'] ?? ''));
+            if (i['status'] != 3) {
+              myOrders.add(mySpecialOrders(
+                  status: i['status'] ?? 0,
+                  requestDate: i['requestDate'] ?? '',
+                  description: i['description'] ?? '',
+                  productName: i['productName'] ?? '',
+                  imageOne: i['imageOne'] ?? '',
+                  specialOrderId: i['specialOrderId'] ?? '',
+                  linkToProduct: i['linkToProduct'] ?? ''));
+            }
+            // if (myOrders.isEmpty) {
+            //   throw 'No special orders found';
           }
-          // if (myOrders.isEmpty) {
-          //   throw 'No special orders found';
-          // }
           print(myOrders.length);
         } else {
           throw datas['statusDescription'] ?? 'Error fetching special orders';

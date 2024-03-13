@@ -79,6 +79,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
 
   @override
   Future<num> getDeliveryFee(String orderRef, int? addressId) async {
+    print("getDeliveryFee");
     try {
       final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
       final payLoad = switch (isUserBusiness) {

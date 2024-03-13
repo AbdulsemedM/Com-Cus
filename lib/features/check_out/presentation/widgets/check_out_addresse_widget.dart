@@ -35,6 +35,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
     fetchHints();
   }
 
+  bool done = false;
+
   void fetchHints() async {
     setState(() {
       loading = true;
@@ -237,138 +239,154 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                         padding: const EdgeInsets.all(16.0),
                         child: HomeErrorWidget(error: error),
                       ),
-                  addresses: (adds) => Column(
-                        children: adds
-                            .map((address) => Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: ListTile(
-                                        onTap: () {
+                  addresses: (adds) {
+                    if (adds.isNotEmpty) {
+                      // Check if the list of addresses is not empty
+                      // Check if none of the addresses are selected
+                      // adds[0].selected = false;
+                      // AddressSelectedChoices.notSelcted;
+
+                      if (!adds.any((address) => address.selected == true)) {
+                        _markSelectedAddress(ctx, adds[0], adds);
+                        // widget.onAddressClicked.call(adds[0]);
+                        // adds[0].selected = true;
+                        // ctx.read<CheckOutCubit>().setSelectedAddress(adds[0]);
+                        print("newherewego");
+                        // Set the first address as selected
+                        // Dispatch the updated list of addresses to the CheckOutCubit
+                      } else if (adds[0].selected && !done) {
+                        // done = true;
+                        widget.onAddressClicked.call(adds[0]);
+                      }
+                    }
+                    return Column(
+                      children: adds
+                          .map((address) => Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: ListTile(
+                                      onTap: () {
+                                        _markSelectedAddress(
+                                            ctx, address, adds);
+                                      },
+                                      leading: Radio<AddressSelectedChoices>(
+                                        value: address.selected != true
+                                            ? AddressSelectedChoices.selected
+                                            : AddressSelectedChoices.notSelcted,
+                                        groupValue: _addSelected,
+                                        onChanged: (value) {
                                           _markSelectedAddress(
                                               ctx, address, adds);
                                         },
-                                        leading: Radio<AddressSelectedChoices>(
-                                          value: address.selected != true
-                                              ? AddressSelectedChoices.selected
-                                              : AddressSelectedChoices
-                                                  .notSelcted,
-                                          groupValue: _addSelected,
-                                          onChanged: (value) {
-                                            _markSelectedAddress(
-                                                ctx, address, adds);
-                                          },
-                                        ),
-                                        title: Text(
-                                          "${address.name}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium,
-                                        ),
-                                        subtitle: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            RichText(
-                                                text: TextSpan(children: [
-                                              TextSpan(
-                                                  text: loading
-                                                      ? "Loading..."
-                                                      : Co,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleSmall
-                                                      ?.copyWith(
-                                                          color: AppColors
-                                                              .secondaryTextColor)),
-                                              TextSpan(
-                                                  text: "${address.country}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleSmall
-                                                      ?.copyWith())
-                                            ])),
-                                            const SizedBox(
-                                              height: 4,
-                                            ),
-                                            RichText(
-                                                text: TextSpan(children: [
-                                              TextSpan(
-                                                  text: loading
-                                                      ? "Loading..."
-                                                      : Ci,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleSmall
-                                                      ?.copyWith(
-                                                          color: AppColors
-                                                              .secondaryTextColor)),
-                                              TextSpan(
-                                                  text: "${address.city}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleSmall
-                                                      ?.copyWith())
-                                            ])),
-                                            const SizedBox(
-                                              height: 4,
-                                            ),
-                                            RichText(
-                                                text: TextSpan(children: [
-                                              TextSpan(
-                                                  text: loading
-                                                      ? "Loading..."
-                                                      : SC,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleSmall
-                                                      ?.copyWith(
-                                                          color: AppColors
-                                                              .secondaryTextColor)),
-                                              TextSpan(
-                                                  text: "${address.subCounty}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleSmall
-                                                      ?.copyWith())
-                                            ]))
-                                          ],
-                                        ),
-                                        trailing: InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(context,
-                                                    EditAddressPage.routeName,
-                                                    arguments:
-                                                        address.toAddressItem())
-                                                .then((value) => ctx
-                                                    .read<CheckOutCubit>()
-                                                    .fetchAddresses());
-                                          },
-                                          child: loading
-                                              ? const Text("Loading...")
-                                              : Text(
-                                                  Ed,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displaySmall
-                                                      ?.copyWith(
-                                                          color: AppColors
-                                                              .colorPrimary,
-                                                          fontSize: 16.sp),
-                                                ),
-                                        ),
+                                      ),
+                                      title: Text(
+                                        "${address.name}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
+                                      ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          RichText(
+                                              text: TextSpan(children: [
+                                            TextSpan(
+                                                text:
+                                                    loading ? "Loading..." : Co,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall
+                                                    ?.copyWith(
+                                                        color: AppColors
+                                                            .secondaryTextColor)),
+                                            TextSpan(
+                                                text: "${address.country}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall
+                                                    ?.copyWith())
+                                          ])),
+                                          const SizedBox(
+                                            height: 4,
+                                          ),
+                                          RichText(
+                                              text: TextSpan(children: [
+                                            TextSpan(
+                                                text:
+                                                    loading ? "Loading..." : Ci,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall
+                                                    ?.copyWith(
+                                                        color: AppColors
+                                                            .secondaryTextColor)),
+                                            TextSpan(
+                                                text: "${address.city}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall
+                                                    ?.copyWith())
+                                          ])),
+                                          const SizedBox(
+                                            height: 4,
+                                          ),
+                                          RichText(
+                                              text: TextSpan(children: [
+                                            TextSpan(
+                                                text:
+                                                    loading ? "Loading..." : SC,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall
+                                                    ?.copyWith(
+                                                        color: AppColors
+                                                            .secondaryTextColor)),
+                                            TextSpan(
+                                                text: "${address.subCounty}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall
+                                                    ?.copyWith())
+                                          ]))
+                                        ],
+                                      ),
+                                      trailing: InkWell(
+                                        onTap: () {
+                                          Navigator.pushNamed(context,
+                                                  EditAddressPage.routeName,
+                                                  arguments:
+                                                      address.toAddressItem())
+                                              .then((value) => ctx
+                                                  .read<CheckOutCubit>()
+                                                  .fetchAddresses());
+                                        },
+                                        child: loading
+                                            ? const Text("Loading...")
+                                            : Text(
+                                                Ed,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displaySmall
+                                                    ?.copyWith(
+                                                        color: AppColors
+                                                            .colorPrimary,
+                                                        fontSize: 16.sp),
+                                              ),
                                       ),
                                     ),
-                                    if (adds.indexOf(address) ==
-                                        adds.length - 1)
-                                      const SizedBox(
-                                        height: 100,
-                                      )
-                                  ],
-                                ))
-                            .toList(),
-                      ))
+                                  ),
+                                  if (adds.indexOf(address) == adds.length - 1)
+                                    const SizedBox(
+                                      height: 100,
+                                    )
+                                ],
+                              ))
+                          .toList(),
+                    );
+                  })
             ],
           );
         },
