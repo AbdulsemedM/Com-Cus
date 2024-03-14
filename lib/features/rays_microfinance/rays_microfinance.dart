@@ -20,11 +20,22 @@ class RaysMicrofinance extends StatefulWidget {
   State<RaysMicrofinance> createState() => _RaysMicrofinanceState();
 }
 
+class RaysMarkup {
+  final String RepaymentMonth;
+  final String NonCollateralLimit;
+  final String Markup;
+  RaysMarkup(
+      {required this.RepaymentMonth,
+      required this.NonCollateralLimit,
+      required this.Markup});
+}
+
 class _RaysMicrofinanceState extends State<RaysMicrofinance> {
   @override
   void initState() {
     super.initState();
     fetchHints();
+    fetchRaysMarkup();
   }
 
   void fetchHints() async {
@@ -76,6 +87,9 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
   String? markup;
   String? period;
   String? totalRepaymentAmount;
+  List<RaysMarkup> myMarkups = [];
+  String? myMarkup;
+  RaysMarkup? selectedMarkups;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,40 +101,99 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: loading1 ? const Text("Loading...") : Text(pHint)),
-                ],
-              ),
               Form(
                 key: myForm,
-                child: TextFormField(
-                  controller: pNumberController,
-                  decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: AppColors.greyColor,
-                      focusedBorder: InputBorder.none,
-                      focusedErrorBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none),
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    // Define your regular expressions
-                    var regExp1 = RegExp(r'^0\d{9}$');
-                    var regExp2 = RegExp(r'^\+251\d{9}$');
-                    var regExp3 = RegExp(r'^\251\d{9}$');
+                child: Column(
+                  children: [
+                    const Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text("Select Markup"),
+                        ),
+                      ],
+                    ),
+                    DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: AppColors.greyColor,
+                        focusedBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                      ),
+                      items: myMarkups.map((RaysMarkup m) {
+                        return DropdownMenuItem<String>(
+                          value: m.Markup,
+                          child: Text(
+                            m.RepaymentMonth,
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          myMarkup = value;
+                          if (value != null) {
+                            // Find the selected markup entity and add it to the list
+                            selectedMarkups = myMarkups.firstWhere(
+                              (markup) =>
+                                  markup.Markup ==
+                                  value, // Provide a default value if no match is found
+                            );
+                            print(selectedMarkups!.RepaymentMonth);
+                            // selectedMarkups.add(selectedMarkup);
+                          }
+                        });
+                      },
+                      value:
+                          myMarkup, // Pass the selected value to the dropdown
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Loan Markup is required';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: loading1
+                                ? const Text("Loading...")
+                                : Text(pHint)),
+                      ],
+                    ),
+                    TextFormField(
+                      controller: pNumberController,
+                      decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: AppColors.greyColor,
+                          focusedBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none),
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        // Define your regular expressions
+                        var regExp1 = RegExp(r'^0\d{9}$');
+                        var regExp2 = RegExp(r'^\+251\d{9}$');
+                        var regExp3 = RegExp(r'^\251\d{9}$');
 
-                    // Check if the entered value matches either expression
-                    if (!(regExp1.hasMatch(value!) ||
-                        regExp3.hasMatch(value) ||
-                        regExp2.hasMatch(value))) {
-                      return 'Enter a valid mobile number';
-                    }
+                        // Check if the entered value matches either expression
+                        if (!(regExp1.hasMatch(value!) ||
+                            regExp3.hasMatch(value) ||
+                            regExp2.hasMatch(value))) {
+                          return 'Enter a valid mobile number';
+                        }
 
-                    // Validation passed
-                    return null;
-                  },
+                        // Validation passed
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
               ),
               if (loanRef != null)
@@ -258,10 +331,11 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
           "PaymentMode": "FINANCIAL_RAYS_MFI",
           "PhoneNumber": pNumber,
           "UserType": "B",
-          "MarkUpId": 1,
           "LoanType": "COL",
           "OrderRef": orderRef,
-          "Currency": "ETB"
+          "Currency": "ETB",
+          "Markup": int.parse(selectedMarkups!.Markup),
+          "RepaymentMonth": selectedMarkups!.RepaymentMonth,
         };
         print(payload);
 
@@ -390,6 +464,54 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
       });
       // Handle other exceptions
       return false;
+    }
+  }
+
+  Future<void> fetchRaysMarkup() async {
+    try {
+      setState(() {
+        loading = true;
+      });
+      final prefsData = getIt<PrefsData>();
+      final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      print(isUserLoggedIn);
+      if (isUserLoggedIn) {
+        final response = await http.get(
+          Uri.https(
+            "api.commercepal.com:2087",
+            "/api/v1/financial/payment/rays/products",
+          ),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        );
+        print('hererererer');
+        var datas = jsonDecode(response.body);
+        print(datas);
+        if (datas['statusCode'] == "000") {
+          for (var i in datas['data']) {
+            myMarkups.add(RaysMarkup(
+              NonCollateralLimit: i['NonCollateralLimit'] ?? 0,
+              Markup: i['Markup'].toString() ?? '',
+              RepaymentMonth: i['RepaymentMonth'] ?? '',
+            ));
+
+            // if (myOrders.isEmpty) {
+            //   throw 'No special orders found';
+          }
+          print("MyMarkups");
+          print(myMarkups.length);
+        } else {
+          throw datas['statusDescription'] ?? 'Error fetching special orders';
+        }
+      }
+
+      setState(() {
+        loading = false;
+      });
+    } catch (e) {
+      print(e.toString());
+      rethrow;
     }
   }
 }

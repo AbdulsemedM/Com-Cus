@@ -398,5 +398,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       BuildContext ctx, Address address, List<Address> adds) {
     ctx.read<CheckOutCubit>().markAddressAsSelected(address.id!.toInt(), adds);
     widget.onAddressClicked.call(address);
+    setState(() {
+      // done = true;
+    });
   }
 }
