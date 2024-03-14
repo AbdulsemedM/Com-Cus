@@ -36,6 +36,15 @@
 	<string>We need your location to provide you with location-based services and enhance your user experience.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>CommmercePal needs permission to access your photos</string>
+	<key>NSPrivacyAccessedAPICategoryFileTimestamp</key>
+    <string>CommmercePal accesses file timestamps to track file modification times for enhanced file management functionality.</string>
+    <key>NSPrivacyAccessedAPICategoryUserDefaults</key>
+    <string>CommmercePal accesses user defaults to store and retrieve user preferences for a personalized user experience.</string>
+    <key>NSPrivacyAccessedAPICategorySystemBootTime</key>
+    <string>CommmercePal accesses system boot time to optimize performance and resource allocation based on device uptime.</string>
+    <key>NSPrivacyAccessedAPICategoryDiskSpace</key>
+    <string>CommmercePal accesses disk space information to provide users with insights into storage usage and recommendations for optimizing storage.</string>
+   
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
