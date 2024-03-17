@@ -124,10 +124,31 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                       items: myMarkups.map((RaysMarkup m) {
                         return DropdownMenuItem<String>(
                           value: m.Markup,
-                          child: Text(
-                            m.RepaymentMonth,
-                            style: const TextStyle(
-                                fontSize: 14, color: Colors.black),
+                          child: Row(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Text(
+                                    "${m.RepaymentMonth} with  ",
+                                    style: const TextStyle(
+                                        fontSize: 14, color: Colors.black),
+                                  ),
+                                  // SizedBox(
+                                  //   width: 30,
+                                  // ),
+                                  Text(
+                                    "${m.Markup.toString()}% Markup",
+                                    style: const TextStyle(
+                                        fontSize: 14, color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         );
                       }).toList(),
