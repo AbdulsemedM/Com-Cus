@@ -11,6 +11,7 @@ import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class NewSpecialOrders extends StatefulWidget {
   const NewSpecialOrders({super.key});
@@ -44,6 +45,7 @@ class _NewSpecialOrdersState extends State<NewSpecialOrders> {
   void initState() {
     super.initState();
     fetchSpecialOrders();
+    // _initOneSignal();
   }
 
   @override
@@ -223,7 +225,25 @@ class _NewSpecialOrdersState extends State<NewSpecialOrders> {
         ]),
       )),
     );
-  }
+  } 
+
+  // Future<void> _initOneSignal() async {
+  //   await OneSignal.shared.setAppId('c02d769f-6576-472a-8eb1-cd5d300e53b9');
+  //   OneSignal.shared
+  //       .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+  //     // Handle notification opened
+  //   });
+
+  //   // Retrieve the device token
+  //   String deviceToken = await OneSignal.shared
+  //       .getDeviceState()
+  //       .then((value) => value?.userId ?? "");
+  //   setState(() {
+  //     String _deviceToken = deviceToken;
+  //     debugPrint("here is the token");
+  //     debugPrint(_deviceToken);
+  //   });
+  // }
 
   Future<void> fetchSpecialOrders() async {
     try {
