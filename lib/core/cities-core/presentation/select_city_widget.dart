@@ -101,7 +101,6 @@ class _SelectCityWidgetState extends State<SelectCityWidget> {
                       setState(() {
                         _dropdownValue = value!;
 
-                        // cityId, countryId
                         widget.selectedCity.call(
                             _citiesList
                                 .where((element) =>
