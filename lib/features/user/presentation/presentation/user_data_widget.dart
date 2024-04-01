@@ -230,7 +230,6 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: translatedStrings['special_orders']!,
             language: dropdownValue,
             onClick: () {
-              // Navigator.pushNamed(context, ListSpecialOrdersPage.routeName);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => NewSpecialOrders()));
             },
@@ -380,31 +379,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                       .titleMedium
                       ?.copyWith(color: AppColors.secondaryTextColor),
                 ),
-                // FutureBuilder<String>(
-                //   future: Translations.translatedText(
-                //       'Personal Details',
-                //       GlobalStrings
-                //           .getGlobalString()), // Adjust language code as needed
-                //   builder: (context, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.done) {
-                //       return Text(
-                //         snapshot.data ?? 'Personal Details',
-                //         style: Theme.of(context)
-                //             .textTheme
-                //             .titleMedium
-                //             ?.copyWith(color: AppColors.secondaryTextColor),
-                //       );
-                //     } else {
-                //       return Text(
-                //         'Loading...', // Or any loading indicator
-                //         style: Theme.of(context)
-                //             .textTheme
-                //             .titleMedium
-                //             ?.copyWith(color: AppColors.secondaryTextColor),
-                //       );
-                //     }
-                //   },
-                // ),
+
                 const Spacer(),
                 // Text(
                 //   'Edit',
