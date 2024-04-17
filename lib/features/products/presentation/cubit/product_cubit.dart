@@ -13,10 +13,24 @@ class ProductCubit extends Cubit<ProductState> {
   ProductCubit({required this.productRepository})
       : super(const ProductState.init());
 
-  void fetchProducts(num? subCatId, Map? queryParam) async {
+  void fetchProducts(num? subCatId, Map? queryParam, bool? filter) async {
+    // print("herearequery");
+    // print(queryParam);
     try {
       emit(const ProductState.loading());
-      final products = await productRepository.getProducts(subCatId, queryParam);
+      final products =
+          await productRepository.getProducts(subCatId, queryParam, filter);
+      emit(ProductState.products(products));
+    } catch (e) {
+      emit(ProductState.error(e.toString()));
+    }
+  }
+
+  void fetchProductsFilter(num? subCatId, Map? queryParam, bool? filter) async {
+    try {
+      emit(const ProductState.loading());
+      final products =
+          await productRepository.getProducts(subCatId, queryParam, filter);
       emit(ProductState.products(products));
     } catch (e) {
       emit(ProductState.error(e.toString()));

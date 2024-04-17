@@ -338,7 +338,6 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
       print('hereweare');
       // final SharedPreferences prefs = await SharedPreferences.getInstance();
       // String? amount = prefs.getString("rays")!;
-      // print(amount);
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       print(isUserLoggedIn);
