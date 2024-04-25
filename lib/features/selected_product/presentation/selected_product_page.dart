@@ -326,7 +326,11 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                                               displaySnack(context, prize!);
                                             }
                                           },
-                                          child: Text("Apply"),
+                                          child: Text(
+                                            "Apply",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
                                         ),
                                       ),
                                     ),
