@@ -72,80 +72,80 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
           loading: () => const HomeLoadingWidget(),
           products: (List<Product> products) => Column(
             children: [
-              Form(
-                key: myForm,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: TextFormField(
-                          onChanged: (value) {
-                            setState(() {});
-                          },
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value!.isEmpty || value == null) {
-                              return 'Min Price is required.';
-                            } else {
-                              return null;
-                            }
-                          },
-                          controller: minPirce,
-                          decoration: AppDecorations.getAppInputDecoration(
-                              lableText: "Min Price",
-                              hintText: "in ETB",
-                              myBorder: true),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: TextFormField(
-                          onChanged: (value) {
-                            setState(() {});
-                          },
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value!.isEmpty || value == null) {
-                              return 'Max Price is required.';
-                            } else {
-                              return null;
-                            }
-                          },
-                          controller: maxPirce,
-                          decoration: AppDecorations.getAppInputDecoration(
-                              lableText: "Max price",
-                              hintText: "in ETB",
-                              myBorder: true),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.colorPrimaryDark),
-                          onPressed: () {
-                            if (myForm.currentState!.validate()) {}
-                            Map<String, String> orderValues = {
-                              "subCategoryId": widget.subCatId.toString(),
-                              'minPrice': "10",
-                              'maxPrice': "20000",
-                            };
-                            context.read<ProductCubit>().fetchProducts(
-                                widget.subCatId, orderValues, true);
-                          },
-                          child: Text("Filter"),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Form(
+              //   key: myForm,
+              //   child: Row(
+              //     children: [
+              //       Expanded(
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(16),
+              //           child: TextFormField(
+              //             onChanged: (value) {
+              //               setState(() {});
+              //             },
+              //             keyboardType: TextInputType.number,
+              //             validator: (value) {
+              //               if (value!.isEmpty || value == null) {
+              //                 return 'Min Price is required.';
+              //               } else {
+              //                 return null;
+              //               }
+              //             },
+              //             controller: minPirce,
+              //             decoration: AppDecorations.getAppInputDecoration(
+              //                 lableText: "Min Price",
+              //                 hintText: "in ETB",
+              //                 myBorder: true),
+              //           ),
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(16),
+              //           child: TextFormField(
+              //             onChanged: (value) {
+              //               setState(() {});
+              //             },
+              //             keyboardType: TextInputType.number,
+              //             validator: (value) {
+              //               if (value!.isEmpty || value == null) {
+              //                 return 'Max Price is required.';
+              //               } else {
+              //                 return null;
+              //               }
+              //             },
+              //             controller: maxPirce,
+              //             decoration: AppDecorations.getAppInputDecoration(
+              //                 lableText: "Max price",
+              //                 hintText: "in ETB",
+              //                 myBorder: true),
+              //           ),
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              //         child: SizedBox(
+              //           height: MediaQuery.of(context).size.height * 0.05,
+              //           child: ElevatedButton(
+              //             style: ElevatedButton.styleFrom(
+              //                 backgroundColor: AppColors.colorPrimaryDark),
+              //             onPressed: () {
+              //               if (myForm.currentState!.validate()) {}
+              //               Map<String, String> orderValues = {
+              //                 "subCategoryId": widget.subCatId.toString(),
+              //                 'minPrice': "10",
+              //                 'maxPrice': "20000",
+              //               };
+              //               context.read<ProductCubit>().fetchProducts(
+              //                   widget.subCatId, orderValues, true);
+              //             },
+              //             child: Text("Filter"),
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               // SizedBox(
               //   child: Padding(
               //     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -153,7 +153,7 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
               //   ),
               // ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.78,
+                height: MediaQuery.of(context).size.height * 0.88,
                 child: GridView.count(
                   controller: scrollController,
                   crossAxisCount: 2,

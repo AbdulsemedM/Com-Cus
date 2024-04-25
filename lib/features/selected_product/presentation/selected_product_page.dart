@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/di/injector.dart';
+import 'package:commercepal/app/utils/decoration.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_state.dart';
+import 'package:commercepal/core/cart-core/domain/cart_item.dart';
+import 'package:commercepal/core/data/prefs_data.dart';
+import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/cart/presentation/cart_page.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_loading_widget.dart';
@@ -31,6 +37,7 @@ import '../../../core/widgets/product_price_widget.dart';
 import '../data/dto/selected_product_dto.dart';
 import 'widgets/product_review_item_widget.dart';
 import 'widgets/selected_product_options.dart';
+import 'package:http/http.dart' as http;
 
 class SelectedProductPage extends StatefulWidget {
   static const routeName = "/selected_product_page";
@@ -87,6 +94,11 @@ class SelectedProductDataWidget extends StatefulWidget {
 
 class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
   final CarouselController _controller = CarouselController();
+  final TextEditingController promoController = TextEditingController();
+  final GlobalKey<FormState> mykey = GlobalKey();
+  String? newPrice;
+  String? prize;
+  var loading = false;
   int _current = 0;
   num _selectedFeature = -1;
 
@@ -221,6 +233,113 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                   ],
                 ),
               ])),
+
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex:
+                                  3, // Adjust flex to distribute space between TextFormField and ElevatedButton
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 16, 0, 16),
+                                child: Form(
+                                  key: mykey,
+                                  child: TextFormField(
+                                    onChanged: (value) {
+                                      setState(() {});
+                                    },
+                                    keyboardType: TextInputType.text,
+                                    validator: (value) {
+                                      if (value!.isEmpty || value == null) {
+                                        return 'Promo-Code is required.';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    controller: promoController,
+                                    decoration:
+                                        AppDecorations.getAppInputDecoration(
+                                      lableText: "Promo Code",
+                                      hintText: "Ex. Test Promo-Code 1",
+                                      myBorder: true,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            loading
+                                ? const CircularProgressIndicator(
+                                    color: AppColors.colorPrimaryDark,
+                                  )
+                                : // Add some space between TextFormField and ElevatedButton
+                                Expanded(
+                                    flex:
+                                        1, // Adjust flex to distribute space between TextFormField and ElevatedButton
+                                    child: SizedBox(
+                                      height: 50,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 4, 0),
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  AppColors.colorPrimaryDark),
+                                          onPressed: () async {
+                                            if (mykey.currentState!
+                                                .validate()) {
+                                              bool done = await verifyForm();
+                                              displaySnack(context, prize!);
+                                              if (done) {
+                                                CartItem myItem = CartItem(
+                                                    productId: widget
+                                                        .selectedProductDetails
+                                                        .productId
+                                                        ?.toInt(),
+                                                    name: widget
+                                                        .selectedProductDetails
+                                                        .productName,
+                                                    image: widget
+                                                        .selectedProductDetails
+                                                        .mobileImage,
+                                                    description: '-',
+                                                    price: newPrice,
+                                                    currency: "ETB",
+                                                    subProductId: widget
+                                                        .selectedProductDetails
+                                                        .selectedSubProductId
+                                                        ?.toInt(),
+                                                    quantity: 1);
+                                                context
+                                                    .read<CartCoreCubit>()
+                                                    .addCartItem(myItem);
+                                                // ignore: use_build_context_synchronously
+                                                displaySnack(context,
+                                                    "${widget.selectedProductDetails.productName} added to cart.");
+                                              }
+                                            } else {
+                                              displaySnack(context, prize!);
+                                            }
+                                          },
+                                          child: Text("Apply"),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                  childCount: 1,
+                ),
+              ),
+
               SliverList(
                   delegate: SliverChildBuilderDelegate(
                       childCount: widget.selectedProductDetails.features.length,
@@ -231,6 +350,27 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Padding(
+                      //   padding: const EdgeInsets.all(16),
+                      //   child: TextFormField(
+                      //     onChanged: (value) {
+                      //       setState(() {});
+                      //     },
+                      //     keyboardType: TextInputType.number,
+                      //     // validator: (value) {
+                      //     //   if (value!.isEmpty || value == null) {
+                      //     //     return 'Min Price is required.';
+                      //     //   } else {
+                      //     //     return null;
+                      //     //   }
+                      //     // },
+                      //     // controller: minPirce,
+                      //     decoration: AppDecorations.getAppInputDecoration(
+                      //         lableText: "Add a Promo-Code",
+                      //         hintText: "in ETB",
+                      //         myBorder: true),
+                      //   ),
+                      // ),
                       if (index == 0)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -512,5 +652,70 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
           .titleLarge
           ?.copyWith(color: Colors.black, fontSize: 18.sp),
     );
+  }
+
+  Future<bool> verifyForm() async {
+    try {
+      setState(() {
+        loading = true;
+      });
+
+      print("hereeeewego");
+      Map<String, dynamic> payload = {
+        "code": promoController.text,
+        "quantity": 1,
+        "productId": widget.selectedProductDetails.productId,
+        "subProductId": widget.selectedProductDetails.selectedSubProductId
+      };
+      print(payload);
+      final prefsData = getIt<PrefsData>();
+      final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      if (isUserLoggedIn) {
+        final token = await prefsData.readData(PrefsKeys.userToken.name);
+        final response = await http.post(
+            Uri.https("api.commercepal.com:2096",
+                "/prime/api/v1/product/promo-codes/apply"),
+            body: jsonEncode(payload),
+            headers: <String, String>{
+              "Authorization": "Bearer $token",
+              "Content-type": "application/json; charset=utf-8"
+            });
+        // print(response.body);
+        var data = jsonDecode(response.body);
+        print(data);
+        setState(() {
+          prize = data['statusMessage'];
+        });
+
+        if (data['statusCode'] == '000') {
+          setState(() {
+            newPrice = data['data']['promoCodeDiscountedPrice'].toString();
+            prize = data['statusMessage'];
+            loading = false;
+          });
+          print("new message");
+          print(newPrice);
+          print(prize);
+          return true;
+        } else {
+          setState(() {
+            prize = data['statusMessage'];
+            loading = false;
+          });
+          return false;
+        }
+      }
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+      print(e.toString());
+      return false;
+    } finally {
+      setState(() {
+        loading = false;
+      });
+    }
+    return false;
   }
 }

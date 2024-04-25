@@ -22,8 +22,10 @@ class HomeRepositoryImpl implements HomeRepository {
         final schemas = schemaObject.toSchemaModel();
 
         // fetch home mobile catalogue
-        final homeCatalogue = await apiProvider
-            .get("${EndPoints.mobileCatalogue.url}?target=4");
+        final homeCatalogue =
+            await apiProvider.get("${EndPoints.mobileCatalogue.url}?target=4");
+        // print("Newobject");
+        // print(homeCatalogue);
         final homeCatalogueObject = MobileCatalogueDto.fromJson(homeCatalogue);
 
         schemas
