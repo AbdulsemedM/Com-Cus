@@ -28,6 +28,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 import '../../../app/utils/app_colors.dart';
 import '../../../app/utils/assets.dart';
@@ -101,6 +102,7 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
   var loading = false;
   int _current = 0;
   num _selectedFeature = -1;
+  DateTime currentDate = DateTime.now();
 
   @override
   void initState() {
@@ -234,115 +236,115 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                 ),
               ])),
 
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              flex:
-                                  3, // Adjust flex to distribute space between TextFormField and ElevatedButton
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(16, 16, 0, 16),
-                                child: Form(
-                                  key: mykey,
-                                  child: TextFormField(
-                                    onChanged: (value) {
-                                      setState(() {});
-                                    },
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      if (value!.isEmpty || value == null) {
-                                        return 'Promo-Code is required.';
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    controller: promoController,
-                                    decoration:
-                                        AppDecorations.getAppInputDecoration(
-                                      lableText: "Promo Code",
-                                      hintText: "Ex. Test Promo-Code 1",
-                                      myBorder: true,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 16),
-                            loading
-                                ? const CircularProgressIndicator(
-                                    color: AppColors.colorPrimaryDark,
-                                  )
-                                : // Add some space between TextFormField and ElevatedButton
-                                Expanded(
-                                    flex:
-                                        1, // Adjust flex to distribute space between TextFormField and ElevatedButton
-                                    child: SizedBox(
-                                      height: 50,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 0, 4, 0),
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  AppColors.colorPrimaryDark),
-                                          onPressed: () async {
-                                            if (mykey.currentState!
-                                                .validate()) {
-                                              bool done = await verifyForm();
-                                              displaySnack(context, prize!);
-                                              if (done) {
-                                                CartItem myItem = CartItem(
-                                                    productId: widget
-                                                        .selectedProductDetails
-                                                        .productId
-                                                        ?.toInt(),
-                                                    name: widget
-                                                        .selectedProductDetails
-                                                        .productName,
-                                                    image: widget
-                                                        .selectedProductDetails
-                                                        .mobileImage,
-                                                    description: '-',
-                                                    price: newPrice,
-                                                    currency: "ETB",
-                                                    subProductId: widget
-                                                        .selectedProductDetails
-                                                        .selectedSubProductId
-                                                        ?.toInt(),
-                                                    quantity: 1);
-                                                context
-                                                    .read<CartCoreCubit>()
-                                                    .addCartItem(myItem);
-                                                // ignore: use_build_context_synchronously
-                                                displaySnack(context,
-                                                    "${widget.selectedProductDetails.productName} added to cart.");
-                                              }
-                                            } else {
-                                              displaySnack(context, prize!);
-                                            }
-                                          },
-                                          child: Text(
-                                            "Apply",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                  childCount: 1,
-                ),
-              ),
+              // SliverList(
+              //   delegate: SliverChildBuilderDelegate(
+              //     (context, index) {
+              //       return Column(
+              //         children: [
+              //           Row(
+              //             children: [
+              //               Expanded(
+              //                 flex:
+              //                     3, // Adjust flex to distribute space between TextFormField and ElevatedButton
+              //                 child: Padding(
+              //                   padding:
+              //                       const EdgeInsets.fromLTRB(16, 16, 0, 16),
+              //                   child: Form(
+              //                     key: mykey,
+              //                     child: TextFormField(
+              //                       onChanged: (value) {
+              //                         setState(() {});
+              //                       },
+              //                       keyboardType: TextInputType.text,
+              //                       validator: (value) {
+              //                         if (value!.isEmpty || value == null) {
+              //                           return 'Promo-Code is required.';
+              //                         } else {
+              //                           return null;
+              //                         }
+              //                       },
+              //                       controller: promoController,
+              //                       decoration:
+              //                           AppDecorations.getAppInputDecoration(
+              //                         lableText: "Promo Code",
+              //                         hintText: "Ex. Test Promo-Code 1",
+              //                         myBorder: true,
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ),
+              //               SizedBox(width: 16),
+              //               loading
+              //                   ? const CircularProgressIndicator(
+              //                       color: AppColors.colorPrimaryDark,
+              //                     )
+              //                   : // Add some space between TextFormField and ElevatedButton
+              //                   Expanded(
+              //                       flex:
+              //                           1, // Adjust flex to distribute space between TextFormField and ElevatedButton
+              //                       child: SizedBox(
+              //                         height: 50,
+              //                         child: Padding(
+              //                           padding: const EdgeInsets.fromLTRB(
+              //                               0, 0, 4, 0),
+              //                           child: ElevatedButton(
+              //                             style: ElevatedButton.styleFrom(
+              //                                 backgroundColor:
+              //                                     AppColors.colorPrimaryDark),
+              //                             onPressed: () async {
+              //                               if (mykey.currentState!
+              //                                   .validate()) {
+              //                                 bool done = await verifyForm();
+              //                                 displaySnack(context, prize!);
+              //                                 if (done) {
+              //                                   CartItem myItem = CartItem(
+              //                                       productId: widget
+              //                                           .selectedProductDetails
+              //                                           .productId
+              //                                           ?.toInt(),
+              //                                       name: widget
+              //                                           .selectedProductDetails
+              //                                           .productName,
+              //                                       image: widget
+              //                                           .selectedProductDetails
+              //                                           .mobileImage,
+              //                                       description: '-',
+              //                                       price: newPrice,
+              //                                       currency: "ETB",
+              //                                       subProductId: widget
+              //                                           .selectedProductDetails
+              //                                           .selectedSubProductId
+              //                                           ?.toInt(),
+              //                                       quantity: 1);
+              //                                   context
+              //                                       .read<CartCoreCubit>()
+              //                                       .addCartItem(myItem);
+              //                                   // ignore: use_build_context_synchronously
+              //                                   displaySnack(context,
+              //                                       "${widget.selectedProductDetails.productName} added to cart.");
+              //                                 }
+              //                               } else {
+              //                                 displaySnack(context, prize!);
+              //                               }
+              //                             },
+              //                             child: Text(
+              //                               "Apply",
+              //                               style:
+              //                                   TextStyle(color: Colors.white),
+              //                             ),
+              //                           ),
+              //                         ),
+              //                       ),
+              //                     ),
+              //             ],
+              //           ),
+              //         ],
+              //       );
+              //     },
+              //     childCount: 1,
+              //   ),
+              // ),
 
               SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -528,9 +530,10 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                   asset: Assets.paymentOptions,
                   data: widget.selectedProductDetails.prodDescriptions,
                 ),
-                const SelectedProductOptions(
+                SelectedProductOptions(
                   title: "Delivery Options",
-                  subTitle: "Paid Delivery for BR25 by Jun 25",
+                  subTitle:
+                      "Free Delivery, Estimated date from \n ${DateFormat('MMM-dd').format((currentDate.add(Duration(days: 3))))} to ${DateFormat('MMM-dd').format((currentDate.add(Duration(days: 7))))}",
                   asset: Assets.track,
                 ),
                 const SelectedProductOptions(
@@ -540,7 +543,7 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                 ),
                 const SelectedProductOptions(
                   title: "Payment Options",
-                  subTitle: "Credit Card, Mobile Money , Loans, Cash",
+                  subTitle: "Credit Card, Mobile Money,\n Loans, Cash",
                   asset: Assets.paymentOptions,
                 ),
                 if (widget.selectedProductDetails.similarProducts?.isNotEmpty ==

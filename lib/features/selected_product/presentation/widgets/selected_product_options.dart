@@ -88,7 +88,14 @@ class _SelectedProductOptionsState extends State<SelectedProductOptions> {
                     const SizedBox(
                       height: 4,
                     ),
-                    if (widget.subTitle != null) Text(widget.subTitle!),
+                    if (widget.subTitle != null)
+                      Row(
+                        children: [
+                          Text(
+                            widget.subTitle!,
+                          ),
+                        ],
+                      ),
                     // FutureBuilder<String>(
                     //   future: Translations.translatedText(
                     //       widget.subTitle!, GlobalStrings.getGlobalString()),
@@ -140,5 +147,17 @@ class _SelectedProductOptionsState extends State<SelectedProductOptions> {
         ),
       ),
     );
+  }
+
+  String wrapText(String text, int maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    } else {
+      String wrappedText = '';
+      for (int i = 0; i < text.length; i += maxLength) {
+        wrappedText += text.substring(i, i + maxLength) + '\n';
+      }
+      return wrappedText;
+    }
   }
 }
