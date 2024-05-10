@@ -10,6 +10,7 @@ import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/cart-core/domain/cart_item.dart';
 import '../data/models/address.dart';
 
@@ -350,10 +351,14 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                               // for (Match match in matches) {
                               //   // Extract the matched portion
                               //   String numericPart = match.group(0)!;
-                              //   final SharedPreferences prefs =
-                              //       await SharedPreferences.getInstance();
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
                               //   print(numericPart);
-                              //   prefs.setString("rays", numericPart);
+                              try {
+                                await prefs.remove("promocode");
+                              } catch (e) {
+                                print(e.toString());
+                              }
                               //   print("setted");
                               // }
                               ctx.read<CheckOutCubit>().validateCheckOut();

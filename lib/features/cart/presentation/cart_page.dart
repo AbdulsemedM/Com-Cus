@@ -1,7 +1,13 @@
+import 'dart:convert';
+
+import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_state.dart';
+import 'package:commercepal/core/data/prefs_data.dart';
+import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/cart/presentation/widgets/cart_item_widget.dart';
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
@@ -11,8 +17,10 @@ import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/widgets/product_price_widget.dart';
+import 'package:http/http.dart' as http;
 
 class CartPage extends StatefulWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -25,13 +33,13 @@ class _CartPageState extends State<CartPage> {
   void initState() {
     super.initState();
     fetchHints();
+    fetchUser1();
   }
 
   void fetchHints() async {
     setState(() {
       loading = true;
     });
-
     Shopping = Translations.translatedText(
         "Shopping Cart", GlobalStrings.getGlobalString());
     items =
@@ -53,6 +61,8 @@ class _CartPageState extends State<CartPage> {
   var items;
   String it = '';
   var loading = false;
+  String logout = "login";
+
   // @override
   // void initState() {
   //   super.initState();
@@ -119,6 +129,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
                 ProductPriceWidget(
+                  items: cartItems,
                   subTitle:
                       "Delivery Charges: ${cartItems.first.currency ?? "ETB"} 0",
                   totalPrice: cartItems
@@ -129,6 +140,10 @@ class _CartPageState extends State<CartPage> {
                               previousValue + element.toDouble())
                       .formatCurrency(cartItems.first.currency),
                   onClick: () {
+                    if (logout == "logout") {
+                      displaySnack(context, "Login to your account.");
+                      Navigator.pushNamed(ctx, LoginPage.routeName);
+                    }
                     ctx.read<CartCoreCubit>().isUserLoggedIn();
                   },
                 )
@@ -147,6 +162,66 @@ class _CartPageState extends State<CartPage> {
       return trans;
     } catch (e) {
       return mymess;
+    }
+  }
+
+  Future<void> fetchUser1({int retryCount = 0, BuildContext? context}) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      await prefs.remove("promocode");
+    } catch (e) {
+      print(e.toString());
+    }
+    try {
+      setState(() {
+        loading = true;
+      });
+      final prefsData = getIt<PrefsData>();
+      final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      if (isUserLoggedIn) {
+        final token = await prefsData.readData(PrefsKeys.userToken.name);
+        final response = await http.get(
+          Uri.https(
+            "api.commercepal.com:2096",
+            "prime/api/v1/get-details",
+            {"userType": "BUSINESS"},
+          ),
+          headers: <String, String>{"Authorization": "Bearer $token"},
+        );
+
+        var data = jsonDecode(response.body);
+        print(data);
+
+        if (data['statusCode'] == '000') {
+          // Handle the case when statusCode is '000'
+          setState(() {
+            loading = false;
+          });
+        } else {
+          // Retry logic
+          // if (retryCount < 5) {
+          //   // Retry after num + 1 seconds
+          //   await Future.delayed(Duration(seconds: retryCount++));
+          //   // Call the function again with an increased retryCount
+          //   await fetchUser(retryCount: retryCount + 1);
+
+          // Retry limit reached, handle accordingly
+          setState(() async {
+            loading = false;
+            logout = "logout";
+          });
+
+          // ignore: use_build_context_synchronously
+          // Navigator.pushReplacement(context!,
+          //     MaterialPageRoute(builder: (context) => const LoginPage()));
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+      setState(() {
+        loading = false;
+      });
+      // Handle other exceptions
     }
   }
 }

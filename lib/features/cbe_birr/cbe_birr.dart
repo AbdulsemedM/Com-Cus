@@ -155,7 +155,7 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                                     final prefsData = getIt<PrefsData>();
                                     final isUserLoggedIn = await prefsData
                                         .contains(PrefsKeys.userToken.name);
-                                    // await sendData();
+                                    await sendData();
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

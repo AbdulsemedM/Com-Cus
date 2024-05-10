@@ -634,6 +634,7 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                           context.read<CartCoreCubit>().addCartItem(
                               widget.selectedProductDetails.toCartItem());
                         },
+                        items: [],
                       )
                     : Center(
                         child: Padding(
@@ -659,70 +660,5 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
           .titleLarge
           ?.copyWith(color: Colors.black, fontSize: 18.sp),
     );
-  }
-
-  Future<bool> verifyForm() async {
-    try {
-      setState(() {
-        loading = true;
-      });
-
-      print("hereeeewego");
-      Map<String, dynamic> payload = {
-        "code": promoController.text,
-        "quantity": 1,
-        "productId": widget.selectedProductDetails.productId,
-        "subProductId": widget.selectedProductDetails.selectedSubProductId
-      };
-      print(payload);
-      final prefsData = getIt<PrefsData>();
-      final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      if (isUserLoggedIn) {
-        final token = await prefsData.readData(PrefsKeys.userToken.name);
-        final response = await http.post(
-            Uri.https("api.commercepal.com:2096",
-                "/prime/api/v1/product/promo-codes/apply"),
-            body: jsonEncode(payload),
-            headers: <String, String>{
-              "Authorization": "Bearer $token",
-              "Content-type": "application/json; charset=utf-8"
-            });
-        // print(response.body);
-        var data = jsonDecode(response.body);
-        print(data);
-        setState(() {
-          prize = data['statusMessage'];
-        });
-
-        if (data['statusCode'] == '000') {
-          setState(() {
-            newPrice = data['data']['promoCodeDiscountedPrice'].toString();
-            prize = data['statusMessage'];
-            loading = false;
-          });
-          print("new message");
-          print(newPrice);
-          print(prize);
-          return true;
-        } else {
-          setState(() {
-            prize = data['statusMessage'];
-            loading = false;
-          });
-          return false;
-        }
-      }
-    } catch (e) {
-      setState(() {
-        loading = false;
-      });
-      print(e.toString());
-      return false;
-    } finally {
-      setState(() {
-        loading = false;
-      });
-    }
-    return false;
   }
 }

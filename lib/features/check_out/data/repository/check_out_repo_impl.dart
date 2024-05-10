@@ -6,6 +6,7 @@ import 'package:commercepal/features/check_out/data/dto/addresses_dto.dart';
 import 'package:commercepal/features/check_out/data/models/address.dart';
 import 'package:commercepal/features/check_out/domain/check_out_repo.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/cart-core/dao/cart_dao.dart';
 import '../../../../core/data/prefs_data.dart';
@@ -43,11 +44,20 @@ class CheckOutRepoImpl implements CheckOutRepo {
 
   @override
   Future<String> generateOrderRef() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? value;
+    try {
+      value = prefs.getString('promocode') ?? 'none';
+      print('Value from SharedPreferences: $value');
+    } catch (e) {
+      print('Error accessing SharedPreferences: $e');
+    }
     try {
       final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
       final cartItems = await cartDao.getAllItems();
       final request = {
         "paymentMethod": "Murabaha",
+        if (value != "none") "promoCode": value,
         "items": cartItems
             .map((e) => {
                   "productId": e.productId,
