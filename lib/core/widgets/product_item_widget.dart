@@ -34,7 +34,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
   @override
   void initState() {
     super.initState();
-    checkCart(context, widget.product.id.toString());
+    // checkCart(context, widget.product.id.toString());
   }
 
   @override
@@ -154,9 +154,11 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
                           vertical: 4.0, horizontal: 9),
-                      child: _cartItemCheck
-                          ? Text('data')
-                          : ElevatedButton(
+                      child: 
+                      // _cartItemCheck
+                      //     ? Text('data')
+                      //     :
+                           ElevatedButton(
                               onPressed: () {
                                 if (widget.product.subProducts != null &&
                                     widget.product.subProducts! > 1) {

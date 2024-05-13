@@ -1,4 +1,6 @@
 import 'package:commercepal/app/di/injector.dart';
+import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/features/my_special_orders/add_special_orders.dart';
 import 'package:commercepal/features/products/presentation/cubit/product_cubit.dart';
 import 'package:commercepal/features/products/presentation/search_product_page.dart';
 import 'package:commercepal/features/products/presentation/widgets/products_page_data.dart';
@@ -24,6 +26,36 @@ class ProductsPage extends StatelessWidget {
       child: BlocBuilder<ProductCubit, ProductState>(
         builder: (ctx, state) {
           return Scaffold(
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddSpecialOrders()));
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    AppColors.colorAccent,
+                  ),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.card_giftcard_outlined),
+                    SizedBox(
+                        width: 8), // Adjust the spacing between icon and text
+                    Text("Special Order"),
+                  ],
+                ),
+              ),
+            ),
             backgroundColor: Colors.white,
             appBar: args['search'] != null
                 ? _buildSearchAppBar(ctx)
