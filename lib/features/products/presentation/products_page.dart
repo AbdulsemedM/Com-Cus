@@ -45,13 +45,19 @@ class ProductsPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.card_giftcard_outlined),
+                    Icon(
+                      Icons.card_giftcard_outlined,
+                      color: AppColors.bg1,
+                    ),
                     SizedBox(
                         width: 8), // Adjust the spacing between icon and text
-                    Text("Special Order"),
+                    Text(
+                      "Special Order",
+                      style: TextStyle(color: AppColors.bg1),
+                    ),
                   ],
                 ),
               ),

@@ -24,6 +24,7 @@ import 'package:commercepal/features/selected_product/presentation/widgets/revie
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -174,53 +175,55 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                     Text('${widget.selectedProductDetails.ratingCount}'),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.greyColor),
-                        onPressed: () {
-                          displaySnack(context, "Will be available soon");
-                        },
-                        child: Text(
-                          "Enable Price Drop Alert",
-                          style: TextStyle(color: Colors.black45, fontSize: 11),
-                        )),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.greyColor),
-                        onPressed: () {
-                          displaySnack(context, "Will be available soon");
-                        },
-                        child: Row(
-                          children: [
-                            Icon(FontAwesomeIcons.heart,
-                                color: Colors.black45, size: 12),
-                            Text(
-                              "Add to Wishlist",
-                              style: TextStyle(
-                                  color: Colors.black45, fontSize: 11),
-                            ),
-                          ],
-                        )),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.greyColor),
-                        onPressed: () {
-                          displaySnack(context, "Will be available soon");
-                        },
-                        child: Row(
-                          children: [
-                            Icon(Icons.share, color: Colors.black45, size: 12),
-                            Text(
-                              "Share",
-                              style: TextStyle(
-                                  color: Colors.black45, fontSize: 11),
-                            ),
-                          ],
-                        )),
-                  ],
+                SingleChildScrollView(scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.greyColor),
+                          onPressed: () {
+                            displaySnack(context, "Will be available soon");
+                          },
+                          child: Text(
+                            "Enable Price Drop Alert",
+                            style: TextStyle(color: Colors.black45, fontSize: 11),
+                          )),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.greyColor),
+                          onPressed: () {
+                            displaySnack(context, "Will be available soon");
+                          },
+                          child: Row(
+                            children: [
+                              Icon(FontAwesomeIcons.heart,
+                                  color: Colors.black45, size: 12),
+                              Text(
+                                "Add to Wishlist",
+                                style: TextStyle(
+                                    color: Colors.black45, fontSize: 11),
+                              ),
+                            ],
+                          )),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.greyColor),
+                          onPressed: () {
+                            displaySnack(context, "Will be available soon");
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.share, color: Colors.black45, size: 12),
+                              Text(
+                                "Share",
+                                style: TextStyle(
+                                    color: Colors.black45, fontSize: 11),
+                              ),
+                            ],
+                          )),
+                    ],
+                  ),
                 ),
                 Stack(
                   children: [
