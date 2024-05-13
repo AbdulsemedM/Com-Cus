@@ -28,6 +28,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 import '../../../app/utils/app_colors.dart';
@@ -170,7 +171,55 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                     const SizedBox(
                       width: 10,
                     ),
-                    Text('${widget.selectedProductDetails.ratingCount}')
+                    Text('${widget.selectedProductDetails.ratingCount}'),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.greyColor),
+                        onPressed: () {
+                          displaySnack(context, "Will be available soon");
+                        },
+                        child: Text(
+                          "Enable Price Drop Alert",
+                          style: TextStyle(color: Colors.black45, fontSize: 11),
+                        )),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.greyColor),
+                        onPressed: () {
+                          displaySnack(context, "Will be available soon");
+                        },
+                        child: Row(
+                          children: [
+                            Icon(FontAwesomeIcons.heart,
+                                color: Colors.black45, size: 12),
+                            Text(
+                              "Add to Wishlist",
+                              style: TextStyle(
+                                  color: Colors.black45, fontSize: 11),
+                            ),
+                          ],
+                        )),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.greyColor),
+                        onPressed: () {
+                          displaySnack(context, "Will be available soon");
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.share, color: Colors.black45, size: 12),
+                            Text(
+                              "Share",
+                              style: TextStyle(
+                                  color: Colors.black45, fontSize: 11),
+                            ),
+                          ],
+                        )),
                   ],
                 ),
                 Stack(

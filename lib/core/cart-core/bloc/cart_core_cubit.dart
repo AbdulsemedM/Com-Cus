@@ -57,6 +57,15 @@ class CartCoreCubit extends Cubit<CartCoreState> {
     }
   }
 
+  Future<List<CartItem>> getAllItem() async {
+    try {
+      final items = await cartRepository.getCartItems();
+      return items;
+    } catch (error) {
+      return [];
+    }
+  }
+
   void changeCartItemQuantity(CartItem cartItem, quantity) async {
     await Future.delayed(const Duration(seconds: 1));
     cartItem.quantity = quantity;

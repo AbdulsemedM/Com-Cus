@@ -1,40 +1,54 @@
-import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:commercepal/app/utils/string_utils.dart';
-import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
-import 'package:commercepal/core/cart-core/domain/cart_item.dart';
-import 'package:commercepal/features/translation/get_lang.dart';
-import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../app/utils/app_colors.dart';
+import '../../app/utils/string_utils.dart';
+import '../../core/cart-core/bloc/cart_core_cubit.dart';
+import '../../core/cart-core/domain/cart_item.dart';
 import '../../features/products/domain/product.dart';
+import '../../features/translation/get_lang.dart';
+import '../../features/translation/translations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-class ProductItemWidget extends StatelessWidget {
+class ProductItemWidget extends StatefulWidget {
   final double? width;
   final Product product;
   final Function? onItemClick;
 
-  const ProductItemWidget(
-      {Key? key, required this.product, this.width, this.onItemClick})
-      : super(key: key);
+  const ProductItemWidget({
+    Key? key,
+    required this.product,
+    this.width,
+    this.onItemClick,
+  }) : super(key: key);
+
+  @override
+  _ProductItemWidgetState createState() => _ProductItemWidgetState();
+}
+
+class _ProductItemWidgetState extends State<ProductItemWidget> {
+  bool _cartItemCheck = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkCart(context, widget.product.id.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        onItemClick?.call(product);
+        widget.onItemClick?.call(widget.product);
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Wrap(
           children: [
             Container(
-              width: width,
+              width: widget.width,
               decoration: const BoxDecoration(
                 color: AppColors.bg1,
                 borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -45,8 +59,9 @@ class ProductItemWidget extends StatelessWidget {
                   Center(
                     child: ClipRRect(
                       borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12)),
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      ),
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
                         height: 120,
@@ -56,7 +71,7 @@ class ProductItemWidget extends StatelessWidget {
                         errorWidget: (_, __, ___) => Container(
                           color: Colors.grey,
                         ),
-                        imageUrl: product.image ?? "",
+                        imageUrl: widget.product.image ?? "",
                       ),
                     ),
                   ),
@@ -66,17 +81,19 @@ class ProductItemWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                     child: Text(
-                      "${product.name}",
+                      "${widget.product.name}",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.headline3?.copyWith(
-                          fontSize: 14.sp, fontWeight: FontWeight.normal),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.normal,
+                          ),
                     ),
                   ),
                   const SizedBox(
                     height: 5,
                   ),
-                  if (product.rating != null)
+                  if (widget.product.rating != null)
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: RatingBar.builder(
@@ -94,91 +111,97 @@ class ProductItemWidget extends StatelessWidget {
                         onRatingUpdate: (rating) {},
                       ),
                     ),
-                  if (product.currency != null)
+                  if (widget.product.currency != null)
                     const SizedBox(
                       height: 10,
                     ),
-                  if (product.offerPrice != null)
+                  if (widget.product.offerPrice != null)
                     Row(
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
-                            product.offerPrice
+                            widget.product.offerPrice
                                 .toString()
-                                .formatCurrency(product.currency),
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline2
-                                ?.copyWith(
-                                    fontSize: 14.sp,
-                                    color: AppColors.colorPrimary),
+                                .formatCurrency(widget.product.currency),
+                            style:
+                                Theme.of(context).textTheme.headline2?.copyWith(
+                                      fontSize: 14.sp,
+                                      color: AppColors.colorPrimary,
+                                    ),
                           ),
                         ),
                         const Spacer(),
-                        if (product.isDiscounted.toString() == "1")
+                        if (widget.product.isDiscounted.toString() == "1")
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Text(
-                                "${product.currency} ${product.offerPrice}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline2
-                                    ?.copyWith(
-                                        fontSize: 12.sp,
-                                        color: AppColors.secondaryTextColor,
-                                        decoration:
-                                            TextDecoration.lineThrough)),
+                              "${widget.product.currency} ${widget.product.offerPrice}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline2
+                                  ?.copyWith(
+                                    fontSize: 12.sp,
+                                    color: AppColors.secondaryTextColor,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                            ),
                           ),
                       ],
                     ),
-                  if (product.quantity! > 0)
+                  if (widget.product.quantity! > 0)
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
                           vertical: 4.0, horizontal: 9),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (product.subProducts != null &&
-                              product.subProducts! > 1) {
-                            onItemClick?.call(product);
-                          } else {
-                            context
-                                .read<CartCoreCubit>()
-                                .addCartItem(product.toCartItem());
-                          }
-                        },
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateColor.resolveWith(
-                                (states) => AppColors.colorPrimary)),
-                        child: FutureBuilder<String>(
-                          future: Translations.translatedText(
-                              "Add to cart", GlobalStrings.getGlobalString()),
-                          //  translatedText("Log Out", 'en', dropdownValue),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              return Text(
-                                snapshot.data ?? 'Default Text',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(color: Colors.white),
-                              );
-                            } else {
-                              return Text(
-                                'Loading...',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(color: Colors.white),
-                              ); // Or any loading indicator
-                            }
-                          },
-                        ),
-                      ),
+                      child: _cartItemCheck
+                          ? Text('data')
+                          : ElevatedButton(
+                              onPressed: () {
+                                if (widget.product.subProducts != null &&
+                                    widget.product.subProducts! > 1) {
+                                  checkCart(
+                                      context, widget.product.id.toString());
+                                  widget.onItemClick?.call(widget.product);
+                                } else {
+                                  context
+                                      .read<CartCoreCubit>()
+                                      .addCartItem(widget.product.toCartItem());
+                                }
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateColor.resolveWith(
+                                          (states) => AppColors.colorPrimary)),
+                              child: FutureBuilder<String>(
+                                future: Translations.translatedText(
+                                    "Add to cart",
+                                    GlobalStrings.getGlobalString()),
+                                //  translatedText("Log Out", 'en', dropdownValue),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    return Text(
+                                      snapshot.data ?? 'Default Text',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(color: Colors.white),
+                                    );
+                                  } else {
+                                    return Text(
+                                      'Loading...',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(color: Colors.white),
+                                    ); // Or any loading indicator
+                                  }
+                                },
+                              ),
+                            ),
                     ),
-                  if (product.quantity! == 0)
+                  if (widget.product.quantity! == 0)
                     Container(
                       margin: const EdgeInsets.only(top: 6, bottom: 8),
                       alignment: Alignment.center,
@@ -186,10 +209,12 @@ class ProductItemWidget extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       child: Text(
                         'Product out of stock',
-                        style:
-                            TextStyle(color: Colors.redAccent, fontSize: 13.sp),
+                        style: TextStyle(
+                          color: Colors.redAccent,
+                          fontSize: 13.sp,
+                        ),
                       ),
-                    )
+                    ),
                 ],
               ),
             ),
@@ -197,5 +222,19 @@ class ProductItemWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<bool> checkCart(BuildContext context, String id) async {
+    List<CartItem> myItems = await context.read<CartCoreCubit>().getAllItem();
+    print(myItems.length);
+    for (CartItem item in myItems) {
+      if (id == item.productId.toString()) {
+        setState(() {
+          _cartItemCheck = true;
+        });
+        return true;
+      }
+    }
+    return false;
   }
 }
