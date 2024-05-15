@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/core/data/prefs_data.dart';
+import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/check_out/presentation/bloc/check_out_cubit.dart';
 import 'package:commercepal/features/check_out/presentation/bloc/check_out_state.dart';
 import 'package:commercepal/features/check_out/presentation/widgets/check_out_addresse_widget.dart';
@@ -10,9 +14,13 @@ import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/cart-core/domain/cart_item.dart';
 import '../data/models/address.dart';
+import 'package:http/http.dart' as http;
 
 class CheckOutPage extends StatefulWidget {
   static const routeName = "/check_out_page";
@@ -76,11 +84,14 @@ class CheckOutPageDataWidget extends StatefulWidget {
 class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   final List<CartItem> _cartItems = [];
   final List<Address> _addresses = [];
+  double? latitude;
+  double? longitude;
   String? _total;
   String? _shippingFee;
   bool _isUserBusiness = true;
   void initState() {
     super.initState();
+    // getLocation();
     fetchHints();
   }
 
@@ -385,4 +396,135 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
       ),
     );
   }
+
+  // Future<void> getLocation() async {
+  //   try {
+  //     setState(() {
+  //       loading = true;
+  //     });
+  //     print("here we go");
+  //     var status = await Permission.location.request();
+  //     print(status.isPermanentlyDenied);
+  //     if (status.isGranted) {
+  //       Position position = await Geolocator.getCurrentPosition(
+  //         desiredAccuracy: LocationAccuracy.high,
+  //       );
+
+  //       setState(() {
+  //         latitude = position.latitude;
+  //         longitude = position.longitude;
+  //         print(latitude);
+  //         print(longitude);
+  //         if (latitude != null && longitude != null) {
+  //           getAddressFromLatLng(latitude.toString(), longitude.toString());
+  //         } else {
+  //           displaySnack(
+  //               context, "Please add your address by pressing \"Add Address\"");
+  //         }
+  //         loading = false;
+  //       });
+  //       print(latitude);
+  //       print(longitude);
+  //     } else {
+  //       displaySnack(
+  //           context, "Please add your address by pressing \"Add Address\"");
+  //       setState(() {
+  //         loading = false;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     displaySnack(
+  //         context, "Please add your address by pressing \"Add Address\"");
+  //     setState(() {
+  //       loading = false;
+  //     });
+  //     print('Error getting location: $e');
+  //   }
+  // }
+
+  // Future<String> getAddressFromLatLng(String latitude, String longitude) async {
+  //   double lat = double.parse(latitude);
+  //   double lng = double.parse(longitude);
+
+  //   try {
+  //     List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+  //     print(placemarks);
+  //     print("object");
+  //     for (Placemark placemark in placemarks) {
+  //       String street = placemark.street ??
+  //           ""; // Access the "Street" property and handle null values
+  //       print("Street: $street");
+  //     }
+
+  //     if (placemarks.isNotEmpty) {
+  //       Placemark place = placemarks[3];
+
+  //       // Extract street information
+  //       String street = place.street ?? '';
+  //       String subLocality = place.administrativeArea ?? '';
+  //       String locality = place.locality ?? '';
+  //       String subLocal = place.subLocality ?? '';
+  //       String country = place.country ?? '';
+  //       try {
+  //         setState(() {
+  //           loading = true;
+  //         });
+  //         Map<String, dynamic> payload = {
+  //           "region": subLocality.isNotEmpty ? subLocality : locality,
+  //           "city": locality,
+  //           "country": country,
+  //           "physicalAddress": street.isNotEmpty ? street : subLocal,
+  //           "latitude": latitude,
+  //           "longitude": longitude
+  //         };
+  //         print(payload);
+  //         final prefsData = getIt<PrefsData>();
+  //         final isUserLoggedIn =
+  //             await prefsData.contains(PrefsKeys.userToken.name);
+  //         if (isUserLoggedIn) {
+  //           final token = await prefsData.readData(PrefsKeys.userToken.name);
+  //           final response = await http.post(
+  //             Uri.https(
+  //               "api.commercepal.com:2096",
+  //               "/prime/api/v1/customer/add-delivery-address",
+  //             ),
+  //             body: jsonEncode(payload),
+  //             headers: <String, String>{"Authorization": "Bearer $token"},
+  //           );
+
+  //           var data = jsonDecode(response.body);
+  //           print(data);
+
+  //           if (data['statusCode'] == '000') {
+  //             setState(() {
+  //               loading = false;
+  //             });
+  //             // Handle the case when statusCode is '000'
+  //           } else {
+  //             return "No street address found";
+  //           }
+  //         }
+  //       } catch (e) {
+  //         print(e.toString());
+  //         setState(() {
+  //           loading = false;
+  //         });
+  //         return "No street address found";
+  //         // Handle other exceptions
+  //       }
+  //       // Concatenate the street information
+  //       String address = "$street, $subLocality, $locality, $country";
+
+  //       // Remove leading commas and spaces
+  //       address = address.replaceAll(RegExp(r'^[,\s]+'), '');
+
+  //       return address.isNotEmpty ? address : "No street address found";
+  //     } else {
+  //       return "No street address found";
+  //     }
+  //   } catch (e) {
+  //     print("Error getting address: $e");
+  //     return "No street address found";
+  //   }
+  // }
 }

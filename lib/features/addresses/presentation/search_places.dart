@@ -18,7 +18,7 @@ import 'package:google_api_headers/google_api_headers.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 
-class SearchPlacesScreen extends StatefulWidget {
+class  SearchPlacesScreen extends StatefulWidget {
   static const routeName = "/search_places_page";
 
   const SearchPlacesScreen({Key? key}) : super(key: key);
@@ -194,7 +194,6 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
         String subLocality = place.subLocality ?? '';
         String locality = place.locality ?? '';
         String country = place.country ?? '';
-///////////////////////////////////////////////////////////////////////////////////////////////////
         try {
           setState(() {
             loading = true;
