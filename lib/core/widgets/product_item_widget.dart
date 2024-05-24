@@ -1,3 +1,4 @@
+import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -154,54 +155,52 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
                           vertical: 4.0, horizontal: 9),
-                      child: 
-                      // _cartItemCheck
-                      //     ? Text('data')
-                      //     :
-                           ElevatedButton(
-                              onPressed: () {
-                                if (widget.product.subProducts != null &&
-                                    widget.product.subProducts! > 1) {
-                                  checkCart(
-                                      context, widget.product.id.toString());
-                                  widget.onItemClick?.call(widget.product);
-                                } else {
-                                  context
-                                      .read<CartCoreCubit>()
-                                      .addCartItem(widget.product.toCartItem());
-                                }
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateColor.resolveWith(
-                                          (states) => AppColors.colorPrimary)),
-                              child: FutureBuilder<String>(
-                                future: Translations.translatedText(
-                                    "Add to cart",
-                                    GlobalStrings.getGlobalString()),
-                                //  translatedText("Log Out", 'en', dropdownValue),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.done) {
-                                    return Text(
-                                      snapshot.data ?? 'Default Text',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(color: Colors.white),
-                                    );
-                                  } else {
-                                    return Text(
-                                      'Loading...',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(color: Colors.white),
-                                    ); // Or any loading indicator
-                                  }
-                                },
-                              ),
-                            ),
+                      child:
+                          // _cartItemCheck
+                          //     ? Text('data')
+                          //     :
+                          ElevatedButton(
+                        onPressed: () {
+                          if (widget.product.subProducts != null &&
+                              widget.product.subProducts! > 1) {
+                            checkCart(context, widget.product.id.toString());
+                            widget.onItemClick?.call(widget.product);
+                          } else {
+                            context
+                                .read<CartCoreCubit>()
+                                .addCartItem(widget.product.toCartItem());
+                            displaySnack(context, "Product added to cart");
+                          }
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => AppColors.colorPrimary)),
+                        child: FutureBuilder<String>(
+                          future: Translations.translatedText(
+                              "Add to cart", GlobalStrings.getGlobalString()),
+                          //  translatedText("Log Out", 'en', dropdownValue),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return Text(
+                                snapshot.data ?? 'Default Text',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: Colors.white),
+                              );
+                            } else {
+                              return Text(
+                                'Loading...',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: Colors.white),
+                              ); // Or any loading indicator
+                            }
+                          },
+                        ),
+                      ),
                     ),
                   if (widget.product.quantity! == 0)
                     Container(

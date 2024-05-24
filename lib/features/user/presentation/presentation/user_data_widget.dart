@@ -5,6 +5,7 @@ import 'package:commercepal/features/change_password/presentation/change_passwor
 import 'package:commercepal/features/commercepal_coins/commecepal_coins.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_state.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
+import 'package:commercepal/features/install_referral/referrer.dart';
 import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
 import 'package:commercepal/features/splash/splash_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
@@ -220,6 +221,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: translatedStrings['commercepal_coins']!,
             language: dropdownValue,
             onClick: () {
+              getReferralLink();
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => CommecepalCoins()));
             },
