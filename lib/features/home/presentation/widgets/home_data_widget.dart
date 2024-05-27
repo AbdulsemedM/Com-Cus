@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
+import 'package:commercepal/features/flash_sale/flash_sale_dashboard.dart';
 import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
 import 'package:commercepal/features/sub_categories/presentation/sub_categories_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
@@ -388,7 +389,11 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
               subTitle: loading ? "Loading..." : bHint,
               imagePng: Assets.flashSale,
               onClick: () {
-                displaySnack(context, "Will be available soon.");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FlashSaleDashboard()));
+                // displaySnack(context, "Will be available soon.");
               },
             ),
             TopCategoryWidget(
