@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_links/app_links.dart';
 import 'package:bloc/bloc.dart';
 import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/utils/app_bloc_observer.dart';

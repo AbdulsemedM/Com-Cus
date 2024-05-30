@@ -260,7 +260,10 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
 
                       if (!adds.any((address) => address.selected == true)) {
                         if (loading == false) {
-                          _markSelectedAddress(ctx, adds[0], adds, true);
+                          _markSelectedAddress(ctx, adds.last, adds, true);
+                          ctx
+                              .read<CheckOutCubit>()
+                              .setSelectedAddress(adds.last);
                         }
                         // widget.onAddressClicked.call(adds[0]);
                         // adds[0].selected = true;
@@ -268,9 +271,9 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                         print("newherewego");
                         // Set the first address as selected
                         // Dispatch the updated list of addresses to the CheckOutCubit
-                      } else if (adds[0].selected && !done) {
+                      } else if (adds.last.selected && !done) {
                         // done = true;
-                        widget.onAddressClicked.call(adds[0]);
+                        widget.onAddressClicked.call(adds.last);
                       }
                     }
                     return Column(
@@ -414,9 +417,11 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       ctx
           .read<CheckOutCubit>()
           .markAddressAsSelected(address.id!.toInt(), adds);
+      ctx.read<CheckOutCubit>().setSelectedAddress(address);
     } else {
       Address last = adds.last;
       ctx.read<CheckOutCubit>().markAddressAsSelected(last.id!.toInt(), adds);
+      ctx.read<CheckOutCubit>().setSelectedAddress(address);
     }
     widget.onAddressClicked.call(address);
     setState(() {
@@ -527,6 +532,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                 loading = false;
               });
               setState(() {});
+
               // Handle the case when statusCode is '000'
             } else {
               return "No street address found";

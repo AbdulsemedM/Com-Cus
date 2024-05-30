@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../app/di/injector.dart';
@@ -221,11 +222,23 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: translatedStrings['commercepal_coins']!,
             language: dropdownValue,
             onClick: () {
-              getReferralLink();
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => CommecepalCoins()));
             },
           ),
+          // const Divider(),
+          // UserMenuItem(
+          //   icon: Icons.share_outlined,
+          //   title: translatedStrings['share_app']!,
+          //   language: dropdownValue,
+          //   onClick: () async {
+          //     String? link = await getReferralLink();
+          //     print(link);
+          //     Share.share("Check out this app: $link");
+          //     // Navigator.push(context,
+          //     //     MaterialPageRoute(builder: (context) => CommecepalCoins()));
+          //   },
+          // ),
           const Divider(),
           UserMenuItem(
             icon: Icons.production_quantity_limits_outlined,

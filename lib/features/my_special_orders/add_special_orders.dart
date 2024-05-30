@@ -324,6 +324,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                               tooltip: 'Pick Image from Gallery',
                               child: const Icon(
                                 Icons.photo,
+                                color: AppColors.bg1,
                               ),
                             ),
                             const SizedBox(width: 16),
@@ -333,6 +334,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                               tooltip: 'Take a Photo',
                               child: const Icon(
                                 Icons.camera_alt,
+                                color: AppColors.bg1,
                               ),
                             ),
                           ],
@@ -367,7 +369,12 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                                           "Please fill all the required fields.");
                                     }
                                   },
-                                  child: Text("Submit")),
+                                  child: const Text(
+                                    "Submit",
+                                    style: TextStyle(
+                                      color: AppColors.bg1,
+                                    ),
+                                  )),
                             )
                     ]),
               ),

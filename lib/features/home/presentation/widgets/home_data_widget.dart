@@ -7,6 +7,7 @@ import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/flash_sale/flash_sale_dashboard.dart';
 import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
 import 'package:commercepal/features/sub_categories/presentation/sub_categories_page.dart';
+import 'package:commercepal/features/top_deals/top_deals_dashboard.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
@@ -401,7 +402,10 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
               subTitle: loading ? "Loading..." : eHint,
               imagePng: Assets.topDeals,
               onClick: () {
-                displaySnack(context, "Will be available soon.");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TopDealsDashboard()));
               },
             ),
             TopCategoryWidget(

@@ -15,19 +15,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:rate_in_stars/rate_in_stars.dart';
 
-class FlashSaleDashboard extends StatefulWidget {
-  const FlashSaleDashboard({super.key});
+class TopDealsDashboard extends StatefulWidget {
+  const TopDealsDashboard({super.key});
 
   @override
-  State<FlashSaleDashboard> createState() => _FlashSaleDashboardState();
+  State<TopDealsDashboard> createState() => _TopDealsDashboardState();
 }
 
-class FlashSaleProducts {
+class TopDealsProducts {
   final String productId;
   final String productName;
   final String mobileThumbnail;
   final String actualPrice;
-  final String flashSalePrice;
+  // final String flashSalePrice;
   final String minOrder;
   final String maxOrder;
   final String isOnFlashSale;
@@ -35,8 +35,9 @@ class FlashSaleProducts {
   final String discountDescription;
   final String productRating;
   final String subProductId;
-  FlashSaleProducts(
-      {required this.flashSalePrice,
+  TopDealsProducts(
+      {
+      // required this.flashSalePrice,
       required this.minOrder,
       required this.maxOrder,
       required this.isOnFlashSale,
@@ -50,13 +51,13 @@ class FlashSaleProducts {
       required this.actualPrice});
 }
 
-class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
+class _TopDealsDashboardState extends State<TopDealsDashboard> {
   var loading = false;
-  List<FlashSaleProducts> myFlashSaleProducts = [];
+  List<TopDealsProducts> myTopDealsProducts = [];
   @override
   void initState() {
     super.initState();
-    fetchFlashSaleProducts();
+    fetchTopDealsProducts();
   }
 
   @override
@@ -66,7 +67,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Flash Sale",
+          "Top Deals",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
         ),
       ),
@@ -76,11 +77,11 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                "Let's help you buy in a flash",
+                "Unbeatable Deals, Unmatched Savings!",
                 style: TextStyle(fontSize: 20),
               ),
             ),
-            loading == false && myFlashSaleProducts.isEmpty
+            loading == false && myTopDealsProducts.isEmpty
                 ? SizedBox(
                     height: sHeight * 0.9,
                     child: const Column(
@@ -92,7 +93,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                       ],
                     ),
                   )
-                : loading && myFlashSaleProducts.isEmpty
+                : loading && myTopDealsProducts.isEmpty
                     ? const Center(
                         child: CircularProgressIndicator(
                           color: AppColors.colorPrimaryDark,
@@ -115,7 +116,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                         2.0, // Spacing between columns
                                     mainAxisSpacing: 5, // Spacing between rows
                                   ),
-                                  itemCount: myFlashSaleProducts.length,
+                                  itemCount: myTopDealsProducts.length,
                                   itemBuilder: (context, index) {
                                     return Padding(
                                       padding: const EdgeInsets.all(4.0),
@@ -157,7 +158,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                       color: Colors.grey,
                                                     ),
                                                     imageUrl:
-                                                        myFlashSaleProducts[
+                                                        myTopDealsProducts[
                                                                 index]
                                                             .mobileThumbnail,
                                                   ),
@@ -168,7 +169,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                               padding: const EdgeInsets.only(
                                                   left: 8.0, right: 8.0),
                                               child: Text(
-                                                myFlashSaleProducts[index]
+                                                myTopDealsProducts[index]
                                                     .productName,
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
@@ -181,6 +182,57 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                             FontWeight.w500),
                                               ),
                                             ),
+                                            // Row(
+                                            //   children: [
+                                            //     Padding(
+                                            //       padding:
+                                            //           const EdgeInsets.only(
+                                            //               left: 8.0,
+                                            //               right: 8.0,
+                                            //               top: 8,
+                                            //               bottom: 8),
+                                            //       child: Text(
+                                            //         "Old Price",
+                                            //         maxLines: 2,
+                                            //         overflow:
+                                            //             TextOverflow.ellipsis,
+                                            //         style: Theme.of(context)
+                                            //             .textTheme
+                                            //             .headline3
+                                            //             ?.copyWith(
+                                            //                 fontSize: 14.sp,
+                                            //                 fontWeight:
+                                            //                     FontWeight
+                                            //                         .normal),
+                                            //       ),
+                                            //     ),
+                                            //     Padding(
+                                            //       padding:
+                                            //           const EdgeInsets.only(
+                                            //               left: 8.0,
+                                            //               right: 8.0,
+                                            //               top: 8,
+                                            //               bottom: 8),
+                                            //       child: Text(
+                                            //         "${myTopDealsProducts[index].actualPrice} ETB",
+                                            //         maxLines: 2,
+                                            //         overflow:
+                                            //             TextOverflow.ellipsis,
+                                            //         style: Theme.of(context)
+                                            //             .textTheme
+                                            //             .headline3
+                                            //             ?.copyWith(
+                                            //                 decoration:
+                                            //                     TextDecoration
+                                            //                         .lineThrough,
+                                            //                 fontSize: 14.sp,
+                                            //                 fontWeight:
+                                            //                     FontWeight
+                                            //                         .normal),
+                                            //       ),
+                                            //     ),
+                                            //   ],
+                                            // ),
                                             Row(
                                               children: [
                                                 Padding(
@@ -191,7 +243,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                           top: 8,
                                                           bottom: 8),
                                                   child: Text(
-                                                    "Old Price",
+                                                    "Price",
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -213,58 +265,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                           top: 8,
                                                           bottom: 8),
                                                   child: Text(
-                                                    "${myFlashSaleProducts[index].actualPrice} ETB",
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline3
-                                                        ?.copyWith(
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .lineThrough,
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8.0,
-                                                          right: 8.0,
-                                                          top: 8,
-                                                          bottom: 8),
-                                                  child: Text(
-                                                    "Flash Price",
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline3
-                                                        ?.copyWith(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8.0,
-                                                          right: 8.0,
-                                                          top: 8,
-                                                          bottom: 8),
-                                                  child: Text(
-                                                    "${myFlashSaleProducts[index].flashSalePrice} ETB",
+                                                    "${myTopDealsProducts[index].actualPrice} ETB",
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -312,7 +313,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                           top: 8,
                                                           bottom: 8),
                                                   child: Text(
-                                                    "${myFlashSaleProducts[index].minOrder} ",
+                                                    "${myTopDealsProducts[index].minOrder} ",
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -360,7 +361,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                           top: 8,
                                                           bottom: 8),
                                                   child: Text(
-                                                    "${myFlashSaleProducts[index].maxOrder} ",
+                                                    "${myTopDealsProducts[index].maxOrder} ",
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -402,30 +403,30 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                   onPressed: () {
                                                     CartItem myItem = CartItem(
                                                         productId: int.parse(
-                                                            myFlashSaleProducts[index]
+                                                            myTopDealsProducts[index]
                                                                 .productId),
                                                         name:
-                                                            myFlashSaleProducts[index]
+                                                            myTopDealsProducts[index]
                                                                 .productName,
                                                         image:
-                                                            myFlashSaleProducts[index]
+                                                            myTopDealsProducts[index]
                                                                 .mobileThumbnail,
                                                         description: '-',
                                                         price:
-                                                            myFlashSaleProducts[index]
-                                                                .flashSalePrice,
+                                                            myTopDealsProducts[index]
+                                                                .actualPrice,
                                                         currency: "ETB",
                                                         subProductId: int.parse(
-                                                            myFlashSaleProducts[index]
+                                                            myTopDealsProducts[index]
                                                                 .subProductId),
                                                         quantity: int.parse(
-                                                            myFlashSaleProducts[index]
+                                                            myTopDealsProducts[index]
                                                                 .minOrder));
                                                     context
                                                         .read<CartCoreCubit>()
                                                         .addCartItem(myItem);
                                                     displaySnack(context,
-                                                        "Flash product ${myFlashSaleProducts[index].productName} added to cart");
+                                                        "Flash product ${myTopDealsProducts[index].productName} added to cart");
                                                   },
                                                   child: const Text(
                                                     "Add to Cart",
@@ -448,7 +449,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
     );
   }
 
-  Future<void> fetchFlashSaleProducts() async {
+  Future<void> fetchTopDealsProducts() async {
     try {
       setState(() {
         loading = true;
@@ -461,7 +462,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
         final response = await http.get(
           Uri.https(
             "api.commercepal.com:2096",
-            "/prime/api/v1/products/on-flash-sale",
+            "/prime/api/v1/products/top-deals",
             // {'page': "0", "size": "100", "sortDirection": "desc"},
           ),
           headers: <String, String>{
@@ -472,16 +473,16 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
         print('hererererer');
         var datas = jsonDecode(response.body);
         print(datas);
-        myFlashSaleProducts.clear();
+        myTopDealsProducts.clear();
         if (datas['statusCode'] == "000") {
           for (var i in datas['data']['products']) {
-            myFlashSaleProducts.add(FlashSaleProducts(
+            myTopDealsProducts.add(TopDealsProducts(
               productId: i['ProductId'].toString(),
-              subProductId: i['flashSale']['subProductId'].toString(),
+              subProductId: i['subProductId'].toString(),
               minOrder: i['minOrder'].toString(),
               maxOrder: i['maxOrder'].toString(),
               isOnFlashSale: i['isOnFlashSale'].toString(),
-              flashSalePrice: i['flashSale']['flashSalePrice'].toString(),
+              // flashSalePrice: i['flashSale']['flashSalePrice'].toString(),
               productName: i['productName'].toString(),
               unique_id: i['unique_id'].toString(),
               mobileThumbnail: i['mobileImage'].toString(),
@@ -490,7 +491,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
               productRating: i['productRating'].toString(),
             ));
           }
-          print(myFlashSaleProducts.length);
+          print(myTopDealsProducts.length);
         } else {
           throw datas['statusDescription'] ?? 'Error fetching Flash-Sales';
         }

@@ -303,6 +303,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                       CheckOutAddressesWidget(
                         onAddressClicked: (Address address) {
                           ctx.read<CheckOutCubit>().setSelectedAddress(address);
+                          // setState(() {});
                         },
                       )
                   ],
