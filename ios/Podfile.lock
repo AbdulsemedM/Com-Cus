@@ -1,4 +1,6 @@
 PODS:
+  - app_links (0.0.1):
+    - Flutter
   - connectivity (0.0.1):
     - Flutter
     - Reachability
@@ -26,6 +28,8 @@ PODS:
     - GoogleMaps/Base
   - image_picker_ios (0.0.1):
     - Flutter
+  - install_referrer (1.0.0):
+    - Flutter
   - onesignal_flutter (3.5.2):
     - Flutter
     - OneSignalXCFramework (= 3.12.7)
@@ -51,6 +55,8 @@ PODS:
     - PhoneNumberKit/PhoneNumberKitCore (= 3.3.4)
   - PhoneNumberKit/PhoneNumberKitCore (3.3.4)
   - Reachability (3.2)
+  - share_plus (0.0.1):
+    - Flutter
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -67,6 +73,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - app_links (from `.symlinks/plugins/app_links/ios`)
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
@@ -76,12 +83,14 @@ DEPENDENCIES:
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - install_referrer (from `.symlinks/plugins/install_referrer/ios`)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - OneSignalXCFramework (< 6.0, >= 2.5.2)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - phone_number (from `.symlinks/plugins/phone_number/ios`)
+  - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sms_autofill (from `.symlinks/plugins/sms_autofill/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -98,6 +107,8 @@ SPEC REPOS:
     - Reachability
 
 EXTERNAL SOURCES:
+  app_links:
+    :path: ".symlinks/plugins/app_links/ios"
   connectivity:
     :path: ".symlinks/plugins/connectivity/ios"
   device_info_plus:
@@ -116,6 +127,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_maps_flutter_ios/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  install_referrer:
+    :path: ".symlinks/plugins/install_referrer/ios"
   onesignal_flutter:
     :path: ".symlinks/plugins/onesignal_flutter/ios"
   package_info_plus:
@@ -126,6 +139,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   phone_number:
     :path: ".symlinks/plugins/phone_number/ios"
+  share_plus:
+    :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sms_autofill:
@@ -140,6 +155,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  app_links: e70ca16b4b0f88253b3b3660200d4a10b4ea9795
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
@@ -151,6 +167,7 @@ SPEC CHECKSUMS:
   google_maps_flutter_ios: d1318b4ff711612cab16862d7a87e31a7403d458
   GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  install_referrer: 1bde9acf8b1bfd372706454234444a01b5732bcf
   onesignal_flutter: 86b451a4f1d81cdc7a6f131d7b5bc2e44ae15227
   OneSignalXCFramework: 0fca311799488cb50419c0b96594aa8df4300115
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
@@ -159,6 +176,7 @@ SPEC CHECKSUMS:
   phone_number: ad6f917e4fd2e507a198b93dca5eadcb463ec8c2
   PhoneNumberKit: 441e8b26ec88d598e3591de9061eff18f5dd12e8
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   sms_autofill: c461043483362c3f1709ee76eaae6eb570b31686
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
