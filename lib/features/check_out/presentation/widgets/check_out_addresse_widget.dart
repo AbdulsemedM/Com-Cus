@@ -178,7 +178,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                           ? const Text("Loading...")
                                           : Text(
                                               Aut,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white),
                                             ),
                                     ),
@@ -203,7 +203,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                           ? const Text("Loading...")
                                           : Text(
                                               Man,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white),
                                             ),
                                     ),
@@ -221,7 +221,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                     ? const Text("Loading...")
                                     : Text(
                                         Can,
-                                        style: TextStyle(color: Colors.red),
+                                        style:
+                                            const TextStyle(color: Colors.red),
                                       ),
                               ),
                             ],
