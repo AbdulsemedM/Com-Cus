@@ -5,6 +5,7 @@ import 'package:commercepal/app/data/network/end_points.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/core/device-info/device_info.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/data/prefs_data.dart';
 import '../../../core/models/user_model.dart';
@@ -43,21 +44,38 @@ class UserRegistrationRepoImpl implements UserRegistrationRepo {
       if (!userResponse) {
         throw "User exists";
       }
-
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? referrer = prefs.getString("referrer");
       final deviceData = await deviceInfo.getDeviceInfo();
-      final payload = {
-        "msisdn": phoneNumber,
-        "firstName": fName,
-        "lastName": sName,
-        "email": email ?? '$phoneNumber@gmail.com',
-        "city": city,
-        "country": country,
-        "language": "en",
-        "registeredBy": "self",
-        "channel": deviceData.name,
-        "deviceId": deviceData.deviceId
-      };
-
+      final payload = referrer == null
+          ? {
+              "msisdn": phoneNumber,
+              "firstName": fName,
+              "lastName": sName,
+              "email": email ?? '$phoneNumber@gmail.com',
+              "city": city,
+              "country": country,
+              "language": "en",
+              "registeredBy": "self",
+              "channel": deviceData.name,
+              "deviceId": deviceData.deviceId
+            }
+          : {
+              "msisdn": phoneNumber,
+              "firstName": fName,
+              "lastName": sName,
+              "email": email ?? '$phoneNumber@gmail.com',
+              "city": city,
+              "country": country,
+              "language": "en",
+              "registeredBy": "self",
+              "channel": deviceData.name,
+              "deviceId": deviceData.deviceId,
+              "referrer": referrer
+            };
+      if (referrer != null) {
+        prefs.remove("referrer");
+      }
       final response =
           await apiProvider.post(payload, EndPoints.registration.url);
       final objResponse = jsonDecode(response);
@@ -70,5 +88,4 @@ class UserRegistrationRepoImpl implements UserRegistrationRepo {
       rethrow;
     }
   }
-
 }

@@ -71,4 +71,17 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+    <key>CFBundleURLName</key>
+    <string>com.commercepal.commercepal</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>example</string>
+    </array>
+  </dict>
+</array>
 </plist>

@@ -39,7 +39,7 @@ dependencies:
   # databases
   floor: ^1.4.1
   sqflite: ^2.2.4+1
-  flutter_secure_storage: ^9.0.0
+  flutter_secure_storage: ^9.2.2
 
   path_provider:
   fimber: ^0.7.0
@@ -81,6 +81,7 @@ dependencies:
   rate_in_stars: ^0.0.3
   install_referrer: ^1.2.1
   share_plus: ^7.2.0
+  uni_links2: ^0.6.0+2
 
 dev_dependencies:
   flutter_test:

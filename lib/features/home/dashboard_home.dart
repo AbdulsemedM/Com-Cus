@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:android_play_install_referrer/android_play_install_referrer.dart';
 // import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uni_links2/uni_links.dart';
 
 import '../../app/di/injector.dart';
 import 'domain/schema_settings_model.dart';
@@ -24,11 +27,12 @@ class DashboardHomePage extends StatefulWidget {
 class _DashboardHomePageState extends State<DashboardHomePage> {
   // late AppLinks _appLinks;
   // StreamSubscription<Uri>? _linkSubscription;
+  StreamSubscription? _sub;
   @override
   void initState() {
     super.initState();
     // print("Start");
-    // initDeepLinks();
+    initDeepLinks();
   }
 
   // @override
@@ -63,36 +67,56 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
 
   Future<void> initDeepLinks() async {
     print("here we go now\$newOne");
-    try {
-      ReferrerDetails referrerDetails =
-          await AndroidPlayInstallReferrer.installReferrer;
-      print("referrerDetails: ${referrerDetails.toString()}");
-      final referrer = await AndroidPlayInstallReferrer.installReferrer;
-      if (referrer != null) {
-        final utmParams = referrer.installReferrer;
-        print("Install Referrer: $utmParams");
+    if (Platform.isAndroid) {
+      try {
+        ReferrerDetails referrerDetails =
+            await AndroidPlayInstallReferrer.installReferrer;
+        print("referrerDetails: ${referrerDetails.toString()}");
+        final referrer = await AndroidPlayInstallReferrer.installReferrer;
+        if (referrer != null) {
+          final utmParams = referrer.installReferrer;
+          print("Install Referrer: $utmParams");
+          if (utmParams != null) {
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            prefs.setString("referrer", utmParams);
+          }
 
-        // final playStoreLink =
-        //     'https://play.google.com/store/apps/details?id=com.commercepal.commercepal&$utmParams';
-        // print("Play Store Link: $playStoreLink");
+          // final playStoreLink =
+          //     'https://play.google.com/store/apps/details?id=com.commercepal.commercepal&$utmParams';
+          // print("Play Store Link: $playStoreLink");
 
-        // // Append the utmParams to your Play Store link
-        // final referralLink = '$playStoreLink&$utmParams';
-        // print("Referral Link: $referralLink");
+          // // Append the utmParams to your Play Store link
+          // final referralLink = '$playStoreLink&$utmParams';
+          // print("Referral Link: $referralLink");
 
-        // Map<String, String> queryParams =
-        //     Uri.parse(playStoreLink).queryParameters;
-        // print("queryParams: $queryParams");
+          // Map<String, String> queryParams =
+          //     Uri.parse(playStoreLink).queryParameters;
+          // print("queryParams: $queryParams");
 
-        // // Get the `utm_content` parameter.
-        // String? utmContent = queryParams["utm_content"];
-        // print("hereee");
-        // print(utmContent);
-      } else {
-        print("Referrer is null");
+          // // Get the `utm_content` parameter.
+          // String? utmContent = queryParams["utm_content"];
+          // print("hereee");
+          // print(utmContent);
+        } else {
+          print("Referrer is null");
+        }
+      } catch (e) {
+        print("Error retrieving install referrer: $e");
       }
-    } catch (e) {
-      print("Error retrieving install referrer: $e");
+    } else if (Platform.isIOS) {
+      _sub = uriLinkStream.listen((Uri? uri) async {
+        if (uri != null) {
+          final userId = uri.queryParameters['userId'];
+          if (userId != null) {
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            prefs.setString("referrer", userId);
+          }
+        }
+      }, onError: (err) {
+        // Handle errors
+      });
     }
 
     // Parse the install referrer URL to extract query parameters

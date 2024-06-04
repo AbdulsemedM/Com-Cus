@@ -1,11 +1,20 @@
+import 'dart:io';
+
 import 'package:android_play_install_referrer/android_play_install_referrer.dart';
 import 'package:flutter/services.dart';
 
 Future<String> getReferralLink() async {
   final String userId = "12345";
-  String myReferrer =
-      "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$userId";
-  return myReferrer;
+  if (Platform.isAndroid) {
+    String myReferrer =
+        "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$userId";
+    return myReferrer;
+  } else if (Platform.isIOS) {
+    String myReferrer =
+        'https://apps.apple.com/us/app/commercepal/id1669974212?$userId=$userId';
+    return myReferrer;
+  }
+  return "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$userId";
 
   // try {
 

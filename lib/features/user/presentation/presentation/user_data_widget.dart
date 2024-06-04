@@ -226,19 +226,19 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                   MaterialPageRoute(builder: (context) => CommecepalCoins()));
             },
           ),
-          // const Divider(),
-          // UserMenuItem(
-          //   icon: Icons.share_outlined,
-          //   title: translatedStrings['share_app']!,
-          //   language: dropdownValue,
-          //   onClick: () async {
-          //     String? link = await getReferralLink();
-          //     print(link);
-          //     Share.share("Check out this app: $link");
-          //     // Navigator.push(context,
-          //     //     MaterialPageRoute(builder: (context) => CommecepalCoins()));
-          //   },
-          // ),
+          const Divider(),
+          UserMenuItem(
+            icon: Icons.share_outlined,
+            title: translatedStrings['share_app']!,
+            language: dropdownValue,
+            onClick: () async {
+              String? link = await getReferralLink();
+              print(link);
+              Share.share("Check out this app: $link");
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => CommecepalCoins()));
+            },
+          ),
           const Divider(),
           UserMenuItem(
             icon: Icons.production_quantity_limits_outlined,
