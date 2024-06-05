@@ -1,11 +1,13 @@
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/core/translator/translator.dart';
 import 'package:commercepal/features/addresses/presentation/addresses_page.dart';
 import 'package:commercepal/features/change_password/presentation/change_password_page.dart';
 import 'package:commercepal/features/commercepal_coins/commecepal_coins.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_state.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:commercepal/features/install_referral/referrer.dart';
+import 'package:commercepal/features/login/presentation/login_page.dart';
 import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
 import 'package:commercepal/features/splash/splash_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
@@ -45,16 +47,24 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   List<String> list = <String>['en', 'am', 'so', 'om', 'ar'];
   String dropdownValue = "";
   String langCode = 'en';
+  String valid = 'login';
 
   @override
   void initState() {
     super.initState();
+    checkToken();
     setState(() {
       dropdownValue = list.first;
     });
     // setLangCode();
   }
 
+  Future<void> checkToken() async {
+    setState(() async {
+      valid = await fetchUser1(context: context);
+    });
+    // if (valid == "logout") {}
+  }
   // void setLangCode() async {
   //   setState(() async {
   //     langCode = await getStoredLang();
@@ -222,8 +232,12 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: translatedStrings['commercepal_coins']!,
             language: dropdownValue,
             onClick: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CommecepalCoins()));
+              if (valid == "logout") {
+                Navigator.pushNamed(context, LoginPage.routeName);
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CommecepalCoins()));
+              }
             },
           ),
           const Divider(),
@@ -232,9 +246,13 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: translatedStrings['share_app']!,
             language: dropdownValue,
             onClick: () async {
-              String? link = await getReferralLink();
-              print(link);
-              Share.share("Check out this app: $link");
+              if (valid == "logout") {
+                Navigator.pushNamed(context, LoginPage.routeName);
+              } else {
+                String? link = await getReferralLink();
+                print(link);
+                Share.share("Check out this app: $link");
+              }
               // Navigator.push(context,
               //     MaterialPageRoute(builder: (context) => CommecepalCoins()));
             },
@@ -245,8 +263,14 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: translatedStrings['special_orders']!,
             language: dropdownValue,
             onClick: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NewSpecialOrders()));
+              if (valid == "logout") {
+                Navigator.pushNamed(context, LoginPage.routeName);
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NewSpecialOrders()));
+              }
             },
           ),
           const Divider(),
@@ -255,7 +279,11 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: translatedStrings['my_orders']!,
             language: dropdownValue,
             onClick: () {
-              Navigator.pushNamed(context, UserOrdersPage.routeName);
+              if (valid == "logout") {
+                Navigator.pushNamed(context, LoginPage.routeName);
+              } else {
+                Navigator.pushNamed(context, UserOrdersPage.routeName);
+              }
             },
           ),
           const Divider(),
@@ -264,7 +292,11 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: translatedStrings['addresses']!,
             language: dropdownValue,
             onClick: () {
-              Navigator.pushNamed(context, AddressesPage.routeName);
+              if (valid == "logout") {
+                Navigator.pushNamed(context, LoginPage.routeName);
+              } else {
+                Navigator.pushNamed(context, AddressesPage.routeName);
+              }
             },
           ),
           const Divider(),
@@ -273,10 +305,14 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: translatedStrings['change_password']!,
             language: dropdownValue,
             onClick: () {
-              Navigator.pushNamed(context, ChangePasswordPage.routeName)
-                  .then((value) {
-                widget.onRefresh.call();
-              });
+              if (valid == "logout") {
+                Navigator.pushNamed(context, LoginPage.routeName);
+              } else {
+                Navigator.pushNamed(context, ChangePasswordPage.routeName)
+                    .then((value) {
+                  widget.onRefresh.call();
+                });
+              }
             },
           ),
           const Divider(),

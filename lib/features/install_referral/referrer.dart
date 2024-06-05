@@ -1,21 +1,56 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:android_play_install_referrer/android_play_install_referrer.dart';
-import 'package:flutter/services.dart';
+// import 'package:android_play_install_referrer/android_play_install_referrer.dart';
+import 'package:commercepal/app/di/injector.dart';
+import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/core/data/prefs_data.dart';
+import 'package:commercepal/core/data/prefs_data_impl.dart';
+// import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 Future<String> getReferralLink() async {
-  final String userId = "12345";
-  if (Platform.isAndroid) {
-    String myReferrer =
-        "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$userId";
-    return myReferrer;
-  } else if (Platform.isIOS) {
-    String myReferrer =
-        'https://apps.apple.com/us/app/commercepal/id1669974212?$userId=$userId';
-    return myReferrer;
+  try {
+    final prefsData = getIt<PrefsData>();
+    final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+    print(isUserLoggedIn);
+    if (isUserLoggedIn) {
+      final token = await prefsData.readData(PrefsKeys.userToken.name);
+      final response = await http.get(
+        Uri.https(
+          "api.commercepal.com:2096",
+          "/prime/api/v1/customer/referrals",
+        ),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      print('hererererer');
+      var datas = jsonDecode(response.body);
+      print(datas);
+      if (datas['statusCode'] == "000") {
+        final String userId = datas['referralCode'];
+        if (Platform.isAndroid) {
+          String myReferrer =
+              "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$userId";
+          return myReferrer;
+        } else if (Platform.isIOS) {
+          String myReferrer =
+              'https://apps.apple.com/us/app/commercepal/id1669974212?$userId=$userId';
+          return myReferrer;
+        } else {
+          return "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$userId";
+        }
+      } else {
+        return "https://play.google.com/store/apps/details?id=com.commercepal.commercepal";
+      }
+    } else {}
+  } catch (e) {
+    print(e.toString());
+    return "https://play.google.com/store/apps/details?id=com.commercepal.commercepal";
   }
-  return "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$userId";
-
+  return "https://play.google.com/store/apps/details?id=com.commercepal.commercepal";
   // try {
 
   // final referrer = await AndroidPlayInstallReferrer.installReferrer;

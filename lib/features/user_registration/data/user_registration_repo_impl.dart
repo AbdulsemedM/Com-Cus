@@ -71,7 +71,7 @@ class UserRegistrationRepoImpl implements UserRegistrationRepo {
               "registeredBy": "self",
               "channel": deviceData.name,
               "deviceId": deviceData.deviceId,
-              "referrer": referrer
+              "referralCode": referrer
             };
       if (referrer != null) {
         prefs.remove("referrer");

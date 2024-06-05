@@ -8,6 +8,7 @@ import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_state.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/core/translator/translator.dart';
 import 'package:commercepal/features/cart/presentation/widgets/cart_item_widget.dart';
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
@@ -32,8 +33,16 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   void initState() {
     super.initState();
+    // checkToken();
     fetchHints();
-    fetchUser1();
+    // fetchUser1();
+  }
+
+  Future<void> checkToken() async {
+    String valid = await fetchUser1(context: context);
+    if (valid == "logout") {
+      Navigator.pushNamed(context, LoginPage.routeName);
+    }
   }
 
   void fetchHints() async {
@@ -139,8 +148,9 @@ class _CartPageState extends State<CartPage> {
                           (previousValue, element) =>
                               previousValue + element.toDouble())
                       .formatCurrency(cartItems.first.currency),
-                  onClick: () {
-                    if (logout == "logout") {
+                  onClick: () async {
+                    String valid = await fetchUser1(context: context);
+                    if (valid == "logout") {
                       displaySnack(context, "Login to your account.");
                       Navigator.pushNamed(ctx, LoginPage.routeName);
                     }
@@ -165,63 +175,63 @@ class _CartPageState extends State<CartPage> {
     }
   }
 
-  Future<void> fetchUser1({int retryCount = 0, BuildContext? context}) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    try {
-      await prefs.remove("promocode");
-    } catch (e) {
-      print(e.toString());
-    }
-    try {
-      setState(() {
-        loading = true;
-      });
-      final prefsData = getIt<PrefsData>();
-      final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      if (isUserLoggedIn) {
-        final token = await prefsData.readData(PrefsKeys.userToken.name);
-        final response = await http.get(
-          Uri.https(
-            "api.commercepal.com:2096",
-            "prime/api/v1/get-details",
-            {"userType": "BUSINESS"},
-          ),
-          headers: <String, String>{"Authorization": "Bearer $token"},
-        );
+  // Future<void> fetchUser1({int retryCount = 0, BuildContext? context}) async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   try {
+  //     await prefs.remove("promocode");
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  //   try {
+  //     setState(() {
+  //       loading = true;
+  //     });
+  //     final prefsData = getIt<PrefsData>();
+  //     final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+  //     if (isUserLoggedIn) {
+  //       final token = await prefsData.readData(PrefsKeys.userToken.name);
+  //       final response = await http.get(
+  //         Uri.https(
+  //           "api.commercepal.com:2096",
+  //           "prime/api/v1/get-details",
+  //           {"userType": "BUSINESS"},
+  //         ),
+  //         headers: <String, String>{"Authorization": "Bearer $token"},
+  //       );
 
-        var data = jsonDecode(response.body);
-        print(data);
+  //       var data = jsonDecode(response.body);
+  //       print(data);
 
-        if (data['statusCode'] == '000') {
-          // Handle the case when statusCode is '000'
-          setState(() {
-            loading = false;
-          });
-        } else {
-          // Retry logic
-          // if (retryCount < 5) {
-          //   // Retry after num + 1 seconds
-          //   await Future.delayed(Duration(seconds: retryCount++));
-          //   // Call the function again with an increased retryCount
-          //   await fetchUser(retryCount: retryCount + 1);
+  //       if (data['statusCode'] == '000') {
+  //         // Handle the case when statusCode is '000'
+  //         setState(() {
+  //           loading = false;
+  //         });
+  //       } else {
+  //         // Retry logic
+  //         // if (retryCount < 5) {
+  //         //   // Retry after num + 1 seconds
+  //         //   await Future.delayed(Duration(seconds: retryCount++));
+  //         //   // Call the function again with an increased retryCount
+  //         //   await fetchUser(retryCount: retryCount + 1);
 
-          // Retry limit reached, handle accordingly
-          setState(() async {
-            loading = false;
-            logout = "logout";
-          });
+  //         // Retry limit reached, handle accordingly
+  //         setState(() async {
+  //           loading = false;
+  //           logout = "logout";
+  //         });
 
-          // ignore: use_build_context_synchronously
-          // Navigator.pushReplacement(context!,
-          //     MaterialPageRoute(builder: (context) => const LoginPage()));
-        }
-      }
-    } catch (e) {
-      print(e.toString());
-      setState(() {
-        loading = false;
-      });
-      // Handle other exceptions
-    }
-  }
+  //         // ignore: use_build_context_synchronously
+  //         // Navigator.pushReplacement(context!,
+  //         //     MaterialPageRoute(builder: (context) => const LoginPage()));
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print(e.toString());
+  //     setState(() {
+  //       loading = false;
+  //     });
+  //     // Handle other exceptions
+  //   }
+  // }
 }

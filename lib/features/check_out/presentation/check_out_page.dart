@@ -5,6 +5,7 @@ import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/core/translator/translator.dart';
 import 'package:commercepal/features/check_out/presentation/bloc/check_out_cubit.dart';
 import 'package:commercepal/features/check_out/presentation/bloc/check_out_state.dart';
 import 'package:commercepal/features/check_out/presentation/widgets/check_out_addresse_widget.dart';
