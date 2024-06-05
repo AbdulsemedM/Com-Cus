@@ -29,22 +29,21 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>We need access to Apple Music data to provide personalized music recommendations based on your listening history.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>CommmercePal needs permission to access your photos</string>
+	<string>CommercePal needs permission to access your photos</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We need your location to provide you with location-based services and enhance your user experience.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to provide you with location-based services and enhance your user experience.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>CommmercePal needs permission to access your photos</string>
+	<string>CommercePal needs permission to access your photos</string>
 	<key>NSPrivacyAccessedAPICategoryFileTimestamp</key>
-    <string>CommmercePal accesses file timestamps to track file modification times for enhanced file management functionality.</string>
+    <string>CommercePal accesses file timestamps to track file modification times for enhanced file management functionality.</string>
     <key>NSPrivacyAccessedAPICategoryUserDefaults</key>
-    <string>CommmercePal accesses user defaults to store and retrieve user preferences for a personalized user experience.</string>
+    <string>CommercePal accesses user defaults to store and retrieve user preferences for a personalized user experience.</string>
     <key>NSPrivacyAccessedAPICategorySystemBootTime</key>
-    <string>CommmercePal accesses system boot time to optimize performance and resource allocation based on device uptime.</string>
+    <string>CommercePal accesses system boot time to optimize performance and resource allocation based on device uptime.</string>
     <key>NSPrivacyAccessedAPICategoryDiskSpace</key>
-    <string>CommmercePal accesses disk space information to provide users with insights into storage usage and recommendations for optimizing storage.</string>
-   
+    <string>CommercePal accesses disk space information to provide users with insights into storage usage and recommendations for optimizing storage.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -70,18 +69,18 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleURLTypes</key>
+	<array>
+	  <dict>
+	    <key>CFBundleTypeRole</key>
+	    <string>Editor</string>
+	    <key>CFBundleURLName</key>
+	    <string>com.commercepal.commercepal</string>
+	    <key>CFBundleURLSchemes</key>
+	    <array>
+	      <string>example</string>
+	    </array>
+	  </dict>
+	</array>
 </dict>
-<key>CFBundleURLTypes</key>
-<array>
-  <dict>
-    <key>CFBundleTypeRole</key>
-    <string>Editor</string>
-    <key>CFBundleURLName</key>
-    <string>com.commercepal.commercepal</string>
-    <key>CFBundleURLSchemes</key>
-    <array>
-      <string>example</string>
-    </array>
-  </dict>
-</array>
 </plist>
