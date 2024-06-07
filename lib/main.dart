@@ -37,7 +37,6 @@ void main() async {
   String lang = await getStoredLang();
   GlobalStrings.setGlobalString(lang);
 
-  // await translateStrings();
 
   Bloc.observer = AppBlocObserver();
 
