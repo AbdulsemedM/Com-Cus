@@ -67,6 +67,8 @@ PODS:
     - FMDB (>= 2.7.5)
   - store_redirect (0.0.1):
     - Flutter
+  - uni_links2 (0.0.1):
+    - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
   - webview_flutter_wkwebview (0.0.1):
@@ -95,6 +97,7 @@ DEPENDENCIES:
   - sms_autofill (from `.symlinks/plugins/sms_autofill/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - store_redirect (from `.symlinks/plugins/store_redirect/ios`)
+  - uni_links2 (from `.symlinks/plugins/uni_links2/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
@@ -149,6 +152,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   store_redirect:
     :path: ".symlinks/plugins/store_redirect/ios"
+  uni_links2:
+    :path: ".symlinks/plugins/uni_links2/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   webview_flutter_wkwebview:
@@ -159,7 +164,7 @@ SPEC CHECKSUMS:
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
+  flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   gallery_saver: 9fc173c9f4fcc48af53b2a9ebea1b643255be542
   geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
@@ -181,6 +186,7 @@ SPEC CHECKSUMS:
   sms_autofill: c461043483362c3f1709ee76eaae6eb570b31686
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   store_redirect: 2977747cf81689a39bd62c248c2deacb7a0d131e
+  uni_links2: fbc37081577fc19c6e0f7e6cdbd3baa150023635
   url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
