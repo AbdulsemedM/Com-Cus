@@ -1,7 +1,7 @@
-import 'dart:convert';
+// import 'dart:convert';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:http/http.dart' as http;
-import 'package:html_unescape/html_unescape.dart';
+// import 'package:html_unescape/html_unescape.dart';
 import 'package:translator/translator.dart';
 
 Map<String, String> translatedStrings = {};
@@ -10,7 +10,6 @@ Future<void> translateStrings() async {
   translatedStrings.clear();
   final language = GlobalStrings.getGlobalString(); // Get the selected language
   if (language == 'en') {
-    // If the language is English, use the original strings
     translatedStrings = {
       // 'home': 'Home',
       // 'category': 'Category',
