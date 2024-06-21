@@ -69,7 +69,6 @@ class _SelectCountryWidgetState extends State<SelectCountryWidget> {
               ..clear()
               ..addAll(state.countries);
 
-            // set initial value
             final country = _countriesList
                 .where((element) => element.countryCode == widget.initialValue);
             if (country.isNotEmpty) {
@@ -101,7 +100,6 @@ class _SelectCountryWidgetState extends State<SelectCountryWidget> {
                             color: Colors.transparent,
                           ),
                           onChanged: (String? value) {
-                            // This is called when the user selects an item.
                             setState(() {
                               _dropdownValue = value!;
                               widget.selectedCountry.call(_countriesList
