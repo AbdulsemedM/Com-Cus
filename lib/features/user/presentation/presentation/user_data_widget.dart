@@ -432,13 +432,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 ),
 
                 const Spacer(),
-                // Text(
-                //   'Edit',
-                //   style: Theme.of(context)
-                //       .textTheme
-                //       .titleMedium
-                //       ?.copyWith(color: AppColors.colorPrimary),
-                // )
+            
               ],
             ),
           ),
