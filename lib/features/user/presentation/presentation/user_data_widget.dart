@@ -360,7 +360,6 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               buildLanguageDialog(context);
             },
           ),
-          //language dropdown
           // Padding(
           //   padding: const EdgeInsets.symmetric(horizontal: 10),
           //   child: Row(
@@ -553,8 +552,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: FutureBuilder<String>(
               future: Translations.translatedText(
                   "Choose Language", GlobalStrings.getGlobalString()),
-              //  translatedText("Log Out", 'en', dropdownValue),
-              builder: (context, snapshot) {
+               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Text(
                     snapshot.data ?? 'Default Text',
@@ -562,7 +560,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 } else {
                   return Text(
                     'Loading...',
-                  ); // Or any loading indicator
+                  ); 
                 }
               },
             ),
