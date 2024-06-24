@@ -458,7 +458,6 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       print(isUserLoggedIn);
       if (isUserLoggedIn) {
-        // final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
           Uri.https(
             "api.commercepal.com:2096",
@@ -466,7 +465,6 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
             // {'page': "0", "size": "100", "sortDirection": "desc"},
           ),
           headers: <String, String>{
-            // 'Authorization': 'Bearer $token',
             'Content-Type': 'application/json; charset=UTF-8',
           },
         );
