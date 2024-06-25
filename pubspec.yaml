@@ -82,6 +82,9 @@ dependencies:
   install_referrer: ^1.2.1
   share_plus: ^7.2.0
   uni_links2: ^0.6.0+2
+  google_sign_in: ^5.1.1
+  firebase_auth: ^4.3.0
+  firebase_core: ^2.32.0
 
 dev_dependencies:
   flutter_test:

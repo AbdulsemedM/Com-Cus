@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/assets.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
@@ -14,10 +17,13 @@ import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/user_registration_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../app/utils/app_colors.dart';
 import '../../../core/widgets/input_decorations.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login";
@@ -35,10 +41,50 @@ class _LoginPageState extends State<LoginPage> {
   String? _pass;
 
   var loading = false;
+  GoogleSignInAccount? _currentUser;
+  bool _isAuthorized = false; // has granted permissions?
+  String _contactText = '';
   @override
   void initState() {
     super.initState();
+
+    // In the web, _googleSignIn.signInSilently() triggers the One Tap UX.
+    //
+    // It is recommended by Google Identity Services to render both the One Tap UX
+    // and the Google Sign In button together to "reduce friction and improve
+    // sign-in rates" ([docs](https://developers.google.com/identity/gsi/web/guides/display-button#html)).
+    // _googleSignIn.signInSilently();
     fetchHints();
+  }
+
+  Future<void> _handleGetContact(GoogleSignInAccount user) async {
+    setState(() {
+      _contactText = 'Loading contact info...';
+    });
+    final http.Response response = await http.get(
+      Uri.parse('https://people.googleapis.com/v1/people/me/connections'
+          '?requestMask.includeField=person.names'),
+      headers: await user.authHeaders,
+    );
+    if (response.statusCode != 200) {
+      setState(() {
+        _contactText = 'People API gave a ${response.statusCode} '
+            'response. Check logs for details.';
+      });
+      print('People API ${response.statusCode} response: ${response.body}');
+      return;
+    }
+    final Map<String, dynamic> data =
+        json.decode(response.body) as Map<String, dynamic>;
+    print(data);
+    // final String? namedContact = _pickFirstNamedContact(data);
+    // setState(() {
+    //   if (namedContact != null) {
+    //     _contactText = 'I see you know $namedContact!';
+    //   } else {
+    //     _contactText = 'No contacts to display.';
+    //   }
+    // });
   }
 
   void fetchHints() async {
@@ -83,6 +129,11 @@ class _LoginPageState extends State<LoginPage> {
   String cHint = '';
   String aHint = '';
   bool obscureText = true;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  List<String> scopes = <String>[
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -242,6 +293,64 @@ class _LoginPageState extends State<LoginPage> {
                             }
                           }),
                       // const Spacer(),
+                      const Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("or sign in with"),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              final GoogleSignInAccount? googleUser =
+                                  await _googleSignIn.signIn();
+                              if (googleUser != null) {
+                                // Successfully signed in
+                                // You can access the GoogleSignInAccount to get user details if needed
+                                print(
+                                    'Signed in with Google: ${googleUser.email}');
+                                // Navigate to your desired screen after sign-in
+                              }
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.15,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: const Image(
+                                  image: AssetImage(
+                                "assets/images/google.png",
+                              )),
+                            ),
+                          ),
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.06,
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: const Image(
+                                fit: BoxFit.contain,
+                                height: 60,
+                                width: 50,
+                                image: AssetImage(
+                                  "assets/images/facebook.png",
+                                )),
+                          ),
+                          // Container(
+                          //   height: MediaQuery.of(context).size.height * 0.06,
+                          //   width: MediaQuery.of(context).size.width * 0.15,
+                          //   decoration: BoxDecoration(
+                          //       color: Colors.grey[200],
+                          //       borderRadius: BorderRadius.circular(10)),
+                          //   child: const Image(
+                          //       image: AssetImage(
+                          //     "assets/images/twitter.png",
+                          //   )),
+                          // ),
+                        ],
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 40.0),
                         child: InkWell(
