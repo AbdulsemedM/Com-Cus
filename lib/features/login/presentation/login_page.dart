@@ -305,11 +305,8 @@ class _LoginPageState extends State<LoginPage> {
                               final GoogleSignInAccount? googleUser =
                                   await _googleSignIn.signIn();
                               if (googleUser != null) {
-                                // Successfully signed in
-                                // You can access the GoogleSignInAccount to get user details if needed
                                 print(
                                     'Signed in with Google: ${googleUser.email}');
-                                // Navigate to your desired screen after sign-in
                               }
                             },
                             child: Container(
