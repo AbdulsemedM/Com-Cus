@@ -36,56 +36,90 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  // final _googleSignIn = GoogleSignIn();
+// var googleAccount = GoogleSignInAccount();
+  // GoogleSignInAccount? _currentUser;
+  String? name;
 
   String? _emailOrPhone;
   String? _pass;
 
   var loading = false;
-  GoogleSignInAccount? _currentUser;
-  bool _isAuthorized = false; // has granted permissions?
-  String _contactText = '';
+
   @override
   void initState() {
     super.initState();
-
-    // In the web, _googleSignIn.signInSilently() triggers the One Tap UX.
-    //
-    // It is recommended by Google Identity Services to render both the One Tap UX
-    // and the Google Sign In button together to "reduce friction and improve
-    // sign-in rates" ([docs](https://developers.google.com/identity/gsi/web/guides/display-button#html)).
+    // _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+    //   setState(() {
+    //     _currentUser = account;
+    //   });
+    // });
     // _googleSignIn.signInSilently();
     fetchHints();
   }
 
-  Future<void> _handleGetContact(GoogleSignInAccount user) async {
-    setState(() {
-      _contactText = 'Loading contact info...';
-    });
-    final http.Response response = await http.get(
-      Uri.parse('https://people.googleapis.com/v1/people/me/connections'
-          '?requestMask.includeField=person.names'),
-      headers: await user.authHeaders,
-    );
-    if (response.statusCode != 200) {
-      setState(() {
-        _contactText = 'People API gave a ${response.statusCode} '
-            'response. Check logs for details.';
-      });
-      print('People API ${response.statusCode} response: ${response.body}');
-      return;
+  Future<void> _handleSignIn(BuildContext context) async {
+    try {
+      GoogleSignInAccount? account = await _googleSignIn.signIn();
+      if (account != null) {
+        print('User is signed in!');
+        print('Display Name: ${account.photoUrl}');
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Signed In'),
+              content: Text('Hello, ${account.displayName}!'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (error) {
+      print('Error signing in: $error');
     }
-    final Map<String, dynamic> data =
-        json.decode(response.body) as Map<String, dynamic>;
-    print(data);
-    // final String? namedContact = _pickFirstNamedContact(data);
-    // setState(() {
-    //   if (namedContact != null) {
-    //     _contactText = 'I see you know $namedContact!';
-    //   } else {
-    //     _contactText = 'No contacts to display.';
-    //   }
-    // });
   }
+
+  // Future<void> _handleSignIn() async {
+  //   try {
+  //     await _googleSignIn.signIn();
+  //     if (_googleSignIn.currentUser != null) {
+  //       setState(() {
+  //         name = _currentUser!.displayName;
+  //       });
+  //       print('User is signed in!');
+  //       print('Display Name: ${_googleSignIn.currentUser!.displayName}');
+  //       // Here you can use the display name as needed, e.g., update UI
+  //     }
+  //   } catch (error) {
+  //     print('Error signing in: $error');
+  //   }
+  // }
+  // Future<void> _handleSignIn() async {
+  //   try {
+  //     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+  //       setState(() {
+  //         _currentUser = account;
+  //       });
+  //     });
+  //     print("Signed in");
+  //     // print(_currentUser!.displayName);
+  //     await _googleSignIn.signIn();
+  //     print("Signed in");
+  //   } catch (error) {
+  //     print("here is the error");
+  //     print(error);
+  //   }
+  // }
 
   void fetchHints() async {
     setState(() {
@@ -129,11 +163,6 @@ class _LoginPageState extends State<LoginPage> {
   String cHint = '';
   String aHint = '';
   bool obscureText = true;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  List<String> scopes = <String>[
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -302,12 +331,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              final GoogleSignInAccount? googleUser =
-                                  await _googleSignIn.signIn();
-                              if (googleUser != null) {
-                                print(
-                                    'Signed in with Google: ${googleUser.email}');
-                              }
+                              _handleSignIn(context);
                             },
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.06,
@@ -321,6 +345,7 @@ class _LoginPageState extends State<LoginPage> {
                               )),
                             ),
                           ),
+                          name != null ? Text(name!) : Text("null"),
                           Container(
                             height: MediaQuery.of(context).size.height * 0.06,
                             width: MediaQuery.of(context).size.width * 0.15,
