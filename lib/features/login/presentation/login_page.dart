@@ -16,9 +16,12 @@ import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/user_registration_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../app/utils/app_colors.dart';
@@ -58,6 +61,25 @@ class _LoginPageState extends State<LoginPage> {
     // });
     // _googleSignIn.signInSilently();
     fetchHints();
+  }
+
+  Future<UserCredential> signInWithFacebook() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance
+        .login(permissions: ['email', 'public_profile']);
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+    print("facebookAuthCredential");
+    print(facebookAuthCredential);
+    var userData = await FacebookAuth.instance.getUserData();
+    print("hereistheemail");
+    print(userData['public_profile']);
+    print(userData['email']);
+    print(userData['name']);
+    // Once signed in, return the UserCredential
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 
   Future<void> _handleSignIn(BuildContext context) async {
@@ -201,9 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                         width: MediaQuery.of(context).size.width * 0.5,
                         height: MediaQuery.of(context).size.height * 0.25,
                       ),
-                      // loading
-                      //     ? Text("Loading...")
-                      //     :
+
                       Text(
                         translatedStrings['continue']!,
                         style: Theme.of(context).textTheme.titleMedium,
@@ -346,19 +366,24 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           name != null ? Text(name!) : Text("null"),
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.06,
-                            width: MediaQuery.of(context).size.width * 0.15,
-                            decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(10)),
-                            child: const Image(
-                                fit: BoxFit.contain,
-                                height: 60,
-                                width: 50,
-                                image: AssetImage(
-                                  "assets/images/facebook.png",
-                                )),
+                          GestureDetector(
+                            onTap: () {
+                              signInWithFacebook();
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.15,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: const Image(
+                                  fit: BoxFit.contain,
+                                  height: 60,
+                                  width: 50,
+                                  image: AssetImage(
+                                    "assets/images/facebook.png",
+                                  )),
+                            ),
                           ),
                           // Container(
                           //   height: MediaQuery.of(context).size.height * 0.06,
