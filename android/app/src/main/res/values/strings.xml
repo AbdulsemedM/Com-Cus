@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">CommercePal</string>
-    <string name="facebook_app_id">1195814604908102</string>
-    <string name="facebook_client_token">444dd114870cdf867580be7ff1c20771</string>
-    <string name="fb_login_protocol_scheme">fb1195814604908102</string>
-</resources>
