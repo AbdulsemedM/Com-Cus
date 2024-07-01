@@ -156,7 +156,6 @@ class _LoginPageState extends State<LoginPage> {
     cAccountHint = Translations.translatedText(
         "Create Account", GlobalStrings.getGlobalString());
 
-    // Use await to get the actual string value from the futures
     pHint = await physicalAddressHintFuture;
     cHint = await subcityHint;
     aHint = await addAddHint;
@@ -229,9 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 20,
                       ),
-                      // loading
-                      //     ? const Text("Loading...")
-                      //     :
+                     
                       TextFormField(
                           validator: (v) {
                             if (v?.isEmpty == true) {
@@ -250,9 +247,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 16,
                       ),
-                      // loading
-                      //     ? const Text("Loading...")
-                      //     :
+                    
                       TextFormField(
                         obscureText: obscureText,
                         keyboardType: TextInputType.visiblePassword,
@@ -338,7 +333,6 @@ class _LoginPageState extends State<LoginPage> {
                                   .loginUser(_emailOrPhone!, _pass!);
                             }
                           }),
-                      // const Spacer(),
                       const Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text("or sign in with"),
