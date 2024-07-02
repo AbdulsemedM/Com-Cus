@@ -6,6 +6,7 @@ import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/core/models/auth_model.dart';
 import 'package:commercepal/core/models/user_model.dart';
 import 'package:commercepal/core/dto/Login_dto.dart';
+import 'package:commercepal/features/login/global_credential/global_credential.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/data/prefs_data.dart';
@@ -21,36 +22,73 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<AuthModel> login(String email, String pass) async {
     try {
-      final request = {"email": email, "password": pass};
-      final response = await apiProvider.post(request, EndPoints.login.url);
-      final decodedResponse = jsonDecode(response);
-      if (decodedResponse['statusCode'] == '000') {
-        final responseObject = LoginDto.fromJson(decodedResponse);
+      print(pass);
+      if (pass == "social media") {
+        var decodedResponse = GlobalCredential.getGlobalString();
+        // final decodedResponse = jsonDecode(response);
+        if (decodedResponse['statusCode'] == '000') {
+          final responseObject = LoginDto.fromJson(decodedResponse);
 
-        // store auth credentials
-        await prefsData.writeData(
-            PrefsKeys.userToken.name, responseObject.userToken!);
-        await prefsData.writeData(
-            "refresh_token", responseObject.refreshToken!);
-        await prefsData.writeData(PrefsKeys.auth.name, response);
+          // store auth credentials
+          print("credetial stored");
+          await prefsData.writeData(
+              PrefsKeys.userToken.name, responseObject.userToken!);
+          await prefsData.writeData(
+              "refresh_token", responseObject.refreshToken!);
+          await prefsData.writeData(
+              PrefsKeys.auth.name, jsonEncode(decodedResponse));
 
-        // get user details
-        final userResponse = await apiProvider.get(EndPoints.userDetails.url);
-        if (userResponse['statusCode'] == '000') {
-          final uObj = UserModel.fromJson(userResponse);
-          await prefsData.writeData(PrefsKeys.user.name, jsonEncode(uObj));
+          // get user details
+          print("getting user detail");
+          final userResponse = await apiProvider.get(EndPoints.userDetails.url);
+          if (userResponse['statusCode'] == '000') {
+            final uObj = UserModel.fromJson(userResponse);
+            await prefsData.writeData(PrefsKeys.user.name, jsonEncode(uObj));
 
-          // attach phone number
-          decodedResponse['phoneNumber'] = uObj.details?.phoneNumber;
+            // attach phone number
+            decodedResponse['phoneNumber'] = uObj.details?.phoneNumber;
+          } else {
+            // clear token in case user is not found
+            await prefsData.nuke();
+            throw userResponse['statusDescription'];
+          }
+
+          return AuthModel.fromJson(decodedResponse);
         } else {
-          // clear token in case user is not found
-          await prefsData.nuke();
-          throw userResponse['statusDescription'];
+          throw decodedResponse['statusDescription'];
         }
-
-        return AuthModel.fromJson(decodedResponse);
       } else {
-        throw decodedResponse['statusDescription'];
+        final request = {"email": email, "password": pass};
+        final response = await apiProvider.post(request, EndPoints.login.url);
+        final decodedResponse = jsonDecode(response);
+        if (decodedResponse['statusCode'] == '000') {
+          final responseObject = LoginDto.fromJson(decodedResponse);
+
+          // store auth credentials
+          await prefsData.writeData(
+              PrefsKeys.userToken.name, responseObject.userToken!);
+          await prefsData.writeData(
+              "refresh_token", responseObject.refreshToken!);
+          await prefsData.writeData(PrefsKeys.auth.name, response);
+
+          // get user details
+          final userResponse = await apiProvider.get(EndPoints.userDetails.url);
+          if (userResponse['statusCode'] == '000') {
+            final uObj = UserModel.fromJson(userResponse);
+            await prefsData.writeData(PrefsKeys.user.name, jsonEncode(uObj));
+
+            // attach phone number
+            decodedResponse['phoneNumber'] = uObj.details?.phoneNumber;
+          } else {
+            // clear token in case user is not found
+            await prefsData.nuke();
+            throw userResponse['statusDescription'];
+          }
+
+          return AuthModel.fromJson(decodedResponse);
+        } else {
+          throw decodedResponse['statusDescription'];
+        }
       }
     } catch (e) {
       rethrow;

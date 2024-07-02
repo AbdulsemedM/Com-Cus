@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/assets.dart';
@@ -8,6 +9,7 @@ import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:commercepal/features/forgot_password/forgot_password.dart';
+import 'package:commercepal/features/login/data/social_media_login.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_cubit.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_state.dart';
 import 'package:commercepal/features/reset_password/presentation/reset_pass_page.dart';
@@ -26,6 +28,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../app/utils/app_colors.dart';
 import '../../../core/widgets/input_decorations.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
@@ -39,7 +42,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: [
+    'email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+  ]);
 
   // final _googleSignIn = GoogleSignIn();
 // var googleAccount = GoogleSignInAccount();
@@ -48,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
 
   String? _emailOrPhone;
   String? _pass;
+  String deviceId = 'Unknown';
 
   var loading = false;
 
@@ -61,9 +68,12 @@ class _LoginPageState extends State<LoginPage> {
     // });
     // _googleSignIn.signInSilently();
     fetchHints();
+    _handleSignOut();
+    logOutFromFacebook();
   }
 
-  Future<UserCredential> signInWithFacebook() async {
+  Future<void> signInWithFacebook() async {
+    await FacebookAuth.instance.logOut();
     final LoginResult loginResult = await FacebookAuth.instance
         .login(permissions: ['email', 'public_profile']);
 
@@ -73,10 +83,47 @@ class _LoginPageState extends State<LoginPage> {
     print(facebookAuthCredential);
     var userData = await FacebookAuth.instance.getUserData();
     print("hereistheemail");
-    print(userData['public_profile']);
-    print(userData['email']);
-    print(userData['name']);
-    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    final String firstName = userData['name'];
+    // final String lastName = userData['last_name'];
+    final String email = userData['email'];
+    final String id = userData['id'];
+    print(firstName);
+    // print(lastName);
+    print(email);
+    print(id);
+    var channel = Platform.isIOS ? "IOS" : "ANDROID";
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    String deviceId;
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      deviceId = androidInfo.id; // Unique ID on Android
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      deviceId = iosInfo.identifierForVendor!; // Unique ID on iOS
+    } else {
+      deviceId = 'Unsupported platform';
+    }
+    setState(() {
+      deviceId = id;
+    });
+    _emailOrPhone = userData['email'];
+    await getUserToken(
+        channel,
+        "FACEBOOK",
+        userData['id'],
+        userData['email'],
+        userData['name']?.split(' ')[0] ?? "",
+        userData['name']?.split(' ')[1] ?? '',
+        deviceId);
+    // return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  }
+
+  Future<void> _handleSignOut() async {
+    await _googleSignIn.disconnect();
+  }
+
+  Future<void> logOutFromFacebook() async {
+    await FacebookAuth.instance.logOut();
   }
 
   Future<void> _handleSignIn(BuildContext context) async {
@@ -85,23 +132,30 @@ class _LoginPageState extends State<LoginPage> {
       if (account != null) {
         print('User is signed in!');
         print('Display Name: ${account.photoUrl}');
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Signed In'),
-              content: Text('Hello, ${account.displayName}!'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        var channel = Platform.isIOS ? "IOS" : "ANDROID";
+        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+        String id;
+        if (Platform.isAndroid) {
+          AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+          id = androidInfo.id; // Unique ID on Android
+        } else if (Platform.isIOS) {
+          IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+          id = iosInfo.identifierForVendor!; // Unique ID on iOS
+        } else {
+          id = 'Unsupported platform';
+        }
+        setState(() {
+          deviceId = id;
+        });
+        _emailOrPhone = account.email;
+        await getUserToken(
+            channel,
+            "GOOGLE",
+            account.id,
+            account.email,
+            account.displayName?.split(' ')[0] ?? "",
+            account.displayName?.split(' ')[1] ?? '',
+            deviceId);
       }
     } catch (error) {
       print('Error signing in: $error');
@@ -219,16 +273,13 @@ class _LoginPageState extends State<LoginPage> {
                         width: MediaQuery.of(context).size.width * 0.5,
                         height: MediaQuery.of(context).size.height * 0.25,
                       ),
-
                       Text(
                         translatedStrings['continue']!,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-
                       const SizedBox(
                         height: 20,
                       ),
-                     
                       TextFormField(
                           validator: (v) {
                             if (v?.isEmpty == true) {
@@ -247,7 +298,6 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 16,
                       ),
-                    
                       TextFormField(
                         obscureText: obscureText,
                         keyboardType: TextInputType.visiblePassword,
@@ -342,7 +392,10 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              _handleSignIn(context);
+                              await _handleSignIn(context);
+                              ctx
+                                  .read<LoginCubit>()
+                                  .loginUser(_emailOrPhone!, "social media");
                             },
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.06,
@@ -356,10 +409,12 @@ class _LoginPageState extends State<LoginPage> {
                               )),
                             ),
                           ),
-                          name != null ? Text(name!) : Text("null"),
                           GestureDetector(
-                            onTap: () {
-                              signInWithFacebook();
+                            onTap: () async {
+                              await signInWithFacebook();
+                              ctx
+                                  .read<LoginCubit>()
+                                  .loginUser(_emailOrPhone!, "social media");
                             },
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.06,

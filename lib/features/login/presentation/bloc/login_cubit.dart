@@ -39,6 +39,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(const LoginState.success("Success"));
     } catch (e) {
       emit(LoginState.error(e.toString()));
+      print(e.toString());
     }
   }
 }
