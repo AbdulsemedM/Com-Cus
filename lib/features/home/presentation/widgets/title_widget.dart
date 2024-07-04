@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../app/utils/app_colors.dart';
 
-
 class TitleWidget extends StatelessWidget {
   final String title;
   final String? optionTitle;
@@ -21,7 +20,7 @@ class TitleWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.headline2?.copyWith(
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
                 fontSize: 16.sp),
@@ -32,7 +31,7 @@ class TitleWidget extends StatelessWidget {
               optionTitle!,
               style: Theme.of(context)
                   .textTheme
-                  .headline2
+                  .displayMedium
                   ?.copyWith(color: AppColors.colorPrimary, fontSize: 16.sp),
             ),
         ],

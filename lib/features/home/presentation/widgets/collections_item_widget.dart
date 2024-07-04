@@ -51,7 +51,7 @@ class CollectionsItemWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context)
                     .textTheme
-                    .headline2
+                    .displayMedium
                     ?.copyWith(fontSize: 15.sp),
               ),
             )

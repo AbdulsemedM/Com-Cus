@@ -174,7 +174,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                 overflow: TextOverflow.ellipsis,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headline3
+                                                    .displaySmall
                                                     ?.copyWith(
                                                         fontSize: 14.sp,
                                                         fontWeight:
@@ -197,7 +197,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -219,7 +219,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             decoration:
                                                                 TextDecoration
@@ -248,7 +248,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -270,7 +270,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -296,7 +296,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -318,7 +318,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -344,7 +344,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -366,7 +366,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:

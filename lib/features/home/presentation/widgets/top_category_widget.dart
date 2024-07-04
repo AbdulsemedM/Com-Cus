@@ -44,12 +44,12 @@ class TopCategoryWidget extends StatelessWidget {
           Text(title,
               style: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyMedium
                   ?.copyWith(fontSize: 12.sp)),
           Text(subTitle,
               style: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyMedium
                   ?.copyWith(fontSize: 12.sp))
         ],
       ),

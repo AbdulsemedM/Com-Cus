@@ -51,14 +51,14 @@ class CatCategoryItemWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyMedium
                         ?.copyWith(fontSize: 12.sp));
               } else {
                 return Text('Loading...',
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontSize: 12.sp)); // Or any loading indicator
               }
             },

@@ -85,7 +85,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                       "${widget.product.name}",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline3?.copyWith(
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.normal,
                           ),
@@ -125,11 +125,13 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                             widget.product.offerPrice
                                 .toString()
                                 .formatCurrency(widget.product.currency),
-                            style:
-                                Theme.of(context).textTheme.headline2?.copyWith(
-                                      fontSize: 14.sp,
-                                      color: AppColors.colorPrimary,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium
+                                ?.copyWith(
+                                  fontSize: 14.sp,
+                                  color: AppColors.colorPrimary,
+                                ),
                           ),
                         ),
                         const Spacer(),
@@ -140,7 +142,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                               "${widget.product.currency} ${widget.product.offerPrice}",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline2
+                                  .displayMedium
                                   ?.copyWith(
                                     fontSize: 12.sp,
                                     color: AppColors.secondaryTextColor,

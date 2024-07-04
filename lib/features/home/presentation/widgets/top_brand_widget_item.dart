@@ -47,7 +47,7 @@ class TopBrandWidgetItem extends StatelessWidget {
             child: Text(title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.headline2?.copyWith(
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
                       fontSize: 12.sp,
                     )),
           ),

@@ -55,12 +55,12 @@ class _SplashPageState extends State<SplashPage> {
                     displayFullTextOnTap: true,
                     animatedTexts: [
                       TypewriterAnimatedText("Reinventing the wheel",
-                          textStyle: Theme.of(context).textTheme.headline3,
+                          textStyle: Theme.of(context).textTheme.displaySmall,
                           speed: const Duration(milliseconds: 90)),
                       TypewriterAnimatedText("CommercePal",
                           textStyle: Theme.of(context)
                               .textTheme
-                              .headline3
+                              .displaySmall
                               ?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.colorPrimary),

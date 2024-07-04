@@ -40,7 +40,7 @@ class CategoryItemWidget extends StatelessWidget {
               maxLines: 2,
               style: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyMedium
                   ?.copyWith(fontSize: sHeight > 896 ? 12 : 12.sp)),
         ),
         const SizedBox(
