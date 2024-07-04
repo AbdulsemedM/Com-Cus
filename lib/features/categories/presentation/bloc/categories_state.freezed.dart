@@ -99,25 +99,27 @@ class _$CategoriesStateCopyWithImpl<$Res, $Val extends CategoriesState>
 }
 
 /// @nodoc
-abstract class _$$CategoriesStateInitStateCopyWith<$Res> {
-  factory _$$CategoriesStateInitStateCopyWith(_$CategoriesStateInitState value,
-          $Res Function(_$CategoriesStateInitState) then) =
-      __$$CategoriesStateInitStateCopyWithImpl<$Res>;
+abstract class _$$CategoriesStateInitStateImplCopyWith<$Res> {
+  factory _$$CategoriesStateInitStateImplCopyWith(
+          _$CategoriesStateInitStateImpl value,
+          $Res Function(_$CategoriesStateInitStateImpl) then) =
+      __$$CategoriesStateInitStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$CategoriesStateInitStateCopyWithImpl<$Res>
-    extends _$CategoriesStateCopyWithImpl<$Res, _$CategoriesStateInitState>
-    implements _$$CategoriesStateInitStateCopyWith<$Res> {
-  __$$CategoriesStateInitStateCopyWithImpl(_$CategoriesStateInitState _value,
-      $Res Function(_$CategoriesStateInitState) _then)
+class __$$CategoriesStateInitStateImplCopyWithImpl<$Res>
+    extends _$CategoriesStateCopyWithImpl<$Res, _$CategoriesStateInitStateImpl>
+    implements _$$CategoriesStateInitStateImplCopyWith<$Res> {
+  __$$CategoriesStateInitStateImplCopyWithImpl(
+      _$CategoriesStateInitStateImpl _value,
+      $Res Function(_$CategoriesStateInitStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CategoriesStateInitState implements CategoriesStateInitState {
-  const _$CategoriesStateInitState();
+class _$CategoriesStateInitStateImpl implements CategoriesStateInitState {
+  const _$CategoriesStateInitStateImpl();
 
   @override
   String toString() {
@@ -125,10 +127,10 @@ class _$CategoriesStateInitState implements CategoriesStateInitState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CategoriesStateInitState);
+            other is _$CategoriesStateInitStateImpl);
   }
 
   @override
@@ -222,31 +224,32 @@ class _$CategoriesStateInitState implements CategoriesStateInitState {
 }
 
 abstract class CategoriesStateInitState implements CategoriesState {
-  const factory CategoriesStateInitState() = _$CategoriesStateInitState;
+  const factory CategoriesStateInitState() = _$CategoriesStateInitStateImpl;
 }
 
 /// @nodoc
-abstract class _$$CategoriesStateLoadingStateCopyWith<$Res> {
-  factory _$$CategoriesStateLoadingStateCopyWith(
-          _$CategoriesStateLoadingState value,
-          $Res Function(_$CategoriesStateLoadingState) then) =
-      __$$CategoriesStateLoadingStateCopyWithImpl<$Res>;
+abstract class _$$CategoriesStateLoadingStateImplCopyWith<$Res> {
+  factory _$$CategoriesStateLoadingStateImplCopyWith(
+          _$CategoriesStateLoadingStateImpl value,
+          $Res Function(_$CategoriesStateLoadingStateImpl) then) =
+      __$$CategoriesStateLoadingStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$CategoriesStateLoadingStateCopyWithImpl<$Res>
-    extends _$CategoriesStateCopyWithImpl<$Res, _$CategoriesStateLoadingState>
-    implements _$$CategoriesStateLoadingStateCopyWith<$Res> {
-  __$$CategoriesStateLoadingStateCopyWithImpl(
-      _$CategoriesStateLoadingState _value,
-      $Res Function(_$CategoriesStateLoadingState) _then)
+class __$$CategoriesStateLoadingStateImplCopyWithImpl<$Res>
+    extends _$CategoriesStateCopyWithImpl<$Res,
+        _$CategoriesStateLoadingStateImpl>
+    implements _$$CategoriesStateLoadingStateImplCopyWith<$Res> {
+  __$$CategoriesStateLoadingStateImplCopyWithImpl(
+      _$CategoriesStateLoadingStateImpl _value,
+      $Res Function(_$CategoriesStateLoadingStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CategoriesStateLoadingState implements CategoriesStateLoadingState {
-  const _$CategoriesStateLoadingState();
+class _$CategoriesStateLoadingStateImpl implements CategoriesStateLoadingState {
+  const _$CategoriesStateLoadingStateImpl();
 
   @override
   String toString() {
@@ -254,10 +257,10 @@ class _$CategoriesStateLoadingState implements CategoriesStateLoadingState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CategoriesStateLoadingState);
+            other is _$CategoriesStateLoadingStateImpl);
   }
 
   @override
@@ -351,27 +354,28 @@ class _$CategoriesStateLoadingState implements CategoriesStateLoadingState {
 }
 
 abstract class CategoriesStateLoadingState implements CategoriesState {
-  const factory CategoriesStateLoadingState() = _$CategoriesStateLoadingState;
+  const factory CategoriesStateLoadingState() =
+      _$CategoriesStateLoadingStateImpl;
 }
 
 /// @nodoc
-abstract class _$$CategoriesStateParentCategoriesStateCopyWith<$Res> {
-  factory _$$CategoriesStateParentCategoriesStateCopyWith(
-          _$CategoriesStateParentCategoriesState value,
-          $Res Function(_$CategoriesStateParentCategoriesState) then) =
-      __$$CategoriesStateParentCategoriesStateCopyWithImpl<$Res>;
+abstract class _$$CategoriesStateParentCategoriesStateImplCopyWith<$Res> {
+  factory _$$CategoriesStateParentCategoriesStateImplCopyWith(
+          _$CategoriesStateParentCategoriesStateImpl value,
+          $Res Function(_$CategoriesStateParentCategoriesStateImpl) then) =
+      __$$CategoriesStateParentCategoriesStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<ParentCategoryModel> pCategories});
 }
 
 /// @nodoc
-class __$$CategoriesStateParentCategoriesStateCopyWithImpl<$Res>
+class __$$CategoriesStateParentCategoriesStateImplCopyWithImpl<$Res>
     extends _$CategoriesStateCopyWithImpl<$Res,
-        _$CategoriesStateParentCategoriesState>
-    implements _$$CategoriesStateParentCategoriesStateCopyWith<$Res> {
-  __$$CategoriesStateParentCategoriesStateCopyWithImpl(
-      _$CategoriesStateParentCategoriesState _value,
-      $Res Function(_$CategoriesStateParentCategoriesState) _then)
+        _$CategoriesStateParentCategoriesStateImpl>
+    implements _$$CategoriesStateParentCategoriesStateImplCopyWith<$Res> {
+  __$$CategoriesStateParentCategoriesStateImplCopyWithImpl(
+      _$CategoriesStateParentCategoriesStateImpl _value,
+      $Res Function(_$CategoriesStateParentCategoriesStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -379,7 +383,7 @@ class __$$CategoriesStateParentCategoriesStateCopyWithImpl<$Res>
   $Res call({
     Object? pCategories = null,
   }) {
-    return _then(_$CategoriesStateParentCategoriesState(
+    return _then(_$CategoriesStateParentCategoriesStateImpl(
       null == pCategories
           ? _value._pCategories
           : pCategories // ignore: cast_nullable_to_non_nullable
@@ -390,9 +394,9 @@ class __$$CategoriesStateParentCategoriesStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CategoriesStateParentCategoriesState
+class _$CategoriesStateParentCategoriesStateImpl
     implements CategoriesStateParentCategoriesState {
-  const _$CategoriesStateParentCategoriesState(
+  const _$CategoriesStateParentCategoriesStateImpl(
       final List<ParentCategoryModel> pCategories)
       : _pCategories = pCategories;
 
@@ -410,10 +414,10 @@ class _$CategoriesStateParentCategoriesState
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CategoriesStateParentCategoriesState &&
+            other is _$CategoriesStateParentCategoriesStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._pCategories, _pCategories));
   }
@@ -425,10 +429,10 @@ class _$CategoriesStateParentCategoriesState
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CategoriesStateParentCategoriesStateCopyWith<
-          _$CategoriesStateParentCategoriesState>
-      get copyWith => __$$CategoriesStateParentCategoriesStateCopyWithImpl<
-          _$CategoriesStateParentCategoriesState>(this, _$identity);
+  _$$CategoriesStateParentCategoriesStateImplCopyWith<
+          _$CategoriesStateParentCategoriesStateImpl>
+      get copyWith => __$$CategoriesStateParentCategoriesStateImplCopyWithImpl<
+          _$CategoriesStateParentCategoriesStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -520,33 +524,33 @@ class _$CategoriesStateParentCategoriesState
 abstract class CategoriesStateParentCategoriesState implements CategoriesState {
   const factory CategoriesStateParentCategoriesState(
           final List<ParentCategoryModel> pCategories) =
-      _$CategoriesStateParentCategoriesState;
+      _$CategoriesStateParentCategoriesStateImpl;
 
   List<ParentCategoryModel> get pCategories;
   @JsonKey(ignore: true)
-  _$$CategoriesStateParentCategoriesStateCopyWith<
-          _$CategoriesStateParentCategoriesState>
+  _$$CategoriesStateParentCategoriesStateImplCopyWith<
+          _$CategoriesStateParentCategoriesStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CategoriesStateCategoriesStateCopyWith<$Res> {
-  factory _$$CategoriesStateCategoriesStateCopyWith(
-          _$CategoriesStateCategoriesState value,
-          $Res Function(_$CategoriesStateCategoriesState) then) =
-      __$$CategoriesStateCategoriesStateCopyWithImpl<$Res>;
+abstract class _$$CategoriesStateCategoriesStateImplCopyWith<$Res> {
+  factory _$$CategoriesStateCategoriesStateImplCopyWith(
+          _$CategoriesStateCategoriesStateImpl value,
+          $Res Function(_$CategoriesStateCategoriesStateImpl) then) =
+      __$$CategoriesStateCategoriesStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<CategoryModel> pCategories, String pName});
 }
 
 /// @nodoc
-class __$$CategoriesStateCategoriesStateCopyWithImpl<$Res>
+class __$$CategoriesStateCategoriesStateImplCopyWithImpl<$Res>
     extends _$CategoriesStateCopyWithImpl<$Res,
-        _$CategoriesStateCategoriesState>
-    implements _$$CategoriesStateCategoriesStateCopyWith<$Res> {
-  __$$CategoriesStateCategoriesStateCopyWithImpl(
-      _$CategoriesStateCategoriesState _value,
-      $Res Function(_$CategoriesStateCategoriesState) _then)
+        _$CategoriesStateCategoriesStateImpl>
+    implements _$$CategoriesStateCategoriesStateImplCopyWith<$Res> {
+  __$$CategoriesStateCategoriesStateImplCopyWithImpl(
+      _$CategoriesStateCategoriesStateImpl _value,
+      $Res Function(_$CategoriesStateCategoriesStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -555,7 +559,7 @@ class __$$CategoriesStateCategoriesStateCopyWithImpl<$Res>
     Object? pCategories = null,
     Object? pName = null,
   }) {
-    return _then(_$CategoriesStateCategoriesState(
+    return _then(_$CategoriesStateCategoriesStateImpl(
       null == pCategories
           ? _value._pCategories
           : pCategories // ignore: cast_nullable_to_non_nullable
@@ -570,9 +574,9 @@ class __$$CategoriesStateCategoriesStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CategoriesStateCategoriesState
+class _$CategoriesStateCategoriesStateImpl
     implements CategoriesStateCategoriesState {
-  const _$CategoriesStateCategoriesState(
+  const _$CategoriesStateCategoriesStateImpl(
       final List<CategoryModel> pCategories, this.pName)
       : _pCategories = pCategories;
 
@@ -593,10 +597,10 @@ class _$CategoriesStateCategoriesState
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CategoriesStateCategoriesState &&
+            other is _$CategoriesStateCategoriesStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._pCategories, _pCategories) &&
             (identical(other.pName, pName) || other.pName == pName));
@@ -609,9 +613,10 @@ class _$CategoriesStateCategoriesState
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CategoriesStateCategoriesStateCopyWith<_$CategoriesStateCategoriesState>
-      get copyWith => __$$CategoriesStateCategoriesStateCopyWithImpl<
-          _$CategoriesStateCategoriesState>(this, _$identity);
+  _$$CategoriesStateCategoriesStateImplCopyWith<
+          _$CategoriesStateCategoriesStateImpl>
+      get copyWith => __$$CategoriesStateCategoriesStateImplCopyWithImpl<
+          _$CategoriesStateCategoriesStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -703,31 +708,33 @@ class _$CategoriesStateCategoriesState
 abstract class CategoriesStateCategoriesState implements CategoriesState {
   const factory CategoriesStateCategoriesState(
           final List<CategoryModel> pCategories, final String pName) =
-      _$CategoriesStateCategoriesState;
+      _$CategoriesStateCategoriesStateImpl;
 
   List<CategoryModel> get pCategories;
   String get pName;
   @JsonKey(ignore: true)
-  _$$CategoriesStateCategoriesStateCopyWith<_$CategoriesStateCategoriesState>
+  _$$CategoriesStateCategoriesStateImplCopyWith<
+          _$CategoriesStateCategoriesStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CategoriesStateErrorStateCopyWith<$Res> {
-  factory _$$CategoriesStateErrorStateCopyWith(
-          _$CategoriesStateErrorState value,
-          $Res Function(_$CategoriesStateErrorState) then) =
-      __$$CategoriesStateErrorStateCopyWithImpl<$Res>;
+abstract class _$$CategoriesStateErrorStateImplCopyWith<$Res> {
+  factory _$$CategoriesStateErrorStateImplCopyWith(
+          _$CategoriesStateErrorStateImpl value,
+          $Res Function(_$CategoriesStateErrorStateImpl) then) =
+      __$$CategoriesStateErrorStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$CategoriesStateErrorStateCopyWithImpl<$Res>
-    extends _$CategoriesStateCopyWithImpl<$Res, _$CategoriesStateErrorState>
-    implements _$$CategoriesStateErrorStateCopyWith<$Res> {
-  __$$CategoriesStateErrorStateCopyWithImpl(_$CategoriesStateErrorState _value,
-      $Res Function(_$CategoriesStateErrorState) _then)
+class __$$CategoriesStateErrorStateImplCopyWithImpl<$Res>
+    extends _$CategoriesStateCopyWithImpl<$Res, _$CategoriesStateErrorStateImpl>
+    implements _$$CategoriesStateErrorStateImplCopyWith<$Res> {
+  __$$CategoriesStateErrorStateImplCopyWithImpl(
+      _$CategoriesStateErrorStateImpl _value,
+      $Res Function(_$CategoriesStateErrorStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -735,7 +742,7 @@ class __$$CategoriesStateErrorStateCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$CategoriesStateErrorState(
+    return _then(_$CategoriesStateErrorStateImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -746,8 +753,8 @@ class __$$CategoriesStateErrorStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CategoriesStateErrorState implements CategoriesStateErrorState {
-  const _$CategoriesStateErrorState(this.message);
+class _$CategoriesStateErrorStateImpl implements CategoriesStateErrorState {
+  const _$CategoriesStateErrorStateImpl(this.message);
 
   @override
   final String message;
@@ -758,10 +765,10 @@ class _$CategoriesStateErrorState implements CategoriesStateErrorState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CategoriesStateErrorState &&
+            other is _$CategoriesStateErrorStateImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -771,9 +778,9 @@ class _$CategoriesStateErrorState implements CategoriesStateErrorState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CategoriesStateErrorStateCopyWith<_$CategoriesStateErrorState>
-      get copyWith => __$$CategoriesStateErrorStateCopyWithImpl<
-          _$CategoriesStateErrorState>(this, _$identity);
+  _$$CategoriesStateErrorStateImplCopyWith<_$CategoriesStateErrorStateImpl>
+      get copyWith => __$$CategoriesStateErrorStateImplCopyWithImpl<
+          _$CategoriesStateErrorStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -864,10 +871,10 @@ class _$CategoriesStateErrorState implements CategoriesStateErrorState {
 
 abstract class CategoriesStateErrorState implements CategoriesState {
   const factory CategoriesStateErrorState(final String message) =
-      _$CategoriesStateErrorState;
+      _$CategoriesStateErrorStateImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$CategoriesStateErrorStateCopyWith<_$CategoriesStateErrorState>
+  _$$CategoriesStateErrorStateImplCopyWith<_$CategoriesStateErrorStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

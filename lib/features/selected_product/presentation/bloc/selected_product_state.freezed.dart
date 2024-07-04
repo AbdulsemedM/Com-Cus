@@ -88,28 +88,28 @@ class _$SelectedProductStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$SelectedProductStateInitialCopyWith<$Res> {
-  factory _$$SelectedProductStateInitialCopyWith(
-          _$SelectedProductStateInitial value,
-          $Res Function(_$SelectedProductStateInitial) then) =
-      __$$SelectedProductStateInitialCopyWithImpl<$Res>;
+abstract class _$$SelectedProductStateInitialImplCopyWith<$Res> {
+  factory _$$SelectedProductStateInitialImplCopyWith(
+          _$SelectedProductStateInitialImpl value,
+          $Res Function(_$SelectedProductStateInitialImpl) then) =
+      __$$SelectedProductStateInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SelectedProductStateInitialCopyWithImpl<$Res>
+class __$$SelectedProductStateInitialImplCopyWithImpl<$Res>
     extends _$SelectedProductStateCopyWithImpl<$Res,
-        _$SelectedProductStateInitial>
-    implements _$$SelectedProductStateInitialCopyWith<$Res> {
-  __$$SelectedProductStateInitialCopyWithImpl(
-      _$SelectedProductStateInitial _value,
-      $Res Function(_$SelectedProductStateInitial) _then)
+        _$SelectedProductStateInitialImpl>
+    implements _$$SelectedProductStateInitialImplCopyWith<$Res> {
+  __$$SelectedProductStateInitialImplCopyWithImpl(
+      _$SelectedProductStateInitialImpl _value,
+      $Res Function(_$SelectedProductStateInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SelectedProductStateInitial implements SelectedProductStateInitial {
-  const _$SelectedProductStateInitial();
+class _$SelectedProductStateInitialImpl implements SelectedProductStateInitial {
+  const _$SelectedProductStateInitialImpl();
 
   @override
   String toString() {
@@ -117,10 +117,10 @@ class _$SelectedProductStateInitial implements SelectedProductStateInitial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SelectedProductStateInitial);
+            other is _$SelectedProductStateInitialImpl);
   }
 
   @override
@@ -202,32 +202,33 @@ class _$SelectedProductStateInitial implements SelectedProductStateInitial {
 }
 
 abstract class SelectedProductStateInitial implements SelectedProductState {
-  const factory SelectedProductStateInitial() = _$SelectedProductStateInitial;
+  const factory SelectedProductStateInitial() =
+      _$SelectedProductStateInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$SelectedProductStateLoadingCopyWith<$Res> {
-  factory _$$SelectedProductStateLoadingCopyWith(
-          _$SelectedProductStateLoading value,
-          $Res Function(_$SelectedProductStateLoading) then) =
-      __$$SelectedProductStateLoadingCopyWithImpl<$Res>;
+abstract class _$$SelectedProductStateLoadingImplCopyWith<$Res> {
+  factory _$$SelectedProductStateLoadingImplCopyWith(
+          _$SelectedProductStateLoadingImpl value,
+          $Res Function(_$SelectedProductStateLoadingImpl) then) =
+      __$$SelectedProductStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SelectedProductStateLoadingCopyWithImpl<$Res>
+class __$$SelectedProductStateLoadingImplCopyWithImpl<$Res>
     extends _$SelectedProductStateCopyWithImpl<$Res,
-        _$SelectedProductStateLoading>
-    implements _$$SelectedProductStateLoadingCopyWith<$Res> {
-  __$$SelectedProductStateLoadingCopyWithImpl(
-      _$SelectedProductStateLoading _value,
-      $Res Function(_$SelectedProductStateLoading) _then)
+        _$SelectedProductStateLoadingImpl>
+    implements _$$SelectedProductStateLoadingImplCopyWith<$Res> {
+  __$$SelectedProductStateLoadingImplCopyWithImpl(
+      _$SelectedProductStateLoadingImpl _value,
+      $Res Function(_$SelectedProductStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SelectedProductStateLoading implements SelectedProductStateLoading {
-  const _$SelectedProductStateLoading();
+class _$SelectedProductStateLoadingImpl implements SelectedProductStateLoading {
+  const _$SelectedProductStateLoadingImpl();
 
   @override
   String toString() {
@@ -235,10 +236,10 @@ class _$SelectedProductStateLoading implements SelectedProductStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SelectedProductStateLoading);
+            other is _$SelectedProductStateLoadingImpl);
   }
 
   @override
@@ -320,26 +321,28 @@ class _$SelectedProductStateLoading implements SelectedProductStateLoading {
 }
 
 abstract class SelectedProductStateLoading implements SelectedProductState {
-  const factory SelectedProductStateLoading() = _$SelectedProductStateLoading;
+  const factory SelectedProductStateLoading() =
+      _$SelectedProductStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$SelectedProductStateErrorCopyWith<$Res> {
-  factory _$$SelectedProductStateErrorCopyWith(
-          _$SelectedProductStateError value,
-          $Res Function(_$SelectedProductStateError) then) =
-      __$$SelectedProductStateErrorCopyWithImpl<$Res>;
+abstract class _$$SelectedProductStateErrorImplCopyWith<$Res> {
+  factory _$$SelectedProductStateErrorImplCopyWith(
+          _$SelectedProductStateErrorImpl value,
+          $Res Function(_$SelectedProductStateErrorImpl) then) =
+      __$$SelectedProductStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$SelectedProductStateErrorCopyWithImpl<$Res>
+class __$$SelectedProductStateErrorImplCopyWithImpl<$Res>
     extends _$SelectedProductStateCopyWithImpl<$Res,
-        _$SelectedProductStateError>
-    implements _$$SelectedProductStateErrorCopyWith<$Res> {
-  __$$SelectedProductStateErrorCopyWithImpl(_$SelectedProductStateError _value,
-      $Res Function(_$SelectedProductStateError) _then)
+        _$SelectedProductStateErrorImpl>
+    implements _$$SelectedProductStateErrorImplCopyWith<$Res> {
+  __$$SelectedProductStateErrorImplCopyWithImpl(
+      _$SelectedProductStateErrorImpl _value,
+      $Res Function(_$SelectedProductStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -347,7 +350,7 @@ class __$$SelectedProductStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$SelectedProductStateError(
+    return _then(_$SelectedProductStateErrorImpl(
       null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -358,8 +361,8 @@ class __$$SelectedProductStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SelectedProductStateError implements SelectedProductStateError {
-  const _$SelectedProductStateError(this.error);
+class _$SelectedProductStateErrorImpl implements SelectedProductStateError {
+  const _$SelectedProductStateErrorImpl(this.error);
 
   @override
   final String error;
@@ -370,10 +373,10 @@ class _$SelectedProductStateError implements SelectedProductStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SelectedProductStateError &&
+            other is _$SelectedProductStateErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -383,9 +386,9 @@ class _$SelectedProductStateError implements SelectedProductStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SelectedProductStateErrorCopyWith<_$SelectedProductStateError>
-      get copyWith => __$$SelectedProductStateErrorCopyWithImpl<
-          _$SelectedProductStateError>(this, _$identity);
+  _$$SelectedProductStateErrorImplCopyWith<_$SelectedProductStateErrorImpl>
+      get copyWith => __$$SelectedProductStateErrorImplCopyWithImpl<
+          _$SelectedProductStateErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -464,32 +467,32 @@ class _$SelectedProductStateError implements SelectedProductStateError {
 
 abstract class SelectedProductStateError implements SelectedProductState {
   const factory SelectedProductStateError(final String error) =
-      _$SelectedProductStateError;
+      _$SelectedProductStateErrorImpl;
 
   String get error;
   @JsonKey(ignore: true)
-  _$$SelectedProductStateErrorCopyWith<_$SelectedProductStateError>
+  _$$SelectedProductStateErrorImplCopyWith<_$SelectedProductStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SelectedProductStateProductCopyWith<$Res> {
-  factory _$$SelectedProductStateProductCopyWith(
-          _$SelectedProductStateProduct value,
-          $Res Function(_$SelectedProductStateProduct) then) =
-      __$$SelectedProductStateProductCopyWithImpl<$Res>;
+abstract class _$$SelectedProductStateProductImplCopyWith<$Res> {
+  factory _$$SelectedProductStateProductImplCopyWith(
+          _$SelectedProductStateProductImpl value,
+          $Res Function(_$SelectedProductStateProductImpl) then) =
+      __$$SelectedProductStateProductImplCopyWithImpl<$Res>;
   @useResult
   $Res call({SelectedProductDetails product});
 }
 
 /// @nodoc
-class __$$SelectedProductStateProductCopyWithImpl<$Res>
+class __$$SelectedProductStateProductImplCopyWithImpl<$Res>
     extends _$SelectedProductStateCopyWithImpl<$Res,
-        _$SelectedProductStateProduct>
-    implements _$$SelectedProductStateProductCopyWith<$Res> {
-  __$$SelectedProductStateProductCopyWithImpl(
-      _$SelectedProductStateProduct _value,
-      $Res Function(_$SelectedProductStateProduct) _then)
+        _$SelectedProductStateProductImpl>
+    implements _$$SelectedProductStateProductImplCopyWith<$Res> {
+  __$$SelectedProductStateProductImplCopyWithImpl(
+      _$SelectedProductStateProductImpl _value,
+      $Res Function(_$SelectedProductStateProductImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -497,7 +500,7 @@ class __$$SelectedProductStateProductCopyWithImpl<$Res>
   $Res call({
     Object? product = null,
   }) {
-    return _then(_$SelectedProductStateProduct(
+    return _then(_$SelectedProductStateProductImpl(
       null == product
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
@@ -508,8 +511,8 @@ class __$$SelectedProductStateProductCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SelectedProductStateProduct implements SelectedProductStateProduct {
-  const _$SelectedProductStateProduct(this.product);
+class _$SelectedProductStateProductImpl implements SelectedProductStateProduct {
+  const _$SelectedProductStateProductImpl(this.product);
 
   @override
   final SelectedProductDetails product;
@@ -520,10 +523,10 @@ class _$SelectedProductStateProduct implements SelectedProductStateProduct {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SelectedProductStateProduct &&
+            other is _$SelectedProductStateProductImpl &&
             (identical(other.product, product) || other.product == product));
   }
 
@@ -533,9 +536,9 @@ class _$SelectedProductStateProduct implements SelectedProductStateProduct {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SelectedProductStateProductCopyWith<_$SelectedProductStateProduct>
-      get copyWith => __$$SelectedProductStateProductCopyWithImpl<
-          _$SelectedProductStateProduct>(this, _$identity);
+  _$$SelectedProductStateProductImplCopyWith<_$SelectedProductStateProductImpl>
+      get copyWith => __$$SelectedProductStateProductImplCopyWithImpl<
+          _$SelectedProductStateProductImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -614,10 +617,10 @@ class _$SelectedProductStateProduct implements SelectedProductStateProduct {
 
 abstract class SelectedProductStateProduct implements SelectedProductState {
   const factory SelectedProductStateProduct(
-      final SelectedProductDetails product) = _$SelectedProductStateProduct;
+      final SelectedProductDetails product) = _$SelectedProductStateProductImpl;
 
   SelectedProductDetails get product;
   @JsonKey(ignore: true)
-  _$$SelectedProductStateProductCopyWith<_$SelectedProductStateProduct>
+  _$$SelectedProductStateProductImplCopyWith<_$SelectedProductStateProductImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -87,25 +87,25 @@ class _$UserOrdersStateCopyWithImpl<$Res, $Val extends UserOrdersState>
 }
 
 /// @nodoc
-abstract class _$$UserOrdersStateInitCopyWith<$Res> {
-  factory _$$UserOrdersStateInitCopyWith(_$UserOrdersStateInit value,
-          $Res Function(_$UserOrdersStateInit) then) =
-      __$$UserOrdersStateInitCopyWithImpl<$Res>;
+abstract class _$$UserOrdersStateInitImplCopyWith<$Res> {
+  factory _$$UserOrdersStateInitImplCopyWith(_$UserOrdersStateInitImpl value,
+          $Res Function(_$UserOrdersStateInitImpl) then) =
+      __$$UserOrdersStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$UserOrdersStateInitCopyWithImpl<$Res>
-    extends _$UserOrdersStateCopyWithImpl<$Res, _$UserOrdersStateInit>
-    implements _$$UserOrdersStateInitCopyWith<$Res> {
-  __$$UserOrdersStateInitCopyWithImpl(
-      _$UserOrdersStateInit _value, $Res Function(_$UserOrdersStateInit) _then)
+class __$$UserOrdersStateInitImplCopyWithImpl<$Res>
+    extends _$UserOrdersStateCopyWithImpl<$Res, _$UserOrdersStateInitImpl>
+    implements _$$UserOrdersStateInitImplCopyWith<$Res> {
+  __$$UserOrdersStateInitImplCopyWithImpl(_$UserOrdersStateInitImpl _value,
+      $Res Function(_$UserOrdersStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$UserOrdersStateInit implements UserOrdersStateInit {
-  const _$UserOrdersStateInit();
+class _$UserOrdersStateInitImpl implements UserOrdersStateInit {
+  const _$UserOrdersStateInitImpl();
 
   @override
   String toString() {
@@ -113,9 +113,10 @@ class _$UserOrdersStateInit implements UserOrdersStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$UserOrdersStateInit);
+        (other.runtimeType == runtimeType &&
+            other is _$UserOrdersStateInitImpl);
   }
 
   @override
@@ -197,29 +198,31 @@ class _$UserOrdersStateInit implements UserOrdersStateInit {
 }
 
 abstract class UserOrdersStateInit implements UserOrdersState {
-  const factory UserOrdersStateInit() = _$UserOrdersStateInit;
+  const factory UserOrdersStateInit() = _$UserOrdersStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$UserOrdersStateLoadingCopyWith<$Res> {
-  factory _$$UserOrdersStateLoadingCopyWith(_$UserOrdersStateLoading value,
-          $Res Function(_$UserOrdersStateLoading) then) =
-      __$$UserOrdersStateLoadingCopyWithImpl<$Res>;
+abstract class _$$UserOrdersStateLoadingImplCopyWith<$Res> {
+  factory _$$UserOrdersStateLoadingImplCopyWith(
+          _$UserOrdersStateLoadingImpl value,
+          $Res Function(_$UserOrdersStateLoadingImpl) then) =
+      __$$UserOrdersStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$UserOrdersStateLoadingCopyWithImpl<$Res>
-    extends _$UserOrdersStateCopyWithImpl<$Res, _$UserOrdersStateLoading>
-    implements _$$UserOrdersStateLoadingCopyWith<$Res> {
-  __$$UserOrdersStateLoadingCopyWithImpl(_$UserOrdersStateLoading _value,
-      $Res Function(_$UserOrdersStateLoading) _then)
+class __$$UserOrdersStateLoadingImplCopyWithImpl<$Res>
+    extends _$UserOrdersStateCopyWithImpl<$Res, _$UserOrdersStateLoadingImpl>
+    implements _$$UserOrdersStateLoadingImplCopyWith<$Res> {
+  __$$UserOrdersStateLoadingImplCopyWithImpl(
+      _$UserOrdersStateLoadingImpl _value,
+      $Res Function(_$UserOrdersStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$UserOrdersStateLoading implements UserOrdersStateLoading {
-  const _$UserOrdersStateLoading();
+class _$UserOrdersStateLoadingImpl implements UserOrdersStateLoading {
+  const _$UserOrdersStateLoadingImpl();
 
   @override
   String toString() {
@@ -227,9 +230,10 @@ class _$UserOrdersStateLoading implements UserOrdersStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$UserOrdersStateLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$UserOrdersStateLoadingImpl);
   }
 
   @override
@@ -311,24 +315,24 @@ class _$UserOrdersStateLoading implements UserOrdersStateLoading {
 }
 
 abstract class UserOrdersStateLoading implements UserOrdersState {
-  const factory UserOrdersStateLoading() = _$UserOrdersStateLoading;
+  const factory UserOrdersStateLoading() = _$UserOrdersStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$UserOrdersStateErrorCopyWith<$Res> {
-  factory _$$UserOrdersStateErrorCopyWith(_$UserOrdersStateError value,
-          $Res Function(_$UserOrdersStateError) then) =
-      __$$UserOrdersStateErrorCopyWithImpl<$Res>;
+abstract class _$$UserOrdersStateErrorImplCopyWith<$Res> {
+  factory _$$UserOrdersStateErrorImplCopyWith(_$UserOrdersStateErrorImpl value,
+          $Res Function(_$UserOrdersStateErrorImpl) then) =
+      __$$UserOrdersStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String msg});
 }
 
 /// @nodoc
-class __$$UserOrdersStateErrorCopyWithImpl<$Res>
-    extends _$UserOrdersStateCopyWithImpl<$Res, _$UserOrdersStateError>
-    implements _$$UserOrdersStateErrorCopyWith<$Res> {
-  __$$UserOrdersStateErrorCopyWithImpl(_$UserOrdersStateError _value,
-      $Res Function(_$UserOrdersStateError) _then)
+class __$$UserOrdersStateErrorImplCopyWithImpl<$Res>
+    extends _$UserOrdersStateCopyWithImpl<$Res, _$UserOrdersStateErrorImpl>
+    implements _$$UserOrdersStateErrorImplCopyWith<$Res> {
+  __$$UserOrdersStateErrorImplCopyWithImpl(_$UserOrdersStateErrorImpl _value,
+      $Res Function(_$UserOrdersStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -336,7 +340,7 @@ class __$$UserOrdersStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? msg = null,
   }) {
-    return _then(_$UserOrdersStateError(
+    return _then(_$UserOrdersStateErrorImpl(
       null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -347,8 +351,8 @@ class __$$UserOrdersStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UserOrdersStateError implements UserOrdersStateError {
-  const _$UserOrdersStateError(this.msg);
+class _$UserOrdersStateErrorImpl implements UserOrdersStateError {
+  const _$UserOrdersStateErrorImpl(this.msg);
 
   @override
   final String msg;
@@ -359,10 +363,10 @@ class _$UserOrdersStateError implements UserOrdersStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserOrdersStateError &&
+            other is _$UserOrdersStateErrorImpl &&
             (identical(other.msg, msg) || other.msg == msg));
   }
 
@@ -372,9 +376,10 @@ class _$UserOrdersStateError implements UserOrdersStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UserOrdersStateErrorCopyWith<_$UserOrdersStateError> get copyWith =>
-      __$$UserOrdersStateErrorCopyWithImpl<_$UserOrdersStateError>(
-          this, _$identity);
+  _$$UserOrdersStateErrorImplCopyWith<_$UserOrdersStateErrorImpl>
+      get copyWith =>
+          __$$UserOrdersStateErrorImplCopyWithImpl<_$UserOrdersStateErrorImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -452,29 +457,31 @@ class _$UserOrdersStateError implements UserOrdersStateError {
 }
 
 abstract class UserOrdersStateError implements UserOrdersState {
-  const factory UserOrdersStateError(final String msg) = _$UserOrdersStateError;
+  const factory UserOrdersStateError(final String msg) =
+      _$UserOrdersStateErrorImpl;
 
   String get msg;
   @JsonKey(ignore: true)
-  _$$UserOrdersStateErrorCopyWith<_$UserOrdersStateError> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$UserOrdersStateErrorImplCopyWith<_$UserOrdersStateErrorImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$UserOrdersStateOrdersCopyWith<$Res> {
-  factory _$$UserOrdersStateOrdersCopyWith(_$UserOrdersStateOrders value,
-          $Res Function(_$UserOrdersStateOrders) then) =
-      __$$UserOrdersStateOrdersCopyWithImpl<$Res>;
+abstract class _$$UserOrdersStateOrdersImplCopyWith<$Res> {
+  factory _$$UserOrdersStateOrdersImplCopyWith(
+          _$UserOrdersStateOrdersImpl value,
+          $Res Function(_$UserOrdersStateOrdersImpl) then) =
+      __$$UserOrdersStateOrdersImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<UserOrder> orders});
 }
 
 /// @nodoc
-class __$$UserOrdersStateOrdersCopyWithImpl<$Res>
-    extends _$UserOrdersStateCopyWithImpl<$Res, _$UserOrdersStateOrders>
-    implements _$$UserOrdersStateOrdersCopyWith<$Res> {
-  __$$UserOrdersStateOrdersCopyWithImpl(_$UserOrdersStateOrders _value,
-      $Res Function(_$UserOrdersStateOrders) _then)
+class __$$UserOrdersStateOrdersImplCopyWithImpl<$Res>
+    extends _$UserOrdersStateCopyWithImpl<$Res, _$UserOrdersStateOrdersImpl>
+    implements _$$UserOrdersStateOrdersImplCopyWith<$Res> {
+  __$$UserOrdersStateOrdersImplCopyWithImpl(_$UserOrdersStateOrdersImpl _value,
+      $Res Function(_$UserOrdersStateOrdersImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -482,7 +489,7 @@ class __$$UserOrdersStateOrdersCopyWithImpl<$Res>
   $Res call({
     Object? orders = null,
   }) {
-    return _then(_$UserOrdersStateOrders(
+    return _then(_$UserOrdersStateOrdersImpl(
       null == orders
           ? _value._orders
           : orders // ignore: cast_nullable_to_non_nullable
@@ -493,8 +500,8 @@ class __$$UserOrdersStateOrdersCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UserOrdersStateOrders implements UserOrdersStateOrders {
-  const _$UserOrdersStateOrders(final List<UserOrder> orders)
+class _$UserOrdersStateOrdersImpl implements UserOrdersStateOrders {
+  const _$UserOrdersStateOrdersImpl(final List<UserOrder> orders)
       : _orders = orders;
 
   final List<UserOrder> _orders;
@@ -511,10 +518,10 @@ class _$UserOrdersStateOrders implements UserOrdersStateOrders {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserOrdersStateOrders &&
+            other is _$UserOrdersStateOrdersImpl &&
             const DeepCollectionEquality().equals(other._orders, _orders));
   }
 
@@ -525,9 +532,9 @@ class _$UserOrdersStateOrders implements UserOrdersStateOrders {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UserOrdersStateOrdersCopyWith<_$UserOrdersStateOrders> get copyWith =>
-      __$$UserOrdersStateOrdersCopyWithImpl<_$UserOrdersStateOrders>(
-          this, _$identity);
+  _$$UserOrdersStateOrdersImplCopyWith<_$UserOrdersStateOrdersImpl>
+      get copyWith => __$$UserOrdersStateOrdersImplCopyWithImpl<
+          _$UserOrdersStateOrdersImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -606,10 +613,10 @@ class _$UserOrdersStateOrders implements UserOrdersStateOrders {
 
 abstract class UserOrdersStateOrders implements UserOrdersState {
   const factory UserOrdersStateOrders(final List<UserOrder> orders) =
-      _$UserOrdersStateOrders;
+      _$UserOrdersStateOrdersImpl;
 
   List<UserOrder> get orders;
   @JsonKey(ignore: true)
-  _$$UserOrdersStateOrdersCopyWith<_$UserOrdersStateOrders> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$UserOrdersStateOrdersImplCopyWith<_$UserOrdersStateOrdersImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

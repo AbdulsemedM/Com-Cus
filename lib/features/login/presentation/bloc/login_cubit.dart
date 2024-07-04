@@ -32,13 +32,28 @@ class LoginCubit extends Cubit<LoginState> {
       }
 
       final authResponse = await loginRepository.login(emailOrPhone, pass);
-      if (authResponse.changePin == 0) {
+      print("hereistheauth");
+      print(authResponse.isPhoneProvided);
+      if (authResponse.isPhoneProvided == 0) {
+        print("emmited");
+        emit(const LoginState.providePhone('phone'));
+        return;
+      }
+      if (authResponse.isEmailProvided == 0) {
+        print("emmited");
+        emit(const LoginState.providePhone('email'));
+        return;
+      }
+      if (authResponse.changePin == 0 && authResponse.isPhoneProvided == 1) {
         emit(LoginState.setPin(authResponse.phoneNumber!));
         return;
       }
+      print("hereistheauth1");
       emit(const LoginState.success("Success"));
     } catch (e) {
       emit(LoginState.error(e.toString()));
+      print("isithere");
+      print(e.toString());
     }
   }
 }

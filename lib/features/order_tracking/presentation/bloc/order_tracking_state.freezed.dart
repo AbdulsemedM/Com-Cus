@@ -87,25 +87,27 @@ class _$OrderTrackingStateCopyWithImpl<$Res, $Val extends OrderTrackingState>
 }
 
 /// @nodoc
-abstract class _$$OrderTrackingStateInitCopyWith<$Res> {
-  factory _$$OrderTrackingStateInitCopyWith(_$OrderTrackingStateInit value,
-          $Res Function(_$OrderTrackingStateInit) then) =
-      __$$OrderTrackingStateInitCopyWithImpl<$Res>;
+abstract class _$$OrderTrackingStateInitImplCopyWith<$Res> {
+  factory _$$OrderTrackingStateInitImplCopyWith(
+          _$OrderTrackingStateInitImpl value,
+          $Res Function(_$OrderTrackingStateInitImpl) then) =
+      __$$OrderTrackingStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OrderTrackingStateInitCopyWithImpl<$Res>
-    extends _$OrderTrackingStateCopyWithImpl<$Res, _$OrderTrackingStateInit>
-    implements _$$OrderTrackingStateInitCopyWith<$Res> {
-  __$$OrderTrackingStateInitCopyWithImpl(_$OrderTrackingStateInit _value,
-      $Res Function(_$OrderTrackingStateInit) _then)
+class __$$OrderTrackingStateInitImplCopyWithImpl<$Res>
+    extends _$OrderTrackingStateCopyWithImpl<$Res, _$OrderTrackingStateInitImpl>
+    implements _$$OrderTrackingStateInitImplCopyWith<$Res> {
+  __$$OrderTrackingStateInitImplCopyWithImpl(
+      _$OrderTrackingStateInitImpl _value,
+      $Res Function(_$OrderTrackingStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OrderTrackingStateInit implements OrderTrackingStateInit {
-  const _$OrderTrackingStateInit();
+class _$OrderTrackingStateInitImpl implements OrderTrackingStateInit {
+  const _$OrderTrackingStateInitImpl();
 
   @override
   String toString() {
@@ -113,9 +115,10 @@ class _$OrderTrackingStateInit implements OrderTrackingStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$OrderTrackingStateInit);
+        (other.runtimeType == runtimeType &&
+            other is _$OrderTrackingStateInitImpl);
   }
 
   @override
@@ -197,30 +200,32 @@ class _$OrderTrackingStateInit implements OrderTrackingStateInit {
 }
 
 abstract class OrderTrackingStateInit implements OrderTrackingState {
-  const factory OrderTrackingStateInit() = _$OrderTrackingStateInit;
+  const factory OrderTrackingStateInit() = _$OrderTrackingStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$OrderTrackingStateLoadingCopyWith<$Res> {
-  factory _$$OrderTrackingStateLoadingCopyWith(
-          _$OrderTrackingStateLoading value,
-          $Res Function(_$OrderTrackingStateLoading) then) =
-      __$$OrderTrackingStateLoadingCopyWithImpl<$Res>;
+abstract class _$$OrderTrackingStateLoadingImplCopyWith<$Res> {
+  factory _$$OrderTrackingStateLoadingImplCopyWith(
+          _$OrderTrackingStateLoadingImpl value,
+          $Res Function(_$OrderTrackingStateLoadingImpl) then) =
+      __$$OrderTrackingStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OrderTrackingStateLoadingCopyWithImpl<$Res>
-    extends _$OrderTrackingStateCopyWithImpl<$Res, _$OrderTrackingStateLoading>
-    implements _$$OrderTrackingStateLoadingCopyWith<$Res> {
-  __$$OrderTrackingStateLoadingCopyWithImpl(_$OrderTrackingStateLoading _value,
-      $Res Function(_$OrderTrackingStateLoading) _then)
+class __$$OrderTrackingStateLoadingImplCopyWithImpl<$Res>
+    extends _$OrderTrackingStateCopyWithImpl<$Res,
+        _$OrderTrackingStateLoadingImpl>
+    implements _$$OrderTrackingStateLoadingImplCopyWith<$Res> {
+  __$$OrderTrackingStateLoadingImplCopyWithImpl(
+      _$OrderTrackingStateLoadingImpl _value,
+      $Res Function(_$OrderTrackingStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OrderTrackingStateLoading implements OrderTrackingStateLoading {
-  const _$OrderTrackingStateLoading();
+class _$OrderTrackingStateLoadingImpl implements OrderTrackingStateLoading {
+  const _$OrderTrackingStateLoadingImpl();
 
   @override
   String toString() {
@@ -228,10 +233,10 @@ class _$OrderTrackingStateLoading implements OrderTrackingStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OrderTrackingStateLoading);
+            other is _$OrderTrackingStateLoadingImpl);
   }
 
   @override
@@ -313,24 +318,26 @@ class _$OrderTrackingStateLoading implements OrderTrackingStateLoading {
 }
 
 abstract class OrderTrackingStateLoading implements OrderTrackingState {
-  const factory OrderTrackingStateLoading() = _$OrderTrackingStateLoading;
+  const factory OrderTrackingStateLoading() = _$OrderTrackingStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$OrderTrackingStateDataCopyWith<$Res> {
-  factory _$$OrderTrackingStateDataCopyWith(_$OrderTrackingStateData value,
-          $Res Function(_$OrderTrackingStateData) then) =
-      __$$OrderTrackingStateDataCopyWithImpl<$Res>;
+abstract class _$$OrderTrackingStateDataImplCopyWith<$Res> {
+  factory _$$OrderTrackingStateDataImplCopyWith(
+          _$OrderTrackingStateDataImpl value,
+          $Res Function(_$OrderTrackingStateDataImpl) then) =
+      __$$OrderTrackingStateDataImplCopyWithImpl<$Res>;
   @useResult
   $Res call({OrderTrackingData orderTrackingData});
 }
 
 /// @nodoc
-class __$$OrderTrackingStateDataCopyWithImpl<$Res>
-    extends _$OrderTrackingStateCopyWithImpl<$Res, _$OrderTrackingStateData>
-    implements _$$OrderTrackingStateDataCopyWith<$Res> {
-  __$$OrderTrackingStateDataCopyWithImpl(_$OrderTrackingStateData _value,
-      $Res Function(_$OrderTrackingStateData) _then)
+class __$$OrderTrackingStateDataImplCopyWithImpl<$Res>
+    extends _$OrderTrackingStateCopyWithImpl<$Res, _$OrderTrackingStateDataImpl>
+    implements _$$OrderTrackingStateDataImplCopyWith<$Res> {
+  __$$OrderTrackingStateDataImplCopyWithImpl(
+      _$OrderTrackingStateDataImpl _value,
+      $Res Function(_$OrderTrackingStateDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -338,7 +345,7 @@ class __$$OrderTrackingStateDataCopyWithImpl<$Res>
   $Res call({
     Object? orderTrackingData = null,
   }) {
-    return _then(_$OrderTrackingStateData(
+    return _then(_$OrderTrackingStateDataImpl(
       null == orderTrackingData
           ? _value.orderTrackingData
           : orderTrackingData // ignore: cast_nullable_to_non_nullable
@@ -349,8 +356,8 @@ class __$$OrderTrackingStateDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OrderTrackingStateData implements OrderTrackingStateData {
-  const _$OrderTrackingStateData(this.orderTrackingData);
+class _$OrderTrackingStateDataImpl implements OrderTrackingStateData {
+  const _$OrderTrackingStateDataImpl(this.orderTrackingData);
 
   @override
   final OrderTrackingData orderTrackingData;
@@ -361,10 +368,10 @@ class _$OrderTrackingStateData implements OrderTrackingStateData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OrderTrackingStateData &&
+            other is _$OrderTrackingStateDataImpl &&
             (identical(other.orderTrackingData, orderTrackingData) ||
                 other.orderTrackingData == orderTrackingData));
   }
@@ -375,9 +382,9 @@ class _$OrderTrackingStateData implements OrderTrackingStateData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OrderTrackingStateDataCopyWith<_$OrderTrackingStateData> get copyWith =>
-      __$$OrderTrackingStateDataCopyWithImpl<_$OrderTrackingStateData>(
-          this, _$identity);
+  _$$OrderTrackingStateDataImplCopyWith<_$OrderTrackingStateDataImpl>
+      get copyWith => __$$OrderTrackingStateDataImplCopyWithImpl<
+          _$OrderTrackingStateDataImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -456,29 +463,32 @@ class _$OrderTrackingStateData implements OrderTrackingStateData {
 
 abstract class OrderTrackingStateData implements OrderTrackingState {
   const factory OrderTrackingStateData(
-      final OrderTrackingData orderTrackingData) = _$OrderTrackingStateData;
+      final OrderTrackingData orderTrackingData) = _$OrderTrackingStateDataImpl;
 
   OrderTrackingData get orderTrackingData;
   @JsonKey(ignore: true)
-  _$$OrderTrackingStateDataCopyWith<_$OrderTrackingStateData> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$OrderTrackingStateDataImplCopyWith<_$OrderTrackingStateDataImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$OrderTrackingStateErrorCopyWith<$Res> {
-  factory _$$OrderTrackingStateErrorCopyWith(_$OrderTrackingStateError value,
-          $Res Function(_$OrderTrackingStateError) then) =
-      __$$OrderTrackingStateErrorCopyWithImpl<$Res>;
+abstract class _$$OrderTrackingStateErrorImplCopyWith<$Res> {
+  factory _$$OrderTrackingStateErrorImplCopyWith(
+          _$OrderTrackingStateErrorImpl value,
+          $Res Function(_$OrderTrackingStateErrorImpl) then) =
+      __$$OrderTrackingStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$OrderTrackingStateErrorCopyWithImpl<$Res>
-    extends _$OrderTrackingStateCopyWithImpl<$Res, _$OrderTrackingStateError>
-    implements _$$OrderTrackingStateErrorCopyWith<$Res> {
-  __$$OrderTrackingStateErrorCopyWithImpl(_$OrderTrackingStateError _value,
-      $Res Function(_$OrderTrackingStateError) _then)
+class __$$OrderTrackingStateErrorImplCopyWithImpl<$Res>
+    extends _$OrderTrackingStateCopyWithImpl<$Res,
+        _$OrderTrackingStateErrorImpl>
+    implements _$$OrderTrackingStateErrorImplCopyWith<$Res> {
+  __$$OrderTrackingStateErrorImplCopyWithImpl(
+      _$OrderTrackingStateErrorImpl _value,
+      $Res Function(_$OrderTrackingStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -486,7 +496,7 @@ class __$$OrderTrackingStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$OrderTrackingStateError(
+    return _then(_$OrderTrackingStateErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -497,8 +507,8 @@ class __$$OrderTrackingStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OrderTrackingStateError implements OrderTrackingStateError {
-  const _$OrderTrackingStateError(this.message);
+class _$OrderTrackingStateErrorImpl implements OrderTrackingStateError {
+  const _$OrderTrackingStateErrorImpl(this.message);
 
   @override
   final String message;
@@ -509,10 +519,10 @@ class _$OrderTrackingStateError implements OrderTrackingStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OrderTrackingStateError &&
+            other is _$OrderTrackingStateErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -522,9 +532,9 @@ class _$OrderTrackingStateError implements OrderTrackingStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OrderTrackingStateErrorCopyWith<_$OrderTrackingStateError> get copyWith =>
-      __$$OrderTrackingStateErrorCopyWithImpl<_$OrderTrackingStateError>(
-          this, _$identity);
+  _$$OrderTrackingStateErrorImplCopyWith<_$OrderTrackingStateErrorImpl>
+      get copyWith => __$$OrderTrackingStateErrorImplCopyWithImpl<
+          _$OrderTrackingStateErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -603,10 +613,10 @@ class _$OrderTrackingStateError implements OrderTrackingStateError {
 
 abstract class OrderTrackingStateError implements OrderTrackingState {
   const factory OrderTrackingStateError(final String message) =
-      _$OrderTrackingStateError;
+      _$OrderTrackingStateErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$OrderTrackingStateErrorCopyWith<_$OrderTrackingStateError> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$OrderTrackingStateErrorImplCopyWith<_$OrderTrackingStateErrorImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

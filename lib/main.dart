@@ -1,14 +1,13 @@
 import 'dart:io';
 
-import 'package:app_links/app_links.dart';
-import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/utils/app_bloc_observer.dart';
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:upgrader/upgrader.dart';
@@ -36,8 +35,6 @@ void main() async {
 
   String lang = await getStoredLang();
   GlobalStrings.setGlobalString(lang);
-
-  // await translateStrings();
 
   Bloc.observer = AppBlocObserver();
 

@@ -23,6 +23,7 @@ mixin _$LoginState {
     required TResult Function(String message) error,
     required TResult Function(String message) success,
     required TResult Function(String phoneNumber) setPin,
+    required TResult Function(String provide) providePhone,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -32,6 +33,7 @@ mixin _$LoginState {
     TResult? Function(String message)? error,
     TResult? Function(String message)? success,
     TResult? Function(String phoneNumber)? setPin,
+    TResult? Function(String provide)? providePhone,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -41,6 +43,7 @@ mixin _$LoginState {
     TResult Function(String message)? error,
     TResult Function(String message)? success,
     TResult Function(String phoneNumber)? setPin,
+    TResult Function(String provide)? providePhone,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -51,6 +54,7 @@ mixin _$LoginState {
     required TResult Function(LoginStateError value) error,
     required TResult Function(LoginStateSuccess value) success,
     required TResult Function(LoginStateSetPin value) setPin,
+    required TResult Function(LoginStateprovidePhone value) providePhone,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -60,6 +64,7 @@ mixin _$LoginState {
     TResult? Function(LoginStateError value)? error,
     TResult? Function(LoginStateSuccess value)? success,
     TResult? Function(LoginStateSetPin value)? setPin,
+    TResult? Function(LoginStateprovidePhone value)? providePhone,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -69,6 +74,7 @@ mixin _$LoginState {
     TResult Function(LoginStateError value)? error,
     TResult Function(LoginStateSuccess value)? success,
     TResult Function(LoginStateSetPin value)? setPin,
+    TResult Function(LoginStateprovidePhone value)? providePhone,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -93,25 +99,25 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
 }
 
 /// @nodoc
-abstract class _$$LoginStateInitCopyWith<$Res> {
-  factory _$$LoginStateInitCopyWith(
-          _$LoginStateInit value, $Res Function(_$LoginStateInit) then) =
-      __$$LoginStateInitCopyWithImpl<$Res>;
+abstract class _$$LoginStateInitImplCopyWith<$Res> {
+  factory _$$LoginStateInitImplCopyWith(_$LoginStateInitImpl value,
+          $Res Function(_$LoginStateInitImpl) then) =
+      __$$LoginStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LoginStateInitCopyWithImpl<$Res>
-    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateInit>
-    implements _$$LoginStateInitCopyWith<$Res> {
-  __$$LoginStateInitCopyWithImpl(
-      _$LoginStateInit _value, $Res Function(_$LoginStateInit) _then)
+class __$$LoginStateInitImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateInitImpl>
+    implements _$$LoginStateInitImplCopyWith<$Res> {
+  __$$LoginStateInitImplCopyWithImpl(
+      _$LoginStateInitImpl _value, $Res Function(_$LoginStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$LoginStateInit implements LoginStateInit {
-  const _$LoginStateInit();
+class _$LoginStateInitImpl implements LoginStateInit {
+  const _$LoginStateInitImpl();
 
   @override
   String toString() {
@@ -119,9 +125,9 @@ class _$LoginStateInit implements LoginStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoginStateInit);
+        (other.runtimeType == runtimeType && other is _$LoginStateInitImpl);
   }
 
   @override
@@ -135,6 +141,7 @@ class _$LoginStateInit implements LoginStateInit {
     required TResult Function(String message) error,
     required TResult Function(String message) success,
     required TResult Function(String phoneNumber) setPin,
+    required TResult Function(String provide) providePhone,
   }) {
     return init();
   }
@@ -147,6 +154,7 @@ class _$LoginStateInit implements LoginStateInit {
     TResult? Function(String message)? error,
     TResult? Function(String message)? success,
     TResult? Function(String phoneNumber)? setPin,
+    TResult? Function(String provide)? providePhone,
   }) {
     return init?.call();
   }
@@ -159,6 +167,7 @@ class _$LoginStateInit implements LoginStateInit {
     TResult Function(String message)? error,
     TResult Function(String message)? success,
     TResult Function(String phoneNumber)? setPin,
+    TResult Function(String provide)? providePhone,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -175,6 +184,7 @@ class _$LoginStateInit implements LoginStateInit {
     required TResult Function(LoginStateError value) error,
     required TResult Function(LoginStateSuccess value) success,
     required TResult Function(LoginStateSetPin value) setPin,
+    required TResult Function(LoginStateprovidePhone value) providePhone,
   }) {
     return init(this);
   }
@@ -187,6 +197,7 @@ class _$LoginStateInit implements LoginStateInit {
     TResult? Function(LoginStateError value)? error,
     TResult? Function(LoginStateSuccess value)? success,
     TResult? Function(LoginStateSetPin value)? setPin,
+    TResult? Function(LoginStateprovidePhone value)? providePhone,
   }) {
     return init?.call(this);
   }
@@ -199,6 +210,7 @@ class _$LoginStateInit implements LoginStateInit {
     TResult Function(LoginStateError value)? error,
     TResult Function(LoginStateSuccess value)? success,
     TResult Function(LoginStateSetPin value)? setPin,
+    TResult Function(LoginStateprovidePhone value)? providePhone,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -209,29 +221,29 @@ class _$LoginStateInit implements LoginStateInit {
 }
 
 abstract class LoginStateInit implements LoginState {
-  const factory LoginStateInit() = _$LoginStateInit;
+  const factory LoginStateInit() = _$LoginStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$LoginStateLoadingCopyWith<$Res> {
-  factory _$$LoginStateLoadingCopyWith(
-          _$LoginStateLoading value, $Res Function(_$LoginStateLoading) then) =
-      __$$LoginStateLoadingCopyWithImpl<$Res>;
+abstract class _$$LoginStateLoadingImplCopyWith<$Res> {
+  factory _$$LoginStateLoadingImplCopyWith(_$LoginStateLoadingImpl value,
+          $Res Function(_$LoginStateLoadingImpl) then) =
+      __$$LoginStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LoginStateLoadingCopyWithImpl<$Res>
-    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateLoading>
-    implements _$$LoginStateLoadingCopyWith<$Res> {
-  __$$LoginStateLoadingCopyWithImpl(
-      _$LoginStateLoading _value, $Res Function(_$LoginStateLoading) _then)
+class __$$LoginStateLoadingImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateLoadingImpl>
+    implements _$$LoginStateLoadingImplCopyWith<$Res> {
+  __$$LoginStateLoadingImplCopyWithImpl(_$LoginStateLoadingImpl _value,
+      $Res Function(_$LoginStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$LoginStateLoading implements LoginStateLoading {
-  const _$LoginStateLoading();
+class _$LoginStateLoadingImpl implements LoginStateLoading {
+  const _$LoginStateLoadingImpl();
 
   @override
   String toString() {
@@ -239,9 +251,9 @@ class _$LoginStateLoading implements LoginStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoginStateLoading);
+        (other.runtimeType == runtimeType && other is _$LoginStateLoadingImpl);
   }
 
   @override
@@ -255,6 +267,7 @@ class _$LoginStateLoading implements LoginStateLoading {
     required TResult Function(String message) error,
     required TResult Function(String message) success,
     required TResult Function(String phoneNumber) setPin,
+    required TResult Function(String provide) providePhone,
   }) {
     return loading();
   }
@@ -267,6 +280,7 @@ class _$LoginStateLoading implements LoginStateLoading {
     TResult? Function(String message)? error,
     TResult? Function(String message)? success,
     TResult? Function(String phoneNumber)? setPin,
+    TResult? Function(String provide)? providePhone,
   }) {
     return loading?.call();
   }
@@ -279,6 +293,7 @@ class _$LoginStateLoading implements LoginStateLoading {
     TResult Function(String message)? error,
     TResult Function(String message)? success,
     TResult Function(String phoneNumber)? setPin,
+    TResult Function(String provide)? providePhone,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -295,6 +310,7 @@ class _$LoginStateLoading implements LoginStateLoading {
     required TResult Function(LoginStateError value) error,
     required TResult Function(LoginStateSuccess value) success,
     required TResult Function(LoginStateSetPin value) setPin,
+    required TResult Function(LoginStateprovidePhone value) providePhone,
   }) {
     return loading(this);
   }
@@ -307,6 +323,7 @@ class _$LoginStateLoading implements LoginStateLoading {
     TResult? Function(LoginStateError value)? error,
     TResult? Function(LoginStateSuccess value)? success,
     TResult? Function(LoginStateSetPin value)? setPin,
+    TResult? Function(LoginStateprovidePhone value)? providePhone,
   }) {
     return loading?.call(this);
   }
@@ -319,6 +336,7 @@ class _$LoginStateLoading implements LoginStateLoading {
     TResult Function(LoginStateError value)? error,
     TResult Function(LoginStateSuccess value)? success,
     TResult Function(LoginStateSetPin value)? setPin,
+    TResult Function(LoginStateprovidePhone value)? providePhone,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -329,24 +347,24 @@ class _$LoginStateLoading implements LoginStateLoading {
 }
 
 abstract class LoginStateLoading implements LoginState {
-  const factory LoginStateLoading() = _$LoginStateLoading;
+  const factory LoginStateLoading() = _$LoginStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$LoginStateErrorCopyWith<$Res> {
-  factory _$$LoginStateErrorCopyWith(
-          _$LoginStateError value, $Res Function(_$LoginStateError) then) =
-      __$$LoginStateErrorCopyWithImpl<$Res>;
+abstract class _$$LoginStateErrorImplCopyWith<$Res> {
+  factory _$$LoginStateErrorImplCopyWith(_$LoginStateErrorImpl value,
+          $Res Function(_$LoginStateErrorImpl) then) =
+      __$$LoginStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$LoginStateErrorCopyWithImpl<$Res>
-    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateError>
-    implements _$$LoginStateErrorCopyWith<$Res> {
-  __$$LoginStateErrorCopyWithImpl(
-      _$LoginStateError _value, $Res Function(_$LoginStateError) _then)
+class __$$LoginStateErrorImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateErrorImpl>
+    implements _$$LoginStateErrorImplCopyWith<$Res> {
+  __$$LoginStateErrorImplCopyWithImpl(
+      _$LoginStateErrorImpl _value, $Res Function(_$LoginStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -354,7 +372,7 @@ class __$$LoginStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$LoginStateError(
+    return _then(_$LoginStateErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -365,8 +383,8 @@ class __$$LoginStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoginStateError implements LoginStateError {
-  const _$LoginStateError(this.message);
+class _$LoginStateErrorImpl implements LoginStateError {
+  const _$LoginStateErrorImpl(this.message);
 
   @override
   final String message;
@@ -377,10 +395,10 @@ class _$LoginStateError implements LoginStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoginStateError &&
+            other is _$LoginStateErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -390,8 +408,9 @@ class _$LoginStateError implements LoginStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$LoginStateErrorCopyWith<_$LoginStateError> get copyWith =>
-      __$$LoginStateErrorCopyWithImpl<_$LoginStateError>(this, _$identity);
+  _$$LoginStateErrorImplCopyWith<_$LoginStateErrorImpl> get copyWith =>
+      __$$LoginStateErrorImplCopyWithImpl<_$LoginStateErrorImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -401,6 +420,7 @@ class _$LoginStateError implements LoginStateError {
     required TResult Function(String message) error,
     required TResult Function(String message) success,
     required TResult Function(String phoneNumber) setPin,
+    required TResult Function(String provide) providePhone,
   }) {
     return error(message);
   }
@@ -413,6 +433,7 @@ class _$LoginStateError implements LoginStateError {
     TResult? Function(String message)? error,
     TResult? Function(String message)? success,
     TResult? Function(String phoneNumber)? setPin,
+    TResult? Function(String provide)? providePhone,
   }) {
     return error?.call(message);
   }
@@ -425,6 +446,7 @@ class _$LoginStateError implements LoginStateError {
     TResult Function(String message)? error,
     TResult Function(String message)? success,
     TResult Function(String phoneNumber)? setPin,
+    TResult Function(String provide)? providePhone,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -441,6 +463,7 @@ class _$LoginStateError implements LoginStateError {
     required TResult Function(LoginStateError value) error,
     required TResult Function(LoginStateSuccess value) success,
     required TResult Function(LoginStateSetPin value) setPin,
+    required TResult Function(LoginStateprovidePhone value) providePhone,
   }) {
     return error(this);
   }
@@ -453,6 +476,7 @@ class _$LoginStateError implements LoginStateError {
     TResult? Function(LoginStateError value)? error,
     TResult? Function(LoginStateSuccess value)? success,
     TResult? Function(LoginStateSetPin value)? setPin,
+    TResult? Function(LoginStateprovidePhone value)? providePhone,
   }) {
     return error?.call(this);
   }
@@ -465,6 +489,7 @@ class _$LoginStateError implements LoginStateError {
     TResult Function(LoginStateError value)? error,
     TResult Function(LoginStateSuccess value)? success,
     TResult Function(LoginStateSetPin value)? setPin,
+    TResult Function(LoginStateprovidePhone value)? providePhone,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -475,29 +500,29 @@ class _$LoginStateError implements LoginStateError {
 }
 
 abstract class LoginStateError implements LoginState {
-  const factory LoginStateError(final String message) = _$LoginStateError;
+  const factory LoginStateError(final String message) = _$LoginStateErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$LoginStateErrorCopyWith<_$LoginStateError> get copyWith =>
+  _$$LoginStateErrorImplCopyWith<_$LoginStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$LoginStateSuccessCopyWith<$Res> {
-  factory _$$LoginStateSuccessCopyWith(
-          _$LoginStateSuccess value, $Res Function(_$LoginStateSuccess) then) =
-      __$$LoginStateSuccessCopyWithImpl<$Res>;
+abstract class _$$LoginStateSuccessImplCopyWith<$Res> {
+  factory _$$LoginStateSuccessImplCopyWith(_$LoginStateSuccessImpl value,
+          $Res Function(_$LoginStateSuccessImpl) then) =
+      __$$LoginStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$LoginStateSuccessCopyWithImpl<$Res>
-    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateSuccess>
-    implements _$$LoginStateSuccessCopyWith<$Res> {
-  __$$LoginStateSuccessCopyWithImpl(
-      _$LoginStateSuccess _value, $Res Function(_$LoginStateSuccess) _then)
+class __$$LoginStateSuccessImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateSuccessImpl>
+    implements _$$LoginStateSuccessImplCopyWith<$Res> {
+  __$$LoginStateSuccessImplCopyWithImpl(_$LoginStateSuccessImpl _value,
+      $Res Function(_$LoginStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -505,7 +530,7 @@ class __$$LoginStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$LoginStateSuccess(
+    return _then(_$LoginStateSuccessImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -516,8 +541,8 @@ class __$$LoginStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoginStateSuccess implements LoginStateSuccess {
-  const _$LoginStateSuccess(this.message);
+class _$LoginStateSuccessImpl implements LoginStateSuccess {
+  const _$LoginStateSuccessImpl(this.message);
 
   @override
   final String message;
@@ -528,10 +553,10 @@ class _$LoginStateSuccess implements LoginStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoginStateSuccess &&
+            other is _$LoginStateSuccessImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -541,8 +566,9 @@ class _$LoginStateSuccess implements LoginStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$LoginStateSuccessCopyWith<_$LoginStateSuccess> get copyWith =>
-      __$$LoginStateSuccessCopyWithImpl<_$LoginStateSuccess>(this, _$identity);
+  _$$LoginStateSuccessImplCopyWith<_$LoginStateSuccessImpl> get copyWith =>
+      __$$LoginStateSuccessImplCopyWithImpl<_$LoginStateSuccessImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -552,6 +578,7 @@ class _$LoginStateSuccess implements LoginStateSuccess {
     required TResult Function(String message) error,
     required TResult Function(String message) success,
     required TResult Function(String phoneNumber) setPin,
+    required TResult Function(String provide) providePhone,
   }) {
     return success(message);
   }
@@ -564,6 +591,7 @@ class _$LoginStateSuccess implements LoginStateSuccess {
     TResult? Function(String message)? error,
     TResult? Function(String message)? success,
     TResult? Function(String phoneNumber)? setPin,
+    TResult? Function(String provide)? providePhone,
   }) {
     return success?.call(message);
   }
@@ -576,6 +604,7 @@ class _$LoginStateSuccess implements LoginStateSuccess {
     TResult Function(String message)? error,
     TResult Function(String message)? success,
     TResult Function(String phoneNumber)? setPin,
+    TResult Function(String provide)? providePhone,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -592,6 +621,7 @@ class _$LoginStateSuccess implements LoginStateSuccess {
     required TResult Function(LoginStateError value) error,
     required TResult Function(LoginStateSuccess value) success,
     required TResult Function(LoginStateSetPin value) setPin,
+    required TResult Function(LoginStateprovidePhone value) providePhone,
   }) {
     return success(this);
   }
@@ -604,6 +634,7 @@ class _$LoginStateSuccess implements LoginStateSuccess {
     TResult? Function(LoginStateError value)? error,
     TResult? Function(LoginStateSuccess value)? success,
     TResult? Function(LoginStateSetPin value)? setPin,
+    TResult? Function(LoginStateprovidePhone value)? providePhone,
   }) {
     return success?.call(this);
   }
@@ -616,6 +647,7 @@ class _$LoginStateSuccess implements LoginStateSuccess {
     TResult Function(LoginStateError value)? error,
     TResult Function(LoginStateSuccess value)? success,
     TResult Function(LoginStateSetPin value)? setPin,
+    TResult Function(LoginStateprovidePhone value)? providePhone,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -626,29 +658,30 @@ class _$LoginStateSuccess implements LoginStateSuccess {
 }
 
 abstract class LoginStateSuccess implements LoginState {
-  const factory LoginStateSuccess(final String message) = _$LoginStateSuccess;
+  const factory LoginStateSuccess(final String message) =
+      _$LoginStateSuccessImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$LoginStateSuccessCopyWith<_$LoginStateSuccess> get copyWith =>
+  _$$LoginStateSuccessImplCopyWith<_$LoginStateSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$LoginStateSetPinCopyWith<$Res> {
-  factory _$$LoginStateSetPinCopyWith(
-          _$LoginStateSetPin value, $Res Function(_$LoginStateSetPin) then) =
-      __$$LoginStateSetPinCopyWithImpl<$Res>;
+abstract class _$$LoginStateSetPinImplCopyWith<$Res> {
+  factory _$$LoginStateSetPinImplCopyWith(_$LoginStateSetPinImpl value,
+          $Res Function(_$LoginStateSetPinImpl) then) =
+      __$$LoginStateSetPinImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String phoneNumber});
 }
 
 /// @nodoc
-class __$$LoginStateSetPinCopyWithImpl<$Res>
-    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateSetPin>
-    implements _$$LoginStateSetPinCopyWith<$Res> {
-  __$$LoginStateSetPinCopyWithImpl(
-      _$LoginStateSetPin _value, $Res Function(_$LoginStateSetPin) _then)
+class __$$LoginStateSetPinImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateSetPinImpl>
+    implements _$$LoginStateSetPinImplCopyWith<$Res> {
+  __$$LoginStateSetPinImplCopyWithImpl(_$LoginStateSetPinImpl _value,
+      $Res Function(_$LoginStateSetPinImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -656,7 +689,7 @@ class __$$LoginStateSetPinCopyWithImpl<$Res>
   $Res call({
     Object? phoneNumber = null,
   }) {
-    return _then(_$LoginStateSetPin(
+    return _then(_$LoginStateSetPinImpl(
       null == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
@@ -667,8 +700,8 @@ class __$$LoginStateSetPinCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoginStateSetPin implements LoginStateSetPin {
-  const _$LoginStateSetPin(this.phoneNumber);
+class _$LoginStateSetPinImpl implements LoginStateSetPin {
+  const _$LoginStateSetPinImpl(this.phoneNumber);
 
   @override
   final String phoneNumber;
@@ -679,10 +712,10 @@ class _$LoginStateSetPin implements LoginStateSetPin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoginStateSetPin &&
+            other is _$LoginStateSetPinImpl &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber));
   }
@@ -693,8 +726,9 @@ class _$LoginStateSetPin implements LoginStateSetPin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$LoginStateSetPinCopyWith<_$LoginStateSetPin> get copyWith =>
-      __$$LoginStateSetPinCopyWithImpl<_$LoginStateSetPin>(this, _$identity);
+  _$$LoginStateSetPinImplCopyWith<_$LoginStateSetPinImpl> get copyWith =>
+      __$$LoginStateSetPinImplCopyWithImpl<_$LoginStateSetPinImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -704,6 +738,7 @@ class _$LoginStateSetPin implements LoginStateSetPin {
     required TResult Function(String message) error,
     required TResult Function(String message) success,
     required TResult Function(String phoneNumber) setPin,
+    required TResult Function(String provide) providePhone,
   }) {
     return setPin(phoneNumber);
   }
@@ -716,6 +751,7 @@ class _$LoginStateSetPin implements LoginStateSetPin {
     TResult? Function(String message)? error,
     TResult? Function(String message)? success,
     TResult? Function(String phoneNumber)? setPin,
+    TResult? Function(String provide)? providePhone,
   }) {
     return setPin?.call(phoneNumber);
   }
@@ -728,6 +764,7 @@ class _$LoginStateSetPin implements LoginStateSetPin {
     TResult Function(String message)? error,
     TResult Function(String message)? success,
     TResult Function(String phoneNumber)? setPin,
+    TResult Function(String provide)? providePhone,
     required TResult orElse(),
   }) {
     if (setPin != null) {
@@ -744,6 +781,7 @@ class _$LoginStateSetPin implements LoginStateSetPin {
     required TResult Function(LoginStateError value) error,
     required TResult Function(LoginStateSuccess value) success,
     required TResult Function(LoginStateSetPin value) setPin,
+    required TResult Function(LoginStateprovidePhone value) providePhone,
   }) {
     return setPin(this);
   }
@@ -756,6 +794,7 @@ class _$LoginStateSetPin implements LoginStateSetPin {
     TResult? Function(LoginStateError value)? error,
     TResult? Function(LoginStateSuccess value)? success,
     TResult? Function(LoginStateSetPin value)? setPin,
+    TResult? Function(LoginStateprovidePhone value)? providePhone,
   }) {
     return setPin?.call(this);
   }
@@ -768,6 +807,7 @@ class _$LoginStateSetPin implements LoginStateSetPin {
     TResult Function(LoginStateError value)? error,
     TResult Function(LoginStateSuccess value)? success,
     TResult Function(LoginStateSetPin value)? setPin,
+    TResult Function(LoginStateprovidePhone value)? providePhone,
     required TResult orElse(),
   }) {
     if (setPin != null) {
@@ -778,10 +818,172 @@ class _$LoginStateSetPin implements LoginStateSetPin {
 }
 
 abstract class LoginStateSetPin implements LoginState {
-  const factory LoginStateSetPin(final String phoneNumber) = _$LoginStateSetPin;
+  const factory LoginStateSetPin(final String phoneNumber) =
+      _$LoginStateSetPinImpl;
 
   String get phoneNumber;
   @JsonKey(ignore: true)
-  _$$LoginStateSetPinCopyWith<_$LoginStateSetPin> get copyWith =>
+  _$$LoginStateSetPinImplCopyWith<_$LoginStateSetPinImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$LoginStateprovidePhoneImplCopyWith<$Res> {
+  factory _$$LoginStateprovidePhoneImplCopyWith(
+          _$LoginStateprovidePhoneImpl value,
+          $Res Function(_$LoginStateprovidePhoneImpl) then) =
+      __$$LoginStateprovidePhoneImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String provide});
+}
+
+/// @nodoc
+class __$$LoginStateprovidePhoneImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateprovidePhoneImpl>
+    implements _$$LoginStateprovidePhoneImplCopyWith<$Res> {
+  __$$LoginStateprovidePhoneImplCopyWithImpl(
+      _$LoginStateprovidePhoneImpl _value,
+      $Res Function(_$LoginStateprovidePhoneImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? provide = null,
+  }) {
+    return _then(_$LoginStateprovidePhoneImpl(
+      null == provide
+          ? _value.provide
+          : provide // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$LoginStateprovidePhoneImpl implements LoginStateprovidePhone {
+  const _$LoginStateprovidePhoneImpl(this.provide);
+
+  @override
+  final String provide;
+
+  @override
+  String toString() {
+    return 'LoginState.providePhone(provide: $provide)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LoginStateprovidePhoneImpl &&
+            (identical(other.provide, provide) || other.provide == provide));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, provide);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoginStateprovidePhoneImplCopyWith<_$LoginStateprovidePhoneImpl>
+      get copyWith => __$$LoginStateprovidePhoneImplCopyWithImpl<
+          _$LoginStateprovidePhoneImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() loading,
+    required TResult Function(String message) error,
+    required TResult Function(String message) success,
+    required TResult Function(String phoneNumber) setPin,
+    required TResult Function(String provide) providePhone,
+  }) {
+    return providePhone(provide);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function()? loading,
+    TResult? Function(String message)? error,
+    TResult? Function(String message)? success,
+    TResult? Function(String phoneNumber)? setPin,
+    TResult? Function(String provide)? providePhone,
+  }) {
+    return providePhone?.call(provide);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? loading,
+    TResult Function(String message)? error,
+    TResult Function(String message)? success,
+    TResult Function(String phoneNumber)? setPin,
+    TResult Function(String provide)? providePhone,
+    required TResult orElse(),
+  }) {
+    if (providePhone != null) {
+      return providePhone(provide);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LoginStateInit value) init,
+    required TResult Function(LoginStateLoading value) loading,
+    required TResult Function(LoginStateError value) error,
+    required TResult Function(LoginStateSuccess value) success,
+    required TResult Function(LoginStateSetPin value) setPin,
+    required TResult Function(LoginStateprovidePhone value) providePhone,
+  }) {
+    return providePhone(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LoginStateInit value)? init,
+    TResult? Function(LoginStateLoading value)? loading,
+    TResult? Function(LoginStateError value)? error,
+    TResult? Function(LoginStateSuccess value)? success,
+    TResult? Function(LoginStateSetPin value)? setPin,
+    TResult? Function(LoginStateprovidePhone value)? providePhone,
+  }) {
+    return providePhone?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LoginStateInit value)? init,
+    TResult Function(LoginStateLoading value)? loading,
+    TResult Function(LoginStateError value)? error,
+    TResult Function(LoginStateSuccess value)? success,
+    TResult Function(LoginStateSetPin value)? setPin,
+    TResult Function(LoginStateprovidePhone value)? providePhone,
+    required TResult orElse(),
+  }) {
+    if (providePhone != null) {
+      return providePhone(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LoginStateprovidePhone implements LoginState {
+  const factory LoginStateprovidePhone(final String provide) =
+      _$LoginStateprovidePhoneImpl;
+
+  String get provide;
+  @JsonKey(ignore: true)
+  _$$LoginStateprovidePhoneImplCopyWith<_$LoginStateprovidePhoneImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

@@ -29,7 +29,7 @@ class PromptWidget extends StatelessWidget {
                 ?.copyWith(fontSize: 14.sp, color: AppColors.colorPrimaryDark),
           )),
           SizedBox(
-              width: 100,
+              width: 110,
               height: 30,
               child: AppButtonWidget(
                   text: "Validate",

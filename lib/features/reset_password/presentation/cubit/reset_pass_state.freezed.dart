@@ -99,25 +99,25 @@ class _$ResetPassStateCopyWithImpl<$Res, $Val extends ResetPassState>
 }
 
 /// @nodoc
-abstract class _$$ResetPassStateInitCopyWith<$Res> {
-  factory _$$ResetPassStateInitCopyWith(_$ResetPassStateInit value,
-          $Res Function(_$ResetPassStateInit) then) =
-      __$$ResetPassStateInitCopyWithImpl<$Res>;
+abstract class _$$ResetPassStateInitImplCopyWith<$Res> {
+  factory _$$ResetPassStateInitImplCopyWith(_$ResetPassStateInitImpl value,
+          $Res Function(_$ResetPassStateInitImpl) then) =
+      __$$ResetPassStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ResetPassStateInitCopyWithImpl<$Res>
-    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStateInit>
-    implements _$$ResetPassStateInitCopyWith<$Res> {
-  __$$ResetPassStateInitCopyWithImpl(
-      _$ResetPassStateInit _value, $Res Function(_$ResetPassStateInit) _then)
+class __$$ResetPassStateInitImplCopyWithImpl<$Res>
+    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStateInitImpl>
+    implements _$$ResetPassStateInitImplCopyWith<$Res> {
+  __$$ResetPassStateInitImplCopyWithImpl(_$ResetPassStateInitImpl _value,
+      $Res Function(_$ResetPassStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ResetPassStateInit implements ResetPassStateInit {
-  const _$ResetPassStateInit();
+class _$ResetPassStateInitImpl implements ResetPassStateInit {
+  const _$ResetPassStateInitImpl();
 
   @override
   String toString() {
@@ -125,9 +125,9 @@ class _$ResetPassStateInit implements ResetPassStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ResetPassStateInit);
+        (other.runtimeType == runtimeType && other is _$ResetPassStateInitImpl);
   }
 
   @override
@@ -221,29 +221,30 @@ class _$ResetPassStateInit implements ResetPassStateInit {
 }
 
 abstract class ResetPassStateInit implements ResetPassState {
-  const factory ResetPassStateInit() = _$ResetPassStateInit;
+  const factory ResetPassStateInit() = _$ResetPassStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$ResetPassStateLoadingCopyWith<$Res> {
-  factory _$$ResetPassStateLoadingCopyWith(_$ResetPassStateLoading value,
-          $Res Function(_$ResetPassStateLoading) then) =
-      __$$ResetPassStateLoadingCopyWithImpl<$Res>;
+abstract class _$$ResetPassStateLoadingImplCopyWith<$Res> {
+  factory _$$ResetPassStateLoadingImplCopyWith(
+          _$ResetPassStateLoadingImpl value,
+          $Res Function(_$ResetPassStateLoadingImpl) then) =
+      __$$ResetPassStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ResetPassStateLoadingCopyWithImpl<$Res>
-    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStateLoading>
-    implements _$$ResetPassStateLoadingCopyWith<$Res> {
-  __$$ResetPassStateLoadingCopyWithImpl(_$ResetPassStateLoading _value,
-      $Res Function(_$ResetPassStateLoading) _then)
+class __$$ResetPassStateLoadingImplCopyWithImpl<$Res>
+    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStateLoadingImpl>
+    implements _$$ResetPassStateLoadingImplCopyWith<$Res> {
+  __$$ResetPassStateLoadingImplCopyWithImpl(_$ResetPassStateLoadingImpl _value,
+      $Res Function(_$ResetPassStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ResetPassStateLoading implements ResetPassStateLoading {
-  const _$ResetPassStateLoading();
+class _$ResetPassStateLoadingImpl implements ResetPassStateLoading {
+  const _$ResetPassStateLoadingImpl();
 
   @override
   String toString() {
@@ -251,9 +252,10 @@ class _$ResetPassStateLoading implements ResetPassStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ResetPassStateLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$ResetPassStateLoadingImpl);
   }
 
   @override
@@ -347,29 +349,29 @@ class _$ResetPassStateLoading implements ResetPassStateLoading {
 }
 
 abstract class ResetPassStateLoading implements ResetPassState {
-  const factory ResetPassStateLoading() = _$ResetPassStateLoading;
+  const factory ResetPassStateLoading() = _$ResetPassStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$ResetPassStateCodeCopyWith<$Res> {
-  factory _$$ResetPassStateCodeCopyWith(_$ResetPassStateCode value,
-          $Res Function(_$ResetPassStateCode) then) =
-      __$$ResetPassStateCodeCopyWithImpl<$Res>;
+abstract class _$$ResetPassStateCodeImplCopyWith<$Res> {
+  factory _$$ResetPassStateCodeImplCopyWith(_$ResetPassStateCodeImpl value,
+          $Res Function(_$ResetPassStateCodeImpl) then) =
+      __$$ResetPassStateCodeImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ResetPassStateCodeCopyWithImpl<$Res>
-    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStateCode>
-    implements _$$ResetPassStateCodeCopyWith<$Res> {
-  __$$ResetPassStateCodeCopyWithImpl(
-      _$ResetPassStateCode _value, $Res Function(_$ResetPassStateCode) _then)
+class __$$ResetPassStateCodeImplCopyWithImpl<$Res>
+    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStateCodeImpl>
+    implements _$$ResetPassStateCodeImplCopyWith<$Res> {
+  __$$ResetPassStateCodeImplCopyWithImpl(_$ResetPassStateCodeImpl _value,
+      $Res Function(_$ResetPassStateCodeImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ResetPassStateCode implements ResetPassStateCode {
-  const _$ResetPassStateCode();
+class _$ResetPassStateCodeImpl implements ResetPassStateCode {
+  const _$ResetPassStateCodeImpl();
 
   @override
   String toString() {
@@ -377,9 +379,9 @@ class _$ResetPassStateCode implements ResetPassStateCode {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ResetPassStateCode);
+        (other.runtimeType == runtimeType && other is _$ResetPassStateCodeImpl);
   }
 
   @override
@@ -473,29 +475,31 @@ class _$ResetPassStateCode implements ResetPassStateCode {
 }
 
 abstract class ResetPassStateCode implements ResetPassState {
-  const factory ResetPassStateCode() = _$ResetPassStateCode;
+  const factory ResetPassStateCode() = _$ResetPassStateCodeImpl;
 }
 
 /// @nodoc
-abstract class _$$ResetPassStatePasswordCopyWith<$Res> {
-  factory _$$ResetPassStatePasswordCopyWith(_$ResetPassStatePassword value,
-          $Res Function(_$ResetPassStatePassword) then) =
-      __$$ResetPassStatePasswordCopyWithImpl<$Res>;
+abstract class _$$ResetPassStatePasswordImplCopyWith<$Res> {
+  factory _$$ResetPassStatePasswordImplCopyWith(
+          _$ResetPassStatePasswordImpl value,
+          $Res Function(_$ResetPassStatePasswordImpl) then) =
+      __$$ResetPassStatePasswordImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ResetPassStatePasswordCopyWithImpl<$Res>
-    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStatePassword>
-    implements _$$ResetPassStatePasswordCopyWith<$Res> {
-  __$$ResetPassStatePasswordCopyWithImpl(_$ResetPassStatePassword _value,
-      $Res Function(_$ResetPassStatePassword) _then)
+class __$$ResetPassStatePasswordImplCopyWithImpl<$Res>
+    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStatePasswordImpl>
+    implements _$$ResetPassStatePasswordImplCopyWith<$Res> {
+  __$$ResetPassStatePasswordImplCopyWithImpl(
+      _$ResetPassStatePasswordImpl _value,
+      $Res Function(_$ResetPassStatePasswordImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ResetPassStatePassword implements ResetPassStatePassword {
-  const _$ResetPassStatePassword();
+class _$ResetPassStatePasswordImpl implements ResetPassStatePassword {
+  const _$ResetPassStatePasswordImpl();
 
   @override
   String toString() {
@@ -503,9 +507,10 @@ class _$ResetPassStatePassword implements ResetPassStatePassword {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ResetPassStatePassword);
+        (other.runtimeType == runtimeType &&
+            other is _$ResetPassStatePasswordImpl);
   }
 
   @override
@@ -599,24 +604,24 @@ class _$ResetPassStatePassword implements ResetPassStatePassword {
 }
 
 abstract class ResetPassStatePassword implements ResetPassState {
-  const factory ResetPassStatePassword() = _$ResetPassStatePassword;
+  const factory ResetPassStatePassword() = _$ResetPassStatePasswordImpl;
 }
 
 /// @nodoc
-abstract class _$$ResetPassStateErrorCopyWith<$Res> {
-  factory _$$ResetPassStateErrorCopyWith(_$ResetPassStateError value,
-          $Res Function(_$ResetPassStateError) then) =
-      __$$ResetPassStateErrorCopyWithImpl<$Res>;
+abstract class _$$ResetPassStateErrorImplCopyWith<$Res> {
+  factory _$$ResetPassStateErrorImplCopyWith(_$ResetPassStateErrorImpl value,
+          $Res Function(_$ResetPassStateErrorImpl) then) =
+      __$$ResetPassStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$ResetPassStateErrorCopyWithImpl<$Res>
-    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStateError>
-    implements _$$ResetPassStateErrorCopyWith<$Res> {
-  __$$ResetPassStateErrorCopyWithImpl(
-      _$ResetPassStateError _value, $Res Function(_$ResetPassStateError) _then)
+class __$$ResetPassStateErrorImplCopyWithImpl<$Res>
+    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStateErrorImpl>
+    implements _$$ResetPassStateErrorImplCopyWith<$Res> {
+  __$$ResetPassStateErrorImplCopyWithImpl(_$ResetPassStateErrorImpl _value,
+      $Res Function(_$ResetPassStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -624,7 +629,7 @@ class __$$ResetPassStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$ResetPassStateError(
+    return _then(_$ResetPassStateErrorImpl(
       null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -635,8 +640,8 @@ class __$$ResetPassStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ResetPassStateError implements ResetPassStateError {
-  const _$ResetPassStateError(this.error);
+class _$ResetPassStateErrorImpl implements ResetPassStateError {
+  const _$ResetPassStateErrorImpl(this.error);
 
   @override
   final String error;
@@ -647,10 +652,10 @@ class _$ResetPassStateError implements ResetPassStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ResetPassStateError &&
+            other is _$ResetPassStateErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -660,8 +665,8 @@ class _$ResetPassStateError implements ResetPassStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ResetPassStateErrorCopyWith<_$ResetPassStateError> get copyWith =>
-      __$$ResetPassStateErrorCopyWithImpl<_$ResetPassStateError>(
+  _$$ResetPassStateErrorImplCopyWith<_$ResetPassStateErrorImpl> get copyWith =>
+      __$$ResetPassStateErrorImplCopyWithImpl<_$ResetPassStateErrorImpl>(
           this, _$identity);
 
   @override
@@ -752,29 +757,31 @@ class _$ResetPassStateError implements ResetPassStateError {
 }
 
 abstract class ResetPassStateError implements ResetPassState {
-  const factory ResetPassStateError(final String error) = _$ResetPassStateError;
+  const factory ResetPassStateError(final String error) =
+      _$ResetPassStateErrorImpl;
 
   String get error;
   @JsonKey(ignore: true)
-  _$$ResetPassStateErrorCopyWith<_$ResetPassStateError> get copyWith =>
+  _$$ResetPassStateErrorImplCopyWith<_$ResetPassStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ResetPassStateSuccessCopyWith<$Res> {
-  factory _$$ResetPassStateSuccessCopyWith(_$ResetPassStateSuccess value,
-          $Res Function(_$ResetPassStateSuccess) then) =
-      __$$ResetPassStateSuccessCopyWithImpl<$Res>;
+abstract class _$$ResetPassStateSuccessImplCopyWith<$Res> {
+  factory _$$ResetPassStateSuccessImplCopyWith(
+          _$ResetPassStateSuccessImpl value,
+          $Res Function(_$ResetPassStateSuccessImpl) then) =
+      __$$ResetPassStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String msg});
 }
 
 /// @nodoc
-class __$$ResetPassStateSuccessCopyWithImpl<$Res>
-    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStateSuccess>
-    implements _$$ResetPassStateSuccessCopyWith<$Res> {
-  __$$ResetPassStateSuccessCopyWithImpl(_$ResetPassStateSuccess _value,
-      $Res Function(_$ResetPassStateSuccess) _then)
+class __$$ResetPassStateSuccessImplCopyWithImpl<$Res>
+    extends _$ResetPassStateCopyWithImpl<$Res, _$ResetPassStateSuccessImpl>
+    implements _$$ResetPassStateSuccessImplCopyWith<$Res> {
+  __$$ResetPassStateSuccessImplCopyWithImpl(_$ResetPassStateSuccessImpl _value,
+      $Res Function(_$ResetPassStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -782,7 +789,7 @@ class __$$ResetPassStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? msg = null,
   }) {
-    return _then(_$ResetPassStateSuccess(
+    return _then(_$ResetPassStateSuccessImpl(
       null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -793,8 +800,8 @@ class __$$ResetPassStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ResetPassStateSuccess implements ResetPassStateSuccess {
-  const _$ResetPassStateSuccess(this.msg);
+class _$ResetPassStateSuccessImpl implements ResetPassStateSuccess {
+  const _$ResetPassStateSuccessImpl(this.msg);
 
   @override
   final String msg;
@@ -805,10 +812,10 @@ class _$ResetPassStateSuccess implements ResetPassStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ResetPassStateSuccess &&
+            other is _$ResetPassStateSuccessImpl &&
             (identical(other.msg, msg) || other.msg == msg));
   }
 
@@ -818,9 +825,9 @@ class _$ResetPassStateSuccess implements ResetPassStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ResetPassStateSuccessCopyWith<_$ResetPassStateSuccess> get copyWith =>
-      __$$ResetPassStateSuccessCopyWithImpl<_$ResetPassStateSuccess>(
-          this, _$identity);
+  _$$ResetPassStateSuccessImplCopyWith<_$ResetPassStateSuccessImpl>
+      get copyWith => __$$ResetPassStateSuccessImplCopyWithImpl<
+          _$ResetPassStateSuccessImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -911,10 +918,10 @@ class _$ResetPassStateSuccess implements ResetPassStateSuccess {
 
 abstract class ResetPassStateSuccess implements ResetPassState {
   const factory ResetPassStateSuccess(final String msg) =
-      _$ResetPassStateSuccess;
+      _$ResetPassStateSuccessImpl;
 
   String get msg;
   @JsonKey(ignore: true)
-  _$$ResetPassStateSuccessCopyWith<_$ResetPassStateSuccess> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ResetPassStateSuccessImplCopyWith<_$ResetPassStateSuccessImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

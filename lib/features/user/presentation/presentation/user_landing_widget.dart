@@ -24,7 +24,7 @@ class UserLandingWidget extends StatelessWidget {
             size: 50,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(5.0),
             child: FutureBuilder<String>(
               future: Translations.translatedText(
                   "Login to access your account details and orders",

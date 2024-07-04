@@ -105,25 +105,25 @@ class _$CartCoreStateCopyWithImpl<$Res, $Val extends CartCoreState>
 }
 
 /// @nodoc
-abstract class _$$CartCoreStateInitCopyWith<$Res> {
-  factory _$$CartCoreStateInitCopyWith(
-          _$CartCoreStateInit value, $Res Function(_$CartCoreStateInit) then) =
-      __$$CartCoreStateInitCopyWithImpl<$Res>;
+abstract class _$$CartCoreStateInitImplCopyWith<$Res> {
+  factory _$$CartCoreStateInitImplCopyWith(_$CartCoreStateInitImpl value,
+          $Res Function(_$CartCoreStateInitImpl) then) =
+      __$$CartCoreStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$CartCoreStateInitCopyWithImpl<$Res>
-    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateInit>
-    implements _$$CartCoreStateInitCopyWith<$Res> {
-  __$$CartCoreStateInitCopyWithImpl(
-      _$CartCoreStateInit _value, $Res Function(_$CartCoreStateInit) _then)
+class __$$CartCoreStateInitImplCopyWithImpl<$Res>
+    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateInitImpl>
+    implements _$$CartCoreStateInitImplCopyWith<$Res> {
+  __$$CartCoreStateInitImplCopyWithImpl(_$CartCoreStateInitImpl _value,
+      $Res Function(_$CartCoreStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CartCoreStateInit implements CartCoreStateInit {
-  const _$CartCoreStateInit();
+class _$CartCoreStateInitImpl implements CartCoreStateInit {
+  const _$CartCoreStateInitImpl();
 
   @override
   String toString() {
@@ -131,9 +131,9 @@ class _$CartCoreStateInit implements CartCoreStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CartCoreStateInit);
+        (other.runtimeType == runtimeType && other is _$CartCoreStateInitImpl);
   }
 
   @override
@@ -233,24 +233,24 @@ class _$CartCoreStateInit implements CartCoreStateInit {
 }
 
 abstract class CartCoreStateInit implements CartCoreState {
-  const factory CartCoreStateInit() = _$CartCoreStateInit;
+  const factory CartCoreStateInit() = _$CartCoreStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$CartCoreStateErrorCopyWith<$Res> {
-  factory _$$CartCoreStateErrorCopyWith(_$CartCoreStateError value,
-          $Res Function(_$CartCoreStateError) then) =
-      __$$CartCoreStateErrorCopyWithImpl<$Res>;
+abstract class _$$CartCoreStateErrorImplCopyWith<$Res> {
+  factory _$$CartCoreStateErrorImplCopyWith(_$CartCoreStateErrorImpl value,
+          $Res Function(_$CartCoreStateErrorImpl) then) =
+      __$$CartCoreStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String errorMessage});
 }
 
 /// @nodoc
-class __$$CartCoreStateErrorCopyWithImpl<$Res>
-    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateError>
-    implements _$$CartCoreStateErrorCopyWith<$Res> {
-  __$$CartCoreStateErrorCopyWithImpl(
-      _$CartCoreStateError _value, $Res Function(_$CartCoreStateError) _then)
+class __$$CartCoreStateErrorImplCopyWithImpl<$Res>
+    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateErrorImpl>
+    implements _$$CartCoreStateErrorImplCopyWith<$Res> {
+  __$$CartCoreStateErrorImplCopyWithImpl(_$CartCoreStateErrorImpl _value,
+      $Res Function(_$CartCoreStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -258,7 +258,7 @@ class __$$CartCoreStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? errorMessage = null,
   }) {
-    return _then(_$CartCoreStateError(
+    return _then(_$CartCoreStateErrorImpl(
       null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -269,8 +269,8 @@ class __$$CartCoreStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CartCoreStateError implements CartCoreStateError {
-  const _$CartCoreStateError(this.errorMessage);
+class _$CartCoreStateErrorImpl implements CartCoreStateError {
+  const _$CartCoreStateErrorImpl(this.errorMessage);
 
   @override
   final String errorMessage;
@@ -281,10 +281,10 @@ class _$CartCoreStateError implements CartCoreStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CartCoreStateError &&
+            other is _$CartCoreStateErrorImpl &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
@@ -295,8 +295,8 @@ class _$CartCoreStateError implements CartCoreStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CartCoreStateErrorCopyWith<_$CartCoreStateError> get copyWith =>
-      __$$CartCoreStateErrorCopyWithImpl<_$CartCoreStateError>(
+  _$$CartCoreStateErrorImplCopyWith<_$CartCoreStateErrorImpl> get copyWith =>
+      __$$CartCoreStateErrorImplCopyWithImpl<_$CartCoreStateErrorImpl>(
           this, _$identity);
 
   @override
@@ -394,34 +394,34 @@ class _$CartCoreStateError implements CartCoreStateError {
 
 abstract class CartCoreStateError implements CartCoreState {
   const factory CartCoreStateError(final String errorMessage) =
-      _$CartCoreStateError;
+      _$CartCoreStateErrorImpl;
 
   String get errorMessage;
   @JsonKey(ignore: true)
-  _$$CartCoreStateErrorCopyWith<_$CartCoreStateError> get copyWith =>
+  _$$CartCoreStateErrorImplCopyWith<_$CartCoreStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CartCoreStateLoadingCopyWith<$Res> {
-  factory _$$CartCoreStateLoadingCopyWith(_$CartCoreStateLoading value,
-          $Res Function(_$CartCoreStateLoading) then) =
-      __$$CartCoreStateLoadingCopyWithImpl<$Res>;
+abstract class _$$CartCoreStateLoadingImplCopyWith<$Res> {
+  factory _$$CartCoreStateLoadingImplCopyWith(_$CartCoreStateLoadingImpl value,
+          $Res Function(_$CartCoreStateLoadingImpl) then) =
+      __$$CartCoreStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$CartCoreStateLoadingCopyWithImpl<$Res>
-    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateLoading>
-    implements _$$CartCoreStateLoadingCopyWith<$Res> {
-  __$$CartCoreStateLoadingCopyWithImpl(_$CartCoreStateLoading _value,
-      $Res Function(_$CartCoreStateLoading) _then)
+class __$$CartCoreStateLoadingImplCopyWithImpl<$Res>
+    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateLoadingImpl>
+    implements _$$CartCoreStateLoadingImplCopyWith<$Res> {
+  __$$CartCoreStateLoadingImplCopyWithImpl(_$CartCoreStateLoadingImpl _value,
+      $Res Function(_$CartCoreStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CartCoreStateLoading implements CartCoreStateLoading {
-  const _$CartCoreStateLoading();
+class _$CartCoreStateLoadingImpl implements CartCoreStateLoading {
+  const _$CartCoreStateLoadingImpl();
 
   @override
   String toString() {
@@ -429,9 +429,10 @@ class _$CartCoreStateLoading implements CartCoreStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CartCoreStateLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$CartCoreStateLoadingImpl);
   }
 
   @override
@@ -531,24 +532,24 @@ class _$CartCoreStateLoading implements CartCoreStateLoading {
 }
 
 abstract class CartCoreStateLoading implements CartCoreState {
-  const factory CartCoreStateLoading() = _$CartCoreStateLoading;
+  const factory CartCoreStateLoading() = _$CartCoreStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$CartCoreStateSuccessCopyWith<$Res> {
-  factory _$$CartCoreStateSuccessCopyWith(_$CartCoreStateSuccess value,
-          $Res Function(_$CartCoreStateSuccess) then) =
-      __$$CartCoreStateSuccessCopyWithImpl<$Res>;
+abstract class _$$CartCoreStateSuccessImplCopyWith<$Res> {
+  factory _$$CartCoreStateSuccessImplCopyWith(_$CartCoreStateSuccessImpl value,
+          $Res Function(_$CartCoreStateSuccessImpl) then) =
+      __$$CartCoreStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String success});
 }
 
 /// @nodoc
-class __$$CartCoreStateSuccessCopyWithImpl<$Res>
-    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateSuccess>
-    implements _$$CartCoreStateSuccessCopyWith<$Res> {
-  __$$CartCoreStateSuccessCopyWithImpl(_$CartCoreStateSuccess _value,
-      $Res Function(_$CartCoreStateSuccess) _then)
+class __$$CartCoreStateSuccessImplCopyWithImpl<$Res>
+    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateSuccessImpl>
+    implements _$$CartCoreStateSuccessImplCopyWith<$Res> {
+  __$$CartCoreStateSuccessImplCopyWithImpl(_$CartCoreStateSuccessImpl _value,
+      $Res Function(_$CartCoreStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -556,7 +557,7 @@ class __$$CartCoreStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? success = null,
   }) {
-    return _then(_$CartCoreStateSuccess(
+    return _then(_$CartCoreStateSuccessImpl(
       null == success
           ? _value.success
           : success // ignore: cast_nullable_to_non_nullable
@@ -567,8 +568,8 @@ class __$$CartCoreStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CartCoreStateSuccess implements CartCoreStateSuccess {
-  const _$CartCoreStateSuccess(this.success);
+class _$CartCoreStateSuccessImpl implements CartCoreStateSuccess {
+  const _$CartCoreStateSuccessImpl(this.success);
 
   @override
   final String success;
@@ -579,10 +580,10 @@ class _$CartCoreStateSuccess implements CartCoreStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CartCoreStateSuccess &&
+            other is _$CartCoreStateSuccessImpl &&
             (identical(other.success, success) || other.success == success));
   }
 
@@ -592,9 +593,10 @@ class _$CartCoreStateSuccess implements CartCoreStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CartCoreStateSuccessCopyWith<_$CartCoreStateSuccess> get copyWith =>
-      __$$CartCoreStateSuccessCopyWithImpl<_$CartCoreStateSuccess>(
-          this, _$identity);
+  _$$CartCoreStateSuccessImplCopyWith<_$CartCoreStateSuccessImpl>
+      get copyWith =>
+          __$$CartCoreStateSuccessImplCopyWithImpl<_$CartCoreStateSuccessImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -691,29 +693,29 @@ class _$CartCoreStateSuccess implements CartCoreStateSuccess {
 
 abstract class CartCoreStateSuccess implements CartCoreState {
   const factory CartCoreStateSuccess(final String success) =
-      _$CartCoreStateSuccess;
+      _$CartCoreStateSuccessImpl;
 
   String get success;
   @JsonKey(ignore: true)
-  _$$CartCoreStateSuccessCopyWith<_$CartCoreStateSuccess> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$CartCoreStateSuccessImplCopyWith<_$CartCoreStateSuccessImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CartCoreStateDataCopyWith<$Res> {
-  factory _$$CartCoreStateDataCopyWith(
-          _$CartCoreStateData value, $Res Function(_$CartCoreStateData) then) =
-      __$$CartCoreStateDataCopyWithImpl<$Res>;
+abstract class _$$CartCoreStateDataImplCopyWith<$Res> {
+  factory _$$CartCoreStateDataImplCopyWith(_$CartCoreStateDataImpl value,
+          $Res Function(_$CartCoreStateDataImpl) then) =
+      __$$CartCoreStateDataImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<CartItem> product});
 }
 
 /// @nodoc
-class __$$CartCoreStateDataCopyWithImpl<$Res>
-    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateData>
-    implements _$$CartCoreStateDataCopyWith<$Res> {
-  __$$CartCoreStateDataCopyWithImpl(
-      _$CartCoreStateData _value, $Res Function(_$CartCoreStateData) _then)
+class __$$CartCoreStateDataImplCopyWithImpl<$Res>
+    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateDataImpl>
+    implements _$$CartCoreStateDataImplCopyWith<$Res> {
+  __$$CartCoreStateDataImplCopyWithImpl(_$CartCoreStateDataImpl _value,
+      $Res Function(_$CartCoreStateDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -721,7 +723,7 @@ class __$$CartCoreStateDataCopyWithImpl<$Res>
   $Res call({
     Object? product = null,
   }) {
-    return _then(_$CartCoreStateData(
+    return _then(_$CartCoreStateDataImpl(
       null == product
           ? _value._product
           : product // ignore: cast_nullable_to_non_nullable
@@ -732,8 +734,9 @@ class __$$CartCoreStateDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CartCoreStateData implements CartCoreStateData {
-  const _$CartCoreStateData(final List<CartItem> product) : _product = product;
+class _$CartCoreStateDataImpl implements CartCoreStateData {
+  const _$CartCoreStateDataImpl(final List<CartItem> product)
+      : _product = product;
 
   final List<CartItem> _product;
   @override
@@ -749,10 +752,10 @@ class _$CartCoreStateData implements CartCoreStateData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CartCoreStateData &&
+            other is _$CartCoreStateDataImpl &&
             const DeepCollectionEquality().equals(other._product, _product));
   }
 
@@ -763,8 +766,9 @@ class _$CartCoreStateData implements CartCoreStateData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CartCoreStateDataCopyWith<_$CartCoreStateData> get copyWith =>
-      __$$CartCoreStateDataCopyWithImpl<_$CartCoreStateData>(this, _$identity);
+  _$$CartCoreStateDataImplCopyWith<_$CartCoreStateDataImpl> get copyWith =>
+      __$$CartCoreStateDataImplCopyWithImpl<_$CartCoreStateDataImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -861,34 +865,36 @@ class _$CartCoreStateData implements CartCoreStateData {
 
 abstract class CartCoreStateData implements CartCoreState {
   const factory CartCoreStateData(final List<CartItem> product) =
-      _$CartCoreStateData;
+      _$CartCoreStateDataImpl;
 
   List<CartItem> get product;
   @JsonKey(ignore: true)
-  _$$CartCoreStateDataCopyWith<_$CartCoreStateData> get copyWith =>
+  _$$CartCoreStateDataImplCopyWith<_$CartCoreStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CartCoreStateLoginUserCopyWith<$Res> {
-  factory _$$CartCoreStateLoginUserCopyWith(_$CartCoreStateLoginUser value,
-          $Res Function(_$CartCoreStateLoginUser) then) =
-      __$$CartCoreStateLoginUserCopyWithImpl<$Res>;
+abstract class _$$CartCoreStateLoginUserImplCopyWith<$Res> {
+  factory _$$CartCoreStateLoginUserImplCopyWith(
+          _$CartCoreStateLoginUserImpl value,
+          $Res Function(_$CartCoreStateLoginUserImpl) then) =
+      __$$CartCoreStateLoginUserImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$CartCoreStateLoginUserCopyWithImpl<$Res>
-    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateLoginUser>
-    implements _$$CartCoreStateLoginUserCopyWith<$Res> {
-  __$$CartCoreStateLoginUserCopyWithImpl(_$CartCoreStateLoginUser _value,
-      $Res Function(_$CartCoreStateLoginUser) _then)
+class __$$CartCoreStateLoginUserImplCopyWithImpl<$Res>
+    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateLoginUserImpl>
+    implements _$$CartCoreStateLoginUserImplCopyWith<$Res> {
+  __$$CartCoreStateLoginUserImplCopyWithImpl(
+      _$CartCoreStateLoginUserImpl _value,
+      $Res Function(_$CartCoreStateLoginUserImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CartCoreStateLoginUser implements CartCoreStateLoginUser {
-  const _$CartCoreStateLoginUser();
+class _$CartCoreStateLoginUserImpl implements CartCoreStateLoginUser {
+  const _$CartCoreStateLoginUserImpl();
 
   @override
   String toString() {
@@ -896,9 +902,10 @@ class _$CartCoreStateLoginUser implements CartCoreStateLoginUser {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CartCoreStateLoginUser);
+        (other.runtimeType == runtimeType &&
+            other is _$CartCoreStateLoginUserImpl);
   }
 
   @override
@@ -998,30 +1005,31 @@ class _$CartCoreStateLoginUser implements CartCoreStateLoginUser {
 }
 
 abstract class CartCoreStateLoginUser implements CartCoreState {
-  const factory CartCoreStateLoginUser() = _$CartCoreStateLoginUser;
+  const factory CartCoreStateLoginUser() = _$CartCoreStateLoginUserImpl;
 }
 
 /// @nodoc
-abstract class _$$CartCoreStateCheckOutUserCopyWith<$Res> {
-  factory _$$CartCoreStateCheckOutUserCopyWith(
-          _$CartCoreStateCheckOutUser value,
-          $Res Function(_$CartCoreStateCheckOutUser) then) =
-      __$$CartCoreStateCheckOutUserCopyWithImpl<$Res>;
+abstract class _$$CartCoreStateCheckOutUserImplCopyWith<$Res> {
+  factory _$$CartCoreStateCheckOutUserImplCopyWith(
+          _$CartCoreStateCheckOutUserImpl value,
+          $Res Function(_$CartCoreStateCheckOutUserImpl) then) =
+      __$$CartCoreStateCheckOutUserImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$CartCoreStateCheckOutUserCopyWithImpl<$Res>
-    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateCheckOutUser>
-    implements _$$CartCoreStateCheckOutUserCopyWith<$Res> {
-  __$$CartCoreStateCheckOutUserCopyWithImpl(_$CartCoreStateCheckOutUser _value,
-      $Res Function(_$CartCoreStateCheckOutUser) _then)
+class __$$CartCoreStateCheckOutUserImplCopyWithImpl<$Res>
+    extends _$CartCoreStateCopyWithImpl<$Res, _$CartCoreStateCheckOutUserImpl>
+    implements _$$CartCoreStateCheckOutUserImplCopyWith<$Res> {
+  __$$CartCoreStateCheckOutUserImplCopyWithImpl(
+      _$CartCoreStateCheckOutUserImpl _value,
+      $Res Function(_$CartCoreStateCheckOutUserImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CartCoreStateCheckOutUser implements CartCoreStateCheckOutUser {
-  const _$CartCoreStateCheckOutUser();
+class _$CartCoreStateCheckOutUserImpl implements CartCoreStateCheckOutUser {
+  const _$CartCoreStateCheckOutUserImpl();
 
   @override
   String toString() {
@@ -1029,10 +1037,10 @@ class _$CartCoreStateCheckOutUser implements CartCoreStateCheckOutUser {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CartCoreStateCheckOutUser);
+            other is _$CartCoreStateCheckOutUserImpl);
   }
 
   @override
@@ -1132,5 +1140,5 @@ class _$CartCoreStateCheckOutUser implements CartCoreStateCheckOutUser {
 }
 
 abstract class CartCoreStateCheckOutUser implements CartCoreState {
-  const factory CartCoreStateCheckOutUser() = _$CartCoreStateCheckOutUser;
+  const factory CartCoreStateCheckOutUser() = _$CartCoreStateCheckOutUserImpl;
 }

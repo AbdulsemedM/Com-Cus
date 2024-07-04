@@ -101,25 +101,25 @@ class _$PaymentStateCopyWithImpl<$Res, $Val extends PaymentState>
 }
 
 /// @nodoc
-abstract class _$$PaymentStateInitCopyWith<$Res> {
-  factory _$$PaymentStateInitCopyWith(
-          _$PaymentStateInit value, $Res Function(_$PaymentStateInit) then) =
-      __$$PaymentStateInitCopyWithImpl<$Res>;
+abstract class _$$PaymentStateInitImplCopyWith<$Res> {
+  factory _$$PaymentStateInitImplCopyWith(_$PaymentStateInitImpl value,
+          $Res Function(_$PaymentStateInitImpl) then) =
+      __$$PaymentStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$PaymentStateInitCopyWithImpl<$Res>
-    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateInit>
-    implements _$$PaymentStateInitCopyWith<$Res> {
-  __$$PaymentStateInitCopyWithImpl(
-      _$PaymentStateInit _value, $Res Function(_$PaymentStateInit) _then)
+class __$$PaymentStateInitImplCopyWithImpl<$Res>
+    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateInitImpl>
+    implements _$$PaymentStateInitImplCopyWith<$Res> {
+  __$$PaymentStateInitImplCopyWithImpl(_$PaymentStateInitImpl _value,
+      $Res Function(_$PaymentStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$PaymentStateInit implements PaymentStateInit {
-  const _$PaymentStateInit();
+class _$PaymentStateInitImpl implements PaymentStateInit {
+  const _$PaymentStateInitImpl();
 
   @override
   String toString() {
@@ -127,9 +127,9 @@ class _$PaymentStateInit implements PaymentStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$PaymentStateInit);
+        (other.runtimeType == runtimeType && other is _$PaymentStateInitImpl);
   }
 
   @override
@@ -225,29 +225,29 @@ class _$PaymentStateInit implements PaymentStateInit {
 }
 
 abstract class PaymentStateInit implements PaymentState {
-  const factory PaymentStateInit() = _$PaymentStateInit;
+  const factory PaymentStateInit() = _$PaymentStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$PaymentStateLoadingCopyWith<$Res> {
-  factory _$$PaymentStateLoadingCopyWith(_$PaymentStateLoading value,
-          $Res Function(_$PaymentStateLoading) then) =
-      __$$PaymentStateLoadingCopyWithImpl<$Res>;
+abstract class _$$PaymentStateLoadingImplCopyWith<$Res> {
+  factory _$$PaymentStateLoadingImplCopyWith(_$PaymentStateLoadingImpl value,
+          $Res Function(_$PaymentStateLoadingImpl) then) =
+      __$$PaymentStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$PaymentStateLoadingCopyWithImpl<$Res>
-    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateLoading>
-    implements _$$PaymentStateLoadingCopyWith<$Res> {
-  __$$PaymentStateLoadingCopyWithImpl(
-      _$PaymentStateLoading _value, $Res Function(_$PaymentStateLoading) _then)
+class __$$PaymentStateLoadingImplCopyWithImpl<$Res>
+    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateLoadingImpl>
+    implements _$$PaymentStateLoadingImplCopyWith<$Res> {
+  __$$PaymentStateLoadingImplCopyWithImpl(_$PaymentStateLoadingImpl _value,
+      $Res Function(_$PaymentStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$PaymentStateLoading implements PaymentStateLoading {
-  const _$PaymentStateLoading();
+class _$PaymentStateLoadingImpl implements PaymentStateLoading {
+  const _$PaymentStateLoadingImpl();
 
   @override
   String toString() {
@@ -255,9 +255,10 @@ class _$PaymentStateLoading implements PaymentStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$PaymentStateLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$PaymentStateLoadingImpl);
   }
 
   @override
@@ -353,24 +354,24 @@ class _$PaymentStateLoading implements PaymentStateLoading {
 }
 
 abstract class PaymentStateLoading implements PaymentState {
-  const factory PaymentStateLoading() = _$PaymentStateLoading;
+  const factory PaymentStateLoading() = _$PaymentStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$PaymentStateErrorCopyWith<$Res> {
-  factory _$$PaymentStateErrorCopyWith(
-          _$PaymentStateError value, $Res Function(_$PaymentStateError) then) =
-      __$$PaymentStateErrorCopyWithImpl<$Res>;
+abstract class _$$PaymentStateErrorImplCopyWith<$Res> {
+  factory _$$PaymentStateErrorImplCopyWith(_$PaymentStateErrorImpl value,
+          $Res Function(_$PaymentStateErrorImpl) then) =
+      __$$PaymentStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$PaymentStateErrorCopyWithImpl<$Res>
-    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateError>
-    implements _$$PaymentStateErrorCopyWith<$Res> {
-  __$$PaymentStateErrorCopyWithImpl(
-      _$PaymentStateError _value, $Res Function(_$PaymentStateError) _then)
+class __$$PaymentStateErrorImplCopyWithImpl<$Res>
+    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateErrorImpl>
+    implements _$$PaymentStateErrorImplCopyWith<$Res> {
+  __$$PaymentStateErrorImplCopyWithImpl(_$PaymentStateErrorImpl _value,
+      $Res Function(_$PaymentStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -378,7 +379,7 @@ class __$$PaymentStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$PaymentStateError(
+    return _then(_$PaymentStateErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -389,8 +390,8 @@ class __$$PaymentStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PaymentStateError implements PaymentStateError {
-  const _$PaymentStateError(this.message);
+class _$PaymentStateErrorImpl implements PaymentStateError {
+  const _$PaymentStateErrorImpl(this.message);
 
   @override
   final String message;
@@ -401,10 +402,10 @@ class _$PaymentStateError implements PaymentStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PaymentStateError &&
+            other is _$PaymentStateErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -414,8 +415,9 @@ class _$PaymentStateError implements PaymentStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$PaymentStateErrorCopyWith<_$PaymentStateError> get copyWith =>
-      __$$PaymentStateErrorCopyWithImpl<_$PaymentStateError>(this, _$identity);
+  _$$PaymentStateErrorImplCopyWith<_$PaymentStateErrorImpl> get copyWith =>
+      __$$PaymentStateErrorImplCopyWithImpl<_$PaymentStateErrorImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -507,29 +509,30 @@ class _$PaymentStateError implements PaymentStateError {
 }
 
 abstract class PaymentStateError implements PaymentState {
-  const factory PaymentStateError(final String message) = _$PaymentStateError;
+  const factory PaymentStateError(final String message) =
+      _$PaymentStateErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$PaymentStateErrorCopyWith<_$PaymentStateError> get copyWith =>
+  _$$PaymentStateErrorImplCopyWith<_$PaymentStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PaymentStateSuccessCopyWith<$Res> {
-  factory _$$PaymentStateSuccessCopyWith(_$PaymentStateSuccess value,
-          $Res Function(_$PaymentStateSuccess) then) =
-      __$$PaymentStateSuccessCopyWithImpl<$Res>;
+abstract class _$$PaymentStateSuccessImplCopyWith<$Res> {
+  factory _$$PaymentStateSuccessImplCopyWith(_$PaymentStateSuccessImpl value,
+          $Res Function(_$PaymentStateSuccessImpl) then) =
+      __$$PaymentStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<PaymentMethods> paymentMethods});
 }
 
 /// @nodoc
-class __$$PaymentStateSuccessCopyWithImpl<$Res>
-    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateSuccess>
-    implements _$$PaymentStateSuccessCopyWith<$Res> {
-  __$$PaymentStateSuccessCopyWithImpl(
-      _$PaymentStateSuccess _value, $Res Function(_$PaymentStateSuccess) _then)
+class __$$PaymentStateSuccessImplCopyWithImpl<$Res>
+    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateSuccessImpl>
+    implements _$$PaymentStateSuccessImplCopyWith<$Res> {
+  __$$PaymentStateSuccessImplCopyWithImpl(_$PaymentStateSuccessImpl _value,
+      $Res Function(_$PaymentStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -537,7 +540,7 @@ class __$$PaymentStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? paymentMethods = null,
   }) {
-    return _then(_$PaymentStateSuccess(
+    return _then(_$PaymentStateSuccessImpl(
       null == paymentMethods
           ? _value._paymentMethods
           : paymentMethods // ignore: cast_nullable_to_non_nullable
@@ -548,8 +551,8 @@ class __$$PaymentStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PaymentStateSuccess implements PaymentStateSuccess {
-  const _$PaymentStateSuccess(final List<PaymentMethods> paymentMethods)
+class _$PaymentStateSuccessImpl implements PaymentStateSuccess {
+  const _$PaymentStateSuccessImpl(final List<PaymentMethods> paymentMethods)
       : _paymentMethods = paymentMethods;
 
   final List<PaymentMethods> _paymentMethods;
@@ -566,10 +569,10 @@ class _$PaymentStateSuccess implements PaymentStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PaymentStateSuccess &&
+            other is _$PaymentStateSuccessImpl &&
             const DeepCollectionEquality()
                 .equals(other._paymentMethods, _paymentMethods));
   }
@@ -581,8 +584,8 @@ class _$PaymentStateSuccess implements PaymentStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$PaymentStateSuccessCopyWith<_$PaymentStateSuccess> get copyWith =>
-      __$$PaymentStateSuccessCopyWithImpl<_$PaymentStateSuccess>(
+  _$$PaymentStateSuccessImplCopyWith<_$PaymentStateSuccessImpl> get copyWith =>
+      __$$PaymentStateSuccessImplCopyWithImpl<_$PaymentStateSuccessImpl>(
           this, _$identity);
 
   @override
@@ -676,30 +679,31 @@ class _$PaymentStateSuccess implements PaymentStateSuccess {
 
 abstract class PaymentStateSuccess implements PaymentState {
   const factory PaymentStateSuccess(final List<PaymentMethods> paymentMethods) =
-      _$PaymentStateSuccess;
+      _$PaymentStateSuccessImpl;
 
   List<PaymentMethods> get paymentMethods;
   @JsonKey(ignore: true)
-  _$$PaymentStateSuccessCopyWith<_$PaymentStateSuccess> get copyWith =>
+  _$$PaymentStateSuccessImplCopyWith<_$PaymentStateSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PaymentStateFinancialInstCopyWith<$Res> {
-  factory _$$PaymentStateFinancialInstCopyWith(
-          _$PaymentStateFinancialInst value,
-          $Res Function(_$PaymentStateFinancialInst) then) =
-      __$$PaymentStateFinancialInstCopyWithImpl<$Res>;
+abstract class _$$PaymentStateFinancialInstImplCopyWith<$Res> {
+  factory _$$PaymentStateFinancialInstImplCopyWith(
+          _$PaymentStateFinancialInstImpl value,
+          $Res Function(_$PaymentStateFinancialInstImpl) then) =
+      __$$PaymentStateFinancialInstImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<FinancialInstitution> institutions});
 }
 
 /// @nodoc
-class __$$PaymentStateFinancialInstCopyWithImpl<$Res>
-    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateFinancialInst>
-    implements _$$PaymentStateFinancialInstCopyWith<$Res> {
-  __$$PaymentStateFinancialInstCopyWithImpl(_$PaymentStateFinancialInst _value,
-      $Res Function(_$PaymentStateFinancialInst) _then)
+class __$$PaymentStateFinancialInstImplCopyWithImpl<$Res>
+    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateFinancialInstImpl>
+    implements _$$PaymentStateFinancialInstImplCopyWith<$Res> {
+  __$$PaymentStateFinancialInstImplCopyWithImpl(
+      _$PaymentStateFinancialInstImpl _value,
+      $Res Function(_$PaymentStateFinancialInstImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -707,7 +711,7 @@ class __$$PaymentStateFinancialInstCopyWithImpl<$Res>
   $Res call({
     Object? institutions = null,
   }) {
-    return _then(_$PaymentStateFinancialInst(
+    return _then(_$PaymentStateFinancialInstImpl(
       null == institutions
           ? _value._institutions
           : institutions // ignore: cast_nullable_to_non_nullable
@@ -718,8 +722,8 @@ class __$$PaymentStateFinancialInstCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PaymentStateFinancialInst implements PaymentStateFinancialInst {
-  const _$PaymentStateFinancialInst(
+class _$PaymentStateFinancialInstImpl implements PaymentStateFinancialInst {
+  const _$PaymentStateFinancialInstImpl(
       final List<FinancialInstitution> institutions)
       : _institutions = institutions;
 
@@ -737,10 +741,10 @@ class _$PaymentStateFinancialInst implements PaymentStateFinancialInst {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PaymentStateFinancialInst &&
+            other is _$PaymentStateFinancialInstImpl &&
             const DeepCollectionEquality()
                 .equals(other._institutions, _institutions));
   }
@@ -752,9 +756,9 @@ class _$PaymentStateFinancialInst implements PaymentStateFinancialInst {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$PaymentStateFinancialInstCopyWith<_$PaymentStateFinancialInst>
-      get copyWith => __$$PaymentStateFinancialInstCopyWithImpl<
-          _$PaymentStateFinancialInst>(this, _$identity);
+  _$$PaymentStateFinancialInstImplCopyWith<_$PaymentStateFinancialInstImpl>
+      get copyWith => __$$PaymentStateFinancialInstImplCopyWithImpl<
+          _$PaymentStateFinancialInstImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -848,29 +852,31 @@ class _$PaymentStateFinancialInst implements PaymentStateFinancialInst {
 abstract class PaymentStateFinancialInst implements PaymentState {
   const factory PaymentStateFinancialInst(
           final List<FinancialInstitution> institutions) =
-      _$PaymentStateFinancialInst;
+      _$PaymentStateFinancialInstImpl;
 
   List<FinancialInstitution> get institutions;
   @JsonKey(ignore: true)
-  _$$PaymentStateFinancialInstCopyWith<_$PaymentStateFinancialInst>
+  _$$PaymentStateFinancialInstImplCopyWith<_$PaymentStateFinancialInstImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PaymentStateMarkUpItemsCopyWith<$Res> {
-  factory _$$PaymentStateMarkUpItemsCopyWith(_$PaymentStateMarkUpItems value,
-          $Res Function(_$PaymentStateMarkUpItems) then) =
-      __$$PaymentStateMarkUpItemsCopyWithImpl<$Res>;
+abstract class _$$PaymentStateMarkUpItemsImplCopyWith<$Res> {
+  factory _$$PaymentStateMarkUpItemsImplCopyWith(
+          _$PaymentStateMarkUpItemsImpl value,
+          $Res Function(_$PaymentStateMarkUpItemsImpl) then) =
+      __$$PaymentStateMarkUpItemsImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<MarkUpItem> markUpItems});
 }
 
 /// @nodoc
-class __$$PaymentStateMarkUpItemsCopyWithImpl<$Res>
-    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateMarkUpItems>
-    implements _$$PaymentStateMarkUpItemsCopyWith<$Res> {
-  __$$PaymentStateMarkUpItemsCopyWithImpl(_$PaymentStateMarkUpItems _value,
-      $Res Function(_$PaymentStateMarkUpItems) _then)
+class __$$PaymentStateMarkUpItemsImplCopyWithImpl<$Res>
+    extends _$PaymentStateCopyWithImpl<$Res, _$PaymentStateMarkUpItemsImpl>
+    implements _$$PaymentStateMarkUpItemsImplCopyWith<$Res> {
+  __$$PaymentStateMarkUpItemsImplCopyWithImpl(
+      _$PaymentStateMarkUpItemsImpl _value,
+      $Res Function(_$PaymentStateMarkUpItemsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -878,7 +884,7 @@ class __$$PaymentStateMarkUpItemsCopyWithImpl<$Res>
   $Res call({
     Object? markUpItems = null,
   }) {
-    return _then(_$PaymentStateMarkUpItems(
+    return _then(_$PaymentStateMarkUpItemsImpl(
       null == markUpItems
           ? _value._markUpItems
           : markUpItems // ignore: cast_nullable_to_non_nullable
@@ -889,8 +895,8 @@ class __$$PaymentStateMarkUpItemsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PaymentStateMarkUpItems implements PaymentStateMarkUpItems {
-  const _$PaymentStateMarkUpItems(final List<MarkUpItem> markUpItems)
+class _$PaymentStateMarkUpItemsImpl implements PaymentStateMarkUpItems {
+  const _$PaymentStateMarkUpItemsImpl(final List<MarkUpItem> markUpItems)
       : _markUpItems = markUpItems;
 
   final List<MarkUpItem> _markUpItems;
@@ -907,10 +913,10 @@ class _$PaymentStateMarkUpItems implements PaymentStateMarkUpItems {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PaymentStateMarkUpItems &&
+            other is _$PaymentStateMarkUpItemsImpl &&
             const DeepCollectionEquality()
                 .equals(other._markUpItems, _markUpItems));
   }
@@ -922,9 +928,9 @@ class _$PaymentStateMarkUpItems implements PaymentStateMarkUpItems {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$PaymentStateMarkUpItemsCopyWith<_$PaymentStateMarkUpItems> get copyWith =>
-      __$$PaymentStateMarkUpItemsCopyWithImpl<_$PaymentStateMarkUpItems>(
-          this, _$identity);
+  _$$PaymentStateMarkUpItemsImplCopyWith<_$PaymentStateMarkUpItemsImpl>
+      get copyWith => __$$PaymentStateMarkUpItemsImplCopyWithImpl<
+          _$PaymentStateMarkUpItemsImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1017,10 +1023,10 @@ class _$PaymentStateMarkUpItems implements PaymentStateMarkUpItems {
 
 abstract class PaymentStateMarkUpItems implements PaymentState {
   const factory PaymentStateMarkUpItems(final List<MarkUpItem> markUpItems) =
-      _$PaymentStateMarkUpItems;
+      _$PaymentStateMarkUpItemsImpl;
 
   List<MarkUpItem> get markUpItems;
   @JsonKey(ignore: true)
-  _$$PaymentStateMarkUpItemsCopyWith<_$PaymentStateMarkUpItems> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$PaymentStateMarkUpItemsImplCopyWith<_$PaymentStateMarkUpItemsImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

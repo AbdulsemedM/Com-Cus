@@ -1,7 +1,7 @@
-import 'dart:convert';
+// import 'dart:convert';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:http/http.dart' as http;
-import 'package:html_unescape/html_unescape.dart';
+// import 'package:html_unescape/html_unescape.dart';
 import 'package:translator/translator.dart';
 
 Map<String, String> translatedStrings = {};
@@ -10,7 +10,6 @@ Future<void> translateStrings() async {
   translatedStrings.clear();
   final language = GlobalStrings.getGlobalString(); // Get the selected language
   if (language == 'en') {
-    // If the language is English, use the original strings
     translatedStrings = {
       // 'home': 'Home',
       // 'category': 'Category',
@@ -32,12 +31,10 @@ Future<void> translateStrings() async {
       'forgot_password': 'Forgot Password',
       'create_account': 'Create Account',
       'share_app': 'Share the App',
-      // Add more strings here
     };
     return;
   }
 
-  // If language is not English, proceed with translation
   // final apiKey =
   //     'AIzaSyC2YukgrlGVdc0NZHY6JuRJK3GuIs5U4Ks'; // Replace with your API key
   // final url = 'https://translation.googleapis.com/language/translate/v2';
@@ -61,10 +58,7 @@ Future<void> translateStrings() async {
     'forgot_password': 'Forgot Password',
     'create_account': 'Create Account',
     'share_app': 'Share the App',
-    // Add more strings here
   };
-
-  // final unescape = HtmlUnescape();
 
   await Future.forEach(stringsToTranslate.entries, (entry) async {
     try {
@@ -93,7 +87,6 @@ Future<void> translateStrings() async {
       //   throw Exception('Failed to translate text');
       // }
     } catch (e) {
-      // If translation fails, store the original text
       translatedStrings[entry.key] = entry.value;
       print('Translation failed for ${entry.key}: $e');
     }

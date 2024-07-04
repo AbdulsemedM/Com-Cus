@@ -2,7 +2,7 @@ import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/cities-core/data/dto/country_dto.dart';
 import 'package:commercepal/core/cities-core/presentation/bloc/city_core_state.dart';
-import 'package:commercepal/features/selected_product/presentation/bloc/selected_product_cubit.dart';
+// import 'package:commercepal/features/selected_product/presentation/bloc/selected_product_cubit.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +69,6 @@ class _SelectCountryWidgetState extends State<SelectCountryWidget> {
               ..clear()
               ..addAll(state.countries);
 
-            // set initial value
             final country = _countriesList
                 .where((element) => element.countryCode == widget.initialValue);
             if (country.isNotEmpty) {
@@ -101,7 +100,6 @@ class _SelectCountryWidgetState extends State<SelectCountryWidget> {
                             color: Colors.transparent,
                           ),
                           onChanged: (String? value) {
-                            // This is called when the user selects an item.
                             setState(() {
                               _dropdownValue = value!;
                               widget.selectedCountry.call(_countriesList

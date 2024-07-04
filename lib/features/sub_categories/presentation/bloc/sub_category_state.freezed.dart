@@ -88,25 +88,25 @@ class _$SubCategoryStateCopyWithImpl<$Res, $Val extends SubCategoryState>
 }
 
 /// @nodoc
-abstract class _$$SubCategoryStateInitCopyWith<$Res> {
-  factory _$$SubCategoryStateInitCopyWith(_$SubCategoryStateInit value,
-          $Res Function(_$SubCategoryStateInit) then) =
-      __$$SubCategoryStateInitCopyWithImpl<$Res>;
+abstract class _$$SubCategoryStateInitImplCopyWith<$Res> {
+  factory _$$SubCategoryStateInitImplCopyWith(_$SubCategoryStateInitImpl value,
+          $Res Function(_$SubCategoryStateInitImpl) then) =
+      __$$SubCategoryStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SubCategoryStateInitCopyWithImpl<$Res>
-    extends _$SubCategoryStateCopyWithImpl<$Res, _$SubCategoryStateInit>
-    implements _$$SubCategoryStateInitCopyWith<$Res> {
-  __$$SubCategoryStateInitCopyWithImpl(_$SubCategoryStateInit _value,
-      $Res Function(_$SubCategoryStateInit) _then)
+class __$$SubCategoryStateInitImplCopyWithImpl<$Res>
+    extends _$SubCategoryStateCopyWithImpl<$Res, _$SubCategoryStateInitImpl>
+    implements _$$SubCategoryStateInitImplCopyWith<$Res> {
+  __$$SubCategoryStateInitImplCopyWithImpl(_$SubCategoryStateInitImpl _value,
+      $Res Function(_$SubCategoryStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SubCategoryStateInit implements SubCategoryStateInit {
-  const _$SubCategoryStateInit();
+class _$SubCategoryStateInitImpl implements SubCategoryStateInit {
+  const _$SubCategoryStateInitImpl();
 
   @override
   String toString() {
@@ -114,9 +114,10 @@ class _$SubCategoryStateInit implements SubCategoryStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SubCategoryStateInit);
+        (other.runtimeType == runtimeType &&
+            other is _$SubCategoryStateInitImpl);
   }
 
   @override
@@ -199,24 +200,25 @@ class _$SubCategoryStateInit implements SubCategoryStateInit {
 }
 
 abstract class SubCategoryStateInit implements SubCategoryState {
-  const factory SubCategoryStateInit() = _$SubCategoryStateInit;
+  const factory SubCategoryStateInit() = _$SubCategoryStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$SubCategoryStateErrorCopyWith<$Res> {
-  factory _$$SubCategoryStateErrorCopyWith(_$SubCategoryStateError value,
-          $Res Function(_$SubCategoryStateError) then) =
-      __$$SubCategoryStateErrorCopyWithImpl<$Res>;
+abstract class _$$SubCategoryStateErrorImplCopyWith<$Res> {
+  factory _$$SubCategoryStateErrorImplCopyWith(
+          _$SubCategoryStateErrorImpl value,
+          $Res Function(_$SubCategoryStateErrorImpl) then) =
+      __$$SubCategoryStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String errorMessage});
 }
 
 /// @nodoc
-class __$$SubCategoryStateErrorCopyWithImpl<$Res>
-    extends _$SubCategoryStateCopyWithImpl<$Res, _$SubCategoryStateError>
-    implements _$$SubCategoryStateErrorCopyWith<$Res> {
-  __$$SubCategoryStateErrorCopyWithImpl(_$SubCategoryStateError _value,
-      $Res Function(_$SubCategoryStateError) _then)
+class __$$SubCategoryStateErrorImplCopyWithImpl<$Res>
+    extends _$SubCategoryStateCopyWithImpl<$Res, _$SubCategoryStateErrorImpl>
+    implements _$$SubCategoryStateErrorImplCopyWith<$Res> {
+  __$$SubCategoryStateErrorImplCopyWithImpl(_$SubCategoryStateErrorImpl _value,
+      $Res Function(_$SubCategoryStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -224,7 +226,7 @@ class __$$SubCategoryStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? errorMessage = null,
   }) {
-    return _then(_$SubCategoryStateError(
+    return _then(_$SubCategoryStateErrorImpl(
       null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -235,8 +237,8 @@ class __$$SubCategoryStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SubCategoryStateError implements SubCategoryStateError {
-  const _$SubCategoryStateError(this.errorMessage);
+class _$SubCategoryStateErrorImpl implements SubCategoryStateError {
+  const _$SubCategoryStateErrorImpl(this.errorMessage);
 
   @override
   final String errorMessage;
@@ -247,10 +249,10 @@ class _$SubCategoryStateError implements SubCategoryStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SubCategoryStateError &&
+            other is _$SubCategoryStateErrorImpl &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
@@ -261,9 +263,9 @@ class _$SubCategoryStateError implements SubCategoryStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SubCategoryStateErrorCopyWith<_$SubCategoryStateError> get copyWith =>
-      __$$SubCategoryStateErrorCopyWithImpl<_$SubCategoryStateError>(
-          this, _$identity);
+  _$$SubCategoryStateErrorImplCopyWith<_$SubCategoryStateErrorImpl>
+      get copyWith => __$$SubCategoryStateErrorImplCopyWithImpl<
+          _$SubCategoryStateErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -343,34 +345,36 @@ class _$SubCategoryStateError implements SubCategoryStateError {
 
 abstract class SubCategoryStateError implements SubCategoryState {
   const factory SubCategoryStateError(final String errorMessage) =
-      _$SubCategoryStateError;
+      _$SubCategoryStateErrorImpl;
 
   String get errorMessage;
   @JsonKey(ignore: true)
-  _$$SubCategoryStateErrorCopyWith<_$SubCategoryStateError> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$SubCategoryStateErrorImplCopyWith<_$SubCategoryStateErrorImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SubCategoryStateLoadingCopyWith<$Res> {
-  factory _$$SubCategoryStateLoadingCopyWith(_$SubCategoryStateLoading value,
-          $Res Function(_$SubCategoryStateLoading) then) =
-      __$$SubCategoryStateLoadingCopyWithImpl<$Res>;
+abstract class _$$SubCategoryStateLoadingImplCopyWith<$Res> {
+  factory _$$SubCategoryStateLoadingImplCopyWith(
+          _$SubCategoryStateLoadingImpl value,
+          $Res Function(_$SubCategoryStateLoadingImpl) then) =
+      __$$SubCategoryStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SubCategoryStateLoadingCopyWithImpl<$Res>
-    extends _$SubCategoryStateCopyWithImpl<$Res, _$SubCategoryStateLoading>
-    implements _$$SubCategoryStateLoadingCopyWith<$Res> {
-  __$$SubCategoryStateLoadingCopyWithImpl(_$SubCategoryStateLoading _value,
-      $Res Function(_$SubCategoryStateLoading) _then)
+class __$$SubCategoryStateLoadingImplCopyWithImpl<$Res>
+    extends _$SubCategoryStateCopyWithImpl<$Res, _$SubCategoryStateLoadingImpl>
+    implements _$$SubCategoryStateLoadingImplCopyWith<$Res> {
+  __$$SubCategoryStateLoadingImplCopyWithImpl(
+      _$SubCategoryStateLoadingImpl _value,
+      $Res Function(_$SubCategoryStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SubCategoryStateLoading implements SubCategoryStateLoading {
-  const _$SubCategoryStateLoading();
+class _$SubCategoryStateLoadingImpl implements SubCategoryStateLoading {
+  const _$SubCategoryStateLoadingImpl();
 
   @override
   String toString() {
@@ -378,10 +382,10 @@ class _$SubCategoryStateLoading implements SubCategoryStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SubCategoryStateLoading);
+            other is _$SubCategoryStateLoadingImpl);
   }
 
   @override
@@ -464,27 +468,27 @@ class _$SubCategoryStateLoading implements SubCategoryStateLoading {
 }
 
 abstract class SubCategoryStateLoading implements SubCategoryState {
-  const factory SubCategoryStateLoading() = _$SubCategoryStateLoading;
+  const factory SubCategoryStateLoading() = _$SubCategoryStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$SubCategoryStateSubCategoriesCopyWith<$Res> {
-  factory _$$SubCategoryStateSubCategoriesCopyWith(
-          _$SubCategoryStateSubCategories value,
-          $Res Function(_$SubCategoryStateSubCategories) then) =
-      __$$SubCategoryStateSubCategoriesCopyWithImpl<$Res>;
+abstract class _$$SubCategoryStateSubCategoriesImplCopyWith<$Res> {
+  factory _$$SubCategoryStateSubCategoriesImplCopyWith(
+          _$SubCategoryStateSubCategoriesImpl value,
+          $Res Function(_$SubCategoryStateSubCategoriesImpl) then) =
+      __$$SubCategoryStateSubCategoriesImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<SubCategory> subCategories});
 }
 
 /// @nodoc
-class __$$SubCategoryStateSubCategoriesCopyWithImpl<$Res>
+class __$$SubCategoryStateSubCategoriesImplCopyWithImpl<$Res>
     extends _$SubCategoryStateCopyWithImpl<$Res,
-        _$SubCategoryStateSubCategories>
-    implements _$$SubCategoryStateSubCategoriesCopyWith<$Res> {
-  __$$SubCategoryStateSubCategoriesCopyWithImpl(
-      _$SubCategoryStateSubCategories _value,
-      $Res Function(_$SubCategoryStateSubCategories) _then)
+        _$SubCategoryStateSubCategoriesImpl>
+    implements _$$SubCategoryStateSubCategoriesImplCopyWith<$Res> {
+  __$$SubCategoryStateSubCategoriesImplCopyWithImpl(
+      _$SubCategoryStateSubCategoriesImpl _value,
+      $Res Function(_$SubCategoryStateSubCategoriesImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -492,7 +496,7 @@ class __$$SubCategoryStateSubCategoriesCopyWithImpl<$Res>
   $Res call({
     Object? subCategories = null,
   }) {
-    return _then(_$SubCategoryStateSubCategories(
+    return _then(_$SubCategoryStateSubCategoriesImpl(
       null == subCategories
           ? _value._subCategories
           : subCategories // ignore: cast_nullable_to_non_nullable
@@ -503,8 +507,10 @@ class __$$SubCategoryStateSubCategoriesCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SubCategoryStateSubCategories implements SubCategoryStateSubCategories {
-  const _$SubCategoryStateSubCategories(final List<SubCategory> subCategories)
+class _$SubCategoryStateSubCategoriesImpl
+    implements SubCategoryStateSubCategories {
+  const _$SubCategoryStateSubCategoriesImpl(
+      final List<SubCategory> subCategories)
       : _subCategories = subCategories;
 
   final List<SubCategory> _subCategories;
@@ -521,10 +527,10 @@ class _$SubCategoryStateSubCategories implements SubCategoryStateSubCategories {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SubCategoryStateSubCategories &&
+            other is _$SubCategoryStateSubCategoriesImpl &&
             const DeepCollectionEquality()
                 .equals(other._subCategories, _subCategories));
   }
@@ -536,9 +542,10 @@ class _$SubCategoryStateSubCategories implements SubCategoryStateSubCategories {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SubCategoryStateSubCategoriesCopyWith<_$SubCategoryStateSubCategories>
-      get copyWith => __$$SubCategoryStateSubCategoriesCopyWithImpl<
-          _$SubCategoryStateSubCategories>(this, _$identity);
+  _$$SubCategoryStateSubCategoriesImplCopyWith<
+          _$SubCategoryStateSubCategoriesImpl>
+      get copyWith => __$$SubCategoryStateSubCategoriesImplCopyWithImpl<
+          _$SubCategoryStateSubCategoriesImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -618,10 +625,12 @@ class _$SubCategoryStateSubCategories implements SubCategoryStateSubCategories {
 
 abstract class SubCategoryStateSubCategories implements SubCategoryState {
   const factory SubCategoryStateSubCategories(
-      final List<SubCategory> subCategories) = _$SubCategoryStateSubCategories;
+          final List<SubCategory> subCategories) =
+      _$SubCategoryStateSubCategoriesImpl;
 
   List<SubCategory> get subCategories;
   @JsonKey(ignore: true)
-  _$$SubCategoryStateSubCategoriesCopyWith<_$SubCategoryStateSubCategories>
+  _$$SubCategoryStateSubCategoriesImplCopyWith<
+          _$SubCategoryStateSubCategoriesImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

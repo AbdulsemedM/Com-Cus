@@ -6,6 +6,8 @@ class LoginDto {
     this.statusMessage,
     this.statusCode,
     this.refreshToken,
+    this.isPhoneProvided,
+    this.isEmailProvided,
   });
 
   LoginDto.fromJson(dynamic json) {
@@ -15,6 +17,8 @@ class LoginDto {
     statusMessage = json['statusMessage'];
     statusCode = json['statusCode'];
     refreshToken = json['refreshToken'];
+    isPhoneProvided = json['isPhoneProvided'];
+    isEmailProvided = json['isEmailProvided'];
   }
 
   String? userToken;
@@ -23,6 +27,8 @@ class LoginDto {
   String? statusMessage;
   String? statusCode;
   String? refreshToken;
+  int? isPhoneProvided;
+  int? isEmailProvided;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -32,6 +38,8 @@ class LoginDto {
     map['statusMessage'] = statusMessage;
     map['statusCode'] = statusCode;
     map['refreshToken'] = refreshToken;
+    map['isPhoneProvided'] = isPhoneProvided;
+    map['isEmailProvided'] = isEmailProvided;
     return map;
   }
 }
