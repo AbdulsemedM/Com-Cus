@@ -105,25 +105,25 @@ class _$OtpPaymentStateCopyWithImpl<$Res, $Val extends OtpPaymentState>
 }
 
 /// @nodoc
-abstract class _$$OtpPaymentStateInitCopyWith<$Res> {
-  factory _$$OtpPaymentStateInitCopyWith(_$OtpPaymentStateInit value,
-          $Res Function(_$OtpPaymentStateInit) then) =
-      __$$OtpPaymentStateInitCopyWithImpl<$Res>;
+abstract class _$$OtpPaymentStateInitImplCopyWith<$Res> {
+  factory _$$OtpPaymentStateInitImplCopyWith(_$OtpPaymentStateInitImpl value,
+          $Res Function(_$OtpPaymentStateInitImpl) then) =
+      __$$OtpPaymentStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OtpPaymentStateInitCopyWithImpl<$Res>
-    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateInit>
-    implements _$$OtpPaymentStateInitCopyWith<$Res> {
-  __$$OtpPaymentStateInitCopyWithImpl(
-      _$OtpPaymentStateInit _value, $Res Function(_$OtpPaymentStateInit) _then)
+class __$$OtpPaymentStateInitImplCopyWithImpl<$Res>
+    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateInitImpl>
+    implements _$$OtpPaymentStateInitImplCopyWith<$Res> {
+  __$$OtpPaymentStateInitImplCopyWithImpl(_$OtpPaymentStateInitImpl _value,
+      $Res Function(_$OtpPaymentStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OtpPaymentStateInit implements OtpPaymentStateInit {
-  const _$OtpPaymentStateInit();
+class _$OtpPaymentStateInitImpl implements OtpPaymentStateInit {
+  const _$OtpPaymentStateInitImpl();
 
   @override
   String toString() {
@@ -131,9 +131,10 @@ class _$OtpPaymentStateInit implements OtpPaymentStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$OtpPaymentStateInit);
+        (other.runtimeType == runtimeType &&
+            other is _$OtpPaymentStateInitImpl);
   }
 
   @override
@@ -233,29 +234,31 @@ class _$OtpPaymentStateInit implements OtpPaymentStateInit {
 }
 
 abstract class OtpPaymentStateInit implements OtpPaymentState {
-  const factory OtpPaymentStateInit() = _$OtpPaymentStateInit;
+  const factory OtpPaymentStateInit() = _$OtpPaymentStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$OtpPaymentStateLoadingCopyWith<$Res> {
-  factory _$$OtpPaymentStateLoadingCopyWith(_$OtpPaymentStateLoading value,
-          $Res Function(_$OtpPaymentStateLoading) then) =
-      __$$OtpPaymentStateLoadingCopyWithImpl<$Res>;
+abstract class _$$OtpPaymentStateLoadingImplCopyWith<$Res> {
+  factory _$$OtpPaymentStateLoadingImplCopyWith(
+          _$OtpPaymentStateLoadingImpl value,
+          $Res Function(_$OtpPaymentStateLoadingImpl) then) =
+      __$$OtpPaymentStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OtpPaymentStateLoadingCopyWithImpl<$Res>
-    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateLoading>
-    implements _$$OtpPaymentStateLoadingCopyWith<$Res> {
-  __$$OtpPaymentStateLoadingCopyWithImpl(_$OtpPaymentStateLoading _value,
-      $Res Function(_$OtpPaymentStateLoading) _then)
+class __$$OtpPaymentStateLoadingImplCopyWithImpl<$Res>
+    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateLoadingImpl>
+    implements _$$OtpPaymentStateLoadingImplCopyWith<$Res> {
+  __$$OtpPaymentStateLoadingImplCopyWithImpl(
+      _$OtpPaymentStateLoadingImpl _value,
+      $Res Function(_$OtpPaymentStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OtpPaymentStateLoading implements OtpPaymentStateLoading {
-  const _$OtpPaymentStateLoading();
+class _$OtpPaymentStateLoadingImpl implements OtpPaymentStateLoading {
+  const _$OtpPaymentStateLoadingImpl();
 
   @override
   String toString() {
@@ -263,9 +266,10 @@ class _$OtpPaymentStateLoading implements OtpPaymentStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$OtpPaymentStateLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$OtpPaymentStateLoadingImpl);
   }
 
   @override
@@ -365,24 +369,24 @@ class _$OtpPaymentStateLoading implements OtpPaymentStateLoading {
 }
 
 abstract class OtpPaymentStateLoading implements OtpPaymentState {
-  const factory OtpPaymentStateLoading() = _$OtpPaymentStateLoading;
+  const factory OtpPaymentStateLoading() = _$OtpPaymentStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$OtpPaymentStateErrorCopyWith<$Res> {
-  factory _$$OtpPaymentStateErrorCopyWith(_$OtpPaymentStateError value,
-          $Res Function(_$OtpPaymentStateError) then) =
-      __$$OtpPaymentStateErrorCopyWithImpl<$Res>;
+abstract class _$$OtpPaymentStateErrorImplCopyWith<$Res> {
+  factory _$$OtpPaymentStateErrorImplCopyWith(_$OtpPaymentStateErrorImpl value,
+          $Res Function(_$OtpPaymentStateErrorImpl) then) =
+      __$$OtpPaymentStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$OtpPaymentStateErrorCopyWithImpl<$Res>
-    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateError>
-    implements _$$OtpPaymentStateErrorCopyWith<$Res> {
-  __$$OtpPaymentStateErrorCopyWithImpl(_$OtpPaymentStateError _value,
-      $Res Function(_$OtpPaymentStateError) _then)
+class __$$OtpPaymentStateErrorImplCopyWithImpl<$Res>
+    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateErrorImpl>
+    implements _$$OtpPaymentStateErrorImplCopyWith<$Res> {
+  __$$OtpPaymentStateErrorImplCopyWithImpl(_$OtpPaymentStateErrorImpl _value,
+      $Res Function(_$OtpPaymentStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -390,7 +394,7 @@ class __$$OtpPaymentStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$OtpPaymentStateError(
+    return _then(_$OtpPaymentStateErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -401,8 +405,8 @@ class __$$OtpPaymentStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OtpPaymentStateError implements OtpPaymentStateError {
-  const _$OtpPaymentStateError(this.message);
+class _$OtpPaymentStateErrorImpl implements OtpPaymentStateError {
+  const _$OtpPaymentStateErrorImpl(this.message);
 
   @override
   final String message;
@@ -413,10 +417,10 @@ class _$OtpPaymentStateError implements OtpPaymentStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OtpPaymentStateError &&
+            other is _$OtpPaymentStateErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -426,9 +430,10 @@ class _$OtpPaymentStateError implements OtpPaymentStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OtpPaymentStateErrorCopyWith<_$OtpPaymentStateError> get copyWith =>
-      __$$OtpPaymentStateErrorCopyWithImpl<_$OtpPaymentStateError>(
-          this, _$identity);
+  _$$OtpPaymentStateErrorImplCopyWith<_$OtpPaymentStateErrorImpl>
+      get copyWith =>
+          __$$OtpPaymentStateErrorImplCopyWithImpl<_$OtpPaymentStateErrorImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -525,31 +530,32 @@ class _$OtpPaymentStateError implements OtpPaymentStateError {
 
 abstract class OtpPaymentStateError implements OtpPaymentState {
   const factory OtpPaymentStateError(final String message) =
-      _$OtpPaymentStateError;
+      _$OtpPaymentStateErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$OtpPaymentStateErrorCopyWith<_$OtpPaymentStateError> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$OtpPaymentStateErrorImplCopyWith<_$OtpPaymentStateErrorImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$OtpPaymentStateConfirmationCopyWith<$Res> {
-  factory _$$OtpPaymentStateConfirmationCopyWith(
-          _$OtpPaymentStateConfirmation value,
-          $Res Function(_$OtpPaymentStateConfirmation) then) =
-      __$$OtpPaymentStateConfirmationCopyWithImpl<$Res>;
+abstract class _$$OtpPaymentStateConfirmationImplCopyWith<$Res> {
+  factory _$$OtpPaymentStateConfirmationImplCopyWith(
+          _$OtpPaymentStateConfirmationImpl value,
+          $Res Function(_$OtpPaymentStateConfirmationImpl) then) =
+      __$$OtpPaymentStateConfirmationImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String name});
 }
 
 /// @nodoc
-class __$$OtpPaymentStateConfirmationCopyWithImpl<$Res>
-    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateConfirmation>
-    implements _$$OtpPaymentStateConfirmationCopyWith<$Res> {
-  __$$OtpPaymentStateConfirmationCopyWithImpl(
-      _$OtpPaymentStateConfirmation _value,
-      $Res Function(_$OtpPaymentStateConfirmation) _then)
+class __$$OtpPaymentStateConfirmationImplCopyWithImpl<$Res>
+    extends _$OtpPaymentStateCopyWithImpl<$Res,
+        _$OtpPaymentStateConfirmationImpl>
+    implements _$$OtpPaymentStateConfirmationImplCopyWith<$Res> {
+  __$$OtpPaymentStateConfirmationImplCopyWithImpl(
+      _$OtpPaymentStateConfirmationImpl _value,
+      $Res Function(_$OtpPaymentStateConfirmationImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -557,7 +563,7 @@ class __$$OtpPaymentStateConfirmationCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
   }) {
-    return _then(_$OtpPaymentStateConfirmation(
+    return _then(_$OtpPaymentStateConfirmationImpl(
       null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -568,8 +574,8 @@ class __$$OtpPaymentStateConfirmationCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OtpPaymentStateConfirmation implements OtpPaymentStateConfirmation {
-  const _$OtpPaymentStateConfirmation(this.name);
+class _$OtpPaymentStateConfirmationImpl implements OtpPaymentStateConfirmation {
+  const _$OtpPaymentStateConfirmationImpl(this.name);
 
   @override
   final String name;
@@ -580,10 +586,10 @@ class _$OtpPaymentStateConfirmation implements OtpPaymentStateConfirmation {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OtpPaymentStateConfirmation &&
+            other is _$OtpPaymentStateConfirmationImpl &&
             (identical(other.name, name) || other.name == name));
   }
 
@@ -593,9 +599,9 @@ class _$OtpPaymentStateConfirmation implements OtpPaymentStateConfirmation {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OtpPaymentStateConfirmationCopyWith<_$OtpPaymentStateConfirmation>
-      get copyWith => __$$OtpPaymentStateConfirmationCopyWithImpl<
-          _$OtpPaymentStateConfirmation>(this, _$identity);
+  _$$OtpPaymentStateConfirmationImplCopyWith<_$OtpPaymentStateConfirmationImpl>
+      get copyWith => __$$OtpPaymentStateConfirmationImplCopyWithImpl<
+          _$OtpPaymentStateConfirmationImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -692,29 +698,31 @@ class _$OtpPaymentStateConfirmation implements OtpPaymentStateConfirmation {
 
 abstract class OtpPaymentStateConfirmation implements OtpPaymentState {
   const factory OtpPaymentStateConfirmation(final String name) =
-      _$OtpPaymentStateConfirmation;
+      _$OtpPaymentStateConfirmationImpl;
 
   String get name;
   @JsonKey(ignore: true)
-  _$$OtpPaymentStateConfirmationCopyWith<_$OtpPaymentStateConfirmation>
+  _$$OtpPaymentStateConfirmationImplCopyWith<_$OtpPaymentStateConfirmationImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$OtpPaymentStateRedirectCopyWith<$Res> {
-  factory _$$OtpPaymentStateRedirectCopyWith(_$OtpPaymentStateRedirect value,
-          $Res Function(_$OtpPaymentStateRedirect) then) =
-      __$$OtpPaymentStateRedirectCopyWithImpl<$Res>;
+abstract class _$$OtpPaymentStateRedirectImplCopyWith<$Res> {
+  factory _$$OtpPaymentStateRedirectImplCopyWith(
+          _$OtpPaymentStateRedirectImpl value,
+          $Res Function(_$OtpPaymentStateRedirectImpl) then) =
+      __$$OtpPaymentStateRedirectImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? phone});
 }
 
 /// @nodoc
-class __$$OtpPaymentStateRedirectCopyWithImpl<$Res>
-    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateRedirect>
-    implements _$$OtpPaymentStateRedirectCopyWith<$Res> {
-  __$$OtpPaymentStateRedirectCopyWithImpl(_$OtpPaymentStateRedirect _value,
-      $Res Function(_$OtpPaymentStateRedirect) _then)
+class __$$OtpPaymentStateRedirectImplCopyWithImpl<$Res>
+    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateRedirectImpl>
+    implements _$$OtpPaymentStateRedirectImplCopyWith<$Res> {
+  __$$OtpPaymentStateRedirectImplCopyWithImpl(
+      _$OtpPaymentStateRedirectImpl _value,
+      $Res Function(_$OtpPaymentStateRedirectImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -722,7 +730,7 @@ class __$$OtpPaymentStateRedirectCopyWithImpl<$Res>
   $Res call({
     Object? phone = freezed,
   }) {
-    return _then(_$OtpPaymentStateRedirect(
+    return _then(_$OtpPaymentStateRedirectImpl(
       freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
@@ -733,8 +741,8 @@ class __$$OtpPaymentStateRedirectCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OtpPaymentStateRedirect implements OtpPaymentStateRedirect {
-  const _$OtpPaymentStateRedirect(this.phone);
+class _$OtpPaymentStateRedirectImpl implements OtpPaymentStateRedirect {
+  const _$OtpPaymentStateRedirectImpl(this.phone);
 
   @override
   final String? phone;
@@ -745,10 +753,10 @@ class _$OtpPaymentStateRedirect implements OtpPaymentStateRedirect {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OtpPaymentStateRedirect &&
+            other is _$OtpPaymentStateRedirectImpl &&
             (identical(other.phone, phone) || other.phone == phone));
   }
 
@@ -758,9 +766,9 @@ class _$OtpPaymentStateRedirect implements OtpPaymentStateRedirect {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OtpPaymentStateRedirectCopyWith<_$OtpPaymentStateRedirect> get copyWith =>
-      __$$OtpPaymentStateRedirectCopyWithImpl<_$OtpPaymentStateRedirect>(
-          this, _$identity);
+  _$$OtpPaymentStateRedirectImplCopyWith<_$OtpPaymentStateRedirectImpl>
+      get copyWith => __$$OtpPaymentStateRedirectImplCopyWithImpl<
+          _$OtpPaymentStateRedirectImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -857,34 +865,34 @@ class _$OtpPaymentStateRedirect implements OtpPaymentStateRedirect {
 
 abstract class OtpPaymentStateRedirect implements OtpPaymentState {
   const factory OtpPaymentStateRedirect(final String? phone) =
-      _$OtpPaymentStateRedirect;
+      _$OtpPaymentStateRedirectImpl;
 
   String? get phone;
   @JsonKey(ignore: true)
-  _$$OtpPaymentStateRedirectCopyWith<_$OtpPaymentStateRedirect> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$OtpPaymentStateRedirectImplCopyWith<_$OtpPaymentStateRedirectImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$OtpPaymentStateOtpCopyWith<$Res> {
-  factory _$$OtpPaymentStateOtpCopyWith(_$OtpPaymentStateOtp value,
-          $Res Function(_$OtpPaymentStateOtp) then) =
-      __$$OtpPaymentStateOtpCopyWithImpl<$Res>;
+abstract class _$$OtpPaymentStateOtpImplCopyWith<$Res> {
+  factory _$$OtpPaymentStateOtpImplCopyWith(_$OtpPaymentStateOtpImpl value,
+          $Res Function(_$OtpPaymentStateOtpImpl) then) =
+      __$$OtpPaymentStateOtpImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$OtpPaymentStateOtpCopyWithImpl<$Res>
-    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateOtp>
-    implements _$$OtpPaymentStateOtpCopyWith<$Res> {
-  __$$OtpPaymentStateOtpCopyWithImpl(
-      _$OtpPaymentStateOtp _value, $Res Function(_$OtpPaymentStateOtp) _then)
+class __$$OtpPaymentStateOtpImplCopyWithImpl<$Res>
+    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateOtpImpl>
+    implements _$$OtpPaymentStateOtpImplCopyWith<$Res> {
+  __$$OtpPaymentStateOtpImplCopyWithImpl(_$OtpPaymentStateOtpImpl _value,
+      $Res Function(_$OtpPaymentStateOtpImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$OtpPaymentStateOtp implements OtpPaymentStateOtp {
-  const _$OtpPaymentStateOtp();
+class _$OtpPaymentStateOtpImpl implements OtpPaymentStateOtp {
+  const _$OtpPaymentStateOtpImpl();
 
   @override
   String toString() {
@@ -892,9 +900,9 @@ class _$OtpPaymentStateOtp implements OtpPaymentStateOtp {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$OtpPaymentStateOtp);
+        (other.runtimeType == runtimeType && other is _$OtpPaymentStateOtpImpl);
   }
 
   @override
@@ -994,24 +1002,26 @@ class _$OtpPaymentStateOtp implements OtpPaymentStateOtp {
 }
 
 abstract class OtpPaymentStateOtp implements OtpPaymentState {
-  const factory OtpPaymentStateOtp() = _$OtpPaymentStateOtp;
+  const factory OtpPaymentStateOtp() = _$OtpPaymentStateOtpImpl;
 }
 
 /// @nodoc
-abstract class _$$OtpPaymentStateSuccessCopyWith<$Res> {
-  factory _$$OtpPaymentStateSuccessCopyWith(_$OtpPaymentStateSuccess value,
-          $Res Function(_$OtpPaymentStateSuccess) then) =
-      __$$OtpPaymentStateSuccessCopyWithImpl<$Res>;
+abstract class _$$OtpPaymentStateSuccessImplCopyWith<$Res> {
+  factory _$$OtpPaymentStateSuccessImplCopyWith(
+          _$OtpPaymentStateSuccessImpl value,
+          $Res Function(_$OtpPaymentStateSuccessImpl) then) =
+      __$$OtpPaymentStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$OtpPaymentStateSuccessCopyWithImpl<$Res>
-    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateSuccess>
-    implements _$$OtpPaymentStateSuccessCopyWith<$Res> {
-  __$$OtpPaymentStateSuccessCopyWithImpl(_$OtpPaymentStateSuccess _value,
-      $Res Function(_$OtpPaymentStateSuccess) _then)
+class __$$OtpPaymentStateSuccessImplCopyWithImpl<$Res>
+    extends _$OtpPaymentStateCopyWithImpl<$Res, _$OtpPaymentStateSuccessImpl>
+    implements _$$OtpPaymentStateSuccessImplCopyWith<$Res> {
+  __$$OtpPaymentStateSuccessImplCopyWithImpl(
+      _$OtpPaymentStateSuccessImpl _value,
+      $Res Function(_$OtpPaymentStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1019,7 +1029,7 @@ class __$$OtpPaymentStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$OtpPaymentStateSuccess(
+    return _then(_$OtpPaymentStateSuccessImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -1030,8 +1040,8 @@ class __$$OtpPaymentStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OtpPaymentStateSuccess implements OtpPaymentStateSuccess {
-  const _$OtpPaymentStateSuccess(this.message);
+class _$OtpPaymentStateSuccessImpl implements OtpPaymentStateSuccess {
+  const _$OtpPaymentStateSuccessImpl(this.message);
 
   @override
   final String message;
@@ -1042,10 +1052,10 @@ class _$OtpPaymentStateSuccess implements OtpPaymentStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OtpPaymentStateSuccess &&
+            other is _$OtpPaymentStateSuccessImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -1055,9 +1065,9 @@ class _$OtpPaymentStateSuccess implements OtpPaymentStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OtpPaymentStateSuccessCopyWith<_$OtpPaymentStateSuccess> get copyWith =>
-      __$$OtpPaymentStateSuccessCopyWithImpl<_$OtpPaymentStateSuccess>(
-          this, _$identity);
+  _$$OtpPaymentStateSuccessImplCopyWith<_$OtpPaymentStateSuccessImpl>
+      get copyWith => __$$OtpPaymentStateSuccessImplCopyWithImpl<
+          _$OtpPaymentStateSuccessImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1154,10 +1164,10 @@ class _$OtpPaymentStateSuccess implements OtpPaymentStateSuccess {
 
 abstract class OtpPaymentStateSuccess implements OtpPaymentState {
   const factory OtpPaymentStateSuccess(final String message) =
-      _$OtpPaymentStateSuccess;
+      _$OtpPaymentStateSuccessImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$OtpPaymentStateSuccessCopyWith<_$OtpPaymentStateSuccess> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$OtpPaymentStateSuccessImplCopyWith<_$OtpPaymentStateSuccessImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

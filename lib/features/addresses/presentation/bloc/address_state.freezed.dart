@@ -93,25 +93,25 @@ class _$AddressStateCopyWithImpl<$Res, $Val extends AddressState>
 }
 
 /// @nodoc
-abstract class _$$AddressStateInitCopyWith<$Res> {
-  factory _$$AddressStateInitCopyWith(
-          _$AddressStateInit value, $Res Function(_$AddressStateInit) then) =
-      __$$AddressStateInitCopyWithImpl<$Res>;
+abstract class _$$AddressStateInitImplCopyWith<$Res> {
+  factory _$$AddressStateInitImplCopyWith(_$AddressStateInitImpl value,
+          $Res Function(_$AddressStateInitImpl) then) =
+      __$$AddressStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AddressStateInitCopyWithImpl<$Res>
-    extends _$AddressStateCopyWithImpl<$Res, _$AddressStateInit>
-    implements _$$AddressStateInitCopyWith<$Res> {
-  __$$AddressStateInitCopyWithImpl(
-      _$AddressStateInit _value, $Res Function(_$AddressStateInit) _then)
+class __$$AddressStateInitImplCopyWithImpl<$Res>
+    extends _$AddressStateCopyWithImpl<$Res, _$AddressStateInitImpl>
+    implements _$$AddressStateInitImplCopyWith<$Res> {
+  __$$AddressStateInitImplCopyWithImpl(_$AddressStateInitImpl _value,
+      $Res Function(_$AddressStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AddressStateInit implements AddressStateInit {
-  const _$AddressStateInit();
+class _$AddressStateInitImpl implements AddressStateInit {
+  const _$AddressStateInitImpl();
 
   @override
   String toString() {
@@ -119,9 +119,9 @@ class _$AddressStateInit implements AddressStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AddressStateInit);
+        (other.runtimeType == runtimeType && other is _$AddressStateInitImpl);
   }
 
   @override
@@ -209,29 +209,29 @@ class _$AddressStateInit implements AddressStateInit {
 }
 
 abstract class AddressStateInit implements AddressState {
-  const factory AddressStateInit() = _$AddressStateInit;
+  const factory AddressStateInit() = _$AddressStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$AddressStateLoadingCopyWith<$Res> {
-  factory _$$AddressStateLoadingCopyWith(_$AddressStateLoading value,
-          $Res Function(_$AddressStateLoading) then) =
-      __$$AddressStateLoadingCopyWithImpl<$Res>;
+abstract class _$$AddressStateLoadingImplCopyWith<$Res> {
+  factory _$$AddressStateLoadingImplCopyWith(_$AddressStateLoadingImpl value,
+          $Res Function(_$AddressStateLoadingImpl) then) =
+      __$$AddressStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AddressStateLoadingCopyWithImpl<$Res>
-    extends _$AddressStateCopyWithImpl<$Res, _$AddressStateLoading>
-    implements _$$AddressStateLoadingCopyWith<$Res> {
-  __$$AddressStateLoadingCopyWithImpl(
-      _$AddressStateLoading _value, $Res Function(_$AddressStateLoading) _then)
+class __$$AddressStateLoadingImplCopyWithImpl<$Res>
+    extends _$AddressStateCopyWithImpl<$Res, _$AddressStateLoadingImpl>
+    implements _$$AddressStateLoadingImplCopyWith<$Res> {
+  __$$AddressStateLoadingImplCopyWithImpl(_$AddressStateLoadingImpl _value,
+      $Res Function(_$AddressStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AddressStateLoading implements AddressStateLoading {
-  const _$AddressStateLoading();
+class _$AddressStateLoadingImpl implements AddressStateLoading {
+  const _$AddressStateLoadingImpl();
 
   @override
   String toString() {
@@ -239,9 +239,10 @@ class _$AddressStateLoading implements AddressStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AddressStateLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$AddressStateLoadingImpl);
   }
 
   @override
@@ -329,24 +330,24 @@ class _$AddressStateLoading implements AddressStateLoading {
 }
 
 abstract class AddressStateLoading implements AddressState {
-  const factory AddressStateLoading() = _$AddressStateLoading;
+  const factory AddressStateLoading() = _$AddressStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$AddressStateErrorCopyWith<$Res> {
-  factory _$$AddressStateErrorCopyWith(
-          _$AddressStateError value, $Res Function(_$AddressStateError) then) =
-      __$$AddressStateErrorCopyWithImpl<$Res>;
+abstract class _$$AddressStateErrorImplCopyWith<$Res> {
+  factory _$$AddressStateErrorImplCopyWith(_$AddressStateErrorImpl value,
+          $Res Function(_$AddressStateErrorImpl) then) =
+      __$$AddressStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$AddressStateErrorCopyWithImpl<$Res>
-    extends _$AddressStateCopyWithImpl<$Res, _$AddressStateError>
-    implements _$$AddressStateErrorCopyWith<$Res> {
-  __$$AddressStateErrorCopyWithImpl(
-      _$AddressStateError _value, $Res Function(_$AddressStateError) _then)
+class __$$AddressStateErrorImplCopyWithImpl<$Res>
+    extends _$AddressStateCopyWithImpl<$Res, _$AddressStateErrorImpl>
+    implements _$$AddressStateErrorImplCopyWith<$Res> {
+  __$$AddressStateErrorImplCopyWithImpl(_$AddressStateErrorImpl _value,
+      $Res Function(_$AddressStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -354,7 +355,7 @@ class __$$AddressStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$AddressStateError(
+    return _then(_$AddressStateErrorImpl(
       null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -365,8 +366,8 @@ class __$$AddressStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddressStateError implements AddressStateError {
-  const _$AddressStateError(this.error);
+class _$AddressStateErrorImpl implements AddressStateError {
+  const _$AddressStateErrorImpl(this.error);
 
   @override
   final String error;
@@ -377,10 +378,10 @@ class _$AddressStateError implements AddressStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddressStateError &&
+            other is _$AddressStateErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -390,8 +391,9 @@ class _$AddressStateError implements AddressStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddressStateErrorCopyWith<_$AddressStateError> get copyWith =>
-      __$$AddressStateErrorCopyWithImpl<_$AddressStateError>(this, _$identity);
+  _$$AddressStateErrorImplCopyWith<_$AddressStateErrorImpl> get copyWith =>
+      __$$AddressStateErrorImplCopyWithImpl<_$AddressStateErrorImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -475,29 +477,29 @@ class _$AddressStateError implements AddressStateError {
 }
 
 abstract class AddressStateError implements AddressState {
-  const factory AddressStateError(final String error) = _$AddressStateError;
+  const factory AddressStateError(final String error) = _$AddressStateErrorImpl;
 
   String get error;
   @JsonKey(ignore: true)
-  _$$AddressStateErrorCopyWith<_$AddressStateError> get copyWith =>
+  _$$AddressStateErrorImplCopyWith<_$AddressStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AddressStateDataCopyWith<$Res> {
-  factory _$$AddressStateDataCopyWith(
-          _$AddressStateData value, $Res Function(_$AddressStateData) then) =
-      __$$AddressStateDataCopyWithImpl<$Res>;
+abstract class _$$AddressStateDataImplCopyWith<$Res> {
+  factory _$$AddressStateDataImplCopyWith(_$AddressStateDataImpl value,
+          $Res Function(_$AddressStateDataImpl) then) =
+      __$$AddressStateDataImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<AddressItem> data});
 }
 
 /// @nodoc
-class __$$AddressStateDataCopyWithImpl<$Res>
-    extends _$AddressStateCopyWithImpl<$Res, _$AddressStateData>
-    implements _$$AddressStateDataCopyWith<$Res> {
-  __$$AddressStateDataCopyWithImpl(
-      _$AddressStateData _value, $Res Function(_$AddressStateData) _then)
+class __$$AddressStateDataImplCopyWithImpl<$Res>
+    extends _$AddressStateCopyWithImpl<$Res, _$AddressStateDataImpl>
+    implements _$$AddressStateDataImplCopyWith<$Res> {
+  __$$AddressStateDataImplCopyWithImpl(_$AddressStateDataImpl _value,
+      $Res Function(_$AddressStateDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -505,7 +507,7 @@ class __$$AddressStateDataCopyWithImpl<$Res>
   $Res call({
     Object? data = null,
   }) {
-    return _then(_$AddressStateData(
+    return _then(_$AddressStateDataImpl(
       null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
@@ -516,8 +518,8 @@ class __$$AddressStateDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddressStateData implements AddressStateData {
-  const _$AddressStateData(final List<AddressItem> data) : _data = data;
+class _$AddressStateDataImpl implements AddressStateData {
+  const _$AddressStateDataImpl(final List<AddressItem> data) : _data = data;
 
   final List<AddressItem> _data;
   @override
@@ -533,10 +535,10 @@ class _$AddressStateData implements AddressStateData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddressStateData &&
+            other is _$AddressStateDataImpl &&
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
@@ -547,8 +549,9 @@ class _$AddressStateData implements AddressStateData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddressStateDataCopyWith<_$AddressStateData> get copyWith =>
-      __$$AddressStateDataCopyWithImpl<_$AddressStateData>(this, _$identity);
+  _$$AddressStateDataImplCopyWith<_$AddressStateDataImpl> get copyWith =>
+      __$$AddressStateDataImplCopyWithImpl<_$AddressStateDataImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -633,29 +636,29 @@ class _$AddressStateData implements AddressStateData {
 
 abstract class AddressStateData implements AddressState {
   const factory AddressStateData(final List<AddressItem> data) =
-      _$AddressStateData;
+      _$AddressStateDataImpl;
 
   List<AddressItem> get data;
   @JsonKey(ignore: true)
-  _$$AddressStateDataCopyWith<_$AddressStateData> get copyWith =>
+  _$$AddressStateDataImplCopyWith<_$AddressStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AddressStateSuccessCopyWith<$Res> {
-  factory _$$AddressStateSuccessCopyWith(_$AddressStateSuccess value,
-          $Res Function(_$AddressStateSuccess) then) =
-      __$$AddressStateSuccessCopyWithImpl<$Res>;
+abstract class _$$AddressStateSuccessImplCopyWith<$Res> {
+  factory _$$AddressStateSuccessImplCopyWith(_$AddressStateSuccessImpl value,
+          $Res Function(_$AddressStateSuccessImpl) then) =
+      __$$AddressStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String msg});
 }
 
 /// @nodoc
-class __$$AddressStateSuccessCopyWithImpl<$Res>
-    extends _$AddressStateCopyWithImpl<$Res, _$AddressStateSuccess>
-    implements _$$AddressStateSuccessCopyWith<$Res> {
-  __$$AddressStateSuccessCopyWithImpl(
-      _$AddressStateSuccess _value, $Res Function(_$AddressStateSuccess) _then)
+class __$$AddressStateSuccessImplCopyWithImpl<$Res>
+    extends _$AddressStateCopyWithImpl<$Res, _$AddressStateSuccessImpl>
+    implements _$$AddressStateSuccessImplCopyWith<$Res> {
+  __$$AddressStateSuccessImplCopyWithImpl(_$AddressStateSuccessImpl _value,
+      $Res Function(_$AddressStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -663,7 +666,7 @@ class __$$AddressStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? msg = null,
   }) {
-    return _then(_$AddressStateSuccess(
+    return _then(_$AddressStateSuccessImpl(
       null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -674,8 +677,8 @@ class __$$AddressStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddressStateSuccess implements AddressStateSuccess {
-  const _$AddressStateSuccess(this.msg);
+class _$AddressStateSuccessImpl implements AddressStateSuccess {
+  const _$AddressStateSuccessImpl(this.msg);
 
   @override
   final String msg;
@@ -686,10 +689,10 @@ class _$AddressStateSuccess implements AddressStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddressStateSuccess &&
+            other is _$AddressStateSuccessImpl &&
             (identical(other.msg, msg) || other.msg == msg));
   }
 
@@ -699,8 +702,8 @@ class _$AddressStateSuccess implements AddressStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddressStateSuccessCopyWith<_$AddressStateSuccess> get copyWith =>
-      __$$AddressStateSuccessCopyWithImpl<_$AddressStateSuccess>(
+  _$$AddressStateSuccessImplCopyWith<_$AddressStateSuccessImpl> get copyWith =>
+      __$$AddressStateSuccessImplCopyWithImpl<_$AddressStateSuccessImpl>(
           this, _$identity);
 
   @override
@@ -785,10 +788,11 @@ class _$AddressStateSuccess implements AddressStateSuccess {
 }
 
 abstract class AddressStateSuccess implements AddressState {
-  const factory AddressStateSuccess(final String msg) = _$AddressStateSuccess;
+  const factory AddressStateSuccess(final String msg) =
+      _$AddressStateSuccessImpl;
 
   String get msg;
   @JsonKey(ignore: true)
-  _$$AddressStateSuccessCopyWith<_$AddressStateSuccess> get copyWith =>
+  _$$AddressStateSuccessImplCopyWith<_$AddressStateSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

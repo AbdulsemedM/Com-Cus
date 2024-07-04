@@ -76,25 +76,25 @@ class _$SplashPageStateCopyWithImpl<$Res, $Val extends SplashPageState>
 }
 
 /// @nodoc
-abstract class _$$SplashPageInitStateCopyWith<$Res> {
-  factory _$$SplashPageInitStateCopyWith(_$SplashPageInitState value,
-          $Res Function(_$SplashPageInitState) then) =
-      __$$SplashPageInitStateCopyWithImpl<$Res>;
+abstract class _$$SplashPageInitStateImplCopyWith<$Res> {
+  factory _$$SplashPageInitStateImplCopyWith(_$SplashPageInitStateImpl value,
+          $Res Function(_$SplashPageInitStateImpl) then) =
+      __$$SplashPageInitStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SplashPageInitStateCopyWithImpl<$Res>
-    extends _$SplashPageStateCopyWithImpl<$Res, _$SplashPageInitState>
-    implements _$$SplashPageInitStateCopyWith<$Res> {
-  __$$SplashPageInitStateCopyWithImpl(
-      _$SplashPageInitState _value, $Res Function(_$SplashPageInitState) _then)
+class __$$SplashPageInitStateImplCopyWithImpl<$Res>
+    extends _$SplashPageStateCopyWithImpl<$Res, _$SplashPageInitStateImpl>
+    implements _$$SplashPageInitStateImplCopyWith<$Res> {
+  __$$SplashPageInitStateImplCopyWithImpl(_$SplashPageInitStateImpl _value,
+      $Res Function(_$SplashPageInitStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SplashPageInitState implements SplashPageInitState {
-  const _$SplashPageInitState();
+class _$SplashPageInitStateImpl implements SplashPageInitState {
+  const _$SplashPageInitStateImpl();
 
   @override
   String toString() {
@@ -102,9 +102,10 @@ class _$SplashPageInitState implements SplashPageInitState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SplashPageInitState);
+        (other.runtimeType == runtimeType &&
+            other is _$SplashPageInitStateImpl);
   }
 
   @override
@@ -175,29 +176,31 @@ class _$SplashPageInitState implements SplashPageInitState {
 }
 
 abstract class SplashPageInitState implements SplashPageState {
-  const factory SplashPageInitState() = _$SplashPageInitState;
+  const factory SplashPageInitState() = _$SplashPageInitStateImpl;
 }
 
 /// @nodoc
-abstract class _$$SplashPageStateRedirectCopyWith<$Res> {
-  factory _$$SplashPageStateRedirectCopyWith(_$SplashPageStateRedirect value,
-          $Res Function(_$SplashPageStateRedirect) then) =
-      __$$SplashPageStateRedirectCopyWithImpl<$Res>;
+abstract class _$$SplashPageStateRedirectImplCopyWith<$Res> {
+  factory _$$SplashPageStateRedirectImplCopyWith(
+          _$SplashPageStateRedirectImpl value,
+          $Res Function(_$SplashPageStateRedirectImpl) then) =
+      __$$SplashPageStateRedirectImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SplashPageStateRedirectCopyWithImpl<$Res>
-    extends _$SplashPageStateCopyWithImpl<$Res, _$SplashPageStateRedirect>
-    implements _$$SplashPageStateRedirectCopyWith<$Res> {
-  __$$SplashPageStateRedirectCopyWithImpl(_$SplashPageStateRedirect _value,
-      $Res Function(_$SplashPageStateRedirect) _then)
+class __$$SplashPageStateRedirectImplCopyWithImpl<$Res>
+    extends _$SplashPageStateCopyWithImpl<$Res, _$SplashPageStateRedirectImpl>
+    implements _$$SplashPageStateRedirectImplCopyWith<$Res> {
+  __$$SplashPageStateRedirectImplCopyWithImpl(
+      _$SplashPageStateRedirectImpl _value,
+      $Res Function(_$SplashPageStateRedirectImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SplashPageStateRedirect implements SplashPageStateRedirect {
-  const _$SplashPageStateRedirect();
+class _$SplashPageStateRedirectImpl implements SplashPageStateRedirect {
+  const _$SplashPageStateRedirectImpl();
 
   @override
   String toString() {
@@ -205,10 +208,10 @@ class _$SplashPageStateRedirect implements SplashPageStateRedirect {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SplashPageStateRedirect);
+            other is _$SplashPageStateRedirectImpl);
   }
 
   @override
@@ -279,5 +282,5 @@ class _$SplashPageStateRedirect implements SplashPageStateRedirect {
 }
 
 abstract class SplashPageStateRedirect implements SplashPageState {
-  const factory SplashPageStateRedirect() = _$SplashPageStateRedirect;
+  const factory SplashPageStateRedirect() = _$SplashPageStateRedirectImpl;
 }

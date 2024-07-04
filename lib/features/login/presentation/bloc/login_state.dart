@@ -12,4 +12,6 @@ class LoginState with _$LoginState {
 
   const factory LoginState.success(String message) = LoginStateSuccess;
   const factory LoginState.setPin(String phoneNumber) = LoginStateSetPin;
+  const factory LoginState.providePhone(String provide) =
+      LoginStateprovidePhone;
 }

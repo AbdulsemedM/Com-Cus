@@ -105,25 +105,26 @@ class _$CustomerLoanStateCopyWithImpl<$Res, $Val extends CustomerLoanState>
 }
 
 /// @nodoc
-abstract class _$$CustomerLoanStateInitCopyWith<$Res> {
-  factory _$$CustomerLoanStateInitCopyWith(_$CustomerLoanStateInit value,
-          $Res Function(_$CustomerLoanStateInit) then) =
-      __$$CustomerLoanStateInitCopyWithImpl<$Res>;
+abstract class _$$CustomerLoanStateInitImplCopyWith<$Res> {
+  factory _$$CustomerLoanStateInitImplCopyWith(
+          _$CustomerLoanStateInitImpl value,
+          $Res Function(_$CustomerLoanStateInitImpl) then) =
+      __$$CustomerLoanStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$CustomerLoanStateInitCopyWithImpl<$Res>
-    extends _$CustomerLoanStateCopyWithImpl<$Res, _$CustomerLoanStateInit>
-    implements _$$CustomerLoanStateInitCopyWith<$Res> {
-  __$$CustomerLoanStateInitCopyWithImpl(_$CustomerLoanStateInit _value,
-      $Res Function(_$CustomerLoanStateInit) _then)
+class __$$CustomerLoanStateInitImplCopyWithImpl<$Res>
+    extends _$CustomerLoanStateCopyWithImpl<$Res, _$CustomerLoanStateInitImpl>
+    implements _$$CustomerLoanStateInitImplCopyWith<$Res> {
+  __$$CustomerLoanStateInitImplCopyWithImpl(_$CustomerLoanStateInitImpl _value,
+      $Res Function(_$CustomerLoanStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CustomerLoanStateInit implements CustomerLoanStateInit {
-  const _$CustomerLoanStateInit();
+class _$CustomerLoanStateInitImpl implements CustomerLoanStateInit {
+  const _$CustomerLoanStateInitImpl();
 
   @override
   String toString() {
@@ -131,9 +132,10 @@ class _$CustomerLoanStateInit implements CustomerLoanStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CustomerLoanStateInit);
+        (other.runtimeType == runtimeType &&
+            other is _$CustomerLoanStateInitImpl);
   }
 
   @override
@@ -233,24 +235,27 @@ class _$CustomerLoanStateInit implements CustomerLoanStateInit {
 }
 
 abstract class CustomerLoanStateInit implements CustomerLoanState {
-  const factory CustomerLoanStateInit() = _$CustomerLoanStateInit;
+  const factory CustomerLoanStateInit() = _$CustomerLoanStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$CustomerLoanStateLoadingCopyWith<$Res> {
-  factory _$$CustomerLoanStateLoadingCopyWith(_$CustomerLoanStateLoading value,
-          $Res Function(_$CustomerLoanStateLoading) then) =
-      __$$CustomerLoanStateLoadingCopyWithImpl<$Res>;
+abstract class _$$CustomerLoanStateLoadingImplCopyWith<$Res> {
+  factory _$$CustomerLoanStateLoadingImplCopyWith(
+          _$CustomerLoanStateLoadingImpl value,
+          $Res Function(_$CustomerLoanStateLoadingImpl) then) =
+      __$$CustomerLoanStateLoadingImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String msg});
 }
 
 /// @nodoc
-class __$$CustomerLoanStateLoadingCopyWithImpl<$Res>
-    extends _$CustomerLoanStateCopyWithImpl<$Res, _$CustomerLoanStateLoading>
-    implements _$$CustomerLoanStateLoadingCopyWith<$Res> {
-  __$$CustomerLoanStateLoadingCopyWithImpl(_$CustomerLoanStateLoading _value,
-      $Res Function(_$CustomerLoanStateLoading) _then)
+class __$$CustomerLoanStateLoadingImplCopyWithImpl<$Res>
+    extends _$CustomerLoanStateCopyWithImpl<$Res,
+        _$CustomerLoanStateLoadingImpl>
+    implements _$$CustomerLoanStateLoadingImplCopyWith<$Res> {
+  __$$CustomerLoanStateLoadingImplCopyWithImpl(
+      _$CustomerLoanStateLoadingImpl _value,
+      $Res Function(_$CustomerLoanStateLoadingImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -258,7 +263,7 @@ class __$$CustomerLoanStateLoadingCopyWithImpl<$Res>
   $Res call({
     Object? msg = null,
   }) {
-    return _then(_$CustomerLoanStateLoading(
+    return _then(_$CustomerLoanStateLoadingImpl(
       null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -269,8 +274,8 @@ class __$$CustomerLoanStateLoadingCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CustomerLoanStateLoading implements CustomerLoanStateLoading {
-  const _$CustomerLoanStateLoading(this.msg);
+class _$CustomerLoanStateLoadingImpl implements CustomerLoanStateLoading {
+  const _$CustomerLoanStateLoadingImpl(this.msg);
 
   @override
   final String msg;
@@ -281,10 +286,10 @@ class _$CustomerLoanStateLoading implements CustomerLoanStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CustomerLoanStateLoading &&
+            other is _$CustomerLoanStateLoadingImpl &&
             (identical(other.msg, msg) || other.msg == msg));
   }
 
@@ -294,10 +299,9 @@ class _$CustomerLoanStateLoading implements CustomerLoanStateLoading {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CustomerLoanStateLoadingCopyWith<_$CustomerLoanStateLoading>
-      get copyWith =>
-          __$$CustomerLoanStateLoadingCopyWithImpl<_$CustomerLoanStateLoading>(
-              this, _$identity);
+  _$$CustomerLoanStateLoadingImplCopyWith<_$CustomerLoanStateLoadingImpl>
+      get copyWith => __$$CustomerLoanStateLoadingImplCopyWithImpl<
+          _$CustomerLoanStateLoadingImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -394,29 +398,31 @@ class _$CustomerLoanStateLoading implements CustomerLoanStateLoading {
 
 abstract class CustomerLoanStateLoading implements CustomerLoanState {
   const factory CustomerLoanStateLoading(final String msg) =
-      _$CustomerLoanStateLoading;
+      _$CustomerLoanStateLoadingImpl;
 
   String get msg;
   @JsonKey(ignore: true)
-  _$$CustomerLoanStateLoadingCopyWith<_$CustomerLoanStateLoading>
+  _$$CustomerLoanStateLoadingImplCopyWith<_$CustomerLoanStateLoadingImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CustomerLoanStateErrorCopyWith<$Res> {
-  factory _$$CustomerLoanStateErrorCopyWith(_$CustomerLoanStateError value,
-          $Res Function(_$CustomerLoanStateError) then) =
-      __$$CustomerLoanStateErrorCopyWithImpl<$Res>;
+abstract class _$$CustomerLoanStateErrorImplCopyWith<$Res> {
+  factory _$$CustomerLoanStateErrorImplCopyWith(
+          _$CustomerLoanStateErrorImpl value,
+          $Res Function(_$CustomerLoanStateErrorImpl) then) =
+      __$$CustomerLoanStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String msg});
 }
 
 /// @nodoc
-class __$$CustomerLoanStateErrorCopyWithImpl<$Res>
-    extends _$CustomerLoanStateCopyWithImpl<$Res, _$CustomerLoanStateError>
-    implements _$$CustomerLoanStateErrorCopyWith<$Res> {
-  __$$CustomerLoanStateErrorCopyWithImpl(_$CustomerLoanStateError _value,
-      $Res Function(_$CustomerLoanStateError) _then)
+class __$$CustomerLoanStateErrorImplCopyWithImpl<$Res>
+    extends _$CustomerLoanStateCopyWithImpl<$Res, _$CustomerLoanStateErrorImpl>
+    implements _$$CustomerLoanStateErrorImplCopyWith<$Res> {
+  __$$CustomerLoanStateErrorImplCopyWithImpl(
+      _$CustomerLoanStateErrorImpl _value,
+      $Res Function(_$CustomerLoanStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -424,7 +430,7 @@ class __$$CustomerLoanStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? msg = null,
   }) {
-    return _then(_$CustomerLoanStateError(
+    return _then(_$CustomerLoanStateErrorImpl(
       null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -435,8 +441,8 @@ class __$$CustomerLoanStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CustomerLoanStateError implements CustomerLoanStateError {
-  const _$CustomerLoanStateError(this.msg);
+class _$CustomerLoanStateErrorImpl implements CustomerLoanStateError {
+  const _$CustomerLoanStateErrorImpl(this.msg);
 
   @override
   final String msg;
@@ -447,10 +453,10 @@ class _$CustomerLoanStateError implements CustomerLoanStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CustomerLoanStateError &&
+            other is _$CustomerLoanStateErrorImpl &&
             (identical(other.msg, msg) || other.msg == msg));
   }
 
@@ -460,9 +466,9 @@ class _$CustomerLoanStateError implements CustomerLoanStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CustomerLoanStateErrorCopyWith<_$CustomerLoanStateError> get copyWith =>
-      __$$CustomerLoanStateErrorCopyWithImpl<_$CustomerLoanStateError>(
-          this, _$identity);
+  _$$CustomerLoanStateErrorImplCopyWith<_$CustomerLoanStateErrorImpl>
+      get copyWith => __$$CustomerLoanStateErrorImplCopyWithImpl<
+          _$CustomerLoanStateErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -559,32 +565,32 @@ class _$CustomerLoanStateError implements CustomerLoanStateError {
 
 abstract class CustomerLoanStateError implements CustomerLoanState {
   const factory CustomerLoanStateError(final String msg) =
-      _$CustomerLoanStateError;
+      _$CustomerLoanStateErrorImpl;
 
   String get msg;
   @JsonKey(ignore: true)
-  _$$CustomerLoanStateErrorCopyWith<_$CustomerLoanStateError> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$CustomerLoanStateErrorImplCopyWith<_$CustomerLoanStateErrorImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CustomerLoanStateDisplayErrorCopyWith<$Res> {
-  factory _$$CustomerLoanStateDisplayErrorCopyWith(
-          _$CustomerLoanStateDisplayError value,
-          $Res Function(_$CustomerLoanStateDisplayError) then) =
-      __$$CustomerLoanStateDisplayErrorCopyWithImpl<$Res>;
+abstract class _$$CustomerLoanStateDisplayErrorImplCopyWith<$Res> {
+  factory _$$CustomerLoanStateDisplayErrorImplCopyWith(
+          _$CustomerLoanStateDisplayErrorImpl value,
+          $Res Function(_$CustomerLoanStateDisplayErrorImpl) then) =
+      __$$CustomerLoanStateDisplayErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String msg});
 }
 
 /// @nodoc
-class __$$CustomerLoanStateDisplayErrorCopyWithImpl<$Res>
+class __$$CustomerLoanStateDisplayErrorImplCopyWithImpl<$Res>
     extends _$CustomerLoanStateCopyWithImpl<$Res,
-        _$CustomerLoanStateDisplayError>
-    implements _$$CustomerLoanStateDisplayErrorCopyWith<$Res> {
-  __$$CustomerLoanStateDisplayErrorCopyWithImpl(
-      _$CustomerLoanStateDisplayError _value,
-      $Res Function(_$CustomerLoanStateDisplayError) _then)
+        _$CustomerLoanStateDisplayErrorImpl>
+    implements _$$CustomerLoanStateDisplayErrorImplCopyWith<$Res> {
+  __$$CustomerLoanStateDisplayErrorImplCopyWithImpl(
+      _$CustomerLoanStateDisplayErrorImpl _value,
+      $Res Function(_$CustomerLoanStateDisplayErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -592,7 +598,7 @@ class __$$CustomerLoanStateDisplayErrorCopyWithImpl<$Res>
   $Res call({
     Object? msg = null,
   }) {
-    return _then(_$CustomerLoanStateDisplayError(
+    return _then(_$CustomerLoanStateDisplayErrorImpl(
       null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -603,8 +609,9 @@ class __$$CustomerLoanStateDisplayErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CustomerLoanStateDisplayError implements CustomerLoanStateDisplayError {
-  const _$CustomerLoanStateDisplayError(this.msg);
+class _$CustomerLoanStateDisplayErrorImpl
+    implements CustomerLoanStateDisplayError {
+  const _$CustomerLoanStateDisplayErrorImpl(this.msg);
 
   @override
   final String msg;
@@ -615,10 +622,10 @@ class _$CustomerLoanStateDisplayError implements CustomerLoanStateDisplayError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CustomerLoanStateDisplayError &&
+            other is _$CustomerLoanStateDisplayErrorImpl &&
             (identical(other.msg, msg) || other.msg == msg));
   }
 
@@ -628,9 +635,10 @@ class _$CustomerLoanStateDisplayError implements CustomerLoanStateDisplayError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CustomerLoanStateDisplayErrorCopyWith<_$CustomerLoanStateDisplayError>
-      get copyWith => __$$CustomerLoanStateDisplayErrorCopyWithImpl<
-          _$CustomerLoanStateDisplayError>(this, _$identity);
+  _$$CustomerLoanStateDisplayErrorImplCopyWith<
+          _$CustomerLoanStateDisplayErrorImpl>
+      get copyWith => __$$CustomerLoanStateDisplayErrorImplCopyWithImpl<
+          _$CustomerLoanStateDisplayErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -727,29 +735,33 @@ class _$CustomerLoanStateDisplayError implements CustomerLoanStateDisplayError {
 
 abstract class CustomerLoanStateDisplayError implements CustomerLoanState {
   const factory CustomerLoanStateDisplayError(final String msg) =
-      _$CustomerLoanStateDisplayError;
+      _$CustomerLoanStateDisplayErrorImpl;
 
   String get msg;
   @JsonKey(ignore: true)
-  _$$CustomerLoanStateDisplayErrorCopyWith<_$CustomerLoanStateDisplayError>
+  _$$CustomerLoanStateDisplayErrorImplCopyWith<
+          _$CustomerLoanStateDisplayErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CustomerLoanStateSuccessCopyWith<$Res> {
-  factory _$$CustomerLoanStateSuccessCopyWith(_$CustomerLoanStateSuccess value,
-          $Res Function(_$CustomerLoanStateSuccess) then) =
-      __$$CustomerLoanStateSuccessCopyWithImpl<$Res>;
+abstract class _$$CustomerLoanStateSuccessImplCopyWith<$Res> {
+  factory _$$CustomerLoanStateSuccessImplCopyWith(
+          _$CustomerLoanStateSuccessImpl value,
+          $Res Function(_$CustomerLoanStateSuccessImpl) then) =
+      __$$CustomerLoanStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String msg});
 }
 
 /// @nodoc
-class __$$CustomerLoanStateSuccessCopyWithImpl<$Res>
-    extends _$CustomerLoanStateCopyWithImpl<$Res, _$CustomerLoanStateSuccess>
-    implements _$$CustomerLoanStateSuccessCopyWith<$Res> {
-  __$$CustomerLoanStateSuccessCopyWithImpl(_$CustomerLoanStateSuccess _value,
-      $Res Function(_$CustomerLoanStateSuccess) _then)
+class __$$CustomerLoanStateSuccessImplCopyWithImpl<$Res>
+    extends _$CustomerLoanStateCopyWithImpl<$Res,
+        _$CustomerLoanStateSuccessImpl>
+    implements _$$CustomerLoanStateSuccessImplCopyWith<$Res> {
+  __$$CustomerLoanStateSuccessImplCopyWithImpl(
+      _$CustomerLoanStateSuccessImpl _value,
+      $Res Function(_$CustomerLoanStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -757,7 +769,7 @@ class __$$CustomerLoanStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? msg = null,
   }) {
-    return _then(_$CustomerLoanStateSuccess(
+    return _then(_$CustomerLoanStateSuccessImpl(
       null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -768,8 +780,8 @@ class __$$CustomerLoanStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CustomerLoanStateSuccess implements CustomerLoanStateSuccess {
-  const _$CustomerLoanStateSuccess(this.msg);
+class _$CustomerLoanStateSuccessImpl implements CustomerLoanStateSuccess {
+  const _$CustomerLoanStateSuccessImpl(this.msg);
 
   @override
   final String msg;
@@ -780,10 +792,10 @@ class _$CustomerLoanStateSuccess implements CustomerLoanStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CustomerLoanStateSuccess &&
+            other is _$CustomerLoanStateSuccessImpl &&
             (identical(other.msg, msg) || other.msg == msg));
   }
 
@@ -793,10 +805,9 @@ class _$CustomerLoanStateSuccess implements CustomerLoanStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CustomerLoanStateSuccessCopyWith<_$CustomerLoanStateSuccess>
-      get copyWith =>
-          __$$CustomerLoanStateSuccessCopyWithImpl<_$CustomerLoanStateSuccess>(
-              this, _$identity);
+  _$$CustomerLoanStateSuccessImplCopyWith<_$CustomerLoanStateSuccessImpl>
+      get copyWith => __$$CustomerLoanStateSuccessImplCopyWithImpl<
+          _$CustomerLoanStateSuccessImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -893,30 +904,32 @@ class _$CustomerLoanStateSuccess implements CustomerLoanStateSuccess {
 
 abstract class CustomerLoanStateSuccess implements CustomerLoanState {
   const factory CustomerLoanStateSuccess(final String msg) =
-      _$CustomerLoanStateSuccess;
+      _$CustomerLoanStateSuccessImpl;
 
   String get msg;
   @JsonKey(ignore: true)
-  _$$CustomerLoanStateSuccessCopyWith<_$CustomerLoanStateSuccess>
+  _$$CustomerLoanStateSuccessImplCopyWith<_$CustomerLoanStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CustomerLoanStateProductsCopyWith<$Res> {
-  factory _$$CustomerLoanStateProductsCopyWith(
-          _$CustomerLoanStateProducts value,
-          $Res Function(_$CustomerLoanStateProducts) then) =
-      __$$CustomerLoanStateProductsCopyWithImpl<$Res>;
+abstract class _$$CustomerLoanStateProductsImplCopyWith<$Res> {
+  factory _$$CustomerLoanStateProductsImplCopyWith(
+          _$CustomerLoanStateProductsImpl value,
+          $Res Function(_$CustomerLoanStateProductsImpl) then) =
+      __$$CustomerLoanStateProductsImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<NewPricedProduct> products, PricesSummary pricesSummary});
 }
 
 /// @nodoc
-class __$$CustomerLoanStateProductsCopyWithImpl<$Res>
-    extends _$CustomerLoanStateCopyWithImpl<$Res, _$CustomerLoanStateProducts>
-    implements _$$CustomerLoanStateProductsCopyWith<$Res> {
-  __$$CustomerLoanStateProductsCopyWithImpl(_$CustomerLoanStateProducts _value,
-      $Res Function(_$CustomerLoanStateProducts) _then)
+class __$$CustomerLoanStateProductsImplCopyWithImpl<$Res>
+    extends _$CustomerLoanStateCopyWithImpl<$Res,
+        _$CustomerLoanStateProductsImpl>
+    implements _$$CustomerLoanStateProductsImplCopyWith<$Res> {
+  __$$CustomerLoanStateProductsImplCopyWithImpl(
+      _$CustomerLoanStateProductsImpl _value,
+      $Res Function(_$CustomerLoanStateProductsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -925,7 +938,7 @@ class __$$CustomerLoanStateProductsCopyWithImpl<$Res>
     Object? products = null,
     Object? pricesSummary = null,
   }) {
-    return _then(_$CustomerLoanStateProducts(
+    return _then(_$CustomerLoanStateProductsImpl(
       null == products
           ? _value._products
           : products // ignore: cast_nullable_to_non_nullable
@@ -940,8 +953,8 @@ class __$$CustomerLoanStateProductsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CustomerLoanStateProducts implements CustomerLoanStateProducts {
-  const _$CustomerLoanStateProducts(
+class _$CustomerLoanStateProductsImpl implements CustomerLoanStateProducts {
+  const _$CustomerLoanStateProductsImpl(
       final List<NewPricedProduct> products, this.pricesSummary)
       : _products = products;
 
@@ -962,10 +975,10 @@ class _$CustomerLoanStateProducts implements CustomerLoanStateProducts {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CustomerLoanStateProducts &&
+            other is _$CustomerLoanStateProductsImpl &&
             const DeepCollectionEquality().equals(other._products, _products) &&
             (identical(other.pricesSummary, pricesSummary) ||
                 other.pricesSummary == pricesSummary));
@@ -978,9 +991,9 @@ class _$CustomerLoanStateProducts implements CustomerLoanStateProducts {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CustomerLoanStateProductsCopyWith<_$CustomerLoanStateProducts>
-      get copyWith => __$$CustomerLoanStateProductsCopyWithImpl<
-          _$CustomerLoanStateProducts>(this, _$identity);
+  _$$CustomerLoanStateProductsImplCopyWith<_$CustomerLoanStateProductsImpl>
+      get copyWith => __$$CustomerLoanStateProductsImplCopyWithImpl<
+          _$CustomerLoanStateProductsImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1077,11 +1090,11 @@ class _$CustomerLoanStateProducts implements CustomerLoanStateProducts {
 
 abstract class CustomerLoanStateProducts implements CustomerLoanState {
   const factory CustomerLoanStateProducts(final List<NewPricedProduct> products,
-      final PricesSummary pricesSummary) = _$CustomerLoanStateProducts;
+      final PricesSummary pricesSummary) = _$CustomerLoanStateProductsImpl;
 
   List<NewPricedProduct> get products;
   PricesSummary get pricesSummary;
   @JsonKey(ignore: true)
-  _$$CustomerLoanStateProductsCopyWith<_$CustomerLoanStateProducts>
+  _$$CustomerLoanStateProductsImplCopyWith<_$CustomerLoanStateProductsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -93,25 +93,25 @@ class _$ValidateStateCopyWithImpl<$Res, $Val extends ValidateState>
 }
 
 /// @nodoc
-abstract class _$$ValidateStateInitCopyWith<$Res> {
-  factory _$$ValidateStateInitCopyWith(
-          _$ValidateStateInit value, $Res Function(_$ValidateStateInit) then) =
-      __$$ValidateStateInitCopyWithImpl<$Res>;
+abstract class _$$ValidateStateInitImplCopyWith<$Res> {
+  factory _$$ValidateStateInitImplCopyWith(_$ValidateStateInitImpl value,
+          $Res Function(_$ValidateStateInitImpl) then) =
+      __$$ValidateStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ValidateStateInitCopyWithImpl<$Res>
-    extends _$ValidateStateCopyWithImpl<$Res, _$ValidateStateInit>
-    implements _$$ValidateStateInitCopyWith<$Res> {
-  __$$ValidateStateInitCopyWithImpl(
-      _$ValidateStateInit _value, $Res Function(_$ValidateStateInit) _then)
+class __$$ValidateStateInitImplCopyWithImpl<$Res>
+    extends _$ValidateStateCopyWithImpl<$Res, _$ValidateStateInitImpl>
+    implements _$$ValidateStateInitImplCopyWith<$Res> {
+  __$$ValidateStateInitImplCopyWithImpl(_$ValidateStateInitImpl _value,
+      $Res Function(_$ValidateStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ValidateStateInit implements ValidateStateInit {
-  const _$ValidateStateInit();
+class _$ValidateStateInitImpl implements ValidateStateInit {
+  const _$ValidateStateInitImpl();
 
   @override
   String toString() {
@@ -119,9 +119,9 @@ class _$ValidateStateInit implements ValidateStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ValidateStateInit);
+        (other.runtimeType == runtimeType && other is _$ValidateStateInitImpl);
   }
 
   @override
@@ -209,24 +209,24 @@ class _$ValidateStateInit implements ValidateStateInit {
 }
 
 abstract class ValidateStateInit implements ValidateState {
-  const factory ValidateStateInit() = _$ValidateStateInit;
+  const factory ValidateStateInit() = _$ValidateStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$ValidateStateErrorCopyWith<$Res> {
-  factory _$$ValidateStateErrorCopyWith(_$ValidateStateError value,
-          $Res Function(_$ValidateStateError) then) =
-      __$$ValidateStateErrorCopyWithImpl<$Res>;
+abstract class _$$ValidateStateErrorImplCopyWith<$Res> {
+  factory _$$ValidateStateErrorImplCopyWith(_$ValidateStateErrorImpl value,
+          $Res Function(_$ValidateStateErrorImpl) then) =
+      __$$ValidateStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$ValidateStateErrorCopyWithImpl<$Res>
-    extends _$ValidateStateCopyWithImpl<$Res, _$ValidateStateError>
-    implements _$$ValidateStateErrorCopyWith<$Res> {
-  __$$ValidateStateErrorCopyWithImpl(
-      _$ValidateStateError _value, $Res Function(_$ValidateStateError) _then)
+class __$$ValidateStateErrorImplCopyWithImpl<$Res>
+    extends _$ValidateStateCopyWithImpl<$Res, _$ValidateStateErrorImpl>
+    implements _$$ValidateStateErrorImplCopyWith<$Res> {
+  __$$ValidateStateErrorImplCopyWithImpl(_$ValidateStateErrorImpl _value,
+      $Res Function(_$ValidateStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -234,7 +234,7 @@ class __$$ValidateStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$ValidateStateError(
+    return _then(_$ValidateStateErrorImpl(
       null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -245,8 +245,8 @@ class __$$ValidateStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ValidateStateError implements ValidateStateError {
-  const _$ValidateStateError(this.error);
+class _$ValidateStateErrorImpl implements ValidateStateError {
+  const _$ValidateStateErrorImpl(this.error);
 
   @override
   final String error;
@@ -257,10 +257,10 @@ class _$ValidateStateError implements ValidateStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ValidateStateError &&
+            other is _$ValidateStateErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -270,8 +270,8 @@ class _$ValidateStateError implements ValidateStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ValidateStateErrorCopyWith<_$ValidateStateError> get copyWith =>
-      __$$ValidateStateErrorCopyWithImpl<_$ValidateStateError>(
+  _$$ValidateStateErrorImplCopyWith<_$ValidateStateErrorImpl> get copyWith =>
+      __$$ValidateStateErrorImplCopyWithImpl<_$ValidateStateErrorImpl>(
           this, _$identity);
 
   @override
@@ -356,29 +356,30 @@ class _$ValidateStateError implements ValidateStateError {
 }
 
 abstract class ValidateStateError implements ValidateState {
-  const factory ValidateStateError(final String error) = _$ValidateStateError;
+  const factory ValidateStateError(final String error) =
+      _$ValidateStateErrorImpl;
 
   String get error;
   @JsonKey(ignore: true)
-  _$$ValidateStateErrorCopyWith<_$ValidateStateError> get copyWith =>
+  _$$ValidateStateErrorImplCopyWith<_$ValidateStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ValidateStateSuccessCopyWith<$Res> {
-  factory _$$ValidateStateSuccessCopyWith(_$ValidateStateSuccess value,
-          $Res Function(_$ValidateStateSuccess) then) =
-      __$$ValidateStateSuccessCopyWithImpl<$Res>;
+abstract class _$$ValidateStateSuccessImplCopyWith<$Res> {
+  factory _$$ValidateStateSuccessImplCopyWith(_$ValidateStateSuccessImpl value,
+          $Res Function(_$ValidateStateSuccessImpl) then) =
+      __$$ValidateStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String success});
 }
 
 /// @nodoc
-class __$$ValidateStateSuccessCopyWithImpl<$Res>
-    extends _$ValidateStateCopyWithImpl<$Res, _$ValidateStateSuccess>
-    implements _$$ValidateStateSuccessCopyWith<$Res> {
-  __$$ValidateStateSuccessCopyWithImpl(_$ValidateStateSuccess _value,
-      $Res Function(_$ValidateStateSuccess) _then)
+class __$$ValidateStateSuccessImplCopyWithImpl<$Res>
+    extends _$ValidateStateCopyWithImpl<$Res, _$ValidateStateSuccessImpl>
+    implements _$$ValidateStateSuccessImplCopyWith<$Res> {
+  __$$ValidateStateSuccessImplCopyWithImpl(_$ValidateStateSuccessImpl _value,
+      $Res Function(_$ValidateStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -386,7 +387,7 @@ class __$$ValidateStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? success = null,
   }) {
-    return _then(_$ValidateStateSuccess(
+    return _then(_$ValidateStateSuccessImpl(
       null == success
           ? _value.success
           : success // ignore: cast_nullable_to_non_nullable
@@ -397,8 +398,8 @@ class __$$ValidateStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ValidateStateSuccess implements ValidateStateSuccess {
-  const _$ValidateStateSuccess(this.success);
+class _$ValidateStateSuccessImpl implements ValidateStateSuccess {
+  const _$ValidateStateSuccessImpl(this.success);
 
   @override
   final String success;
@@ -409,10 +410,10 @@ class _$ValidateStateSuccess implements ValidateStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ValidateStateSuccess &&
+            other is _$ValidateStateSuccessImpl &&
             (identical(other.success, success) || other.success == success));
   }
 
@@ -422,9 +423,10 @@ class _$ValidateStateSuccess implements ValidateStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ValidateStateSuccessCopyWith<_$ValidateStateSuccess> get copyWith =>
-      __$$ValidateStateSuccessCopyWithImpl<_$ValidateStateSuccess>(
-          this, _$identity);
+  _$$ValidateStateSuccessImplCopyWith<_$ValidateStateSuccessImpl>
+      get copyWith =>
+          __$$ValidateStateSuccessImplCopyWithImpl<_$ValidateStateSuccessImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -509,34 +511,34 @@ class _$ValidateStateSuccess implements ValidateStateSuccess {
 
 abstract class ValidateStateSuccess implements ValidateState {
   const factory ValidateStateSuccess(final String success) =
-      _$ValidateStateSuccess;
+      _$ValidateStateSuccessImpl;
 
   String get success;
   @JsonKey(ignore: true)
-  _$$ValidateStateSuccessCopyWith<_$ValidateStateSuccess> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ValidateStateSuccessImplCopyWith<_$ValidateStateSuccessImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ValidateStateOtpCopyWith<$Res> {
-  factory _$$ValidateStateOtpCopyWith(
-          _$ValidateStateOtp value, $Res Function(_$ValidateStateOtp) then) =
-      __$$ValidateStateOtpCopyWithImpl<$Res>;
+abstract class _$$ValidateStateOtpImplCopyWith<$Res> {
+  factory _$$ValidateStateOtpImplCopyWith(_$ValidateStateOtpImpl value,
+          $Res Function(_$ValidateStateOtpImpl) then) =
+      __$$ValidateStateOtpImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ValidateStateOtpCopyWithImpl<$Res>
-    extends _$ValidateStateCopyWithImpl<$Res, _$ValidateStateOtp>
-    implements _$$ValidateStateOtpCopyWith<$Res> {
-  __$$ValidateStateOtpCopyWithImpl(
-      _$ValidateStateOtp _value, $Res Function(_$ValidateStateOtp) _then)
+class __$$ValidateStateOtpImplCopyWithImpl<$Res>
+    extends _$ValidateStateCopyWithImpl<$Res, _$ValidateStateOtpImpl>
+    implements _$$ValidateStateOtpImplCopyWith<$Res> {
+  __$$ValidateStateOtpImplCopyWithImpl(_$ValidateStateOtpImpl _value,
+      $Res Function(_$ValidateStateOtpImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ValidateStateOtp implements ValidateStateOtp {
-  const _$ValidateStateOtp();
+class _$ValidateStateOtpImpl implements ValidateStateOtp {
+  const _$ValidateStateOtpImpl();
 
   @override
   String toString() {
@@ -544,9 +546,9 @@ class _$ValidateStateOtp implements ValidateStateOtp {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ValidateStateOtp);
+        (other.runtimeType == runtimeType && other is _$ValidateStateOtpImpl);
   }
 
   @override
@@ -634,29 +636,29 @@ class _$ValidateStateOtp implements ValidateStateOtp {
 }
 
 abstract class ValidateStateOtp implements ValidateState {
-  const factory ValidateStateOtp() = _$ValidateStateOtp;
+  const factory ValidateStateOtp() = _$ValidateStateOtpImpl;
 }
 
 /// @nodoc
-abstract class _$$ValidateStateLoadingCopyWith<$Res> {
-  factory _$$ValidateStateLoadingCopyWith(_$ValidateStateLoading value,
-          $Res Function(_$ValidateStateLoading) then) =
-      __$$ValidateStateLoadingCopyWithImpl<$Res>;
+abstract class _$$ValidateStateLoadingImplCopyWith<$Res> {
+  factory _$$ValidateStateLoadingImplCopyWith(_$ValidateStateLoadingImpl value,
+          $Res Function(_$ValidateStateLoadingImpl) then) =
+      __$$ValidateStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ValidateStateLoadingCopyWithImpl<$Res>
-    extends _$ValidateStateCopyWithImpl<$Res, _$ValidateStateLoading>
-    implements _$$ValidateStateLoadingCopyWith<$Res> {
-  __$$ValidateStateLoadingCopyWithImpl(_$ValidateStateLoading _value,
-      $Res Function(_$ValidateStateLoading) _then)
+class __$$ValidateStateLoadingImplCopyWithImpl<$Res>
+    extends _$ValidateStateCopyWithImpl<$Res, _$ValidateStateLoadingImpl>
+    implements _$$ValidateStateLoadingImplCopyWith<$Res> {
+  __$$ValidateStateLoadingImplCopyWithImpl(_$ValidateStateLoadingImpl _value,
+      $Res Function(_$ValidateStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ValidateStateLoading implements ValidateStateLoading {
-  const _$ValidateStateLoading();
+class _$ValidateStateLoadingImpl implements ValidateStateLoading {
+  const _$ValidateStateLoadingImpl();
 
   @override
   String toString() {
@@ -664,9 +666,10 @@ class _$ValidateStateLoading implements ValidateStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ValidateStateLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$ValidateStateLoadingImpl);
   }
 
   @override
@@ -754,5 +757,5 @@ class _$ValidateStateLoading implements ValidateStateLoading {
 }
 
 abstract class ValidateStateLoading implements ValidateState {
-  const factory ValidateStateLoading() = _$ValidateStateLoading;
+  const factory ValidateStateLoading() = _$ValidateStateLoadingImpl;
 }

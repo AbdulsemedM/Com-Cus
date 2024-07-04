@@ -99,25 +99,25 @@ class _$CityCoreStateCopyWithImpl<$Res, $Val extends CityCoreState>
 }
 
 /// @nodoc
-abstract class _$$CityCoreStateInitCopyWith<$Res> {
-  factory _$$CityCoreStateInitCopyWith(
-          _$CityCoreStateInit value, $Res Function(_$CityCoreStateInit) then) =
-      __$$CityCoreStateInitCopyWithImpl<$Res>;
+abstract class _$$CityCoreStateInitImplCopyWith<$Res> {
+  factory _$$CityCoreStateInitImplCopyWith(_$CityCoreStateInitImpl value,
+          $Res Function(_$CityCoreStateInitImpl) then) =
+      __$$CityCoreStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$CityCoreStateInitCopyWithImpl<$Res>
-    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateInit>
-    implements _$$CityCoreStateInitCopyWith<$Res> {
-  __$$CityCoreStateInitCopyWithImpl(
-      _$CityCoreStateInit _value, $Res Function(_$CityCoreStateInit) _then)
+class __$$CityCoreStateInitImplCopyWithImpl<$Res>
+    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateInitImpl>
+    implements _$$CityCoreStateInitImplCopyWith<$Res> {
+  __$$CityCoreStateInitImplCopyWithImpl(_$CityCoreStateInitImpl _value,
+      $Res Function(_$CityCoreStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CityCoreStateInit implements CityCoreStateInit {
-  const _$CityCoreStateInit();
+class _$CityCoreStateInitImpl implements CityCoreStateInit {
+  const _$CityCoreStateInitImpl();
 
   @override
   String toString() {
@@ -125,9 +125,9 @@ class _$CityCoreStateInit implements CityCoreStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CityCoreStateInit);
+        (other.runtimeType == runtimeType && other is _$CityCoreStateInitImpl);
   }
 
   @override
@@ -221,29 +221,29 @@ class _$CityCoreStateInit implements CityCoreStateInit {
 }
 
 abstract class CityCoreStateInit implements CityCoreState {
-  const factory CityCoreStateInit() = _$CityCoreStateInit;
+  const factory CityCoreStateInit() = _$CityCoreStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$CityCoreStateLoadingCopyWith<$Res> {
-  factory _$$CityCoreStateLoadingCopyWith(_$CityCoreStateLoading value,
-          $Res Function(_$CityCoreStateLoading) then) =
-      __$$CityCoreStateLoadingCopyWithImpl<$Res>;
+abstract class _$$CityCoreStateLoadingImplCopyWith<$Res> {
+  factory _$$CityCoreStateLoadingImplCopyWith(_$CityCoreStateLoadingImpl value,
+          $Res Function(_$CityCoreStateLoadingImpl) then) =
+      __$$CityCoreStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$CityCoreStateLoadingCopyWithImpl<$Res>
-    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateLoading>
-    implements _$$CityCoreStateLoadingCopyWith<$Res> {
-  __$$CityCoreStateLoadingCopyWithImpl(_$CityCoreStateLoading _value,
-      $Res Function(_$CityCoreStateLoading) _then)
+class __$$CityCoreStateLoadingImplCopyWithImpl<$Res>
+    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateLoadingImpl>
+    implements _$$CityCoreStateLoadingImplCopyWith<$Res> {
+  __$$CityCoreStateLoadingImplCopyWithImpl(_$CityCoreStateLoadingImpl _value,
+      $Res Function(_$CityCoreStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CityCoreStateLoading implements CityCoreStateLoading {
-  const _$CityCoreStateLoading();
+class _$CityCoreStateLoadingImpl implements CityCoreStateLoading {
+  const _$CityCoreStateLoadingImpl();
 
   @override
   String toString() {
@@ -251,9 +251,10 @@ class _$CityCoreStateLoading implements CityCoreStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CityCoreStateLoading);
+        (other.runtimeType == runtimeType &&
+            other is _$CityCoreStateLoadingImpl);
   }
 
   @override
@@ -347,24 +348,24 @@ class _$CityCoreStateLoading implements CityCoreStateLoading {
 }
 
 abstract class CityCoreStateLoading implements CityCoreState {
-  const factory CityCoreStateLoading() = _$CityCoreStateLoading;
+  const factory CityCoreStateLoading() = _$CityCoreStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$CityCoreStateErrorCopyWith<$Res> {
-  factory _$$CityCoreStateErrorCopyWith(_$CityCoreStateError value,
-          $Res Function(_$CityCoreStateError) then) =
-      __$$CityCoreStateErrorCopyWithImpl<$Res>;
+abstract class _$$CityCoreStateErrorImplCopyWith<$Res> {
+  factory _$$CityCoreStateErrorImplCopyWith(_$CityCoreStateErrorImpl value,
+          $Res Function(_$CityCoreStateErrorImpl) then) =
+      __$$CityCoreStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$CityCoreStateErrorCopyWithImpl<$Res>
-    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateError>
-    implements _$$CityCoreStateErrorCopyWith<$Res> {
-  __$$CityCoreStateErrorCopyWithImpl(
-      _$CityCoreStateError _value, $Res Function(_$CityCoreStateError) _then)
+class __$$CityCoreStateErrorImplCopyWithImpl<$Res>
+    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateErrorImpl>
+    implements _$$CityCoreStateErrorImplCopyWith<$Res> {
+  __$$CityCoreStateErrorImplCopyWithImpl(_$CityCoreStateErrorImpl _value,
+      $Res Function(_$CityCoreStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -372,7 +373,7 @@ class __$$CityCoreStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$CityCoreStateError(
+    return _then(_$CityCoreStateErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -383,8 +384,8 @@ class __$$CityCoreStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CityCoreStateError implements CityCoreStateError {
-  const _$CityCoreStateError(this.message);
+class _$CityCoreStateErrorImpl implements CityCoreStateError {
+  const _$CityCoreStateErrorImpl(this.message);
 
   @override
   final String message;
@@ -395,10 +396,10 @@ class _$CityCoreStateError implements CityCoreStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CityCoreStateError &&
+            other is _$CityCoreStateErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -408,8 +409,8 @@ class _$CityCoreStateError implements CityCoreStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CityCoreStateErrorCopyWith<_$CityCoreStateError> get copyWith =>
-      __$$CityCoreStateErrorCopyWithImpl<_$CityCoreStateError>(
+  _$$CityCoreStateErrorImplCopyWith<_$CityCoreStateErrorImpl> get copyWith =>
+      __$$CityCoreStateErrorImplCopyWithImpl<_$CityCoreStateErrorImpl>(
           this, _$identity);
 
   @override
@@ -500,29 +501,30 @@ class _$CityCoreStateError implements CityCoreStateError {
 }
 
 abstract class CityCoreStateError implements CityCoreState {
-  const factory CityCoreStateError(final String message) = _$CityCoreStateError;
+  const factory CityCoreStateError(final String message) =
+      _$CityCoreStateErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$CityCoreStateErrorCopyWith<_$CityCoreStateError> get copyWith =>
+  _$$CityCoreStateErrorImplCopyWith<_$CityCoreStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CityCoreStateSuccessCopyWith<$Res> {
-  factory _$$CityCoreStateSuccessCopyWith(_$CityCoreStateSuccess value,
-          $Res Function(_$CityCoreStateSuccess) then) =
-      __$$CityCoreStateSuccessCopyWithImpl<$Res>;
+abstract class _$$CityCoreStateSuccessImplCopyWith<$Res> {
+  factory _$$CityCoreStateSuccessImplCopyWith(_$CityCoreStateSuccessImpl value,
+          $Res Function(_$CityCoreStateSuccessImpl) then) =
+      __$$CityCoreStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$CityCoreStateSuccessCopyWithImpl<$Res>
-    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateSuccess>
-    implements _$$CityCoreStateSuccessCopyWith<$Res> {
-  __$$CityCoreStateSuccessCopyWithImpl(_$CityCoreStateSuccess _value,
-      $Res Function(_$CityCoreStateSuccess) _then)
+class __$$CityCoreStateSuccessImplCopyWithImpl<$Res>
+    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateSuccessImpl>
+    implements _$$CityCoreStateSuccessImplCopyWith<$Res> {
+  __$$CityCoreStateSuccessImplCopyWithImpl(_$CityCoreStateSuccessImpl _value,
+      $Res Function(_$CityCoreStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -530,7 +532,7 @@ class __$$CityCoreStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$CityCoreStateSuccess(
+    return _then(_$CityCoreStateSuccessImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -541,8 +543,8 @@ class __$$CityCoreStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CityCoreStateSuccess implements CityCoreStateSuccess {
-  const _$CityCoreStateSuccess(this.message);
+class _$CityCoreStateSuccessImpl implements CityCoreStateSuccess {
+  const _$CityCoreStateSuccessImpl(this.message);
 
   @override
   final String message;
@@ -553,10 +555,10 @@ class _$CityCoreStateSuccess implements CityCoreStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CityCoreStateSuccess &&
+            other is _$CityCoreStateSuccessImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -566,9 +568,10 @@ class _$CityCoreStateSuccess implements CityCoreStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CityCoreStateSuccessCopyWith<_$CityCoreStateSuccess> get copyWith =>
-      __$$CityCoreStateSuccessCopyWithImpl<_$CityCoreStateSuccess>(
-          this, _$identity);
+  _$$CityCoreStateSuccessImplCopyWith<_$CityCoreStateSuccessImpl>
+      get copyWith =>
+          __$$CityCoreStateSuccessImplCopyWithImpl<_$CityCoreStateSuccessImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -659,29 +662,29 @@ class _$CityCoreStateSuccess implements CityCoreStateSuccess {
 
 abstract class CityCoreStateSuccess implements CityCoreState {
   const factory CityCoreStateSuccess(final String message) =
-      _$CityCoreStateSuccess;
+      _$CityCoreStateSuccessImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$CityCoreStateSuccessCopyWith<_$CityCoreStateSuccess> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$CityCoreStateSuccessImplCopyWith<_$CityCoreStateSuccessImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CityCoreStateCitiesCopyWith<$Res> {
-  factory _$$CityCoreStateCitiesCopyWith(_$CityCoreStateCities value,
-          $Res Function(_$CityCoreStateCities) then) =
-      __$$CityCoreStateCitiesCopyWithImpl<$Res>;
+abstract class _$$CityCoreStateCitiesImplCopyWith<$Res> {
+  factory _$$CityCoreStateCitiesImplCopyWith(_$CityCoreStateCitiesImpl value,
+          $Res Function(_$CityCoreStateCitiesImpl) then) =
+      __$$CityCoreStateCitiesImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<City> cities});
 }
 
 /// @nodoc
-class __$$CityCoreStateCitiesCopyWithImpl<$Res>
-    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateCities>
-    implements _$$CityCoreStateCitiesCopyWith<$Res> {
-  __$$CityCoreStateCitiesCopyWithImpl(
-      _$CityCoreStateCities _value, $Res Function(_$CityCoreStateCities) _then)
+class __$$CityCoreStateCitiesImplCopyWithImpl<$Res>
+    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateCitiesImpl>
+    implements _$$CityCoreStateCitiesImplCopyWith<$Res> {
+  __$$CityCoreStateCitiesImplCopyWithImpl(_$CityCoreStateCitiesImpl _value,
+      $Res Function(_$CityCoreStateCitiesImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -689,7 +692,7 @@ class __$$CityCoreStateCitiesCopyWithImpl<$Res>
   $Res call({
     Object? cities = null,
   }) {
-    return _then(_$CityCoreStateCities(
+    return _then(_$CityCoreStateCitiesImpl(
       null == cities
           ? _value._cities
           : cities // ignore: cast_nullable_to_non_nullable
@@ -700,8 +703,8 @@ class __$$CityCoreStateCitiesCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CityCoreStateCities implements CityCoreStateCities {
-  const _$CityCoreStateCities(final List<City> cities) : _cities = cities;
+class _$CityCoreStateCitiesImpl implements CityCoreStateCities {
+  const _$CityCoreStateCitiesImpl(final List<City> cities) : _cities = cities;
 
   final List<City> _cities;
   @override
@@ -717,10 +720,10 @@ class _$CityCoreStateCities implements CityCoreStateCities {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CityCoreStateCities &&
+            other is _$CityCoreStateCitiesImpl &&
             const DeepCollectionEquality().equals(other._cities, _cities));
   }
 
@@ -731,8 +734,8 @@ class _$CityCoreStateCities implements CityCoreStateCities {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CityCoreStateCitiesCopyWith<_$CityCoreStateCities> get copyWith =>
-      __$$CityCoreStateCitiesCopyWithImpl<_$CityCoreStateCities>(
+  _$$CityCoreStateCitiesImplCopyWith<_$CityCoreStateCitiesImpl> get copyWith =>
+      __$$CityCoreStateCitiesImplCopyWithImpl<_$CityCoreStateCitiesImpl>(
           this, _$identity);
 
   @override
@@ -824,29 +827,31 @@ class _$CityCoreStateCities implements CityCoreStateCities {
 
 abstract class CityCoreStateCities implements CityCoreState {
   const factory CityCoreStateCities(final List<City> cities) =
-      _$CityCoreStateCities;
+      _$CityCoreStateCitiesImpl;
 
   List<City> get cities;
   @JsonKey(ignore: true)
-  _$$CityCoreStateCitiesCopyWith<_$CityCoreStateCities> get copyWith =>
+  _$$CityCoreStateCitiesImplCopyWith<_$CityCoreStateCitiesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CityCoreStateCountriesCopyWith<$Res> {
-  factory _$$CityCoreStateCountriesCopyWith(_$CityCoreStateCountries value,
-          $Res Function(_$CityCoreStateCountries) then) =
-      __$$CityCoreStateCountriesCopyWithImpl<$Res>;
+abstract class _$$CityCoreStateCountriesImplCopyWith<$Res> {
+  factory _$$CityCoreStateCountriesImplCopyWith(
+          _$CityCoreStateCountriesImpl value,
+          $Res Function(_$CityCoreStateCountriesImpl) then) =
+      __$$CityCoreStateCountriesImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Country> countries});
 }
 
 /// @nodoc
-class __$$CityCoreStateCountriesCopyWithImpl<$Res>
-    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateCountries>
-    implements _$$CityCoreStateCountriesCopyWith<$Res> {
-  __$$CityCoreStateCountriesCopyWithImpl(_$CityCoreStateCountries _value,
-      $Res Function(_$CityCoreStateCountries) _then)
+class __$$CityCoreStateCountriesImplCopyWithImpl<$Res>
+    extends _$CityCoreStateCopyWithImpl<$Res, _$CityCoreStateCountriesImpl>
+    implements _$$CityCoreStateCountriesImplCopyWith<$Res> {
+  __$$CityCoreStateCountriesImplCopyWithImpl(
+      _$CityCoreStateCountriesImpl _value,
+      $Res Function(_$CityCoreStateCountriesImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -854,7 +859,7 @@ class __$$CityCoreStateCountriesCopyWithImpl<$Res>
   $Res call({
     Object? countries = null,
   }) {
-    return _then(_$CityCoreStateCountries(
+    return _then(_$CityCoreStateCountriesImpl(
       null == countries
           ? _value._countries
           : countries // ignore: cast_nullable_to_non_nullable
@@ -865,8 +870,8 @@ class __$$CityCoreStateCountriesCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CityCoreStateCountries implements CityCoreStateCountries {
-  const _$CityCoreStateCountries(final List<Country> countries)
+class _$CityCoreStateCountriesImpl implements CityCoreStateCountries {
+  const _$CityCoreStateCountriesImpl(final List<Country> countries)
       : _countries = countries;
 
   final List<Country> _countries;
@@ -883,10 +888,10 @@ class _$CityCoreStateCountries implements CityCoreStateCountries {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CityCoreStateCountries &&
+            other is _$CityCoreStateCountriesImpl &&
             const DeepCollectionEquality()
                 .equals(other._countries, _countries));
   }
@@ -898,9 +903,9 @@ class _$CityCoreStateCountries implements CityCoreStateCountries {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CityCoreStateCountriesCopyWith<_$CityCoreStateCountries> get copyWith =>
-      __$$CityCoreStateCountriesCopyWithImpl<_$CityCoreStateCountries>(
-          this, _$identity);
+  _$$CityCoreStateCountriesImplCopyWith<_$CityCoreStateCountriesImpl>
+      get copyWith => __$$CityCoreStateCountriesImplCopyWithImpl<
+          _$CityCoreStateCountriesImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -991,10 +996,10 @@ class _$CityCoreStateCountries implements CityCoreStateCountries {
 
 abstract class CityCoreStateCountries implements CityCoreState {
   const factory CityCoreStateCountries(final List<Country> countries) =
-      _$CityCoreStateCountries;
+      _$CityCoreStateCountriesImpl;
 
   List<Country> get countries;
   @JsonKey(ignore: true)
-  _$$CityCoreStateCountriesCopyWith<_$CityCoreStateCountries> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$CityCoreStateCountriesImplCopyWith<_$CityCoreStateCountriesImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

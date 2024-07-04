@@ -99,25 +99,26 @@ class _$SahayPaymentStateCopyWithImpl<$Res, $Val extends SahayPaymentState>
 }
 
 /// @nodoc
-abstract class _$$SahayPaymentStateInitCopyWith<$Res> {
-  factory _$$SahayPaymentStateInitCopyWith(_$SahayPaymentStateInit value,
-          $Res Function(_$SahayPaymentStateInit) then) =
-      __$$SahayPaymentStateInitCopyWithImpl<$Res>;
+abstract class _$$SahayPaymentStateInitImplCopyWith<$Res> {
+  factory _$$SahayPaymentStateInitImplCopyWith(
+          _$SahayPaymentStateInitImpl value,
+          $Res Function(_$SahayPaymentStateInitImpl) then) =
+      __$$SahayPaymentStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SahayPaymentStateInitCopyWithImpl<$Res>
-    extends _$SahayPaymentStateCopyWithImpl<$Res, _$SahayPaymentStateInit>
-    implements _$$SahayPaymentStateInitCopyWith<$Res> {
-  __$$SahayPaymentStateInitCopyWithImpl(_$SahayPaymentStateInit _value,
-      $Res Function(_$SahayPaymentStateInit) _then)
+class __$$SahayPaymentStateInitImplCopyWithImpl<$Res>
+    extends _$SahayPaymentStateCopyWithImpl<$Res, _$SahayPaymentStateInitImpl>
+    implements _$$SahayPaymentStateInitImplCopyWith<$Res> {
+  __$$SahayPaymentStateInitImplCopyWithImpl(_$SahayPaymentStateInitImpl _value,
+      $Res Function(_$SahayPaymentStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SahayPaymentStateInit implements SahayPaymentStateInit {
-  const _$SahayPaymentStateInit();
+class _$SahayPaymentStateInitImpl implements SahayPaymentStateInit {
+  const _$SahayPaymentStateInitImpl();
 
   @override
   String toString() {
@@ -125,9 +126,10 @@ class _$SahayPaymentStateInit implements SahayPaymentStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SahayPaymentStateInit);
+        (other.runtimeType == runtimeType &&
+            other is _$SahayPaymentStateInitImpl);
   }
 
   @override
@@ -221,29 +223,32 @@ class _$SahayPaymentStateInit implements SahayPaymentStateInit {
 }
 
 abstract class SahayPaymentStateInit implements SahayPaymentState {
-  const factory SahayPaymentStateInit() = _$SahayPaymentStateInit;
+  const factory SahayPaymentStateInit() = _$SahayPaymentStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$SahayPaymentStateLoadingCopyWith<$Res> {
-  factory _$$SahayPaymentStateLoadingCopyWith(_$SahayPaymentStateLoading value,
-          $Res Function(_$SahayPaymentStateLoading) then) =
-      __$$SahayPaymentStateLoadingCopyWithImpl<$Res>;
+abstract class _$$SahayPaymentStateLoadingImplCopyWith<$Res> {
+  factory _$$SahayPaymentStateLoadingImplCopyWith(
+          _$SahayPaymentStateLoadingImpl value,
+          $Res Function(_$SahayPaymentStateLoadingImpl) then) =
+      __$$SahayPaymentStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SahayPaymentStateLoadingCopyWithImpl<$Res>
-    extends _$SahayPaymentStateCopyWithImpl<$Res, _$SahayPaymentStateLoading>
-    implements _$$SahayPaymentStateLoadingCopyWith<$Res> {
-  __$$SahayPaymentStateLoadingCopyWithImpl(_$SahayPaymentStateLoading _value,
-      $Res Function(_$SahayPaymentStateLoading) _then)
+class __$$SahayPaymentStateLoadingImplCopyWithImpl<$Res>
+    extends _$SahayPaymentStateCopyWithImpl<$Res,
+        _$SahayPaymentStateLoadingImpl>
+    implements _$$SahayPaymentStateLoadingImplCopyWith<$Res> {
+  __$$SahayPaymentStateLoadingImplCopyWithImpl(
+      _$SahayPaymentStateLoadingImpl _value,
+      $Res Function(_$SahayPaymentStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SahayPaymentStateLoading implements SahayPaymentStateLoading {
-  const _$SahayPaymentStateLoading();
+class _$SahayPaymentStateLoadingImpl implements SahayPaymentStateLoading {
+  const _$SahayPaymentStateLoadingImpl();
 
   @override
   String toString() {
@@ -251,10 +256,10 @@ class _$SahayPaymentStateLoading implements SahayPaymentStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SahayPaymentStateLoading);
+            other is _$SahayPaymentStateLoadingImpl);
   }
 
   @override
@@ -348,24 +353,26 @@ class _$SahayPaymentStateLoading implements SahayPaymentStateLoading {
 }
 
 abstract class SahayPaymentStateLoading implements SahayPaymentState {
-  const factory SahayPaymentStateLoading() = _$SahayPaymentStateLoading;
+  const factory SahayPaymentStateLoading() = _$SahayPaymentStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$SahayPaymentStateErrorCopyWith<$Res> {
-  factory _$$SahayPaymentStateErrorCopyWith(_$SahayPaymentStateError value,
-          $Res Function(_$SahayPaymentStateError) then) =
-      __$$SahayPaymentStateErrorCopyWithImpl<$Res>;
+abstract class _$$SahayPaymentStateErrorImplCopyWith<$Res> {
+  factory _$$SahayPaymentStateErrorImplCopyWith(
+          _$SahayPaymentStateErrorImpl value,
+          $Res Function(_$SahayPaymentStateErrorImpl) then) =
+      __$$SahayPaymentStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$SahayPaymentStateErrorCopyWithImpl<$Res>
-    extends _$SahayPaymentStateCopyWithImpl<$Res, _$SahayPaymentStateError>
-    implements _$$SahayPaymentStateErrorCopyWith<$Res> {
-  __$$SahayPaymentStateErrorCopyWithImpl(_$SahayPaymentStateError _value,
-      $Res Function(_$SahayPaymentStateError) _then)
+class __$$SahayPaymentStateErrorImplCopyWithImpl<$Res>
+    extends _$SahayPaymentStateCopyWithImpl<$Res, _$SahayPaymentStateErrorImpl>
+    implements _$$SahayPaymentStateErrorImplCopyWith<$Res> {
+  __$$SahayPaymentStateErrorImplCopyWithImpl(
+      _$SahayPaymentStateErrorImpl _value,
+      $Res Function(_$SahayPaymentStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -373,7 +380,7 @@ class __$$SahayPaymentStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$SahayPaymentStateError(
+    return _then(_$SahayPaymentStateErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -384,8 +391,8 @@ class __$$SahayPaymentStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SahayPaymentStateError implements SahayPaymentStateError {
-  const _$SahayPaymentStateError(this.message);
+class _$SahayPaymentStateErrorImpl implements SahayPaymentStateError {
+  const _$SahayPaymentStateErrorImpl(this.message);
 
   @override
   final String message;
@@ -396,10 +403,10 @@ class _$SahayPaymentStateError implements SahayPaymentStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SahayPaymentStateError &&
+            other is _$SahayPaymentStateErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -409,9 +416,9 @@ class _$SahayPaymentStateError implements SahayPaymentStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SahayPaymentStateErrorCopyWith<_$SahayPaymentStateError> get copyWith =>
-      __$$SahayPaymentStateErrorCopyWithImpl<_$SahayPaymentStateError>(
-          this, _$identity);
+  _$$SahayPaymentStateErrorImplCopyWith<_$SahayPaymentStateErrorImpl>
+      get copyWith => __$$SahayPaymentStateErrorImplCopyWithImpl<
+          _$SahayPaymentStateErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -502,32 +509,32 @@ class _$SahayPaymentStateError implements SahayPaymentStateError {
 
 abstract class SahayPaymentStateError implements SahayPaymentState {
   const factory SahayPaymentStateError(final String message) =
-      _$SahayPaymentStateError;
+      _$SahayPaymentStateErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$SahayPaymentStateErrorCopyWith<_$SahayPaymentStateError> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$SahayPaymentStateErrorImplCopyWith<_$SahayPaymentStateErrorImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SahayPaymentStateConfirmationCopyWith<$Res> {
-  factory _$$SahayPaymentStateConfirmationCopyWith(
-          _$SahayPaymentStateConfirmation value,
-          $Res Function(_$SahayPaymentStateConfirmation) then) =
-      __$$SahayPaymentStateConfirmationCopyWithImpl<$Res>;
+abstract class _$$SahayPaymentStateConfirmationImplCopyWith<$Res> {
+  factory _$$SahayPaymentStateConfirmationImplCopyWith(
+          _$SahayPaymentStateConfirmationImpl value,
+          $Res Function(_$SahayPaymentStateConfirmationImpl) then) =
+      __$$SahayPaymentStateConfirmationImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String name});
 }
 
 /// @nodoc
-class __$$SahayPaymentStateConfirmationCopyWithImpl<$Res>
+class __$$SahayPaymentStateConfirmationImplCopyWithImpl<$Res>
     extends _$SahayPaymentStateCopyWithImpl<$Res,
-        _$SahayPaymentStateConfirmation>
-    implements _$$SahayPaymentStateConfirmationCopyWith<$Res> {
-  __$$SahayPaymentStateConfirmationCopyWithImpl(
-      _$SahayPaymentStateConfirmation _value,
-      $Res Function(_$SahayPaymentStateConfirmation) _then)
+        _$SahayPaymentStateConfirmationImpl>
+    implements _$$SahayPaymentStateConfirmationImplCopyWith<$Res> {
+  __$$SahayPaymentStateConfirmationImplCopyWithImpl(
+      _$SahayPaymentStateConfirmationImpl _value,
+      $Res Function(_$SahayPaymentStateConfirmationImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -535,7 +542,7 @@ class __$$SahayPaymentStateConfirmationCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
   }) {
-    return _then(_$SahayPaymentStateConfirmation(
+    return _then(_$SahayPaymentStateConfirmationImpl(
       null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -546,8 +553,9 @@ class __$$SahayPaymentStateConfirmationCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SahayPaymentStateConfirmation implements SahayPaymentStateConfirmation {
-  const _$SahayPaymentStateConfirmation(this.name);
+class _$SahayPaymentStateConfirmationImpl
+    implements SahayPaymentStateConfirmation {
+  const _$SahayPaymentStateConfirmationImpl(this.name);
 
   @override
   final String name;
@@ -558,10 +566,10 @@ class _$SahayPaymentStateConfirmation implements SahayPaymentStateConfirmation {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SahayPaymentStateConfirmation &&
+            other is _$SahayPaymentStateConfirmationImpl &&
             (identical(other.name, name) || other.name == name));
   }
 
@@ -571,9 +579,10 @@ class _$SahayPaymentStateConfirmation implements SahayPaymentStateConfirmation {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SahayPaymentStateConfirmationCopyWith<_$SahayPaymentStateConfirmation>
-      get copyWith => __$$SahayPaymentStateConfirmationCopyWithImpl<
-          _$SahayPaymentStateConfirmation>(this, _$identity);
+  _$$SahayPaymentStateConfirmationImplCopyWith<
+          _$SahayPaymentStateConfirmationImpl>
+      get copyWith => __$$SahayPaymentStateConfirmationImplCopyWithImpl<
+          _$SahayPaymentStateConfirmationImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -664,34 +673,35 @@ class _$SahayPaymentStateConfirmation implements SahayPaymentStateConfirmation {
 
 abstract class SahayPaymentStateConfirmation implements SahayPaymentState {
   const factory SahayPaymentStateConfirmation(final String name) =
-      _$SahayPaymentStateConfirmation;
+      _$SahayPaymentStateConfirmationImpl;
 
   String get name;
   @JsonKey(ignore: true)
-  _$$SahayPaymentStateConfirmationCopyWith<_$SahayPaymentStateConfirmation>
+  _$$SahayPaymentStateConfirmationImplCopyWith<
+          _$SahayPaymentStateConfirmationImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SahayPaymentStateOtpCopyWith<$Res> {
-  factory _$$SahayPaymentStateOtpCopyWith(_$SahayPaymentStateOtp value,
-          $Res Function(_$SahayPaymentStateOtp) then) =
-      __$$SahayPaymentStateOtpCopyWithImpl<$Res>;
+abstract class _$$SahayPaymentStateOtpImplCopyWith<$Res> {
+  factory _$$SahayPaymentStateOtpImplCopyWith(_$SahayPaymentStateOtpImpl value,
+          $Res Function(_$SahayPaymentStateOtpImpl) then) =
+      __$$SahayPaymentStateOtpImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SahayPaymentStateOtpCopyWithImpl<$Res>
-    extends _$SahayPaymentStateCopyWithImpl<$Res, _$SahayPaymentStateOtp>
-    implements _$$SahayPaymentStateOtpCopyWith<$Res> {
-  __$$SahayPaymentStateOtpCopyWithImpl(_$SahayPaymentStateOtp _value,
-      $Res Function(_$SahayPaymentStateOtp) _then)
+class __$$SahayPaymentStateOtpImplCopyWithImpl<$Res>
+    extends _$SahayPaymentStateCopyWithImpl<$Res, _$SahayPaymentStateOtpImpl>
+    implements _$$SahayPaymentStateOtpImplCopyWith<$Res> {
+  __$$SahayPaymentStateOtpImplCopyWithImpl(_$SahayPaymentStateOtpImpl _value,
+      $Res Function(_$SahayPaymentStateOtpImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SahayPaymentStateOtp implements SahayPaymentStateOtp {
-  const _$SahayPaymentStateOtp();
+class _$SahayPaymentStateOtpImpl implements SahayPaymentStateOtp {
+  const _$SahayPaymentStateOtpImpl();
 
   @override
   String toString() {
@@ -699,9 +709,10 @@ class _$SahayPaymentStateOtp implements SahayPaymentStateOtp {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SahayPaymentStateOtp);
+        (other.runtimeType == runtimeType &&
+            other is _$SahayPaymentStateOtpImpl);
   }
 
   @override
@@ -795,24 +806,27 @@ class _$SahayPaymentStateOtp implements SahayPaymentStateOtp {
 }
 
 abstract class SahayPaymentStateOtp implements SahayPaymentState {
-  const factory SahayPaymentStateOtp() = _$SahayPaymentStateOtp;
+  const factory SahayPaymentStateOtp() = _$SahayPaymentStateOtpImpl;
 }
 
 /// @nodoc
-abstract class _$$SahayPaymentStateSuccessCopyWith<$Res> {
-  factory _$$SahayPaymentStateSuccessCopyWith(_$SahayPaymentStateSuccess value,
-          $Res Function(_$SahayPaymentStateSuccess) then) =
-      __$$SahayPaymentStateSuccessCopyWithImpl<$Res>;
+abstract class _$$SahayPaymentStateSuccessImplCopyWith<$Res> {
+  factory _$$SahayPaymentStateSuccessImplCopyWith(
+          _$SahayPaymentStateSuccessImpl value,
+          $Res Function(_$SahayPaymentStateSuccessImpl) then) =
+      __$$SahayPaymentStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$SahayPaymentStateSuccessCopyWithImpl<$Res>
-    extends _$SahayPaymentStateCopyWithImpl<$Res, _$SahayPaymentStateSuccess>
-    implements _$$SahayPaymentStateSuccessCopyWith<$Res> {
-  __$$SahayPaymentStateSuccessCopyWithImpl(_$SahayPaymentStateSuccess _value,
-      $Res Function(_$SahayPaymentStateSuccess) _then)
+class __$$SahayPaymentStateSuccessImplCopyWithImpl<$Res>
+    extends _$SahayPaymentStateCopyWithImpl<$Res,
+        _$SahayPaymentStateSuccessImpl>
+    implements _$$SahayPaymentStateSuccessImplCopyWith<$Res> {
+  __$$SahayPaymentStateSuccessImplCopyWithImpl(
+      _$SahayPaymentStateSuccessImpl _value,
+      $Res Function(_$SahayPaymentStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -820,7 +834,7 @@ class __$$SahayPaymentStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$SahayPaymentStateSuccess(
+    return _then(_$SahayPaymentStateSuccessImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -831,8 +845,8 @@ class __$$SahayPaymentStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SahayPaymentStateSuccess implements SahayPaymentStateSuccess {
-  const _$SahayPaymentStateSuccess(this.message);
+class _$SahayPaymentStateSuccessImpl implements SahayPaymentStateSuccess {
+  const _$SahayPaymentStateSuccessImpl(this.message);
 
   @override
   final String message;
@@ -843,10 +857,10 @@ class _$SahayPaymentStateSuccess implements SahayPaymentStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SahayPaymentStateSuccess &&
+            other is _$SahayPaymentStateSuccessImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -856,10 +870,9 @@ class _$SahayPaymentStateSuccess implements SahayPaymentStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SahayPaymentStateSuccessCopyWith<_$SahayPaymentStateSuccess>
-      get copyWith =>
-          __$$SahayPaymentStateSuccessCopyWithImpl<_$SahayPaymentStateSuccess>(
-              this, _$identity);
+  _$$SahayPaymentStateSuccessImplCopyWith<_$SahayPaymentStateSuccessImpl>
+      get copyWith => __$$SahayPaymentStateSuccessImplCopyWithImpl<
+          _$SahayPaymentStateSuccessImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -950,10 +963,10 @@ class _$SahayPaymentStateSuccess implements SahayPaymentStateSuccess {
 
 abstract class SahayPaymentStateSuccess implements SahayPaymentState {
   const factory SahayPaymentStateSuccess(final String message) =
-      _$SahayPaymentStateSuccess;
+      _$SahayPaymentStateSuccessImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$SahayPaymentStateSuccessCopyWith<_$SahayPaymentStateSuccess>
+  _$$SahayPaymentStateSuccessImplCopyWith<_$SahayPaymentStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -94,25 +94,25 @@ class _$DashboardStateCopyWithImpl<$Res, $Val extends DashboardState>
 }
 
 /// @nodoc
-abstract class _$$DashboardInitStateCopyWith<$Res> {
-  factory _$$DashboardInitStateCopyWith(_$DashboardInitState value,
-          $Res Function(_$DashboardInitState) then) =
-      __$$DashboardInitStateCopyWithImpl<$Res>;
+abstract class _$$DashboardInitStateImplCopyWith<$Res> {
+  factory _$$DashboardInitStateImplCopyWith(_$DashboardInitStateImpl value,
+          $Res Function(_$DashboardInitStateImpl) then) =
+      __$$DashboardInitStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DashboardInitStateCopyWithImpl<$Res>
-    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardInitState>
-    implements _$$DashboardInitStateCopyWith<$Res> {
-  __$$DashboardInitStateCopyWithImpl(
-      _$DashboardInitState _value, $Res Function(_$DashboardInitState) _then)
+class __$$DashboardInitStateImplCopyWithImpl<$Res>
+    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardInitStateImpl>
+    implements _$$DashboardInitStateImplCopyWith<$Res> {
+  __$$DashboardInitStateImplCopyWithImpl(_$DashboardInitStateImpl _value,
+      $Res Function(_$DashboardInitStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DashboardInitState implements DashboardInitState {
-  const _$DashboardInitState();
+class _$DashboardInitStateImpl implements DashboardInitState {
+  const _$DashboardInitStateImpl();
 
   @override
   String toString() {
@@ -120,9 +120,9 @@ class _$DashboardInitState implements DashboardInitState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DashboardInitState);
+        (other.runtimeType == runtimeType && other is _$DashboardInitStateImpl);
   }
 
   @override
@@ -211,29 +211,30 @@ class _$DashboardInitState implements DashboardInitState {
 }
 
 abstract class DashboardInitState implements DashboardState {
-  const factory DashboardInitState() = _$DashboardInitState;
+  const factory DashboardInitState() = _$DashboardInitStateImpl;
 }
 
 /// @nodoc
-abstract class _$$DashboardLoadingStateCopyWith<$Res> {
-  factory _$$DashboardLoadingStateCopyWith(_$DashboardLoadingState value,
-          $Res Function(_$DashboardLoadingState) then) =
-      __$$DashboardLoadingStateCopyWithImpl<$Res>;
+abstract class _$$DashboardLoadingStateImplCopyWith<$Res> {
+  factory _$$DashboardLoadingStateImplCopyWith(
+          _$DashboardLoadingStateImpl value,
+          $Res Function(_$DashboardLoadingStateImpl) then) =
+      __$$DashboardLoadingStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DashboardLoadingStateCopyWithImpl<$Res>
-    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardLoadingState>
-    implements _$$DashboardLoadingStateCopyWith<$Res> {
-  __$$DashboardLoadingStateCopyWithImpl(_$DashboardLoadingState _value,
-      $Res Function(_$DashboardLoadingState) _then)
+class __$$DashboardLoadingStateImplCopyWithImpl<$Res>
+    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardLoadingStateImpl>
+    implements _$$DashboardLoadingStateImplCopyWith<$Res> {
+  __$$DashboardLoadingStateImplCopyWithImpl(_$DashboardLoadingStateImpl _value,
+      $Res Function(_$DashboardLoadingStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DashboardLoadingState implements DashboardLoadingState {
-  const _$DashboardLoadingState();
+class _$DashboardLoadingStateImpl implements DashboardLoadingState {
+  const _$DashboardLoadingStateImpl();
 
   @override
   String toString() {
@@ -241,9 +242,10 @@ class _$DashboardLoadingState implements DashboardLoadingState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DashboardLoadingState);
+        (other.runtimeType == runtimeType &&
+            other is _$DashboardLoadingStateImpl);
   }
 
   @override
@@ -332,24 +334,26 @@ class _$DashboardLoadingState implements DashboardLoadingState {
 }
 
 abstract class DashboardLoadingState implements DashboardState {
-  const factory DashboardLoadingState() = _$DashboardLoadingState;
+  const factory DashboardLoadingState() = _$DashboardLoadingStateImpl;
 }
 
 /// @nodoc
-abstract class _$$DashboardBusinessStateCopyWith<$Res> {
-  factory _$$DashboardBusinessStateCopyWith(_$DashboardBusinessState value,
-          $Res Function(_$DashboardBusinessState) then) =
-      __$$DashboardBusinessStateCopyWithImpl<$Res>;
+abstract class _$$DashboardBusinessStateImplCopyWith<$Res> {
+  factory _$$DashboardBusinessStateImplCopyWith(
+          _$DashboardBusinessStateImpl value,
+          $Res Function(_$DashboardBusinessStateImpl) then) =
+      __$$DashboardBusinessStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool isBusiness});
 }
 
 /// @nodoc
-class __$$DashboardBusinessStateCopyWithImpl<$Res>
-    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardBusinessState>
-    implements _$$DashboardBusinessStateCopyWith<$Res> {
-  __$$DashboardBusinessStateCopyWithImpl(_$DashboardBusinessState _value,
-      $Res Function(_$DashboardBusinessState) _then)
+class __$$DashboardBusinessStateImplCopyWithImpl<$Res>
+    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardBusinessStateImpl>
+    implements _$$DashboardBusinessStateImplCopyWith<$Res> {
+  __$$DashboardBusinessStateImplCopyWithImpl(
+      _$DashboardBusinessStateImpl _value,
+      $Res Function(_$DashboardBusinessStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -357,7 +361,7 @@ class __$$DashboardBusinessStateCopyWithImpl<$Res>
   $Res call({
     Object? isBusiness = null,
   }) {
-    return _then(_$DashboardBusinessState(
+    return _then(_$DashboardBusinessStateImpl(
       null == isBusiness
           ? _value.isBusiness
           : isBusiness // ignore: cast_nullable_to_non_nullable
@@ -368,8 +372,8 @@ class __$$DashboardBusinessStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DashboardBusinessState implements DashboardBusinessState {
-  const _$DashboardBusinessState(this.isBusiness);
+class _$DashboardBusinessStateImpl implements DashboardBusinessState {
+  const _$DashboardBusinessStateImpl(this.isBusiness);
 
   @override
   final bool isBusiness;
@@ -380,10 +384,10 @@ class _$DashboardBusinessState implements DashboardBusinessState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DashboardBusinessState &&
+            other is _$DashboardBusinessStateImpl &&
             (identical(other.isBusiness, isBusiness) ||
                 other.isBusiness == isBusiness));
   }
@@ -394,9 +398,9 @@ class _$DashboardBusinessState implements DashboardBusinessState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DashboardBusinessStateCopyWith<_$DashboardBusinessState> get copyWith =>
-      __$$DashboardBusinessStateCopyWithImpl<_$DashboardBusinessState>(
-          this, _$identity);
+  _$$DashboardBusinessStateImplCopyWith<_$DashboardBusinessStateImpl>
+      get copyWith => __$$DashboardBusinessStateImplCopyWithImpl<
+          _$DashboardBusinessStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -482,29 +486,30 @@ class _$DashboardBusinessState implements DashboardBusinessState {
 
 abstract class DashboardBusinessState implements DashboardState {
   const factory DashboardBusinessState(final bool isBusiness) =
-      _$DashboardBusinessState;
+      _$DashboardBusinessStateImpl;
 
   bool get isBusiness;
   @JsonKey(ignore: true)
-  _$$DashboardBusinessStateCopyWith<_$DashboardBusinessState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$DashboardBusinessStateImplCopyWith<_$DashboardBusinessStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DashboardSuccessStateCopyWith<$Res> {
-  factory _$$DashboardSuccessStateCopyWith(_$DashboardSuccessState value,
-          $Res Function(_$DashboardSuccessState) then) =
-      __$$DashboardSuccessStateCopyWithImpl<$Res>;
+abstract class _$$DashboardSuccessStateImplCopyWith<$Res> {
+  factory _$$DashboardSuccessStateImplCopyWith(
+          _$DashboardSuccessStateImpl value,
+          $Res Function(_$DashboardSuccessStateImpl) then) =
+      __$$DashboardSuccessStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$DashboardSuccessStateCopyWithImpl<$Res>
-    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardSuccessState>
-    implements _$$DashboardSuccessStateCopyWith<$Res> {
-  __$$DashboardSuccessStateCopyWithImpl(_$DashboardSuccessState _value,
-      $Res Function(_$DashboardSuccessState) _then)
+class __$$DashboardSuccessStateImplCopyWithImpl<$Res>
+    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardSuccessStateImpl>
+    implements _$$DashboardSuccessStateImplCopyWith<$Res> {
+  __$$DashboardSuccessStateImplCopyWithImpl(_$DashboardSuccessStateImpl _value,
+      $Res Function(_$DashboardSuccessStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -512,7 +517,7 @@ class __$$DashboardSuccessStateCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$DashboardSuccessState(
+    return _then(_$DashboardSuccessStateImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -523,8 +528,8 @@ class __$$DashboardSuccessStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DashboardSuccessState implements DashboardSuccessState {
-  const _$DashboardSuccessState(this.message);
+class _$DashboardSuccessStateImpl implements DashboardSuccessState {
+  const _$DashboardSuccessStateImpl(this.message);
 
   @override
   final String message;
@@ -535,10 +540,10 @@ class _$DashboardSuccessState implements DashboardSuccessState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DashboardSuccessState &&
+            other is _$DashboardSuccessStateImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -548,9 +553,9 @@ class _$DashboardSuccessState implements DashboardSuccessState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DashboardSuccessStateCopyWith<_$DashboardSuccessState> get copyWith =>
-      __$$DashboardSuccessStateCopyWithImpl<_$DashboardSuccessState>(
-          this, _$identity);
+  _$$DashboardSuccessStateImplCopyWith<_$DashboardSuccessStateImpl>
+      get copyWith => __$$DashboardSuccessStateImplCopyWithImpl<
+          _$DashboardSuccessStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -636,31 +641,31 @@ class _$DashboardSuccessState implements DashboardSuccessState {
 
 abstract class DashboardSuccessState implements DashboardState {
   const factory DashboardSuccessState(final String message) =
-      _$DashboardSuccessState;
+      _$DashboardSuccessStateImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$DashboardSuccessStateCopyWith<_$DashboardSuccessState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$DashboardSuccessStateImplCopyWith<_$DashboardSuccessStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DashboardUserSwicthedStateCopyWith<$Res> {
-  factory _$$DashboardUserSwicthedStateCopyWith(
-          _$DashboardUserSwicthedState value,
-          $Res Function(_$DashboardUserSwicthedState) then) =
-      __$$DashboardUserSwicthedStateCopyWithImpl<$Res>;
+abstract class _$$DashboardUserSwicthedStateImplCopyWith<$Res> {
+  factory _$$DashboardUserSwicthedStateImplCopyWith(
+          _$DashboardUserSwicthedStateImpl value,
+          $Res Function(_$DashboardUserSwicthedStateImpl) then) =
+      __$$DashboardUserSwicthedStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool switched});
 }
 
 /// @nodoc
-class __$$DashboardUserSwicthedStateCopyWithImpl<$Res>
-    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardUserSwicthedState>
-    implements _$$DashboardUserSwicthedStateCopyWith<$Res> {
-  __$$DashboardUserSwicthedStateCopyWithImpl(
-      _$DashboardUserSwicthedState _value,
-      $Res Function(_$DashboardUserSwicthedState) _then)
+class __$$DashboardUserSwicthedStateImplCopyWithImpl<$Res>
+    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardUserSwicthedStateImpl>
+    implements _$$DashboardUserSwicthedStateImplCopyWith<$Res> {
+  __$$DashboardUserSwicthedStateImplCopyWithImpl(
+      _$DashboardUserSwicthedStateImpl _value,
+      $Res Function(_$DashboardUserSwicthedStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -668,7 +673,7 @@ class __$$DashboardUserSwicthedStateCopyWithImpl<$Res>
   $Res call({
     Object? switched = null,
   }) {
-    return _then(_$DashboardUserSwicthedState(
+    return _then(_$DashboardUserSwicthedStateImpl(
       null == switched
           ? _value.switched
           : switched // ignore: cast_nullable_to_non_nullable
@@ -679,8 +684,8 @@ class __$$DashboardUserSwicthedStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DashboardUserSwicthedState implements DashboardUserSwicthedState {
-  const _$DashboardUserSwicthedState(this.switched);
+class _$DashboardUserSwicthedStateImpl implements DashboardUserSwicthedState {
+  const _$DashboardUserSwicthedStateImpl(this.switched);
 
   @override
   final bool switched;
@@ -691,10 +696,10 @@ class _$DashboardUserSwicthedState implements DashboardUserSwicthedState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DashboardUserSwicthedState &&
+            other is _$DashboardUserSwicthedStateImpl &&
             (identical(other.switched, switched) ||
                 other.switched == switched));
   }
@@ -705,9 +710,9 @@ class _$DashboardUserSwicthedState implements DashboardUserSwicthedState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DashboardUserSwicthedStateCopyWith<_$DashboardUserSwicthedState>
-      get copyWith => __$$DashboardUserSwicthedStateCopyWithImpl<
-          _$DashboardUserSwicthedState>(this, _$identity);
+  _$$DashboardUserSwicthedStateImplCopyWith<_$DashboardUserSwicthedStateImpl>
+      get copyWith => __$$DashboardUserSwicthedStateImplCopyWithImpl<
+          _$DashboardUserSwicthedStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -793,10 +798,10 @@ class _$DashboardUserSwicthedState implements DashboardUserSwicthedState {
 
 abstract class DashboardUserSwicthedState implements DashboardState {
   const factory DashboardUserSwicthedState(final bool switched) =
-      _$DashboardUserSwicthedState;
+      _$DashboardUserSwicthedStateImpl;
 
   bool get switched;
   @JsonKey(ignore: true)
-  _$$DashboardUserSwicthedStateCopyWith<_$DashboardUserSwicthedState>
+  _$$DashboardUserSwicthedStateImplCopyWith<_$DashboardUserSwicthedStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

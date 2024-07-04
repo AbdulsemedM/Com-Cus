@@ -188,7 +188,7 @@ class _ValidatePhoneEmailPageState extends State<ValidatePhoneEmailPage>
       enabled: _phoneNumber != null,
       validator: (v) {
         if (v?.isEmpty == true) {
-          return "Email is required";
+          return "Phone number is required";
         }
         return null;
       },
@@ -198,7 +198,7 @@ class _ValidatePhoneEmailPageState extends State<ValidatePhoneEmailPage>
           _email = value;
         });
       },
-      decoration: buildInputDecoration("Email"),
+      decoration: buildInputDecoration("Phone number"),
     );
   }
 

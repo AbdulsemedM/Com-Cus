@@ -12,15 +12,20 @@ class AuthModel {
   AuthModel({
     String? userToken,
     this.isPhoneValidated,
+    this.isEmailProvided,
     this.isEmailValidated,
     num? changePin,
     String? refreshToken,
     String? phoneNumber,
+    num? isPhoneProvided,
+    // num? isEmailProvided,
   }) {
     _userToken = userToken;
     _changePin = changePin;
     _refreshToken = refreshToken;
     _phoneNumber = phoneNumber;
+    isPhoneProvided = isPhoneProvided;
+    isPhoneProvided = isEmailProvided;
   }
 
   AuthModel.fromJson(dynamic json) {
@@ -29,6 +34,9 @@ class AuthModel {
     isEmailValidated = json['isEmailValidated'];
     _changePin = json['changePin'];
     _refreshToken = json['refreshToken'];
+    _refreshToken = json['refreshToken'];
+    isPhoneProvided = json['isPhoneProvided'];
+    isEmailProvided = json['isEmailProvided'];
     if (json['phoneNumber'] != null) _phoneNumber = json['phoneNumber'];
   }
 
@@ -38,6 +46,8 @@ class AuthModel {
   num? _changePin;
   String? _refreshToken;
   String? _phoneNumber;
+  num? isPhoneProvided;
+  num? isEmailProvided;
 
   AuthModel copyWith({
     String? userToken,
@@ -45,6 +55,8 @@ class AuthModel {
     num? isEmailValidated,
     num? changePin,
     String? refreshToken,
+    num? isPhoneProvided,
+    num? isEmailProvided,
   }) =>
       AuthModel(
         userToken: userToken ?? _userToken,
@@ -52,6 +64,8 @@ class AuthModel {
         isEmailValidated: isEmailValidated ?? this.isEmailValidated,
         changePin: changePin ?? _changePin,
         refreshToken: refreshToken ?? _refreshToken,
+        isPhoneProvided: isPhoneProvided ?? isPhoneProvided,
+        isEmailProvided: isEmailProvided ?? isEmailProvided,
       );
 
   String? get userToken => _userToken;

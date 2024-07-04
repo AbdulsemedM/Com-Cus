@@ -12,6 +12,7 @@ import 'package:commercepal/features/forgot_password/forgot_password.dart';
 import 'package:commercepal/features/login/data/social_media_login.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_cubit.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_state.dart';
+import 'package:commercepal/features/login/provide_phoneNumber_dialog.dart/provide_phoneNumber.dart';
 import 'package:commercepal/features/reset_password/presentation/reset_pass_page.dart';
 import 'package:commercepal/features/set_password/presentation/user_set_password_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
@@ -83,10 +84,10 @@ class _LoginPageState extends State<LoginPage> {
     print(facebookAuthCredential);
     var userData = await FacebookAuth.instance.getUserData();
     print("hereistheemail");
-    final String firstName = userData['name'];
+    final String firstName = userData['name'] ?? "";
     // final String lastName = userData['last_name'];
-    final String email = userData['email'];
-    final String id = userData['id'];
+    final String email = userData['email'] ?? "";
+    final String id = userData['id'] ?? "";
     print(firstName);
     // print(lastName);
     print(email);
@@ -256,6 +257,19 @@ class _LoginPageState extends State<LoginPage> {
             if (state is LoginStateSetPin) {
               Navigator.pushNamed(context, UserSetPasswordPage.routeName,
                   arguments: {"phone": state.phoneNumber, "code": _pass});
+            }
+            if (state is LoginStateprovidePhone) {
+              var result = showDialog(
+                  context: context,
+                  builder: (context) {
+                    return ProvidePhoneNumberDialog(
+                      provide: state.provide,
+                    );
+                  });
+              // if (result != null) {
+              //   Navigator.pushNamedAndRemoveUntil(
+              //       context, DashboardPage.routeName, (route) => false);
+              // }
             }
           },
           builder: (ctx, state) {

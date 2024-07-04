@@ -93,25 +93,26 @@ class _$SpecialOrderStateCopyWithImpl<$Res, $Val extends SpecialOrderState>
 }
 
 /// @nodoc
-abstract class _$$SpecialOrderStateInitCopyWith<$Res> {
-  factory _$$SpecialOrderStateInitCopyWith(_$SpecialOrderStateInit value,
-          $Res Function(_$SpecialOrderStateInit) then) =
-      __$$SpecialOrderStateInitCopyWithImpl<$Res>;
+abstract class _$$SpecialOrderStateInitImplCopyWith<$Res> {
+  factory _$$SpecialOrderStateInitImplCopyWith(
+          _$SpecialOrderStateInitImpl value,
+          $Res Function(_$SpecialOrderStateInitImpl) then) =
+      __$$SpecialOrderStateInitImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SpecialOrderStateInitCopyWithImpl<$Res>
-    extends _$SpecialOrderStateCopyWithImpl<$Res, _$SpecialOrderStateInit>
-    implements _$$SpecialOrderStateInitCopyWith<$Res> {
-  __$$SpecialOrderStateInitCopyWithImpl(_$SpecialOrderStateInit _value,
-      $Res Function(_$SpecialOrderStateInit) _then)
+class __$$SpecialOrderStateInitImplCopyWithImpl<$Res>
+    extends _$SpecialOrderStateCopyWithImpl<$Res, _$SpecialOrderStateInitImpl>
+    implements _$$SpecialOrderStateInitImplCopyWith<$Res> {
+  __$$SpecialOrderStateInitImplCopyWithImpl(_$SpecialOrderStateInitImpl _value,
+      $Res Function(_$SpecialOrderStateInitImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SpecialOrderStateInit implements SpecialOrderStateInit {
-  const _$SpecialOrderStateInit();
+class _$SpecialOrderStateInitImpl implements SpecialOrderStateInit {
+  const _$SpecialOrderStateInitImpl();
 
   @override
   String toString() {
@@ -119,9 +120,10 @@ class _$SpecialOrderStateInit implements SpecialOrderStateInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SpecialOrderStateInit);
+        (other.runtimeType == runtimeType &&
+            other is _$SpecialOrderStateInitImpl);
   }
 
   @override
@@ -209,29 +211,32 @@ class _$SpecialOrderStateInit implements SpecialOrderStateInit {
 }
 
 abstract class SpecialOrderStateInit implements SpecialOrderState {
-  const factory SpecialOrderStateInit() = _$SpecialOrderStateInit;
+  const factory SpecialOrderStateInit() = _$SpecialOrderStateInitImpl;
 }
 
 /// @nodoc
-abstract class _$$SpecialOrderStateLoadingCopyWith<$Res> {
-  factory _$$SpecialOrderStateLoadingCopyWith(_$SpecialOrderStateLoading value,
-          $Res Function(_$SpecialOrderStateLoading) then) =
-      __$$SpecialOrderStateLoadingCopyWithImpl<$Res>;
+abstract class _$$SpecialOrderStateLoadingImplCopyWith<$Res> {
+  factory _$$SpecialOrderStateLoadingImplCopyWith(
+          _$SpecialOrderStateLoadingImpl value,
+          $Res Function(_$SpecialOrderStateLoadingImpl) then) =
+      __$$SpecialOrderStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SpecialOrderStateLoadingCopyWithImpl<$Res>
-    extends _$SpecialOrderStateCopyWithImpl<$Res, _$SpecialOrderStateLoading>
-    implements _$$SpecialOrderStateLoadingCopyWith<$Res> {
-  __$$SpecialOrderStateLoadingCopyWithImpl(_$SpecialOrderStateLoading _value,
-      $Res Function(_$SpecialOrderStateLoading) _then)
+class __$$SpecialOrderStateLoadingImplCopyWithImpl<$Res>
+    extends _$SpecialOrderStateCopyWithImpl<$Res,
+        _$SpecialOrderStateLoadingImpl>
+    implements _$$SpecialOrderStateLoadingImplCopyWith<$Res> {
+  __$$SpecialOrderStateLoadingImplCopyWithImpl(
+      _$SpecialOrderStateLoadingImpl _value,
+      $Res Function(_$SpecialOrderStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SpecialOrderStateLoading implements SpecialOrderStateLoading {
-  const _$SpecialOrderStateLoading();
+class _$SpecialOrderStateLoadingImpl implements SpecialOrderStateLoading {
+  const _$SpecialOrderStateLoadingImpl();
 
   @override
   String toString() {
@@ -239,10 +244,10 @@ class _$SpecialOrderStateLoading implements SpecialOrderStateLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SpecialOrderStateLoading);
+            other is _$SpecialOrderStateLoadingImpl);
   }
 
   @override
@@ -330,24 +335,26 @@ class _$SpecialOrderStateLoading implements SpecialOrderStateLoading {
 }
 
 abstract class SpecialOrderStateLoading implements SpecialOrderState {
-  const factory SpecialOrderStateLoading() = _$SpecialOrderStateLoading;
+  const factory SpecialOrderStateLoading() = _$SpecialOrderStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$SpecialOrderStateErrorCopyWith<$Res> {
-  factory _$$SpecialOrderStateErrorCopyWith(_$SpecialOrderStateError value,
-          $Res Function(_$SpecialOrderStateError) then) =
-      __$$SpecialOrderStateErrorCopyWithImpl<$Res>;
+abstract class _$$SpecialOrderStateErrorImplCopyWith<$Res> {
+  factory _$$SpecialOrderStateErrorImplCopyWith(
+          _$SpecialOrderStateErrorImpl value,
+          $Res Function(_$SpecialOrderStateErrorImpl) then) =
+      __$$SpecialOrderStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String msg});
 }
 
 /// @nodoc
-class __$$SpecialOrderStateErrorCopyWithImpl<$Res>
-    extends _$SpecialOrderStateCopyWithImpl<$Res, _$SpecialOrderStateError>
-    implements _$$SpecialOrderStateErrorCopyWith<$Res> {
-  __$$SpecialOrderStateErrorCopyWithImpl(_$SpecialOrderStateError _value,
-      $Res Function(_$SpecialOrderStateError) _then)
+class __$$SpecialOrderStateErrorImplCopyWithImpl<$Res>
+    extends _$SpecialOrderStateCopyWithImpl<$Res, _$SpecialOrderStateErrorImpl>
+    implements _$$SpecialOrderStateErrorImplCopyWith<$Res> {
+  __$$SpecialOrderStateErrorImplCopyWithImpl(
+      _$SpecialOrderStateErrorImpl _value,
+      $Res Function(_$SpecialOrderStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -355,7 +362,7 @@ class __$$SpecialOrderStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? msg = null,
   }) {
-    return _then(_$SpecialOrderStateError(
+    return _then(_$SpecialOrderStateErrorImpl(
       null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -366,8 +373,8 @@ class __$$SpecialOrderStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SpecialOrderStateError implements SpecialOrderStateError {
-  const _$SpecialOrderStateError(this.msg);
+class _$SpecialOrderStateErrorImpl implements SpecialOrderStateError {
+  const _$SpecialOrderStateErrorImpl(this.msg);
 
   @override
   final String msg;
@@ -378,10 +385,10 @@ class _$SpecialOrderStateError implements SpecialOrderStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SpecialOrderStateError &&
+            other is _$SpecialOrderStateErrorImpl &&
             (identical(other.msg, msg) || other.msg == msg));
   }
 
@@ -391,9 +398,9 @@ class _$SpecialOrderStateError implements SpecialOrderStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SpecialOrderStateErrorCopyWith<_$SpecialOrderStateError> get copyWith =>
-      __$$SpecialOrderStateErrorCopyWithImpl<_$SpecialOrderStateError>(
-          this, _$identity);
+  _$$SpecialOrderStateErrorImplCopyWith<_$SpecialOrderStateErrorImpl>
+      get copyWith => __$$SpecialOrderStateErrorImplCopyWithImpl<
+          _$SpecialOrderStateErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -478,29 +485,32 @@ class _$SpecialOrderStateError implements SpecialOrderStateError {
 
 abstract class SpecialOrderStateError implements SpecialOrderState {
   const factory SpecialOrderStateError(final String msg) =
-      _$SpecialOrderStateError;
+      _$SpecialOrderStateErrorImpl;
 
   String get msg;
   @JsonKey(ignore: true)
-  _$$SpecialOrderStateErrorCopyWith<_$SpecialOrderStateError> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$SpecialOrderStateErrorImplCopyWith<_$SpecialOrderStateErrorImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SpecialOrderStateSuccessCopyWith<$Res> {
-  factory _$$SpecialOrderStateSuccessCopyWith(_$SpecialOrderStateSuccess value,
-          $Res Function(_$SpecialOrderStateSuccess) then) =
-      __$$SpecialOrderStateSuccessCopyWithImpl<$Res>;
+abstract class _$$SpecialOrderStateSuccessImplCopyWith<$Res> {
+  factory _$$SpecialOrderStateSuccessImplCopyWith(
+          _$SpecialOrderStateSuccessImpl value,
+          $Res Function(_$SpecialOrderStateSuccessImpl) then) =
+      __$$SpecialOrderStateSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String msg});
 }
 
 /// @nodoc
-class __$$SpecialOrderStateSuccessCopyWithImpl<$Res>
-    extends _$SpecialOrderStateCopyWithImpl<$Res, _$SpecialOrderStateSuccess>
-    implements _$$SpecialOrderStateSuccessCopyWith<$Res> {
-  __$$SpecialOrderStateSuccessCopyWithImpl(_$SpecialOrderStateSuccess _value,
-      $Res Function(_$SpecialOrderStateSuccess) _then)
+class __$$SpecialOrderStateSuccessImplCopyWithImpl<$Res>
+    extends _$SpecialOrderStateCopyWithImpl<$Res,
+        _$SpecialOrderStateSuccessImpl>
+    implements _$$SpecialOrderStateSuccessImplCopyWith<$Res> {
+  __$$SpecialOrderStateSuccessImplCopyWithImpl(
+      _$SpecialOrderStateSuccessImpl _value,
+      $Res Function(_$SpecialOrderStateSuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -508,7 +518,7 @@ class __$$SpecialOrderStateSuccessCopyWithImpl<$Res>
   $Res call({
     Object? msg = null,
   }) {
-    return _then(_$SpecialOrderStateSuccess(
+    return _then(_$SpecialOrderStateSuccessImpl(
       null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -519,8 +529,8 @@ class __$$SpecialOrderStateSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SpecialOrderStateSuccess implements SpecialOrderStateSuccess {
-  const _$SpecialOrderStateSuccess(this.msg);
+class _$SpecialOrderStateSuccessImpl implements SpecialOrderStateSuccess {
+  const _$SpecialOrderStateSuccessImpl(this.msg);
 
   @override
   final String msg;
@@ -531,10 +541,10 @@ class _$SpecialOrderStateSuccess implements SpecialOrderStateSuccess {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SpecialOrderStateSuccess &&
+            other is _$SpecialOrderStateSuccessImpl &&
             (identical(other.msg, msg) || other.msg == msg));
   }
 
@@ -544,10 +554,9 @@ class _$SpecialOrderStateSuccess implements SpecialOrderStateSuccess {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SpecialOrderStateSuccessCopyWith<_$SpecialOrderStateSuccess>
-      get copyWith =>
-          __$$SpecialOrderStateSuccessCopyWithImpl<_$SpecialOrderStateSuccess>(
-              this, _$identity);
+  _$$SpecialOrderStateSuccessImplCopyWith<_$SpecialOrderStateSuccessImpl>
+      get copyWith => __$$SpecialOrderStateSuccessImplCopyWithImpl<
+          _$SpecialOrderStateSuccessImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -632,29 +641,31 @@ class _$SpecialOrderStateSuccess implements SpecialOrderStateSuccess {
 
 abstract class SpecialOrderStateSuccess implements SpecialOrderState {
   const factory SpecialOrderStateSuccess(final String msg) =
-      _$SpecialOrderStateSuccess;
+      _$SpecialOrderStateSuccessImpl;
 
   String get msg;
   @JsonKey(ignore: true)
-  _$$SpecialOrderStateSuccessCopyWith<_$SpecialOrderStateSuccess>
+  _$$SpecialOrderStateSuccessImplCopyWith<_$SpecialOrderStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SpecialOrderStateOrdersCopyWith<$Res> {
-  factory _$$SpecialOrderStateOrdersCopyWith(_$SpecialOrderStateOrders value,
-          $Res Function(_$SpecialOrderStateOrders) then) =
-      __$$SpecialOrderStateOrdersCopyWithImpl<$Res>;
+abstract class _$$SpecialOrderStateOrdersImplCopyWith<$Res> {
+  factory _$$SpecialOrderStateOrdersImplCopyWith(
+          _$SpecialOrderStateOrdersImpl value,
+          $Res Function(_$SpecialOrderStateOrdersImpl) then) =
+      __$$SpecialOrderStateOrdersImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<SpecialOrderItem> orders});
 }
 
 /// @nodoc
-class __$$SpecialOrderStateOrdersCopyWithImpl<$Res>
-    extends _$SpecialOrderStateCopyWithImpl<$Res, _$SpecialOrderStateOrders>
-    implements _$$SpecialOrderStateOrdersCopyWith<$Res> {
-  __$$SpecialOrderStateOrdersCopyWithImpl(_$SpecialOrderStateOrders _value,
-      $Res Function(_$SpecialOrderStateOrders) _then)
+class __$$SpecialOrderStateOrdersImplCopyWithImpl<$Res>
+    extends _$SpecialOrderStateCopyWithImpl<$Res, _$SpecialOrderStateOrdersImpl>
+    implements _$$SpecialOrderStateOrdersImplCopyWith<$Res> {
+  __$$SpecialOrderStateOrdersImplCopyWithImpl(
+      _$SpecialOrderStateOrdersImpl _value,
+      $Res Function(_$SpecialOrderStateOrdersImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -662,7 +673,7 @@ class __$$SpecialOrderStateOrdersCopyWithImpl<$Res>
   $Res call({
     Object? orders = null,
   }) {
-    return _then(_$SpecialOrderStateOrders(
+    return _then(_$SpecialOrderStateOrdersImpl(
       null == orders
           ? _value._orders
           : orders // ignore: cast_nullable_to_non_nullable
@@ -673,8 +684,8 @@ class __$$SpecialOrderStateOrdersCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SpecialOrderStateOrders implements SpecialOrderStateOrders {
-  const _$SpecialOrderStateOrders(final List<SpecialOrderItem> orders)
+class _$SpecialOrderStateOrdersImpl implements SpecialOrderStateOrders {
+  const _$SpecialOrderStateOrdersImpl(final List<SpecialOrderItem> orders)
       : _orders = orders;
 
   final List<SpecialOrderItem> _orders;
@@ -691,10 +702,10 @@ class _$SpecialOrderStateOrders implements SpecialOrderStateOrders {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SpecialOrderStateOrders &&
+            other is _$SpecialOrderStateOrdersImpl &&
             const DeepCollectionEquality().equals(other._orders, _orders));
   }
 
@@ -705,9 +716,9 @@ class _$SpecialOrderStateOrders implements SpecialOrderStateOrders {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SpecialOrderStateOrdersCopyWith<_$SpecialOrderStateOrders> get copyWith =>
-      __$$SpecialOrderStateOrdersCopyWithImpl<_$SpecialOrderStateOrders>(
-          this, _$identity);
+  _$$SpecialOrderStateOrdersImplCopyWith<_$SpecialOrderStateOrdersImpl>
+      get copyWith => __$$SpecialOrderStateOrdersImplCopyWithImpl<
+          _$SpecialOrderStateOrdersImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -792,10 +803,10 @@ class _$SpecialOrderStateOrders implements SpecialOrderStateOrders {
 
 abstract class SpecialOrderStateOrders implements SpecialOrderState {
   const factory SpecialOrderStateOrders(final List<SpecialOrderItem> orders) =
-      _$SpecialOrderStateOrders;
+      _$SpecialOrderStateOrdersImpl;
 
   List<SpecialOrderItem> get orders;
   @JsonKey(ignore: true)
-  _$$SpecialOrderStateOrdersCopyWith<_$SpecialOrderStateOrders> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$SpecialOrderStateOrdersImplCopyWith<_$SpecialOrderStateOrdersImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
