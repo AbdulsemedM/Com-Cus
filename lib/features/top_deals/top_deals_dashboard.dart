@@ -175,7 +175,7 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                                 overflow: TextOverflow.ellipsis,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headline3
+                                                    .displaySmall
                                                     ?.copyWith(
                                                         fontSize: 14.sp,
                                                         fontWeight:
@@ -198,7 +198,7 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                             //             TextOverflow.ellipsis,
                                             //         style: Theme.of(context)
                                             //             .textTheme
-                                            //             .headline3
+                                            //             .displaySmall
                                             //             ?.copyWith(
                                             //                 fontSize: 14.sp,
                                             //                 fontWeight:
@@ -220,7 +220,7 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                             //             TextOverflow.ellipsis,
                                             //         style: Theme.of(context)
                                             //             .textTheme
-                                            //             .headline3
+                                            //             .displaySmall
                                             //             ?.copyWith(
                                             //                 decoration:
                                             //                     TextDecoration
@@ -249,7 +249,7 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -271,7 +271,7 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -297,7 +297,7 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -319,7 +319,7 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -345,7 +345,7 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:
@@ -367,7 +367,7 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline3
+                                                        .displaySmall
                                                         ?.copyWith(
                                                             fontSize: 14.sp,
                                                             fontWeight:

@@ -55,8 +55,8 @@ class PopularWidgetItem extends StatelessWidget {
                   maxLines: 2,
                   style: Theme.of(context)
                       .textTheme
-                      .headline3
-                      ?.copyWith(fontSize: sHeight > 896 ? 12 :  14.sp),
+                      .displaySmall
+                      ?.copyWith(fontSize: sHeight > 896 ? 12 : 14.sp),
                 ),
               ),
               Spacer(),
@@ -68,7 +68,7 @@ class PopularWidgetItem extends StatelessWidget {
                   maxLines: 1,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyMedium
                       ?.copyWith(fontSize: sHeight > 896 ? 12 : 12.sp),
                 ),
               ),

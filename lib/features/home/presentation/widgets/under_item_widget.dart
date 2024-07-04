@@ -59,7 +59,7 @@ class UnderItemWidget extends StatelessWidget {
                     "${item?.name}",
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headline3?.copyWith(
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
                         fontSize: 14.sp, fontWeight: FontWeight.normal),
                   ),
                 ),
@@ -93,15 +93,18 @@ class UnderItemWidget extends StatelessWidget {
                     children: [
                       Text(
                         "${item?.offerPrice.formatCurrency(item?.currency)}",
-                        style: Theme.of(context).textTheme.headline2?.copyWith(
-                            fontSize: 12.sp, color: AppColors.colorPrimary),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium
+                            ?.copyWith(
+                                fontSize: 12.sp, color: AppColors.colorPrimary),
                       ),
                       // const Spacer(),
                       // if (item?.isDiscounted == "1")
                       //   Text("${item?.currency} ${item?.offerPrice}",
                       //       style: Theme.of(context)
                       //           .textTheme
-                      //           .headline2
+                      //           .displayMedium
                       //           ?.copyWith(
                       //               fontSize: 12.sp,
                       //               color: AppColors.secondaryTextColor,
