@@ -378,7 +378,10 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                               ],
                                             ),
                                             RatingStars(
-                                                rating: 4.2, editable: true),
+                                                rating: double.parse(
+                                                    myTopDealsProducts[index]
+                                                        .productRating),
+                                                editable: true),
                                             SizedBox(
                                               width: sWidth * 0.5,
                                               child: ElevatedButton(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
@@ -21,6 +22,7 @@ class ProvidePhoneNumberDialog extends StatefulWidget {
 
 class _ProvidePhoneNumberDialogState extends State<ProvidePhoneNumberDialog> {
   var loading = false;
+  String phoneNumber = "";
   TextEditingController phoneNumberController = TextEditingController();
 
   @override
@@ -111,24 +113,24 @@ class _ProvidePhoneNumberDialogState extends State<ProvidePhoneNumberDialog> {
                         var regExp1 = RegExp(r'^0\d{9}$');
                         var regExp2 = RegExp(r'^\+251\d{9}$');
                         if (regExp1.hasMatch(phoneNumberController.text)) {
-                          phoneNumberController.text = phoneNumberController
-                              .text
+                          phoneNumber = phoneNumberController.text
                               .replaceFirst(RegExp('^0'), '251');
-                          print(phoneNumberController.text);
+                          print(phoneNumber);
                         } else if (regExp2
                             .hasMatch(phoneNumberController.text)) {
-                          phoneNumberController.text = phoneNumberController
-                              .text
+                          phoneNumber = phoneNumberController.text
                               .replaceFirst(RegExp(r'^\+'), '');
-                          print(phoneNumberController.text);
+                          print(phoneNumber);
                         }
                         final body = {
-                          "phoneNumber": phoneNumberController.text,
+                          "phoneNumber": phoneNumber,
+                          "channel": Platform.isIOS ? "IOS" : "ANDROID"
                           // "email": email // incase for facebook
                         };
                         final body1 = {
                           // "phoneNumber": phoneNumberController.text,
-                          "email": phoneNumberController.text,
+                          "email": phoneNumber,
+                          "channel": Platform.isIOS ? "IOS" : "ANDROID"
                           // "email": email // incase for facebook
                         };
                         print(body);
@@ -155,9 +157,8 @@ class _ProvidePhoneNumberDialogState extends State<ProvidePhoneNumberDialog> {
                             if (data['statusCode'] == '000') {
                               displaySnack(context,
                                   "${widget.provide == "email" ? "Email" : "Phone Number"} provided successfully.");
-                              Navigator.pushNamed(
+                              Navigator.pushReplacementNamed(
                                   context, DashboardPage.routeName);
-                              Navigator.pop(context, true);
                               setState(() {
                                 loading = false;
                               });

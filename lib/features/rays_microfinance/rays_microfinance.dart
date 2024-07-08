@@ -22,15 +22,16 @@ class RaysMicrofinance extends StatefulWidget {
 
 class RaysMarkup {
   final String RepaymentMonth;
-  final String NonCollateralLimit;
   final String Markup;
-  RaysMarkup(
-      {required this.RepaymentMonth,
-      required this.NonCollateralLimit,
-      required this.Markup});
+  RaysMarkup({required this.RepaymentMonth, required this.Markup});
 }
 
 class _RaysMicrofinanceState extends State<RaysMicrofinance> {
+  String? period1;
+  String? amountAfter1;
+  String? markUp1;
+  String? responseDescription1;
+  String? amountBefore1;
   @override
   void initState() {
     super.initState();
@@ -38,7 +39,30 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
     fetchRaysMarkup();
   }
 
+  String extractNumber(String input) {
+    final RegExp regex = RegExp(r'[\d,]+(\.\d+)?');
+    final Match? match = regex.firstMatch(input);
+    if (match != null) {
+      return match.group(0)!.replaceAll(',', '');
+    }
+    return '';
+  }
+
+  String extractNumber1(String input) {
+    final RegExp regex = RegExp(r'\d+');
+    final Match? match = regex.firstMatch(input);
+    if (match != null) {
+      return match.group(0)!;
+    }
+    return '';
+  }
+
+  String totalRaysPrice = "";
   void fetchHints() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    totalRaysPrice = extractNumber(prefs.getString("newTotalPrice") ??
+        prefs.getString("myRayTotalPrice")!);
+    print("here is the total ${extractNumber(totalRaysPrice)}");
     setState(() {
       loading1 = true;
     });
@@ -134,7 +158,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                                     width: 15,
                                   ),
                                   Text(
-                                    "${m.RepaymentMonth} with  ",
+                                    "${m.RepaymentMonth} month with  ",
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black),
                                   ),
@@ -142,7 +166,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                                   //   width: 30,
                                   // ),
                                   Text(
-                                    "${m.Markup.toString()}% Markup",
+                                    "${m.Markup.toString()} Markup",
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black),
                                   ),
@@ -163,6 +187,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                                   value, // Provide a default value if no match is found
                             );
                             print(selectedMarkups!.RepaymentMonth);
+                            sendData1();
                             // selectedMarkups.add(selectedMarkup);
                           }
                         });
@@ -176,6 +201,31 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                         return null;
                       },
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    if (markUp1 != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text("Your loan markup value is $markUp1 ETB."),
+                      ),
+                    if (markUp1 != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text("Your loan repayment period is $period1."),
+                      ),
+                    if (markUp1 != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                            "Your previous repayment amount was $amountBefore1 ETB."),
+                      ),
+                    if (markUp1 != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                            "The new repayment amount is $amountAfter1 ETB."),
+                      ),
                     SizedBox(
                       height: 10,
                     ),
@@ -217,22 +267,22 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                   ],
                 ),
               ),
-              if (loanRef != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text("Your loan markup value is $markup."),
-                ),
-              if (loanRef != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text("Your loan repayment period is $period."),
-                ),
-              if (loanRef != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                      "The total repayment amount is $totalRepaymentAmount."),
-                ),
+              // if (loanRef != null)
+              //   Padding(
+              //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+              //     child: Text("Your loan markup value is $markup ETB."),
+              //   ),
+              // if (loanRef != null)
+              //   Padding(
+              //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+              //     child: Text("Your loan repayment period is $period."),
+              //   ),
+              // if (loanRef != null)
+              //   Padding(
+              //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+              //     child: Text(
+              //         "The total repayment amount is $totalRepaymentAmount ETB."),
+              //   ),
               if (loanRef != null)
                 Row(
                   children: [
@@ -330,6 +380,77 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
     );
   }
 
+  Future<bool> sendData1({int retryCount = 0}) async {
+    try {
+      setState(() {
+        loading = true;
+      });
+      print('hereweare');
+      final prefsData = getIt<PrefsData>();
+      final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      print(isUserLoggedIn);
+      if (isUserLoggedIn) {
+        final token = await prefsData.readData(PrefsKeys.userToken.name);
+        print(totalRaysPrice);
+        Map<String, dynamic> payload = {
+          "amount": double.parse(totalRaysPrice),
+          "period": selectedMarkups!.RepaymentMonth
+        };
+        print(payload);
+
+        final response = await http.post(
+            Uri.https("api.commercepal.com:2087",
+                "/api/v1/financial/payment/rays/calculate-mark"),
+            body: jsonEncode(payload),
+            headers: <String, String>{"Authorization": "Bearer $token"});
+        var data = jsonDecode(response.body);
+        print(data);
+
+        if (data['statusCode'] == '000') {
+          setState(() {
+            period1 = data['period'].toString();
+            amountAfter1 = data['amountAfter'].toString() ?? '';
+            markUp1 = data['markUp'].toString();
+            amountBefore1 = data['amountBefore'].toString();
+            loading = false;
+          });
+          // print(transRef);
+          return true;
+          // Handle the case when statusCode is '000'
+        } else {
+          // Retry logic
+          if (retryCount < 5) {
+            // Retry after num + 1 seconds
+            await Future.delayed(Duration(seconds: retryCount++));
+            // Call the function again with an increased retryCount
+            await sendData(retryCount: retryCount + 1);
+          } else {
+            // Retry limit reached, handle accordingly
+            setState(() {
+              message = "Please try again later";
+              loading = false;
+            });
+            return false;
+          }
+          setState(() {
+            message = "Please try again later";
+            loading = false;
+          });
+        }
+        return false;
+      }
+      return false;
+    } catch (e) {
+      message = e.toString();
+      print(e.toString());
+      setState(() {
+        loading = false;
+      });
+      // Handle other exceptions
+      return false;
+    }
+  }
+
   Future<bool> sendData({int retryCount = 0}) async {
     try {
       setState(() {
@@ -354,7 +475,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
           "LoanType": "COL",
           "OrderRef": orderRef,
           "Currency": "ETB",
-          "Markup": int.parse(selectedMarkups!.Markup),
+          "Markup": int.parse(extractNumber1(selectedMarkups!.Markup)),
           "RepaymentMonth": selectedMarkups!.RepaymentMonth,
         };
         print(payload);
@@ -367,8 +488,6 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
           body: jsonEncode(payload),
           headers: <String, String>{"Authorization": "Bearer $token"},
         );
-        print(token);
-
         var data = jsonDecode(response.body);
         print(data);
 
@@ -395,13 +514,13 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
           } else {
             // Retry limit reached, handle accordingly
             setState(() {
-              message = "Please try again later";
+              message = data['statusMessage'] ?? "please try again later";
               loading = false;
             });
             return false;
           }
           setState(() {
-            message = "Please try again later";
+            message = data['statusMessage'] ?? "please try again later";
             loading = false;
           });
         }
@@ -499,7 +618,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         final response = await http.get(
           Uri.https(
             "api.commercepal.com:2087",
-            "/api/v1/financial/payment/rays/products",
+            "/api/v1/financial/payment/rays/markups",
           ),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
@@ -508,12 +627,11 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         print('hererererer');
         var datas = jsonDecode(response.body);
         print(datas);
-        if (datas['statusCode'] == "000") {
-          for (var i in datas['data']) {
+        if (response.statusCode == 200) {
+          for (var i in datas) {
             myMarkups.add(RaysMarkup(
-              NonCollateralLimit: i['NonCollateralLimit'] ?? 0,
-              Markup: i['Markup'].toString() ?? '',
-              RepaymentMonth: i['RepaymentMonth'] ?? '',
+              Markup: i['markup'].toString(),
+              RepaymentMonth: i['month'].toString(),
             ));
 
             // if (myOrders.isEmpty) {

@@ -45,12 +45,15 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
   @override
   void initState() {
     super.initState();
+
     fetchHints();
     // print("object");
     // print(widget.items!.length);
   }
 
   void fetchHints() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("myRayTotalPrice", widget.totalPrice!);
     setState(() {
       loading = true;
     });
