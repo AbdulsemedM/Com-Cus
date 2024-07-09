@@ -18,29 +18,48 @@ class _HomeSearchFieldWidgetState extends State<HomeSearchFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        if (_searchType == null) {
-          // Ask user to select search type if not already selected
-          await _showSearchTypeDialog(context);
-        } else {
-          // Navigate to search page with selected search type
-          Navigator.pushNamed(context, ProductsPage.routeName, arguments: {
-            "search": true,
-            "searchType": _searchType,
-          });
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          children: [
-            Expanded(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 4, // Adjust this value to make the TextField wider
+            child: GestureDetector(
+              onTap: () {
+                if (_searchType == "Product") {
+                  Navigator.pushNamed(context, ProductsPage.routeName,
+                      arguments: {
+                        "search": true,
+                        // "searchType": _searchType,
+                      });
+                } else if (_searchType == "Merchant") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MerchantSearchPage(),
+                    ),
+                  );
+                } else {
+                  // Show a message if no search type is selected
+                  Navigator.pushNamed(context, ProductsPage.routeName,
+                      arguments: {
+                        "search": true,
+                        // "searchType": _searchType,
+                      });
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   const SnackBar(
+                  //     content: Text('Please select a search type first'),
+                  //   ),
+                  // );
+                }
+              },
               child: TextField(
                 decoration: InputDecoration(
                   enabled: false,
                   hintStyle: TextStyle(
-                      color: AppColors.secondaryTextColor, fontSize: 14.sp),
+                    color: AppColors.secondaryTextColor,
+                    fontSize: 14.sp,
+                  ),
                   focusedBorder: _buildOutlineInputBorder(),
                   disabledBorder: _buildOutlineInputBorder(),
                   enabledBorder: _buildOutlineInputBorder(),
@@ -49,87 +68,42 @@ class _HomeSearchFieldWidgetState extends State<HomeSearchFieldWidget> {
                     Icons.search,
                     color: AppColors.iconColor,
                   ),
-                  hintText: "Type something eg watch",
+                  hintText: "Type something e.g., watch",
                 ),
               ),
             ),
-            const SizedBox(
-              width: 14,
+          ),
+          const SizedBox(
+            width: 14,
+          ),
+          Expanded(
+            flex: 2, // Adjust this value to make the DropdownButton narrower
+            child: DropdownButton<String>(
+              value: _searchType,
+              items: <String>['Product', 'Merchant'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _searchType = newValue;
+                });
+              },
+              hint: const Text('search'),
             ),
-            const CartWidget(),
-          ],
-        ),
+          ),
+          const CartWidget(),
+        ],
       ),
     );
   }
 
   OutlineInputBorder _buildOutlineInputBorder() {
     return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.fieldBorder, width: 2));
-  }
-
-  Future<void> _showSearchTypeDialog(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // User must tap a button
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Select Search Type'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                DropdownButton<String>(
-                  value: _searchType,
-                  items: <String>['Product', 'Merchant'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _searchType = newValue;
-                    });
-                    Navigator.of(context).pop();
-                    if (_searchType == "Product") {
-                      _searchType = null;
-                      Navigator.pushNamed(context, ProductsPage.routeName,
-                          arguments: {
-                            "search": true,
-                          });
-                    }
-                    if (_searchType == "Merchant") {
-                      _searchType = null;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const MerchantSearchPage()));
-                    }
-                  },
-                  hint: const Text('Select search type'),
-                ),
-              ],
-            ),
-          ),
-          // actions: <Widget>[
-          //   TextButton(
-          //     child: const Text('OK'),
-          //     onPressed: () {
-          //       Navigator.of(context).pop();
-          //       if (_searchType == "Product") {
-          //         _searchType = null;
-          //         Navigator.pushNamed(context, ProductsPage.routeName,
-          //             arguments: {
-          //               "search": true,
-          //             });
-          //       }
-          //     },
-          //   ),
-          // ],
-        );
-      },
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: AppColors.fieldBorder, width: 2),
     );
   }
 }

@@ -75,52 +75,55 @@ class _MerchantSearchPageState extends State<MerchantSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Search Merchants'),
-      // ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 18, 8, 12),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _onSearchChanged,
-              decoration: InputDecoration(
-                hintText: 'Search for merchants',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.grey, width: 2),
+      appBar: AppBar(
+        title: Text('Search for Merchants'),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _onSearchChanged,
+                decoration: InputDecoration(
+                  hintText: 'Type something, eg. Abdi',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey, width: 2),
+                  ),
+                  prefixIcon: Icon(Icons.search),
                 ),
-                prefixIcon: Icon(Icons.search),
               ),
             ),
-          ),
-          Expanded(
-            child: _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : _filteredMerchants.isEmpty &&
-                        _searchController.text.isNotEmpty
-                    ? Center(child: Text('No merchants found.'))
-                    : ListView.builder(
-                        itemCount: _filteredMerchants.length,
-                        itemBuilder: (context, index) {
-                          final merchant = _filteredMerchants[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          MerchantProducPage(id: merchant.id)));
-                            },
-                            child: ListTile(
-                              title: Text(merchant.name),
-                            ),
-                          );
-                        },
-                      ),
-          ),
-        ],
+            Expanded(
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : _filteredMerchants.isEmpty &&
+                          _searchController.text.isNotEmpty
+                      ? Center(child: Text('No merchants found.'))
+                      : ListView.builder(
+                          itemCount: _filteredMerchants.length,
+                          itemBuilder: (context, index) {
+                            final merchant = _filteredMerchants[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MerchantProducPage(
+                                                id: merchant.id)));
+                              },
+                              child: ListTile(
+                                title: Text(merchant.name),
+                              ),
+                            );
+                          },
+                        ),
+            ),
+          ],
+        ),
       ),
     );
   }

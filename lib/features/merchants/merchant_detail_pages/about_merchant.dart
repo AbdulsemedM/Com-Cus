@@ -25,62 +25,68 @@ class _AboutMerchantState extends State<AboutMerchant> {
   MerchantProf? myMerchant;
   @override
   Widget build(BuildContext context) {
-    return myMerchant == null
-        ? Center(
-            child: Text("Merchant data not found"),
+    return myMerchant == null && loading
+        ? const Center(
+            child: CircularProgressIndicator(
+              color: AppColors.colorAccent,
+            ),
           )
-        : Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                      "Merchant or Business name: ${myMerchant!.merchantName}"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                      "Business Phone Number: ${myMerchant!.businessPhoneNumber}"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text("Business City: ${myMerchant!.cityName}"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                      "Business Address: ${myMerchant!.physicalAddress != "" ? myMerchant!.physicalAddress : "-"}"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text("Shop Image:"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(0),
-                          topRight: Radius.circular(0)),
-                      child: CachedNetworkImage(
-                        fit: BoxFit.fill,
-                        height: 150,
-                        placeholder: (_, __) => Container(
-                          color: AppColors.bg1,
+        : myMerchant == null && !loading
+            ? const Center(
+                child: Text("Merchant data not found"),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                          "Merchant or Business name: ${myMerchant!.merchantName}"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                          "Business Phone Number: ${myMerchant!.businessPhoneNumber}"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text("Business City: ${myMerchant!.cityName}"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                          "Business Address: ${myMerchant!.physicalAddress != "" ? myMerchant!.physicalAddress : "-"}"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text("Shop Image:"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
+                      child: Center(
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(0),
+                              topRight: Radius.circular(0)),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.fill,
+                            height: 150,
+                            placeholder: (_, __) => Container(
+                              color: AppColors.bg1,
+                            ),
+                            errorWidget: (_, __, ___) => Container(
+                              color: Colors.grey,
+                            ),
+                            imageUrl: myMerchant!.shopImage,
+                          ),
                         ),
-                        errorWidget: (_, __, ___) => Container(
-                          color: Colors.grey,
-                        ),
-                        imageUrl: myMerchant!.shopImage,
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          );
+              );
   }
 
   Future<void> fetchProducts() async {

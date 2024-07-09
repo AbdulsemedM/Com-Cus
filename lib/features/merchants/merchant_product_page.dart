@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/core/cart-core/cart_widget.dart';
 import 'package:commercepal/features/merchants/merchant_detail_pages/about_merchant.dart';
 import 'package:commercepal/features/merchants/merchant_detail_pages/products.dart';
 import 'package:flutter/material.dart';
@@ -101,6 +102,7 @@ class _MerchantProducPageState extends State<MerchantProducPage>
     return Scaffold(
       appBar: AppBar(
         title: Text("Product Items"),
+        actions: [CartWidget()],
       ),
       body: SafeArea(
           child: SingleChildScrollView(
