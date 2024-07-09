@@ -60,7 +60,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
   String totalRaysPrice = "";
   void fetchHints() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    totalRaysPrice = extractNumber(prefs.getString("newTotalPrice") ??
+    totalRaysPrice = extractNumber(prefs.getString("myRayTotalPrice") ??
         prefs.getString("myRayTotalPrice")!);
     print("here is the total ${extractNumber(totalRaysPrice)}");
     setState(() {
