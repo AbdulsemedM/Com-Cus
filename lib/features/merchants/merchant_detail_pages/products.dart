@@ -84,7 +84,7 @@ class _MerchantProductsState extends State<MerchantProducts> {
                           child: GridView.builder(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: sHeight > 900 ? 2 : 0.5,
+                                childAspectRatio: sHeight > 900 ? 1 : 0.5,
                                 crossAxisCount:
                                     2, // Number of columns in the grid
                                 crossAxisSpacing:
