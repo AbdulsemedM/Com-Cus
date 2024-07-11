@@ -54,20 +54,43 @@ class _MerchantProductsState extends State<MerchantProducts> {
             : Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
+                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
                     child: Center(
                       child: ClipRRect(
                         borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(0),
-                            topRight: Radius.circular(0)),
+                          topLeft: Radius.circular(12),
+                          topRight: Radius.circular(12),
+                        ),
                         child: CachedNetworkImage(
                           fit: BoxFit.fill,
-                          height: 150,
+                          height: 120,
                           placeholder: (_, __) => Container(
                             color: AppColors.bg1,
                           ),
-                          errorWidget: (_, __, ___) => Container(
-                            color: Colors.grey,
+                          errorWidget: (_, __, ___) => Stack(
+                            children: [
+                              Image.asset(
+                                'assets/images/shop_image.jpg',
+                                fit: BoxFit.fill,
+                                height: 120,
+                                width: double.infinity,
+                              ),
+                              Container(
+                                color: Colors.white.withOpacity(0.8),
+                                height: 120,
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  myMerchant!
+                                      .businessPhoneNumber, // Replace with your phone number
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           imageUrl: myMerchant!.shopImage,
                         ),
