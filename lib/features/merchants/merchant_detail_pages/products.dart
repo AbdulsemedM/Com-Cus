@@ -6,6 +6,7 @@ import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/features/merchants/merchant_product_page.dart';
+import 'package:commercepal/features/selected_product/presentation/selected_product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -116,299 +117,319 @@ class _MerchantProductsState extends State<MerchantProducts> {
                               ),
                               itemCount: myMerchantProducts.length,
                               itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Container(
-                                    height: sHeight * 0.4,
-                                    width: sWidth * 0.5,
-                                    decoration: const BoxDecoration(
-                                      color: AppColors.greyColor,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(12)),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 4, 0, 4),
-                                          child: Center(
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(12),
-                                                      topRight:
-                                                          Radius.circular(12)),
-                                              child: CachedNetworkImage(
-                                                fit: BoxFit.fill,
-                                                height: 120,
-                                                placeholder: (_, __) =>
-                                                    Container(
-                                                  color: AppColors.bg1,
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, SelectedProductPage.routeName,
+                                        arguments: {
+                                          "p_id": int.parse(
+                                              myMerchantProducts[index]
+                                                  .productId)
+                                        });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Container(
+                                      height: sHeight * 0.4,
+                                      width: sWidth * 0.5,
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.greyColor,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                0, 4, 0, 4),
+                                            child: Center(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    const BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(12),
+                                                        topRight:
+                                                            Radius.circular(
+                                                                12)),
+                                                child: CachedNetworkImage(
+                                                  fit: BoxFit.fill,
+                                                  height: 120,
+                                                  placeholder: (_, __) =>
+                                                      Container(
+                                                    color: AppColors.bg1,
+                                                  ),
+                                                  errorWidget: (_, __, ___) =>
+                                                      Container(
+                                                    color: Colors.grey,
+                                                  ),
+                                                  imageUrl:
+                                                      myMerchantProducts[index]
+                                                          .mobileThumbnail,
                                                 ),
-                                                errorWidget: (_, __, ___) =>
-                                                    Container(
-                                                  color: Colors.grey,
-                                                ),
-                                                imageUrl:
-                                                    myMerchantProducts[index]
-                                                        .mobileThumbnail,
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0),
-                                          child: Text(
-                                            myMerchantProducts[index]
-                                                .productName,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displaySmall
-                                                ?.copyWith(
-                                                    fontSize: 14.sp,
-                                                    fontWeight:
-                                                        FontWeight.w500),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0, right: 8.0),
+                                            child: Text(
+                                              myMerchantProducts[index]
+                                                  .productName,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displaySmall
+                                                  ?.copyWith(
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                            ),
                                           ),
-                                        ),
-                                        // Row(
-                                        //   children: [
-                                        //     Padding(
-                                        //       padding:
-                                        //           const EdgeInsets.only(
-                                        //               left: 8.0,
-                                        //               right: 8.0,
-                                        //               top: 8,
-                                        //               bottom: 8),
-                                        //       child: Text(
-                                        //         "Old Price",
-                                        //         maxLines: 2,
-                                        //         overflow:
-                                        //             TextOverflow.ellipsis,
-                                        //         style: Theme.of(context)
-                                        //             .textTheme
-                                        //             .displaySmall
-                                        //             ?.copyWith(
-                                        //                 fontSize: 14.sp,
-                                        //                 fontWeight:
-                                        //                     FontWeight
-                                        //                         .normal),
-                                        //       ),
-                                        //     ),
-                                        //     Padding(
-                                        //       padding:
-                                        //           const EdgeInsets.only(
-                                        //               left: 8.0,
-                                        //               right: 8.0,
-                                        //               top: 8,
-                                        //               bottom: 8),
-                                        //       child: Text(
-                                        //         "${myMerchantProducts[index].actualPrice} ETB",
-                                        //         maxLines: 2,
-                                        //         overflow:
-                                        //             TextOverflow.ellipsis,
-                                        //         style: Theme.of(context)
-                                        //             .textTheme
-                                        //             .displaySmall
-                                        //             ?.copyWith(
-                                        //                 decoration:
-                                        //                     TextDecoration
-                                        //                         .lineThrough,
-                                        //                 fontSize: 14.sp,
-                                        //                 fontWeight:
-                                        //                     FontWeight
-                                        //                         .normal),
-                                        //       ),
-                                        //     ),
-                                        //   ],
-                                        // ),
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 8,
-                                                  bottom: 8),
-                                              child: Text(
-                                                "Price",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displaySmall
-                                                    ?.copyWith(
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.normal),
+                                          // Row(
+                                          //   children: [
+                                          //     Padding(
+                                          //       padding:
+                                          //           const EdgeInsets.only(
+                                          //               left: 8.0,
+                                          //               right: 8.0,
+                                          //               top: 8,
+                                          //               bottom: 8),
+                                          //       child: Text(
+                                          //         "Old Price",
+                                          //         maxLines: 2,
+                                          //         overflow:
+                                          //             TextOverflow.ellipsis,
+                                          //         style: Theme.of(context)
+                                          //             .textTheme
+                                          //             .displaySmall
+                                          //             ?.copyWith(
+                                          //                 fontSize: 14.sp,
+                                          //                 fontWeight:
+                                          //                     FontWeight
+                                          //                         .normal),
+                                          //       ),
+                                          //     ),
+                                          //     Padding(
+                                          //       padding:
+                                          //           const EdgeInsets.only(
+                                          //               left: 8.0,
+                                          //               right: 8.0,
+                                          //               top: 8,
+                                          //               bottom: 8),
+                                          //       child: Text(
+                                          //         "${myMerchantProducts[index].actualPrice} ETB",
+                                          //         maxLines: 2,
+                                          //         overflow:
+                                          //             TextOverflow.ellipsis,
+                                          //         style: Theme.of(context)
+                                          //             .textTheme
+                                          //             .displaySmall
+                                          //             ?.copyWith(
+                                          //                 decoration:
+                                          //                     TextDecoration
+                                          //                         .lineThrough,
+                                          //                 fontSize: 14.sp,
+                                          //                 fontWeight:
+                                          //                     FontWeight
+                                          //                         .normal),
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0,
+                                                    right: 8.0,
+                                                    top: 8,
+                                                    bottom: 8),
+                                                child: Text(
+                                                  "Price",
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall
+                                                      ?.copyWith(
+                                                          fontSize: 14.sp,
+                                                          fontWeight: FontWeight
+                                                              .normal),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 8,
-                                                  bottom: 8),
-                                              child: Text(
-                                                "${myMerchantProducts[index].actualPrice} ETB",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displaySmall
-                                                    ?.copyWith(
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.normal),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0,
+                                                    right: 8.0,
+                                                    top: 8,
+                                                    bottom: 8),
+                                                child: Text(
+                                                  "${myMerchantProducts[index].actualPrice} ETB",
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall
+                                                      ?.copyWith(
+                                                          fontSize: 14.sp,
+                                                          fontWeight: FontWeight
+                                                              .normal),
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 8,
-                                                  bottom: 8),
-                                              child: Text(
-                                                "Min. Order",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displaySmall
-                                                    ?.copyWith(
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.normal),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0,
+                                                    right: 8.0,
+                                                    top: 8,
+                                                    bottom: 8),
+                                                child: Text(
+                                                  "Min. Order",
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall
+                                                      ?.copyWith(
+                                                          fontSize: 14.sp,
+                                                          fontWeight: FontWeight
+                                                              .normal),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 8,
-                                                  bottom: 8),
-                                              child: Text(
-                                                "${myMerchantProducts[index].minOrder} ",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displaySmall
-                                                    ?.copyWith(
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.normal),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0,
+                                                    right: 8.0,
+                                                    top: 8,
+                                                    bottom: 8),
+                                                child: Text(
+                                                  "${myMerchantProducts[index].minOrder} ",
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall
+                                                      ?.copyWith(
+                                                          fontSize: 14.sp,
+                                                          fontWeight: FontWeight
+                                                              .normal),
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 8,
-                                                  bottom: 8),
-                                              child: Text(
-                                                "Max. Order",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displaySmall
-                                                    ?.copyWith(
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.normal),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0,
+                                                    right: 8.0,
+                                                    top: 8,
+                                                    bottom: 8),
+                                                child: Text(
+                                                  "Max. Order",
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall
+                                                      ?.copyWith(
+                                                          fontSize: 14.sp,
+                                                          fontWeight: FontWeight
+                                                              .normal),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 8,
-                                                  bottom: 8),
-                                              child: Text(
-                                                "${myMerchantProducts[index].maxOrder} ",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displaySmall
-                                                    ?.copyWith(
-                                                        fontSize: 14.sp,
-                                                        fontWeight:
-                                                            FontWeight.normal),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0,
+                                                    right: 8.0,
+                                                    top: 8,
+                                                    bottom: 8),
+                                                child: Text(
+                                                  "${myMerchantProducts[index].maxOrder} ",
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall
+                                                      ?.copyWith(
+                                                          fontSize: 14.sp,
+                                                          fontWeight: FontWeight
+                                                              .normal),
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        RatingStars(
-                                            rating: 4.0, editable: true),
-                                        SizedBox(
-                                          width: sWidth * 0.5,
-                                          child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          AppColors
-                                                              .colorPrimaryDark),
-                                                  shape: MaterialStateProperty.all<
-                                                          RoundedRectangleBorder>(
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(12.0),
-                                                      bottomRight:
-                                                          Radius.circular(12.0),
-                                                    ),
-                                                  ))),
-                                              onPressed: () {
-                                                CartItem myItem = CartItem(
-                                                    productId: int.parse(
-                                                        myMerchantProducts![index]
-                                                            .productId),
-                                                    name:
-                                                        myMerchantProducts[index]
-                                                            .productName,
-                                                    image:
-                                                        myMerchantProducts[index]
-                                                            .mobileThumbnail,
-                                                    description: '-',
-                                                    price:
-                                                        myMerchantProducts[index]
-                                                            .actualPrice,
-                                                    currency: "ETB",
-                                                    subProductId: int.parse(
-                                                        myMerchantProducts[index]
-                                                            .subProductId),
-                                                    quantity: int.parse(
-                                                        myMerchantProducts[index]
-                                                            .minOrder));
-                                                context
-                                                    .read<CartCoreCubit>()
-                                                    .addCartItem(myItem);
-                                                displaySnack(context,
-                                                    "${myMerchantProducts[index].productName} added to cart");
-                                              },
-                                              child: const Text(
-                                                "Add to Cart",
-                                                style: TextStyle(
-                                                    color: AppColors.bg1),
-                                              )),
-                                        )
-                                      ],
+                                            ],
+                                          ),
+                                          RatingStars(
+                                              rating: 4.0, editable: true),
+                                          SizedBox(
+                                            width: sWidth * 0.5,
+                                            child: ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(AppColors
+                                                                .colorPrimaryDark),
+                                                    shape: MaterialStateProperty.all<
+                                                            RoundedRectangleBorder>(
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        bottomLeft:
+                                                            Radius.circular(
+                                                                12.0),
+                                                        bottomRight:
+                                                            Radius.circular(
+                                                                12.0),
+                                                      ),
+                                                    ))),
+                                                onPressed: () {
+                                                  CartItem myItem = CartItem(
+                                                      productId: int.parse(
+                                                          myMerchantProducts![index]
+                                                              .productId),
+                                                      name:
+                                                          myMerchantProducts[index]
+                                                              .productName,
+                                                      image:
+                                                          myMerchantProducts[index]
+                                                              .mobileThumbnail,
+                                                      description: '-',
+                                                      price:
+                                                          myMerchantProducts[index]
+                                                              .actualPrice,
+                                                      currency: "ETB",
+                                                      subProductId: int.parse(
+                                                          myMerchantProducts[index]
+                                                              .subProductId),
+                                                      quantity: int.parse(
+                                                          myMerchantProducts[index]
+                                                              .minOrder));
+                                                  context
+                                                      .read<CartCoreCubit>()
+                                                      .addCartItem(myItem);
+                                                  displaySnack(context,
+                                                      "${myMerchantProducts[index].productName} added to cart");
+                                                },
+                                                child: const Text(
+                                                  "Add to Cart",
+                                                  style: TextStyle(
+                                                      color: AppColors.bg1),
+                                                )),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
