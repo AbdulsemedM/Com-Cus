@@ -207,26 +207,54 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
                       height: 10,
                     ),
                     if (markUp1 != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text("Your loan markup value is $markUp1 ETB."),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                                "Loan requested amount: $amountBefore1 ETB"),
+                          ),
+                        ],
                       ),
                     if (markUp1 != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text("Your loan repayment period is $period1."),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text("Loan markup value: $markUp1 ETB."),
+                          ),
+                        ],
                       ),
                     if (markUp1 != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                            "Your previous repayment amount was $amountBefore1 ETB."),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text("Loan period: $period1."),
+                          ),
+                        ],
                       ),
                     if (markUp1 != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                            "The new repayment amount is $amountAfter1 ETB."),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              color: Colors
+                                  .yellow, // Set the background color of the container
+                              padding: const EdgeInsets.all(
+                                  8.0), // Add padding inside the container
+                              child: Text(
+                                "Total repayment amount: $amountAfter1 ETB.",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors
+                                      .colorAccent, // Set the text color to red
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     SizedBox(
                       height: 10,
@@ -393,16 +421,16 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
       print(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
-        print(totalRaysPrice);
+        final orderRef = await prefsData.readData("order_ref");
         Map<String, dynamic> payload = {
-          "amount": double.parse(totalRaysPrice),
+          "orderRef": orderRef,
           "period": selectedMarkups!.RepaymentMonth
         };
         print(payload);
 
         final response = await http.post(
-            Uri.https("api.commercepal.com:2087",
-                "/api/v1/financial/payment/rays/calculate-mark"),
+            Uri.https("api.commercepal.com:2095",
+                "/payment/v1/rays/calculate-loan-amounts"),
             body: jsonEncode(payload),
             headers: <String, String>{"Authorization": "Bearer $token"});
         var data = jsonDecode(response.body);
@@ -619,8 +647,8 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
       if (isUserLoggedIn) {
         final response = await http.get(
           Uri.https(
-            "api.commercepal.com:2087",
-            "/api/v1/financial/payment/rays/markups",
+            "api.commercepal.com:2095",
+            "/payment/v1/rays/markups",
           ),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
@@ -629,8 +657,8 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         print('hererererer');
         var datas = jsonDecode(response.body);
         print(datas);
-        if (response.statusCode == 200) {
-          for (var i in datas) {
+        if (datas['statusCode'] == '000') {
+          for (var i in datas['markups']) {
             myMarkups.add(RaysMarkup(
               Markup: i['markup'].toString(),
               RepaymentMonth: i['month'].toString(),
@@ -642,7 +670,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
           print("MyMarkups");
           print(myMarkups.length);
         } else {
-          throw datas['statusDescription'] ?? 'Error fetching special orders';
+          throw datas['statusDescription'] ?? 'Error fetching markups';
         }
       }
 
