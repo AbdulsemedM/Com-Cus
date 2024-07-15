@@ -7,6 +7,7 @@ import 'package:commercepal/features/commercepal_coins/commecepal_coins.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_state.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:commercepal/features/install_referral/referrer.dart';
+import 'package:commercepal/features/invite_friends/invite_friends.dart';
 import 'package:commercepal/features/login/presentation/login_page.dart';
 import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
 import 'package:commercepal/features/splash/splash_page.dart';
@@ -249,9 +250,13 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               if (valid == "logout") {
                 Navigator.pushNamed(context, LoginPage.routeName);
               } else {
-                String? link = await getReferralLink();
-                print(link);
-                Share.share("Check out this app: $link");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const InviteFriends()));
+                // String? link = await getReferralLink();
+                // print(link);
+                // Share.share("Check out this app: $link");
               }
               // Navigator.push(context,
               //     MaterialPageRoute(builder: (context) => CommecepalCoins()));
@@ -429,9 +434,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                       .titleMedium
                       ?.copyWith(color: AppColors.secondaryTextColor),
                 ),
-
                 const Spacer(),
-            
               ],
             ),
           ),
@@ -552,7 +555,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             title: FutureBuilder<String>(
               future: Translations.translatedText(
                   "Choose Language", GlobalStrings.getGlobalString()),
-               builder: (context, snapshot) {
+              builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Text(
                     snapshot.data ?? 'Default Text',
@@ -560,7 +563,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 } else {
                   return Text(
                     'Loading...',
-                  ); 
+                  );
                 }
               },
             ),

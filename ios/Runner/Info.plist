@@ -53,6 +53,8 @@
   <string>We need access to Apple Music data to provide personalized music recommendations based on your listening history.</string>
   <key>NSCameraUsageDescription</key>
   <string>CommercePal needs permission to access your photos</string>
+  <key>NSContactsUsageDescription</key>
+<string>We need access to your contacts to display them.</string>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
   <string>We need your location to provide you with location-based services and enhance your user experience.</string>
   <key>NSLocationWhenInUseUsageDescription</key>
