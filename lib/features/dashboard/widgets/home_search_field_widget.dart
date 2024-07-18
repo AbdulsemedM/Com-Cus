@@ -23,6 +23,27 @@ class _HomeSearchFieldWidgetState extends State<HomeSearchFieldWidget> {
       child: Row(
         children: [
           Expanded(
+            flex: 2, // Adjust this value to make the DropdownButton narrower
+            child: DropdownButton<String>(
+              value: _searchType,
+              items: <String>['Product', 'Merchant'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _searchType = newValue;
+                });
+              },
+              hint: const Text('search'),
+            ),
+          ),
+          const SizedBox(
+            width: 14,
+          ),
+          Expanded(
             flex: 4, // Adjust this value to make the TextField wider
             child: GestureDetector(
               onTap: () {
@@ -71,27 +92,6 @@ class _HomeSearchFieldWidgetState extends State<HomeSearchFieldWidget> {
                   hintText: "Type something e.g., watch",
                 ),
               ),
-            ),
-          ),
-          const SizedBox(
-            width: 14,
-          ),
-          Expanded(
-            flex: 2, // Adjust this value to make the DropdownButton narrower
-            child: DropdownButton<String>(
-              value: _searchType,
-              items: <String>['Product', 'Merchant'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _searchType = newValue;
-                });
-              },
-              hint: const Text('search'),
             ),
           ),
           const CartWidget(),

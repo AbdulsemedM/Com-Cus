@@ -184,12 +184,13 @@ class _UserSetPasswordPageState extends State<UserSetPasswordPage>
           if (v?.isEmpty == true) {
             return "Password is required";
           }
-          if (v!.length < 6) {
-            return "Password should be at least 6 characters";
+          if (v!.length < 8) {
+            return "Password should be at least 8 characters";
           }
 
           if (!v.isStrongPass()) {
-            return "Password must have at least one special character, a number & a capital letter";
+            // return "Password must have at least one special character, a number & a capital letter";
+            return "Password should be at least 8 characters";
           }
           return null;
         },
