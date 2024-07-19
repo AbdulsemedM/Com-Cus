@@ -4,6 +4,7 @@ import 'package:commercepal/core/translator/translator.dart';
 import 'package:commercepal/features/addresses/presentation/addresses_page.dart';
 import 'package:commercepal/features/change_password/presentation/change_password_page.dart';
 import 'package:commercepal/features/commercepal_coins/commecepal_coins.dart';
+import 'package:commercepal/features/contact_us/contact_us.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_state.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:commercepal/features/install_referral/referrer.dart';
@@ -275,6 +276,22 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => NewSpecialOrders()));
+              }
+            },
+          ),
+          const Divider(),
+          UserMenuItem(
+            icon: Icons.contact_support_outlined,
+            title: translatedStrings['contact']!,
+            language: dropdownValue,
+            onClick: () {
+              if (valid == "logout") {
+                Navigator.pushNamed(context, LoginPage.routeName);
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ContactUsPage()));
               }
             },
           ),

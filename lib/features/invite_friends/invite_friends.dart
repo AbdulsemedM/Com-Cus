@@ -2,6 +2,7 @@ import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/features/install_referral/referrer.dart';
 import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,10 +22,15 @@ class _InviteFriendsState extends State<InviteFriends> {
   void initState() {
     super.initState();
     _getContacts();
+    getUrl();
+  }
+
+  Future<void> getUrl() async {
+    url = await getReferralLink();
   }
 
   Future<void> _getContacts() async {
-    // url = 
+    // url =
     // Request permissions
     if (await Permission.contacts.request().isGranted) {
       // Fetch contacts
@@ -70,7 +76,8 @@ class _InviteFriendsState extends State<InviteFriends> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Invite Friends'),
+        title: const Text('Invite Friends',
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17)),
       ),
       body: _contacts.isEmpty
           ? const Center(child: CircularProgressIndicator())
@@ -83,75 +90,90 @@ class _InviteFriendsState extends State<InviteFriends> {
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
-                SizedBox(
-                  height: 65,
-                  child: SizedBox(
-                      // color: Colors.purple,
-                      child: Container(
-                    width: MediaQuery.of(context).size.width * 0.82,
-                    height: MediaQuery.of(context).size.height * 0.09,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomPaint(
-                        painter: DashedBorderPainter(borderRadius: 2),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                url != null
+                    ? SizedBox(
+                        height: 65,
+                        child: SizedBox(
+                            // color: Colors.purple,
+                            child: Container(
+                          width: MediaQuery.of(context).size.width * 0.82,
+                          height: MediaQuery.of(context).size.height * 0.09,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
                           ),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(18, 8, 8, 8),
-                                child: Text(
-                                  "sadjklasfsdmvnksafnjkefnsfsdfsfsf",
-                                  softWrap: true,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CustomPaint(
+                              painter: DashedBorderPainter(borderRadius: 2),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        String? link = await getReferralLink();
-                                        print(link);
-                                        Share.share(
-                                            "Check out this app: $link");
-                                      },
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Icon(Icons.share),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          18, 8, 8, 8),
+                                      child: Text(
+                                        url!.substring(0, 35),
+                                        softWrap: true,
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                    child: GestureDetector(
-                                      onTap: () {},
+                                    Expanded(
                                       child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: Icon(Icons.copy),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              // String? link =
+                                              //     await getReferralLink();
+                                              // print(link);
+                                              Share.share(
+                                                  "Check out this app: $url");
+                                            },
+                                            child: const Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Icon(Icons.share),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                    Expanded(
+                                      child: Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Clipboard.setData(
+                                                  ClipboardData(text: url!));
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                    content: Text(
+                                                        'Copied to clipboard')),
+                                              );
+                                            },
+                                            child: const Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Icon(Icons.copy),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  )),
-                ),
+                        )),
+                      )
+                    : Container(),
                 ..._contacts.map((contact) {
                   String name = contact.displayName ?? '';
                   String initials = _getInitials(name);

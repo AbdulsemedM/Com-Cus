@@ -31,6 +31,7 @@ Future<void> translateStrings() async {
       'forgot_password': 'Forgot Password',
       'create_account': 'Create Account',
       'share_app': 'Share App/ Invite Friends',
+      'contact': 'Contact Us',
     };
     return;
   }
