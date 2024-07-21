@@ -87,7 +87,7 @@ class _MerchantSearchPageState extends State<MerchantSearchPage> {
                 controller: _searchController,
                 onChanged: _onSearchChanged,
                 decoration: InputDecoration(
-                  hintText: 'Type something, eg. Abdi',
+                  hintText: 'Type something, eg. Abdu',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey, width: 2),

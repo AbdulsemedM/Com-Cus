@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class InviteFriends extends StatefulWidget {
   const InviteFriends({super.key});
@@ -17,6 +19,7 @@ class InviteFriends extends StatefulWidget {
 class _InviteFriendsState extends State<InviteFriends> {
   List<Contact> _contacts = [];
   String? url;
+  Set<String> registeredPhoneNumbers = {};
 
   @override
   void initState() {
@@ -30,17 +33,47 @@ class _InviteFriendsState extends State<InviteFriends> {
   }
 
   Future<void> _getContacts() async {
-    // url =
-    // Request permissions
     if (await Permission.contacts.request().isGranted) {
-      // Fetch contacts
       Iterable<Contact> contacts = await ContactsService.getContacts();
-      // Filter contacts to include only those with phone numbers
-      List<Contact> contactsWithPhones =
-          contacts.where((contact) => contact.phones!.isNotEmpty).toList();
+      List<Contact> contactsWithPhones = contacts
+          .where((contact) => contact.phones!.isNotEmpty)
+          .where((contact) {
+        String phoneNumber = contact.phones!.first.value!.replaceAll(' ', '');
+        return phoneNumber.startsWith('251') ||
+            phoneNumber.startsWith('+251') ||
+            phoneNumber.startsWith('0') ||
+            phoneNumber.startsWith('+');
+      }).toList();
       setState(() {
         _contacts = contactsWithPhones;
       });
+      _checkRegisteredUsers(contactsWithPhones);
+    }
+  }
+
+  Future<void> _checkRegisteredUsers(List<Contact> contacts) async {
+    List<String> phoneNumbers = contacts
+        .where((contact) => contact.phones!.isNotEmpty)
+        .map((contact) => contact.phones!.first.value!)
+        .toList();
+    print({'phoneNumbers': phoneNumbers});
+    final response = await http.post(
+      Uri.https(
+          "api.commercepal.com:2096", "/prime/api/v1/user-invitations/check"),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'phoneNumbers': phoneNumbers}),
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        registeredPhoneNumbers = Set<String>.from(data
+            .where((entry) => entry['exists'] as bool)
+            .map((entry) => entry['phoneNumber'] as String));
+      });
+    } else {
+      // Handle the error case
+      print('Failed to check registered users');
     }
   }
 
@@ -57,12 +90,11 @@ class _InviteFriendsState extends State<InviteFriends> {
   }
 
   Future<void> _sendInvite(String phoneNumber) async {
-    // Example: using SMS URL scheme to open SMS app
     final Uri smsUri = Uri(
       scheme: 'sms',
       path: phoneNumber,
       queryParameters: {
-        'body': 'Hi! I would like to invite you to join our app.'
+        'body': 'Hi! I would like to invite you to try this app.\n $url'
       },
     );
     if (await canLaunch(smsUri.toString())) {
@@ -94,7 +126,6 @@ class _InviteFriendsState extends State<InviteFriends> {
                     ? SizedBox(
                         height: 65,
                         child: SizedBox(
-                            // color: Colors.purple,
                             child: Container(
                           width: MediaQuery.of(context).size.width * 0.82,
                           height: MediaQuery.of(context).size.height * 0.09,
@@ -127,9 +158,6 @@ class _InviteFriendsState extends State<InviteFriends> {
                                               EdgeInsets.fromLTRB(0, 0, 10, 0),
                                           child: GestureDetector(
                                             onTap: () async {
-                                              // String? link =
-                                              //     await getReferralLink();
-                                              // print(link);
                                               Share.share(
                                                   "Check out this app: $url");
                                             },
@@ -192,22 +220,24 @@ class _InviteFriendsState extends State<InviteFriends> {
                       style: const TextStyle(fontSize: 14),
                     ),
                     subtitle: Text(phoneNumber),
-                    trailing: SizedBox(
-                      height: 30,
-                      width: 90,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.colorPrimaryDark,
-                        ),
-                        onPressed: () {
-                          _sendInvite(phoneNumber);
-                        },
-                        child: const Text(
-                          'Invite',
-                          style: TextStyle(color: AppColors.bgColor),
-                        ),
-                      ),
-                    ),
+                    trailing: registeredPhoneNumbers.contains(phoneNumber)
+                        ? const Text('Already Registered')
+                        : SizedBox(
+                            height: 30,
+                            width: 90,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.colorPrimaryDark,
+                              ),
+                              onPressed: () {
+                                _sendInvite(phoneNumber);
+                              },
+                              child: const Text(
+                                'Invite',
+                                style: TextStyle(color: AppColors.bgColor),
+                              ),
+                            ),
+                          ),
                   );
                 }).toList(),
               ],
@@ -231,7 +261,6 @@ class DashedBorderPainter extends CustomPainter {
     final dashWidth = 3;
     final dashSpace = 3;
 
-    // Draw top dashed line
     double startX = 0;
     while (startX < size.width) {
       canvas.drawLine(
@@ -242,7 +271,6 @@ class DashedBorderPainter extends CustomPainter {
       startX += dashWidth + dashSpace;
     }
 
-    // Draw right dashed line
     double startY = 0;
     while (startY < size.height) {
       canvas.drawLine(
@@ -253,7 +281,6 @@ class DashedBorderPainter extends CustomPainter {
       startY += dashWidth + dashSpace;
     }
 
-    // Draw bottom dashed line
     startX = 0;
     while (startX < size.width) {
       canvas.drawLine(
@@ -264,7 +291,6 @@ class DashedBorderPainter extends CustomPainter {
       startX += dashWidth + dashSpace;
     }
 
-    // Draw left dashed line
     startY = 0;
     while (startY < size.height) {
       canvas.drawLine(
