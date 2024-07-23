@@ -1,4 +1,5 @@
 import 'package:commercepal/app/di/injector.dart';
+import 'package:commercepal/app/utils/capitalizer.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/cities-core/presentation/select_city_widget.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
@@ -177,6 +178,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
       children: [
         Expanded(
           child: TextFormField(
+            inputFormatters: [CapitalizeEachWordInputFormatter()],
             keyboardType: TextInputType.text,
             validator: (v) {
               if (v?.isEmpty == true) {
@@ -198,10 +200,11 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
         ),
         Expanded(
           child: TextFormField(
+            inputFormatters: [CapitalizeEachWordInputFormatter()],
             keyboardType: TextInputType.text,
             validator: (v) {
               if (v?.isEmpty == true) {
-                return "Second name is required";
+                return "Last name is required";
               }
               return null;
             },
