@@ -142,6 +142,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
           state.maybeWhen(
               orElse: () {},
               error: (error) {
+                print("hereisthererorror");
                 displaySnack(context, error);
               },
               addresses: (adds) {
@@ -159,6 +160,8 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
               shippingFee: (fee) {
                 setState(() {
                   _shippingFee = fee;
+                  print("shippingfeeeee");
+                  print(_shippingFee);
                 });
               },
               //TODO: create state for redirecting to next stage

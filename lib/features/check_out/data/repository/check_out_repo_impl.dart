@@ -66,23 +66,29 @@ class CheckOutRepoImpl implements CheckOutRepo {
                 })
             .toList()
       };
-
+      // print("hererequest");
+      // print(request);
       final response = await apiProvider.post(
           request,
           isUserBusiness
               ? EndPoints.businessCheckOut.url
               : EndPoints.checkOut.url);
-      final cResponse = jsonDecode(response);
-      if (cResponse['statusCode'] == '000') {
-        final orderRef = cResponse['OrderRef'];
+      print("orderrefhere");
+      print(response['OrderRef']);
+      // final cResponse = jsonDecode(response);
+      // print("decoded");
+      // print(cResponse);
+      if (response['statusCode'] == '000') {
+        final orderRef = response['OrderRef'];
         // save it
         pData.writeData("order_ref", orderRef);
-
         return orderRef;
       } else {
-        throw cResponse['statusDescription'];
+        print("here is the error");
+        throw response['statusDescription'];
       }
     } catch (e) {
+      print(e.toString());
       rethrow;
     }
   }
@@ -100,7 +106,6 @@ class CheckOutRepoImpl implements CheckOutRepo {
           },
         true => {"orderRef": orderRef}
       };
-
       final response = await apiProvider.post(
           payLoad,
           isUserBusiness
