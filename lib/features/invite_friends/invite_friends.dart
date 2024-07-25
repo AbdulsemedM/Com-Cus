@@ -145,137 +145,136 @@ class _InviteFriendsState extends State<InviteFriends> {
         title: const Text('Invite Friends',
             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17)),
       ),
-      body: _contacts.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 18),
-                  child: Text(
-                    "Invite your friends and earn CommercePal coins",
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
-                url != null
-                    ? SizedBox(
-                        height: 65,
-                        child: SizedBox(
-                            child: Container(
-                          width: MediaQuery.of(context).size.width * 0.82,
-                          height: MediaQuery.of(context).size.height * 0.09,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 18),
+            child: Text(
+              "Invite your friends and earn CommercePal coins",
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+          ),
+          url != null
+              ? SizedBox(
+                  height: 65,
+                  child: SizedBox(
+                      child: Container(
+                    width: MediaQuery.of(context).size.width * 0.82,
+                    height: MediaQuery.of(context).size.height * 0.09,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CustomPaint(
+                        painter: DashedBorderPainter(borderRadius: 2),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CustomPaint(
-                              painter: DashedBorderPainter(borderRadius: 2),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          18, 8, 8, 8),
-                                      child: Text(
-                                        url!.substring(0, 35),
-                                        softWrap: true,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              Share.share(
-                                                  "Check out this app: $url");
-                                            },
-                                            child: const Align(
-                                              alignment: Alignment.centerRight,
-                                              child: Icon(Icons.share),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              Clipboard.setData(
-                                                  ClipboardData(text: url!));
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                    content: Text(
-                                                        'Copied to clipboard')),
-                                              );
-                                            },
-                                            child: const Align(
-                                              alignment: Alignment.centerRight,
-                                              child: Icon(Icons.copy),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(18, 8, 8, 8),
+                                child: Text(
+                                  url!.substring(0, 35),
+                                  softWrap: true,
                                 ),
                               ),
-                            ),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        Share.share("Check out this app: $url");
+                                      },
+                                      child: const Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Icon(Icons.share),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Clipboard.setData(
+                                            ClipboardData(text: url!));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content:
+                                                  Text('Copied to clipboard')),
+                                        );
+                                      },
+                                      child: const Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Icon(Icons.copy),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        )),
-                      )
-                    : Container(),
-                ..._contacts.map((contact) {
-                  String name = contact.displayName ?? '';
-                  String initials = _getInitials(name);
-                  String phoneNumber = contact.phones!.first.value ?? '';
-                  return ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      backgroundColor: AppColors.colorPrimaryDark,
-                      child: Text(
-                        initials.toUpperCase(),
-                        style: const TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
-                    title: Text(
-                      name,
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    subtitle: Text(phoneNumber),
-                    trailing: registeredPhoneNumbers.contains(phoneNumber)
-                        ? const Text('Already Registered')
-                        : SizedBox(
-                            height: 30,
-                            width: 90,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.colorPrimaryDark,
-                              ),
-                              onPressed: () {
-                                _sendInvite(phoneNumber, name);
-                              },
-                              child: const Text(
-                                'Invite',
-                                style: TextStyle(color: AppColors.bgColor),
-                              ),
+                  )),
+                )
+              : _contacts.isEmpty
+                  ? const Center(child: CircularProgressIndicator())
+                  : Column(
+                      children: _contacts.map((contact) {
+                        String name = contact.displayName ?? '';
+                        String initials = _getInitials(name);
+                        String phoneNumber = contact.phones!.first.value ?? '';
+                        return ListTile(
+                          leading: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: AppColors.colorPrimaryDark,
+                            child: Text(
+                              initials.toUpperCase(),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
-                  );
-                }).toList(),
-              ],
-            ),
+                          title: Text(
+                            name,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          subtitle: Text(phoneNumber),
+                          trailing: registeredPhoneNumbers.contains(phoneNumber)
+                              ? const Text('Already Registered')
+                              : SizedBox(
+                                  height: 30,
+                                  width: 90,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          AppColors.colorPrimaryDark,
+                                    ),
+                                    onPressed: () {
+                                      _sendInvite(phoneNumber, name);
+                                    },
+                                    child: const Text(
+                                      'Invite',
+                                      style:
+                                          TextStyle(color: AppColors.bgColor),
+                                    ),
+                                  ),
+                                ),
+                        );
+                      }).toList(),
+                    ),
+        ],
+      ),
     );
   }
 }
