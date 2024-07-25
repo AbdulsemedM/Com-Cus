@@ -10,6 +10,8 @@ PODS:
   - connectivity (0.0.1):
     - Flutter
     - Reachability
+  - contacts_service (0.2.2):
+    - Flutter
   - device_info_plus (0.0.1):
     - Flutter
   - FBAEMKit (16.3.1):
@@ -162,6 +164,7 @@ PODS:
 DEPENDENCIES:
   - app_links (from `.symlinks/plugins/app_links/ios`)
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -219,6 +222,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/app_links/ios"
   connectivity:
     :path: ".symlinks/plugins/connectivity/ios"
+  contacts_service:
+    :path: ".symlinks/plugins/contacts_service/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_auth:
@@ -276,6 +281,7 @@ SPEC CHECKSUMS:
   app_links: e70ca16b4b0f88253b3b3660200d4a10b4ea9795
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
+  contacts_service: 849e1f84281804c8bfbec1b4c3eedcb23c5d3eca
   device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
   FBSDKCoreKit: 5e4dd478947ab1bcc887e8cfadeae0727af1a942

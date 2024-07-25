@@ -34,10 +34,13 @@ Future<String> getReferralLink() async {
         if (Platform.isAndroid) {
           String myReferrer =
               "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$userId";
+
           return myReferrer;
         } else if (Platform.isIOS) {
+          print("hereis the link");
           String myReferrer =
               'https://apps.apple.com/us/app/commercepal/id1669974212?$userId=$userId';
+          print(userId);
           return myReferrer;
         } else {
           return "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$userId";
