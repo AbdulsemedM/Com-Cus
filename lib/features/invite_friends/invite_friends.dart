@@ -1,4 +1,8 @@
+import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/core/data/prefs_data.dart';
+import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/install_referral/referrer.dart';
 import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -90,17 +94,46 @@ class _InviteFriendsState extends State<InviteFriends> {
   }
 
   Future<void> _sendInvite(String phoneNumber) async {
-    final Uri smsUri = Uri(
-      scheme: 'sms',
-      path: phoneNumber,
-      queryParameters: {
-        'body': 'Hi! I would like to invite you to try this app.\n $url'
-      },
-    );
-    if (await canLaunch(smsUri.toString())) {
-      await launch(smsUri.toString());
-    } else {
-      throw 'Could not launch $smsUri';
+    // final Uri smsUri = Uri(
+    //   scheme: 'sms',
+    //   path: phoneNumber,
+    //   queryParameters: {
+    //     'body': 'Hi! I would like to invite you to try this app.\n $url'
+    //   },
+    // );
+    // if (await canLaunch(smsUri.toString())) {
+    //   await launch(smsUri.toString());
+    // } else {
+    //   throw 'Could not launch $smsUri';
+    // }
+    final body = {
+      'phoneNumber': phoneNumber,
+      "appLink": url ??
+          "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&hl=en"
+    };
+    print(body);
+    try {
+      final prefsData = getIt<PrefsData>();
+      final token = await prefsData.readData(PrefsKeys.userToken.name);
+      final response = await http.post(
+          Uri.https("api.commercepal.com:2096",
+              "/prime/api/v1/user-invitations/send"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: json.encode(body));
+      print(response.body);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        displaySnack(context, "Invitation sent successfully");
+      } else {
+        // Handle the error case
+        displaySnack(context, "Unable to send message, Please try again");
+      }
+    } catch (e) {
+      print(e.toString());
+      displaySnack(context, "Unable to send message, Please try again");
     }
   }
 
