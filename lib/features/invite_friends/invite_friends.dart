@@ -93,7 +93,7 @@ class _InviteFriendsState extends State<InviteFriends> {
     return '';
   }
 
-  Future<void> _sendInvite(String phoneNumber) async {
+  Future<void> _sendInvite(String phoneNumber, String name) async {
     // final Uri smsUri = Uri(
     //   scheme: 'sms',
     //   path: phoneNumber,
@@ -106,6 +106,7 @@ class _InviteFriendsState extends State<InviteFriends> {
     // } else {
     //   throw 'Could not launch $smsUri';
     // }
+
     final body = {
       'phoneNumber': phoneNumber,
       "appLink": url ??
@@ -126,7 +127,7 @@ class _InviteFriendsState extends State<InviteFriends> {
       print(response.body);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        displaySnack(context, "Invitation sent successfully");
+        displaySnack(context, "Invitation sent to $name successfully");
       } else {
         // Handle the error case
         displaySnack(context, "Unable to send message, Please try again");
@@ -263,7 +264,7 @@ class _InviteFriendsState extends State<InviteFriends> {
                                 backgroundColor: AppColors.colorPrimaryDark,
                               ),
                               onPressed: () {
-                                _sendInvite(phoneNumber);
+                                _sendInvite(phoneNumber, name);
                               },
                               child: const Text(
                                 'Invite',
