@@ -33,7 +33,11 @@ class _InviteFriendsState extends State<InviteFriends> {
   }
 
   Future<void> getUrl() async {
-    url = await getReferralLink();
+    var load = await getReferralLink();
+    setState(() {
+      url = load;
+      print(url);
+    });
   }
 
   Future<void> _getContacts() async {
@@ -147,19 +151,21 @@ class _InviteFriendsState extends State<InviteFriends> {
       ),
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 18),
-            child: Text(
-              "Invite your friends and earn CommercePal coins",
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-          ),
-          url != null
-              ? SizedBox(
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 18),
+                child: Text(
+                  "Invite your friends and earn CommercePal coins",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ),
+              if (url != null)
+                SizedBox(
                   height: 65,
                   child: SizedBox(
                       child: Container(
-                    width: MediaQuery.of(context).size.width * 0.82,
+                    width: MediaQuery.of(context).size.width * 1,
                     height: MediaQuery.of(context).size.height * 0.09,
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -229,50 +235,49 @@ class _InviteFriendsState extends State<InviteFriends> {
                     ),
                   )),
                 )
-              : _contacts.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
-                  : Column(
-                      children: _contacts.map((contact) {
-                        String name = contact.displayName ?? '';
-                        String initials = _getInitials(name);
-                        String phoneNumber = contact.phones!.first.value ?? '';
-                        return ListTile(
-                          leading: CircleAvatar(
-                            radius: 30,
-                            backgroundColor: AppColors.colorPrimaryDark,
-                            child: Text(
-                              initials.toUpperCase(),
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          title: Text(
-                            name,
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          subtitle: Text(phoneNumber),
-                          trailing: registeredPhoneNumbers.contains(phoneNumber)
-                              ? const Text('Already Registered')
-                              : SizedBox(
-                                  height: 30,
-                                  width: 90,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          AppColors.colorPrimaryDark,
-                                    ),
-                                    onPressed: () {
-                                      _sendInvite(phoneNumber, name);
-                                    },
-                                    child: const Text(
-                                      'Invite',
-                                      style:
-                                          TextStyle(color: AppColors.bgColor),
-                                    ),
-                                  ),
-                                ),
-                        );
-                      }).toList(),
+            ],
+          ),
+          _contacts.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : Container(),
+          ..._contacts.map((contact) {
+            String name = contact.displayName ?? '';
+            String initials = _getInitials(name);
+            String phoneNumber = contact.phones!.first.value ?? '';
+            return ListTile(
+              leading: CircleAvatar(
+                radius: 30,
+                backgroundColor: AppColors.colorPrimaryDark,
+                child: Text(
+                  initials.toUpperCase(),
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+              title: Text(
+                name,
+                style: const TextStyle(fontSize: 14),
+              ),
+              subtitle: Text(phoneNumber),
+              trailing: registeredPhoneNumbers.contains(phoneNumber)
+                  ? const Text('Already Registered')
+                  : SizedBox(
+                      height: 30,
+                      width: 90,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.colorPrimaryDark,
+                        ),
+                        onPressed: () {
+                          _sendInvite(phoneNumber, name);
+                        },
+                        child: const Text(
+                          'Invite',
+                          style: TextStyle(color: AppColors.bgColor),
+                        ),
+                      ),
                     ),
+            );
+          }).toList(),
         ],
       ),
     );
