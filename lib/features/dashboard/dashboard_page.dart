@@ -112,7 +112,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return UpgradeAlert(
-      showLater: true,
+      showLater: false,
       showIgnore: false,
       child: BlocProvider(
         create: (context) => getIt<DashboardCubit>()..hasUserSwitchedAccounts(),

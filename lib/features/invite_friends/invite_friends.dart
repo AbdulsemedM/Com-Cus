@@ -72,6 +72,12 @@ class _InviteFriendsState extends State<InviteFriends> {
             phoneNumber.startsWith('+251') ||
             phoneNumber.startsWith('0') ||
             phoneNumber.startsWith('+');
+      }).map((contact) {
+        contact.phones = contact.phones!.map((phone) {
+          phone.value = phone.value!.replaceAll(' ', '');
+          return phone;
+        }).toList();
+        return contact;
       }).toList();
       setState(() {
         _contacts = contactsWithPhones;
@@ -269,7 +275,7 @@ class _InviteFriendsState extends State<InviteFriends> {
             ],
           ),
           _contacts.isEmpty
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(child: Text("There are no contacts to display."))
               : Container(),
           ..._contacts.map((contact) {
             String name = contact.displayName ?? '';

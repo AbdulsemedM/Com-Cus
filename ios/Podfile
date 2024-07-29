@@ -53,6 +53,7 @@ post_install do |installer|
         'PERMISSION_CAMERA=1',
         'PERMISSION_PHOTOS=1',
         'PERMISSION_LOCATION=1',
+        'PERMISSION_CONTACTS=1',
       ]
     end
     # End of the permission_handler configuration
