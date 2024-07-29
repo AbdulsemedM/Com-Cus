@@ -54,7 +54,7 @@
   <key>NSCameraUsageDescription</key>
   <string>CommercePal needs permission to access your photos</string>
   <key>NSContactsUsageDescription</key>
-<string>We need access to your contacts to display them.</string>
+  <string>We need access to your contacts to invite your friends.</string>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
   <string>We need your location to provide you with location-based services and enhance your user experience.</string>
   <key>NSLocationWhenInUseUsageDescription</key>

@@ -18,7 +18,7 @@ import 'package:google_api_headers/google_api_headers.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 
-class  SearchPlacesScreen extends StatefulWidget {
+class SearchPlacesScreen extends StatefulWidget {
   static const routeName = "/search_places_page";
 
   const SearchPlacesScreen({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class  SearchPlacesScreen extends StatefulWidget {
   State<SearchPlacesScreen> createState() => _SearchPlacesScreenState();
 }
 
-const kGoogleApiKey = 'AIzaSyDQ2c_pOSOFYSjxGMwkFvCVWKjYOM9siow';
+const kGoogleApiKey = 'AIzaSyBGkJQ-2ETFvoaTYJhW7F1IKM3PkhDeZHs';
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class _SearchPlacesScreenState extends State<SearchPlacesScreen> {

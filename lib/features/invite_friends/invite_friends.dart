@@ -40,8 +40,29 @@ class _InviteFriendsState extends State<InviteFriends> {
     });
   }
 
+  // Future<void> _getContacts() async {
+  //   if (await Permission.contacts.request().isGranted) {
+  //     Iterable<Contact> contacts = await ContactsService.getContacts();
+  //     List<Contact> contactsWithPhones = contacts
+  //         .where((contact) => contact.phones!.isNotEmpty)
+  //         .where((contact) {
+  //       String phoneNumber = contact.phones!.first.value!.replaceAll(' ', '');
+  //       return phoneNumber.startsWith('251') ||
+  //           phoneNumber.startsWith('+251') ||
+  //           phoneNumber.startsWith('0') ||
+  //           phoneNumber.startsWith('+');
+  //     }).toList();
+  //     setState(() {
+  //       _contacts = contactsWithPhones;
+  //     });
+  //     _checkRegisteredUsers(contactsWithPhones);
+  //   }
+  // }
+
   Future<void> _getContacts() async {
-    if (await Permission.contacts.request().isGranted) {
+    // Check if contacts permission is granted
+    PermissionStatus permissionStatus = await Permission.contacts.status;
+    if (permissionStatus.isGranted) {
       Iterable<Contact> contacts = await ContactsService.getContacts();
       List<Contact> contactsWithPhones = contacts
           .where((contact) => contact.phones!.isNotEmpty)
@@ -56,6 +77,16 @@ class _InviteFriendsState extends State<InviteFriends> {
         _contacts = contactsWithPhones;
       });
       _checkRegisteredUsers(contactsWithPhones);
+    } else if (permissionStatus.isDenied ||
+        permissionStatus.isPermanentlyDenied) {
+      // Request permissions again if denied
+      permissionStatus = await Permission.contacts.request();
+      if (permissionStatus.isGranted) {
+        _getContacts();
+      } else {
+        // Handle the case when permission is denied permanently
+        print('Contacts permission is denied.');
+      }
     }
   }
 
