@@ -105,7 +105,7 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
                         : RichText(
                             text: TextSpan(children: [
                               TextSpan(
-                                text: tPrice,
+                                text: widget.totalPrice != null ? tPrice : "",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
@@ -125,8 +125,8 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
                                       .textTheme
                                       .bodyMedium
                                       ?.copyWith(
-                                        decoration: TextDecoration.lineThrough,
-                                      )),
+                                          decoration:
+                                              TextDecoration.lineThrough)),
                               TextSpan(
                                 text: totalCheckoutPrice != ""
                                     ? "ETB  ${totalCheckoutPrice}"

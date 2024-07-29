@@ -12,12 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class RaysMicrofinance extends StatefulWidget {
+class HijraBankLoan extends StatefulWidget {
   static const routeName = "/rays_microfinance_payment";
-  const RaysMicrofinance({super.key});
+  const HijraBankLoan({super.key});
 
   @override
-  State<RaysMicrofinance> createState() => _RaysMicrofinanceState();
+  State<HijraBankLoan> createState() => _HijraBankLoanState();
 }
 
 class RaysMarkup {
@@ -26,7 +26,7 @@ class RaysMarkup {
   RaysMarkup({required this.RepaymentMonth, required this.Markup});
 }
 
-class _RaysMicrofinanceState extends State<RaysMicrofinance> {
+class _HijraBankLoanState extends State<HijraBankLoan> {
   String? period1;
   String? amountAfter1;
   String? markUp1;
@@ -121,7 +121,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Rays Microfinance",
+          "Hijra Bank Loan",
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
         ),
       ),
@@ -433,7 +433,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
 
         final response = await http.post(
             Uri.https("api.commercepal.com:2095",
-                "/payment/v1/rays/calculate-loan-amounts"),
+                "/payment/v1/halalPay/calculate-loan-amounts"),
             body: jsonEncode(payload),
             headers: <String, String>{"Authorization": "Bearer $token"});
         var data = jsonDecode(response.body);
@@ -501,8 +501,8 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         // print(token);
         Map<String, dynamic> payload = {
           "ServiceCode": "LOAN-REQUEST",
-          "PaymentType": "FINANCIAL_RAYS_MFI",
-          "PaymentMode": "FINANCIAL_RAYS_MFI",
+          "PaymentType": "FINANCIAL_HALAL_PAY",
+          "PaymentMode": "FINANCIAL_HALAL_PAY",
           "PhoneNumber": pNumber,
           "UserType": "B",
           "LoanType": "COL",
@@ -592,7 +592,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         final response = await http.post(
           Uri.https(
             "api.commercepal.com:2095",
-            "/payment/v1/rays/confirm",
+            "/payment/v1/halalPay/confirm",
           ),
           body: jsonEncode(payload),
           headers: <String, String>{"Authorization": "Bearer $token"},
@@ -651,7 +651,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         final response = await http.get(
           Uri.https(
             "api.commercepal.com:2095",
-            "/payment/v1/rays/markups",
+            "/payment/v1/halalPay/markups",
           ),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',

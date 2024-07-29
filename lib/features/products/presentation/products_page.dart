@@ -29,6 +29,8 @@ class ProductsPage extends StatelessWidget {
             floatingActionButton: Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
               child: ElevatedButton(
+                // style: ElevatedButton.styleFrom(
+                //     backgroundColor: AppColors.secondaryTextColor),
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -37,7 +39,7 @@ class ProductsPage extends StatelessWidget {
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                    AppColors.colorAccent,
+                    AppColors.colorSecondaryDark,
                   ),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
@@ -50,13 +52,15 @@ class ProductsPage extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.card_giftcard_outlined,
-                      color: AppColors.bg1,
+                      color: AppColors.colorPrimaryDark,
                     ),
                     SizedBox(
                         width: 8), // Adjust the spacing between icon and text
                     Text(
                       "Special Order",
-                      style: TextStyle(color: AppColors.bg1),
+                      style: TextStyle(
+                          color: AppColors.colorPrimaryDark,
+                          fontWeight: FontWeight.w800),
                     ),
                   ],
                 ),

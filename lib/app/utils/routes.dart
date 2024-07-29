@@ -6,6 +6,7 @@ import 'package:commercepal/features/change_password/presentation/change_passwor
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:commercepal/features/epg/epg_payment.dart';
+import 'package:commercepal/features/hijra_bank_loan/hijra_bank.dart';
 import 'package:commercepal/features/order_tracking/presentation/order_tracking_page.dart';
 import 'package:commercepal/features/otp_payments/presentation/otp_payment_page.dart';
 import 'package:commercepal/features/payment/presentation/payment_page.dart';
@@ -64,6 +65,7 @@ final Map<String, WidgetBuilder> routes = {
   // TeleBirrPayment.routeName: (context) => const TeleBirrPayment(),
   CBEBirrPayment.routeName: (context) => const CBEBirrPayment(),
   RaysMicrofinance.routeName: (context) => const RaysMicrofinance(),
+  // HijraBankLoan.routeName: (context) => const HijraBankLoan(),
 };
 
 void redirectUserToLogin() {

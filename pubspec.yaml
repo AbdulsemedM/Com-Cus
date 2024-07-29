@@ -84,6 +84,9 @@ dependencies:
   flutter_facebook_auth: ^6.0.4
   dart_jsonwebtoken: ^2.1.1
   contacts_service: ^0.6.3
+  package_info_plus: ^4.2.0
+  new_version_plus: ^0.0.10
+  platform: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -13,6 +13,7 @@ import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/cart/presentation/cart_page.dart';
+import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_loading_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_search_field_widget.dart';
@@ -62,6 +63,7 @@ class _SelectedProductPageState extends State<SelectedProductPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        // automaticallyImplyLeading: false,
         title: const HomeSearchFieldWidget(),
       ),
       body: BlocProvider(
@@ -105,6 +107,7 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
   int _current = 0;
   num _selectedFeature = -1;
   DateTime currentDate = DateTime.now();
+  bool added = false;
 
   @override
   void initState() {
@@ -175,7 +178,8 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                     Text('${widget.selectedProductDetails.ratingCount}'),
                   ],
                 ),
-                SingleChildScrollView(scrollDirection: Axis.horizontal,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -187,7 +191,8 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                           },
                           child: Text(
                             "Enable Price Drop Alert",
-                            style: TextStyle(color: Colors.black45, fontSize: 11),
+                            style:
+                                TextStyle(color: Colors.black45, fontSize: 11),
                           )),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -214,7 +219,8 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                           },
                           child: Row(
                             children: [
-                              Icon(Icons.share, color: Colors.black45, size: 12),
+                              Icon(Icons.share,
+                                  color: Colors.black45, size: 12),
                               Text(
                                 "Share",
                                 style: TextStyle(
@@ -661,45 +667,110 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
             ],
           ),
         ),
-        Container(
-          width: double.infinity,
-          color: AppColors.priceBg,
-          child: SafeArea(
-            child: BlocConsumer<CartCoreCubit, CartCoreState>(
-              listener: (context, state) {
-                if (state is CartCoreStateData) {
-                  displaySnack(context,
-                      "${widget.selectedProductDetails.productName} has been added to cart");
-                }
-              },
-              builder: (context, state) {
-                return widget.selectedProductDetails.quantity! > 0
-                    ? ProductPriceWidget(
-                        displayVoucher: false,
-                        totalPrice:
-                            "ETB ${widget.selectedProductDetails.priceBasedOnSubProducts}",
-                        // widget.selectedProductDetails.priceBasedOnSubProducts.formatCurrency(widget.selectedProductDetails.currency),
-                        subTitle:
-                            "Delivery Estimate ${widget.selectedProductDetails.deliveryDate}",
-                        buttonText: "Add to cart",
-                        onClick: () {
-                          context.read<CartCoreCubit>().addCartItem(
-                              widget.selectedProductDetails.toCartItem());
-                        },
-                        items: [],
-                      )
-                    : Center(
-                        child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          'Product out of stock',
-                          style: Theme.of(context).textTheme.titleMedium,
+        added
+            ? SafeArea(
+                child: Container(
+                color: AppColors.priceBg,
+                padding: EdgeInsets.symmetric(vertical: 6),
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("Continue Shopping"),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     Navigator.pushNamedAndRemoveUntil(
+                    //         context, DashboardPage.routeName, (route) => false,
+                    //         arguments: {"redirect_to": "cart"});
+                    //   },
+                    //   style: ButtonStyle(
+                    //     backgroundColor: MaterialStateColor.resolveWith(
+                    //       (states) => AppColors
+                    //           .colorPrimary, // Replace with appropriate color
+                    //     ),
+                    //   ),
+                    //   child: loading
+                    //       ? CircularProgressIndicator()
+                    //       : Text(
+                    //           "Cart",
+                    //           style: TextStyle(color: Colors.white),
+                    //         ),
+                    // ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, DashboardPage.routeName, (route) => false,
+                            arguments: {"redirect_to": "cart"});
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => AppColors
+                              .colorPrimary, // Replace with appropriate color
                         ),
-                      ));
-              },
-            ),
-          ),
-        )
+                      ),
+                      child: loading
+                          ? CircularProgressIndicator()
+                          : Text(
+                              "Cart",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                    )
+                  ],
+                ),
+                // displayVoucher: false,
+                // subTitle: "Continue shopping",
+                // buttonText: "Cart",
+                // onClick: () {
+                //   Navigator.pushNamedAndRemoveUntil(
+                //       context, DashboardPage.routeName, (route) => false,
+                //       arguments: {"redirect_to": "cart"});
+                // },
+                // items: []),
+              ))
+            : Container(
+                width: double.infinity,
+                color: AppColors.priceBg,
+                child: SafeArea(
+                  child: BlocConsumer<CartCoreCubit, CartCoreState>(
+                    listener: (context, state) {
+                      if (state is CartCoreStateData) {
+                        displaySnack(context,
+                            "${widget.selectedProductDetails.productName} has been added to cart");
+                      }
+                    },
+                    builder: (context, state) {
+                      return widget.selectedProductDetails.quantity! > 0
+                          ? ProductPriceWidget(
+                              displayVoucher: false,
+                              totalPrice:
+                                  "ETB ${widget.selectedProductDetails.priceBasedOnSubProducts}",
+                              // widget.selectedProductDetails.priceBasedOnSubProducts.formatCurrency(widget.selectedProductDetails.currency),
+                              subTitle:
+                                  "Delivery Estimate ${widget.selectedProductDetails.deliveryDate}",
+                              buttonText: "Add to cart",
+                              onClick: () {
+                                added = true;
+                                print(added);
+                                context.read<CartCoreCubit>().addCartItem(
+                                    widget.selectedProductDetails.toCartItem());
+                                displaySnack(context,
+                                    "${widget.selectedProductDetails.productName} has been added to cart");
+                                setState(() {});
+                              },
+                              items: [],
+                            )
+                          : Center(
+                              child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                'Product out of stock',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ));
+                    },
+                  ),
+                ),
+              )
       ],
     );
   }

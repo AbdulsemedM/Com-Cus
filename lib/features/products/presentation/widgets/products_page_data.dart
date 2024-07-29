@@ -1,6 +1,7 @@
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/decoration.dart';
 import 'package:commercepal/core/widgets/product_item_widget.dart';
+import 'package:commercepal/features/products/presentation/widgets/product_not_found.dart';
 import 'package:commercepal/features/selected_product/presentation/selected_product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,7 +69,7 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => const SizedBox(),
-          error: (String error) => HomeErrorWidget(error: error),
+          error: (String error) => ProductNotFound(error: error),
           loading: () => const HomeLoadingWidget(),
           products: (List<Product> products) => Column(
             children: [

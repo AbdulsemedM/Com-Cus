@@ -13,6 +13,7 @@ import 'package:commercepal/features/cbe_birr/cbe_birr.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_loading_widget.dart';
 import 'package:commercepal/features/epg/epg_payment.dart';
+import 'package:commercepal/features/hijra_bank_loan/hijra_bank.dart';
 import 'package:commercepal/features/otp_payments/presentation/otp_payment_page.dart';
 import 'package:commercepal/features/payment/data/dto/payment_modes_dto.dart';
 import 'package:commercepal/features/payment/presentation/bloc/payment_cubit.dart';
@@ -183,6 +184,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
   void _redirectUserBasedOnPaymentMethod(
       PaymentMethodItem e, BuildContext context) {
+    // print(e.name);
     if (e.name!.toLowerCase().contains("sahay") == true) {
       Navigator.pushNamed(context, SahayPayPage.routeName, arguments: {
         "cash_type": e.name,
@@ -205,10 +207,10 @@ class _PaymentPageState extends State<PaymentPage> {
           MaterialPageRoute(builder: (context) => const TeleBirrPayment()));
       // }
     } else if (e.name!.toLowerCase().contains("rays microfinance") == true) {
-      Navigator.pushNamed(
-        context,
-        RaysMicrofinance.routeName,
-      );
+      Navigator.pushNamed(context, RaysMicrofinance.routeName);
+    } else if (e.name!.toLowerCase().contains("hijra bank") == true) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const HijraBankLoan()));
     } else if (e.paymentMode == PaymentMode.loan) {
       print(e.name!.toLowerCase());
       _showModalBottomSheet(context, e.id!, (MarkUpItem markUpItem) {

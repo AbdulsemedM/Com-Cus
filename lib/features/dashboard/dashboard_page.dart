@@ -11,6 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:new_version_plus/new_version_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:platform/platform.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../../core/cart-core/bloc/cart_core_state.dart';
@@ -28,6 +31,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  bool shouldUpdate = false;
   int _selectedTab = 0;
   bool redirect = false;
   bool _hasUserSwitchedToBusiness = false;
@@ -51,6 +55,7 @@ class _DashboardPageState extends State<DashboardPage> {
     context.read<CartCoreCubit>().getItems();
     super.initState();
     fetchHints();
+    fetchLatestVersion();
   }
 
   var physicalAddressHintFuture;
@@ -74,8 +79,8 @@ class _DashboardPageState extends State<DashboardPage> {
         "Category", GlobalStrings.getGlobalString());
     addAddHint =
         Translations.translatedText("Cart", GlobalStrings.getGlobalString());
-    userHint =
-        Translations.translatedText("User", GlobalStrings.getGlobalString());
+    userHint = Translations.translatedText(
+        "Settings", GlobalStrings.getGlobalString());
 
     // Use await to get the actual string value from the futures
     pHint = await physicalAddressHintFuture;
@@ -112,7 +117,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return UpgradeAlert(
-      showLater: true,
+      showLater: shouldUpdate == true ? false : true,
       showIgnore: false,
       child: BlocProvider(
         create: (context) => getIt<DashboardCubit>()..hasUserSwitchedAccounts(),
@@ -150,90 +155,199 @@ class _DashboardPageState extends State<DashboardPage> {
           },
           builder: (ctx, state) {
             return Scaffold(
-              body: SafeArea(
-                child: state is DashboardUserSwicthedState && state.switched
-                    ? _bWidgets[_selectedTab]
-                    : _dWidgets[_selectedTab],
-              ),
-              bottomNavigationBar: BottomNavigationBar(
-                backgroundColor: Colors.white,
-                type: BottomNavigationBarType.fixed,
-                items: [
-                  if (!_hasUserSwitchedToBusiness)
-                    BottomNavigationBarItem(
+                body: SafeArea(
+                  child: state is DashboardUserSwicthedState && state.switched
+                      ? _bWidgets[_selectedTab]
+                      : _dWidgets[_selectedTab],
+                ),
+                bottomNavigationBar: BottomNavigationBar(
+                  backgroundColor: Colors.white,
+                  type: BottomNavigationBarType.fixed,
+                  items: [
+                    if (!_hasUserSwitchedToBusiness)
+                      BottomNavigationBarItem(
                         label: pHint,
-                        icon: SvgPicture.asset(
-                          Assets.home,
-                          color: _selectedTab == 0
-                              ? AppColors.colorPrimary
-                              : AppColors.secondaryTextColor,
-                        )),
-                  BottomNavigationBarItem(
-                      label: cHint,
-                      icon: SvgPicture.asset(
-                        Assets.category,
-                        color:
-                            _selectedTab == (_hasUserSwitchedToBusiness ? 0 : 1)
-                                ? AppColors.colorPrimary
+                        icon: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _selectedTab == 0
+                                ? AppColors.colorPrimaryDark
+                                : Colors.transparent,
+                          ),
+                          child: SvgPicture.asset(
+                            Assets.home,
+                            color: _selectedTab == 0
+                                ? Colors.white
                                 : AppColors.secondaryTextColor,
-                      )),
-                  BottomNavigationBarItem(
+                          ),
+                        ),
+                      ),
+                    BottomNavigationBarItem(
+                      label: cHint,
+                      icon: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _selectedTab ==
+                                  (_hasUserSwitchedToBusiness ? 0 : 1)
+                              ? AppColors.colorPrimaryDark
+                              : Colors.transparent,
+                        ),
+                        child: SvgPicture.asset(
+                          Assets.category,
+                          color: _selectedTab ==
+                                  (_hasUserSwitchedToBusiness ? 0 : 1)
+                              ? Colors.white
+                              : AppColors.secondaryTextColor,
+                        ),
+                      ),
+                    ),
+                    BottomNavigationBarItem(
                       label: aHint,
                       icon: Stack(
                         children: [
-                          SvgPicture.asset(
-                            Assets.cart,
-                            color: _selectedTab ==
-                                    (_hasUserSwitchedToBusiness ? 1 : 2)
-                                ? AppColors.colorPrimary
-                                : AppColors.secondaryTextColor,
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: _selectedTab ==
+                                      (_hasUserSwitchedToBusiness ? 1 : 2)
+                                  ? AppColors.colorPrimaryDark
+                                  : Colors.transparent,
+                            ),
+                            child: SvgPicture.asset(
+                              Assets.cart,
+                              color: _selectedTab ==
+                                      (_hasUserSwitchedToBusiness ? 1 : 2)
+                                  ? Colors.white
+                                  : AppColors.secondaryTextColor,
+                            ),
                           ),
                           BlocBuilder<CartCoreCubit, CartCoreState>(
                             builder: (context, state) {
                               return state.maybeWhen(
-                                  orElse: () => const SizedBox(),
-                                  cartItems: (cartItems) => Positioned(
-                                        top: -1,
-                                        right: 0,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(4),
-                                          decoration: const BoxDecoration(
-                                              color: AppColors.colorPrimary,
-                                              shape: BoxShape.circle),
-                                          child: Text(
-                                            "${cartItems.map((e) => e.quantity).fold(0, (previousValue, element) => previousValue + element!)}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 8.sp),
-                                          ),
-                                        ),
-                                      ));
+                                orElse: () => const SizedBox(),
+                                cartItems: (cartItems) => Positioned(
+                                  top: -1,
+                                  right: 0,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.colorPrimary,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      "${cartItems.map((e) => e.quantity).fold(0, (previousValue, element) => previousValue + element!)}",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 8.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ],
-                      )),
-                  BottomNavigationBarItem(
+                      ),
+                    ),
+                    BottomNavigationBarItem(
                       label: uHint,
-                      icon: SvgPicture.asset(
-                        Assets.user,
-                        color:
-                            _selectedTab == (_hasUserSwitchedToBusiness ? 2 : 3)
-                                ? AppColors.colorPrimary
-                                : AppColors.secondaryTextColor,
-                      )),
-                ],
-                currentIndex: _selectedTab,
-                onTap: (int index) {
-                  setState(() {
-                    _selectedTab = index;
-                  });
-                },
-                selectedItemColor: AppColors.colorPrimary,
-              ),
-            );
+                      icon: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _selectedTab ==
+                                  (_hasUserSwitchedToBusiness ? 2 : 3)
+                              ? AppColors.colorPrimaryDark
+                              : Colors.transparent,
+                        ),
+                        child: SvgPicture.asset(
+                          Assets.user,
+                          color: _selectedTab ==
+                                  (_hasUserSwitchedToBusiness ? 2 : 3)
+                              ? Colors.white
+                              : AppColors.secondaryTextColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                  currentIndex: _selectedTab,
+                  onTap: (int index) {
+                    setState(() {
+                      _selectedTab = index;
+                    });
+                  },
+                  selectedItemColor: AppColors.colorPrimaryDark,
+                  unselectedItemColor: AppColors.secondaryTextColor,
+                ));
           },
         ),
       ),
     );
   }
+
+  Future<String> fetchLatestVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String currentVersion = packageInfo.version;
+    final NewVersionPlus newVersion = NewVersionPlus(
+        androidId: 'com.commercepal.commercepal', iOSId: 'com.commercepal');
+
+    final platform = LocalPlatform();
+    String latestVersion;
+
+    if (platform.isAndroid) {
+      final status = await newVersion.getVersionStatus();
+      latestVersion = status?.storeVersion ?? '';
+      UpdateInfo updateInfo =
+          determineUpdateType(currentVersion, latestVersion);
+      setState(() {
+        shouldUpdate = updateInfo.isMandatory;
+      });
+      // print("here is the update");
+      // print(latestVersion);
+      // print(updateInfo.isMandatory);
+    } else if (platform.isIOS) {
+      final status = await newVersion.getVersionStatus();
+      latestVersion = status?.storeVersion ?? '';
+      UpdateInfo updateInfo =
+          determineUpdateType(currentVersion, latestVersion);
+
+      setState(() {
+        shouldUpdate = updateInfo.isMandatory;
+      });
+    } else {
+      throw Exception('Unsupported platform');
+    }
+
+    if (latestVersion.isEmpty) {
+      throw Exception('Failed to fetch latest version');
+    }
+
+    return latestVersion;
+  }
+
+  UpdateInfo determineUpdateType(String currentVersion, String latestVersion) {
+    List<int> currentVersionParts =
+        currentVersion.split('.').map((e) => int.parse(e)).toList();
+    List<int> latestVersionParts =
+        latestVersion.split('.').map((e) => int.parse(e)).toList();
+
+    bool isMandatory = false;
+
+    if (latestVersionParts[0] > currentVersionParts[0] ||
+        latestVersionParts[1] > currentVersionParts[1]) {
+      isMandatory = true;
+    }
+
+    return UpdateInfo(latestVersion: latestVersion, isMandatory: isMandatory);
+  }
+}
+
+class UpdateInfo {
+  final String latestVersion;
+  final bool isMandatory;
+
+  UpdateInfo({required this.latestVersion, required this.isMandatory});
 }
