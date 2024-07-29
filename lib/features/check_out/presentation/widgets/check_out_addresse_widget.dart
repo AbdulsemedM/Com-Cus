@@ -503,8 +503,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             loading = true;
           });
           Map<String, dynamic> payload = {
-            "region": subLocality.isNotEmpty ? subLocality : locality,
-            "city": locality,
+            "regionId": 1,
+            "city": 1,
             "country": country,
             "physicalAddress": street.isNotEmpty ? street : subLocal,
             "latitude": latitude,
