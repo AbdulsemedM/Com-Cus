@@ -48,6 +48,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
   }
 
   bool done = false;
+  bool done1 = false;
   List<CityData> cities = [];
 
   void fetchHints() async {
@@ -457,47 +458,50 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
   }
 
   Future<void> getLocation() async {
-    try {
-      setState(() {
-        loading = true;
-      });
-      print("here we go");
-      var status = await Permission.location.request();
-      print(status.isPermanentlyDenied);
-      if (status.isGranted) {
-        Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high,
-        );
-
+    if (done1 == false) {
+      try {
         setState(() {
-          latitude = position.latitude;
-          longitude = position.longitude;
+          loading = true;
+        });
+        print("here we go");
+        var status = await Permission.location.request();
+        print(status.isPermanentlyDenied);
+        if (status.isGranted) {
+          Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high,
+          );
+
+          setState(() {
+            done1 = true;
+            latitude = position.latitude;
+            longitude = position.longitude;
+            print(latitude);
+            print(longitude);
+            if (latitude != null && longitude != null) {
+              getAddressFromLatLng(latitude.toString(), longitude.toString());
+            } else {
+              displaySnack(context,
+                  "Please add your address by pressing \"Add Address\"");
+            }
+            loading = false;
+          });
           print(latitude);
           print(longitude);
-          if (latitude != null && longitude != null) {
-            getAddressFromLatLng(latitude.toString(), longitude.toString());
-          } else {
-            displaySnack(
-                context, "Please add your address by pressing \"Add Address\"");
-          }
-          loading = false;
-        });
-        print(latitude);
-        print(longitude);
-      } else {
+        } else {
+          displaySnack(
+              context, "Please add your address by pressing \"Add Address\"");
+          setState(() {
+            loading = false;
+          });
+        }
+      } catch (e) {
         displaySnack(
             context, "Please add your address by pressing \"Add Address\"");
         setState(() {
           loading = false;
         });
+        print('Error getting location: $e');
       }
-    } catch (e) {
-      displaySnack(
-          context, "Please add your address by pressing \"Add Address\"");
-      setState(() {
-        loading = false;
-      });
-      print('Error getting location: $e');
     }
   }
 
