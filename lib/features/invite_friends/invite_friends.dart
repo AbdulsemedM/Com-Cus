@@ -24,6 +24,8 @@ class _InviteFriendsState extends State<InviteFriends> {
   List<Contact> _contacts = [];
   String? url;
   Set<String> registeredPhoneNumbers = {};
+  Set<String> alreadyInvitedNumbers = {};
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -60,65 +62,92 @@ class _InviteFriendsState extends State<InviteFriends> {
   // }
 
   Future<void> _getContacts() async {
-    // Check if contacts permission is granted
-    PermissionStatus permissionStatus = await Permission.contacts.status;
-    if (permissionStatus.isGranted) {
-      Iterable<Contact> contacts = await ContactsService.getContacts();
-      List<Contact> contactsWithPhones = contacts
-          .where((contact) => contact.phones!.isNotEmpty)
-          .where((contact) {
-        String phoneNumber = contact.phones!.first.value!.replaceAll(' ', '');
-        return phoneNumber.startsWith('251') ||
-            phoneNumber.startsWith('+251') ||
-            phoneNumber.startsWith('0') ||
-            phoneNumber.startsWith('+');
-      }).map((contact) {
-        contact.phones = contact.phones!.map((phone) {
-          phone.value = phone.value!.replaceAll(' ', '');
-          return phone;
-        }).toList();
-        return contact;
-      }).toList();
-      setState(() {
-        _contacts = contactsWithPhones;
-      });
-      _checkRegisteredUsers(contactsWithPhones);
-    } else if (permissionStatus.isDenied ||
-        permissionStatus.isPermanentlyDenied) {
-      // Request permissions again if denied
-      permissionStatus = await Permission.contacts.request();
+    setState(() {
+      _isLoading = true; // Start loading
+    });
+
+    try {
+      PermissionStatus permissionStatus = await Permission.contacts.status;
       if (permissionStatus.isGranted) {
-        _getContacts();
-      } else {
-        // Handle the case when permission is denied permanently
-        print('Contacts permission is denied.');
+        Iterable<Contact> contacts = await ContactsService.getContacts();
+        List<Contact> contactsWithPhones = contacts
+            .where((contact) => contact.phones!.isNotEmpty)
+            .where((contact) {
+          String phoneNumber = contact.phones!.first.value!.replaceAll(' ', '');
+          return phoneNumber.startsWith('251') ||
+              phoneNumber.startsWith('+251') ||
+              phoneNumber.startsWith('0') ||
+              phoneNumber.startsWith('+');
+        }).map((contact) {
+          contact.phones = contact.phones!.map((phone) {
+            phone.value = phone.value!.replaceAll(' ', '');
+            return phone;
+          }).toList();
+          return contact;
+        }).toList();
+        setState(() {
+          _contacts = contactsWithPhones;
+        });
+        _checkRegisteredUsers(contactsWithPhones);
+      } else if (permissionStatus.isDenied ||
+          permissionStatus.isPermanentlyDenied) {
+        permissionStatus = await Permission.contacts.request();
+        if (permissionStatus.isGranted) {
+          _getContacts();
+        } else {
+          print('Contacts permission is denied.');
+        }
       }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading
+      });
     }
   }
 
   Future<void> _checkRegisteredUsers(List<Contact> contacts) async {
-    List<String> phoneNumbers = contacts
-        .where((contact) => contact.phones!.isNotEmpty)
-        .map((contact) => contact.phones!.first.value!)
-        .toList();
-    print({'phoneNumbers': phoneNumbers});
-    final response = await http.post(
-      Uri.https(
-          "api.commercepal.com:2096", "/prime/api/v1/user-invitations/check"),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'phoneNumbers': phoneNumbers}),
-    );
-    print(response.body);
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
+    setState(() {
+      _isLoading = true; // Start loading
+    });
+    try {
+      List<String> phoneNumbers = contacts
+          .where((contact) => contact.phones!.isNotEmpty)
+          .map((contact) => contact.phones!.first.value!)
+          .toList();
+      print({'phoneNumbers': phoneNumbers});
+      final prefsData = getIt<PrefsData>();
+      final token = await prefsData.readData(PrefsKeys.userToken.name);
+      final response = await http.post(
+        Uri.https(
+            "api.commercepal.com:2096", "/prime/api/v1/user-invitations/check"),
+        headers: <String, String>{
+          "Authorization": "Bearer $token",
+          'Content-Type': 'application/json'
+        },
+        body: json.encode({'phoneNumbers': phoneNumbers}),
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          registeredPhoneNumbers = Set<String>.from(data
+              .where((entry) => entry['exists'] as bool)
+              .map((entry) => entry['phoneNumber'] as String));
+          alreadyInvitedNumbers = Set<String>.from(data
+              .where((entry) => entry['alreadyInvited'] as bool)
+              .map((entry) => entry['phoneNumber'] as String));
+        });
+      } else {
+        print('Failed to check registered users');
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
       setState(() {
-        registeredPhoneNumbers = Set<String>.from(data
-            .where((entry) => entry['exists'] as bool)
-            .map((entry) => entry['phoneNumber'] as String));
+        _isLoading = true; // Start loading
       });
-    } else {
-      // Handle the error case
-      print('Failed to check registered users');
     }
   }
 
@@ -169,6 +198,9 @@ class _InviteFriendsState extends State<InviteFriends> {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         displaySnack(context, "Invitation sent to $name successfully");
+        setState(() {
+          alreadyInvitedNumbers.add(phoneNumber);
+        });
       } else {
         // Handle the error case
         displaySnack(context, "Unable to send message, Please try again");
@@ -274,9 +306,11 @@ class _InviteFriendsState extends State<InviteFriends> {
                 )
             ],
           ),
-          _contacts.isEmpty
+          _contacts.isEmpty && !_isLoading
               ? const Center(child: Text("There are no contacts to display."))
-              : Container(),
+              : _contacts.isEmpty && _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : Container(),
           ..._contacts.map((contact) {
             String name = contact.displayName ?? '';
             String initials = _getInitials(name);
@@ -297,22 +331,24 @@ class _InviteFriendsState extends State<InviteFriends> {
               subtitle: Text(phoneNumber),
               trailing: registeredPhoneNumbers.contains(phoneNumber)
                   ? const Text('Already Registered')
-                  : SizedBox(
-                      height: 30,
-                      width: 90,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.colorPrimaryDark,
+                  : alreadyInvitedNumbers.contains(phoneNumber)
+                      ? const Text('Already Invited')
+                      : SizedBox(
+                          height: 30,
+                          width: 90,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.colorPrimaryDark,
+                            ),
+                            onPressed: () {
+                              _sendInvite(phoneNumber, name);
+                            },
+                            child: const Text(
+                              'Invite',
+                              style: TextStyle(color: AppColors.bgColor),
+                            ),
+                          ),
                         ),
-                        onPressed: () {
-                          _sendInvite(phoneNumber, name);
-                        },
-                        child: const Text(
-                          'Invite',
-                          style: TextStyle(color: AppColors.bgColor),
-                        ),
-                      ),
-                    ),
             );
           }).toList(),
         ],
