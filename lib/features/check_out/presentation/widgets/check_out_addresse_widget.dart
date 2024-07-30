@@ -490,7 +490,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       }
 
       if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[3] ?? placemarks[0];
+        Placemark place = placemarks[0];
 
         // Extract street information
         String street = place.street ?? '';
@@ -503,8 +503,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             loading = true;
           });
           Map<String, dynamic> payload = {
-            "region": subLocality.isNotEmpty ? subLocality : locality,
-            "city": locality,
+            "regionId": 1,
+            "city": 1,
             "country": country,
             "physicalAddress": street.isNotEmpty ? street : subLocal,
             "latitude": latitude,
