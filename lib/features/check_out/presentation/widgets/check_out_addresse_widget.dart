@@ -458,6 +458,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
   }
 
   Future<void> getLocation() async {
+    //used to fetch and send address twice
     if (done1 == false) {
       try {
         setState(() {
