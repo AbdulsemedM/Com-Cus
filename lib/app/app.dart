@@ -19,7 +19,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor:
-          AppColors.colorPrimary, // Set your desired status bar color
+          AppColors.colorPrimary, 
     ));
     return ScreenUtilInit(
         designSize: const Size(428, 926),
