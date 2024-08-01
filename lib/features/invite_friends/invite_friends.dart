@@ -21,11 +21,12 @@ class InviteFriends extends StatefulWidget {
 }
 
 class _InviteFriendsState extends State<InviteFriends> {
+  List<ContactInfo> _contactsInfo = [];
   List<Contact> _contacts = [];
   String? url;
   Set<String> registeredPhoneNumbers = {};
   Set<String> alreadyInvitedNumbers = {};
-  bool _isLoading = false;
+  bool loading = false; // Add this
 
   @override
   void initState() {
@@ -35,35 +36,28 @@ class _InviteFriendsState extends State<InviteFriends> {
   }
 
   Future<void> getUrl() async {
-    var load = await getReferralLink();
     setState(() {
-      url = load;
-      print(url);
+      loading = true;
     });
-  }
 
-  // Future<void> _getContacts() async {
-  //   if (await Permission.contacts.request().isGranted) {
-  //     Iterable<Contact> contacts = await ContactsService.getContacts();
-  //     List<Contact> contactsWithPhones = contacts
-  //         .where((contact) => contact.phones!.isNotEmpty)
-  //         .where((contact) {
-  //       String phoneNumber = contact.phones!.first.value!.replaceAll(' ', '');
-  //       return phoneNumber.startsWith('251') ||
-  //           phoneNumber.startsWith('+251') ||
-  //           phoneNumber.startsWith('0') ||
-  //           phoneNumber.startsWith('+');
-  //     }).toList();
-  //     setState(() {
-  //       _contacts = contactsWithPhones;
-  //     });
-  //     _checkRegisteredUsers(contactsWithPhones);
-  //   }
-  // }
+    try {
+      var load = await getReferralLink();
+      setState(() {
+        url = load;
+        print(url);
+      });
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
 
   Future<void> _getContacts() async {
     setState(() {
-      _isLoading = true; // Start loading
+      loading = true;
     });
 
     try {
@@ -73,7 +67,8 @@ class _InviteFriendsState extends State<InviteFriends> {
         List<Contact> contactsWithPhones = contacts
             .where((contact) => contact.phones!.isNotEmpty)
             .where((contact) {
-          String phoneNumber = contact.phones!.first.value!.replaceAll(' ', '');
+          String phoneNumber =
+              contact.phones!.first.value!.replaceAll(' ', '') ?? '';
           return phoneNumber.startsWith('251') ||
               phoneNumber.startsWith('+251') ||
               phoneNumber.startsWith('0') ||
@@ -102,19 +97,16 @@ class _InviteFriendsState extends State<InviteFriends> {
       print(e.toString());
     } finally {
       setState(() {
-        _isLoading = false; // Stop loading
+        loading = false;
       });
     }
   }
 
   Future<void> _checkRegisteredUsers(List<Contact> contacts) async {
-    setState(() {
-      _isLoading = true; // Start loading
-    });
     try {
       List<String> phoneNumbers = contacts
-          .where((contact) => contact.phones!.isNotEmpty)
-          .map((contact) => contact.phones!.first.value!)
+          .where((contact) => contact.phones?.isNotEmpty ?? false)
+          .map((contact) => contact.phones!.first.value ?? '')
           .toList();
       print({'phoneNumbers': phoneNumbers});
       final prefsData = getIt<PrefsData>();
@@ -131,13 +123,37 @@ class _InviteFriendsState extends State<InviteFriends> {
       print(response.body);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        Set<String> registeredPhoneNumbers = Set<String>.from(data
+            .where((entry) => entry['exists'] as bool)
+            .map((entry) => entry['phoneNumber'] as String));
+        Set<String> alreadyInvitedNumbers = Set<String>.from(data
+            .where((entry) => entry['alreadyInvited'] as bool)
+            .map((entry) => entry['phoneNumber'] as String));
+
+        List<ContactInfo> contactInfos = contacts.map((contact) {
+          String name = contact.displayName ?? '';
+          String phoneNumber = contact.phones?.first.value ?? '';
+
+          ContactStatus status;
+          if (registeredPhoneNumbers.contains(phoneNumber)) {
+            status = ContactStatus.registered;
+          } else if (alreadyInvitedNumbers.contains(phoneNumber)) {
+            status = ContactStatus.invited;
+          } else {
+            status = ContactStatus.uninvited;
+          }
+
+          return ContactInfo(
+            name: name,
+            phoneNumber: phoneNumber,
+            registrationStatus: status,
+          );
+        }).toList();
+
+        print(contactInfos);
+
         setState(() {
-          registeredPhoneNumbers = Set<String>.from(data
-              .where((entry) => entry['exists'] as bool)
-              .map((entry) => entry['phoneNumber'] as String));
-          alreadyInvitedNumbers = Set<String>.from(data
-              .where((entry) => entry['alreadyInvited'] as bool)
-              .map((entry) => entry['phoneNumber'] as String));
+          _contactsInfo = contactInfos;
         });
       } else {
         print('Failed to check registered users');
@@ -146,43 +162,41 @@ class _InviteFriendsState extends State<InviteFriends> {
       print(e.toString());
     } finally {
       setState(() {
-        _isLoading = true; // Start loading
+        loading = false;
       });
     }
   }
 
   String _getInitials(String name) {
+    if (name.isEmpty) return '';
+
+    // Split the name by spaces
     List<String> nameParts = name.split(' ');
-    if (nameParts.length > 1) {
-      return nameParts[0][0] + nameParts[1][0];
-    } else if (nameParts.isNotEmpty && nameParts[0].length >= 2) {
-      return nameParts[0].substring(0, 2);
+
+    // Return the initials based on the number of name parts
+    if (nameParts.length >= 2) {
+      // If there are at least two parts, return the first letter of each
+      return nameParts[0][0].toUpperCase() + nameParts[1][0].toUpperCase();
     } else if (nameParts.isNotEmpty) {
-      return nameParts[0][0];
+      // If there is only one part, return the first two letters or just the first letter
+      String firstPart = nameParts[0];
+      return firstPart.length >= 2
+          ? firstPart.substring(0, 2).toUpperCase()
+          : firstPart.substring(0, 1).toUpperCase();
     }
+
+    // Fallback case: return an empty string if nameParts is empty
     return '';
   }
 
   Future<void> _sendInvite(String phoneNumber, String name) async {
-    // final Uri smsUri = Uri(
-    //   scheme: 'sms',
-    //   path: phoneNumber,
-    //   queryParameters: {
-    //     'body': 'Hi! I would like to invite you to try this app.\n $url'
-    //   },
-    // );
-    // if (await canLaunch(smsUri.toString())) {
-    //   await launch(smsUri.toString());
-    // } else {
-    //   throw 'Could not launch $smsUri';
-    // }
-
     final body = {
       'phoneNumber': phoneNumber,
       "appLink": url ??
           "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&hl=en"
     };
     print(body);
+
     try {
       final prefsData = getIt<PrefsData>();
       final token = await prefsData.readData(PrefsKeys.userToken.name);
@@ -202,7 +216,6 @@ class _InviteFriendsState extends State<InviteFriends> {
           alreadyInvitedNumbers.add(phoneNumber);
         });
       } else {
-        // Handle the error case
         displaySnack(context, "Unable to send message, Please try again");
       }
     } catch (e) {
@@ -218,141 +231,195 @@ class _InviteFriendsState extends State<InviteFriends> {
         title: const Text('Invite Friends',
             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17)),
       ),
-      body: ListView(
-        children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 18),
-                child: Text(
-                  "Invite your friends and earn CommercePal coins",
-                  style: TextStyle(fontWeight: FontWeight.w500),
+      body: loading
+          ? Center(child: CircularProgressIndicator()) // Show loading indicator
+          : Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 18),
+                  child: Text(
+                    "Invite your friends and earn CommercePal coins",
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
                 ),
-              ),
-              if (url != null)
-                SizedBox(
-                  height: 65,
-                  child: SizedBox(
-                      child: Container(
-                    width: MediaQuery.of(context).size.width * 1,
-                    height: MediaQuery.of(context).size.height * 0.09,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomPaint(
-                        painter: DashedBorderPainter(borderRadius: 2),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(18, 8, 8, 8),
-                                child: Text(
-                                  url!.substring(0, 35),
-                                  softWrap: true,
+                if (url != null)
+                  SizedBox(
+                    height: 65,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.09,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CustomPaint(
+                          painter: DashedBorderPainter(borderRadius: 2),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(18, 8, 8, 8),
+                                  child: Text(
+                                    url!.substring(
+                                        0, url!.length > 35 ? 35 : url!.length),
+                                    softWrap: true,
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        Share.share("Check out this app: $url");
-                                      },
-                                      child: const Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Icon(Icons.share),
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 10, 0),
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          Share.share(
+                                              "Check out this app: $url");
+                                        },
+                                        child: const Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Icon(Icons.share),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Clipboard.setData(
-                                            ClipboardData(text: url!));
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content:
-                                                  Text('Copied to clipboard')),
-                                        );
-                                      },
-                                      child: const Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Icon(Icons.copy),
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 10, 0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Clipboard.setData(
+                                              ClipboardData(text: url!));
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'Copied to clipboard')),
+                                          );
+                                        },
+                                        child: const Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Icon(Icons.copy),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  )),
-                )
-            ],
-          ),
-          _contacts.isEmpty && !_isLoading
-              ? const Center(child: Text("There are no contacts to display."))
-              : _contacts.isEmpty && _isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : Container(),
-          ..._contacts.map((contact) {
-            String name = contact.displayName ?? '';
-            String initials = _getInitials(name);
-            String phoneNumber = contact.phones!.first.value ?? '';
-            return ListTile(
-              leading: CircleAvatar(
-                radius: 30,
-                backgroundColor: AppColors.colorPrimaryDark,
-                child: Text(
-                  initials.toUpperCase(),
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-              title: Text(
-                name,
-                style: const TextStyle(fontSize: 14),
-              ),
-              subtitle: Text(phoneNumber),
-              trailing: registeredPhoneNumbers.contains(phoneNumber)
-                  ? const Text('Already Registered')
-                  : alreadyInvitedNumbers.contains(phoneNumber)
-                      ? const Text('Already Invited')
-                      : SizedBox(
-                          height: 30,
-                          width: 90,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.colorPrimaryDark,
+                  ),
+                loading
+                    ? Expanded(
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                    : _contactsInfo.isEmpty
+                        ? Expanded(
+                            child: Center(
+                                child:
+                                    Text("There are no contacts to display.")),
+                          )
+                        : Expanded(
+                            child: ListView(
+                              children: _contactsInfo.map((contactInfo) {
+                                // Ensure all required fields are present
+                                if (contactInfo.name.isNotEmpty &&
+                                    contactInfo.phoneNumber.isNotEmpty &&
+                                    contactInfo.registrationStatus != null) {
+                                  return ListTile(
+                                    // leading: CircleAvatar(
+                                    //   radius: 30,
+                                    //   backgroundColor:
+                                    //       AppColors.colorPrimaryDark,
+                                    //   child: Text(
+                                    //     _getInitials(contactInfo.name)
+                                    //         .toUpperCase(),
+                                    //     style: const TextStyle(
+                                    //         color: Colors.white),
+                                    //   ),
+                                    // ),
+                                    title: Text(
+                                      contactInfo.name,
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                    subtitle: Text(contactInfo.phoneNumber),
+                                    trailing: contactInfo.registrationStatus ==
+                                            ContactStatus.registered
+                                        ? const Text('Already Registered')
+                                        : contactInfo.registrationStatus ==
+                                                ContactStatus.invited
+                                            ? const Text('Already Invited')
+                                            : SizedBox(
+                                                height: 30,
+                                                width: 95,
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: AppColors
+                                                        .colorPrimaryDark,
+                                                  ),
+                                                  onPressed: () {
+                                                    _sendInvite(
+                                                        contactInfo.phoneNumber,
+                                                        contactInfo.name);
+                                                  },
+                                                  child: const Text(
+                                                    'Invite',
+                                                    style: TextStyle(
+                                                        color:
+                                                            AppColors.bgColor),
+                                                  ),
+                                                ),
+                                              ),
+                                  );
+                                } else {
+                                  // Handle the case where required fields are missing
+                                  return ListTile(
+                                    leading: CircleAvatar(
+                                      radius: 30,
+                                      backgroundColor:
+                                          AppColors.colorPrimaryDark,
+                                      child: const Icon(Icons.error,
+                                          color: Colors.white),
+                                    ),
+                                    title: const Text('Unknown Contact'),
+                                    subtitle: const Text('Missing information'),
+                                    trailing: SizedBox(
+                                      height: 30,
+                                      width: 90,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              AppColors.colorPrimaryDark,
+                                        ),
+                                        onPressed:
+                                            null, // Disable button if information is missing
+                                        child: const Text(
+                                          'Invite',
+                                          style: TextStyle(
+                                              color: AppColors.bgColor),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }).toList(),
                             ),
-                            onPressed: () {
-                              _sendInvite(phoneNumber, name);
-                            },
-                            child: const Text(
-                              'Invite',
-                              style: TextStyle(color: AppColors.bgColor),
-                            ),
-                          ),
-                        ),
-            );
-          }).toList(),
-        ],
-      ),
+                          )
+              ],
+            ),
     );
   }
 }
@@ -416,3 +483,17 @@ class DashedBorderPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
+
+class ContactInfo {
+  final String name;
+  final String phoneNumber;
+  final ContactStatus registrationStatus;
+
+  ContactInfo({
+    required this.name,
+    required this.phoneNumber,
+    required this.registrationStatus,
+  });
+}
+
+enum ContactStatus { invited, registered, uninvited }
