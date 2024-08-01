@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/features/addresses/presentation/bloc/address_cubit.dart';
 import 'package:commercepal/features/addresses/presentation/edit_address_page.dart';
 import 'package:commercepal/features/addresses/presentation/search_places.dart';
 import 'package:commercepal/features/check_out/data/models/address.dart';
@@ -41,11 +42,14 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
   final AddressSelectedChoices _addSelected = AddressSelectedChoices.notSelcted;
   void initState() {
     super.initState();
-    getLocation();
+    // getLocation();
     fetchHints();
+    fetchCity();
   }
 
   bool done = false;
+  bool done1 = false;
+  List<CityData> cities = [];
 
   void fetchHints() async {
     setState(() {
@@ -125,289 +129,312 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
     var sHeight = MediaQuery.of(context).size.height * 1;
     return BlocProvider(
       create: (context) => getIt<CheckOutCubit>()..fetchAddresses(),
-      child: BlocBuilder<CheckOutCubit, CheckOutState>(
-        builder: (ctx, state) {
-          return Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  loading
-                      ? const Text("Loading...")
-                      : Text(
-                          SBill,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge
-                              ?.copyWith(fontSize: 20.sp),
-                        ),
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title:
-                                loading ? const Text("Loading...") : Text(FAdd),
-                            content: Column(
-                              mainAxisSize: MainAxisSize
-                                  .min, // Set the mainAxisSize to min
-                              children: [
-                                loading ? const Text("Loading...") : Text(HDO),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: sHeight * 0.02,
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.pushNamed(context,
-                                                SearchPlacesScreen.routeName)
-                                            .then((value) => {
-                                                  ctx
-                                                      .read<CheckOutCubit>()
-                                                      .fetchAddresses()
-                                                });
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              AppColors.colorPrimaryDark),
-                                      child: loading
-                                          ? const Text("Loading...")
-                                          : Text(
-                                              Aut,
-                                              style: const TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                    ),
-                                    SizedBox(
-                                      height: sHeight * 0.02,
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.pushNamed(context,
-                                                AddAddressPage.routeName)
-                                            .then((value) => {
-                                                  ctx
-                                                      .read<CheckOutCubit>()
-                                                      .fetchAddresses()
-                                                });
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              AppColors.colorPrimaryDark),
-                                      child: loading
-                                          ? const Text("Loading...")
-                                          : Text(
-                                              Man,
-                                              style: const TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pop(false); // User does not confirm
-                                },
-                                child: loading
-                                    ? const Text("Loading...")
-                                    : Text(
-                                        Can,
-                                        style:
-                                            const TextStyle(color: Colors.red),
-                                      ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: loading
+      child: BlocListener<CheckOutCubit, CheckOutState>(
+        listener: (context, state) {
+          if (state is CheckOutStateError) {
+            getLocation().then((value) {
+              context.read<CheckOutCubit>().fetchAddresses();
+            });
+          }
+        },
+        child: BlocBuilder<CheckOutCubit, CheckOutState>(
+          builder: (ctx, state) {
+            return Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    loading
                         ? const Text("Loading...")
-                        : Text(AAdd,
+                        : Text(
+                            SBill,
                             style: Theme.of(context)
                                 .textTheme
-                                .titleMedium
-                                ?.copyWith(color: AppColors.colorPrimary)),
-                  ),
-                ],
-              ),
-              const Divider(
-                color: Colors.grey,
-              ),
-              state.maybeWhen(
-                  orElse: () => const Padding(
-                        padding: EdgeInsets.all(20),
-                        child: HomeLoadingWidget(),
-                      ),
-                  error: (error) => Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: HomeErrorWidget(error: error),
-                      ),
-                  addresses: (adds) {
-                    if (adds.isNotEmpty) {
-                      // Check if the list of addresses is not empty
-                      // Check if none of the addresses are selected
-                      // adds[0].selected = false;
-                      // AddressSelectedChoices.notSelcted;
-
-                      if (!adds.any((address) => address.selected == true)) {
-                        if (loading == false) {
-                          _markSelectedAddress(ctx, adds.last, adds, true);
-                          ctx
-                              .read<CheckOutCubit>()
-                              .setSelectedAddress(adds.last);
-                        }
-                        // widget.onAddressClicked.call(adds[0]);
-                        // adds[0].selected = true;
-                        // ctx.read<CheckOutCubit>().setSelectedAddress(adds[0]);
-                        print("newherewego");
-                        // Set the first address as selected
-                        // Dispatch the updated list of addresses to the CheckOutCubit
-                      } else if (adds.last.selected && !done) {
-                        // done = true;
-                        widget.onAddressClicked.call(adds.last);
-                      }
-                    }
-                    return Column(
-                      children: adds
-                          .map((address) => Column(
+                                .titleLarge
+                                ?.copyWith(fontSize: 20.sp),
+                          ),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: loading
+                                  ? const Text("Loading...")
+                                  : Text(FAdd),
+                              content: Column(
+                                mainAxisSize: MainAxisSize
+                                    .min, // Set the mainAxisSize to min
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: ListTile(
-                                      onTap: () {
-                                        _markSelectedAddress(
-                                            ctx, address, adds, false);
-                                      },
-                                      leading: Radio<AddressSelectedChoices>(
-                                        value: address.selected != true
-                                            ? AddressSelectedChoices.selected
-                                            : AddressSelectedChoices.notSelcted,
-                                        groupValue: _addSelected,
-                                        onChanged: (value) {
-                                          _markSelectedAddress(
-                                              ctx, address, adds, false);
-                                        },
+                                  loading
+                                      ? const Text("Loading...")
+                                      : Text(HDO),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: sHeight * 0.02,
                                       ),
-                                      title: Text(
-                                        "${address.name}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,
-                                      ),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          RichText(
-                                              text: TextSpan(children: [
-                                            TextSpan(
-                                                text:
-                                                    loading ? "Loading..." : Co,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall
-                                                    ?.copyWith(
-                                                        color: AppColors
-                                                            .secondaryTextColor)),
-                                            TextSpan(
-                                                text: "${address.country}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall
-                                                    ?.copyWith())
-                                          ])),
-                                          const SizedBox(
-                                            height: 4,
-                                          ),
-                                          RichText(
-                                              text: TextSpan(children: [
-                                            TextSpan(
-                                                text:
-                                                    loading ? "Loading..." : Ci,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall
-                                                    ?.copyWith(
-                                                        color: AppColors
-                                                            .secondaryTextColor)),
-                                            TextSpan(
-                                                text: "${address.city}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall
-                                                    ?.copyWith())
-                                          ])),
-                                          const SizedBox(
-                                            height: 4,
-                                          ),
-                                          RichText(
-                                              text: TextSpan(children: [
-                                            TextSpan(
-                                                text:
-                                                    loading ? "Loading..." : SC,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall
-                                                    ?.copyWith(
-                                                        color: AppColors
-                                                            .secondaryTextColor)),
-                                            TextSpan(
-                                                text: "${address.subCounty}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall
-                                                    ?.copyWith())
-                                          ]))
-                                        ],
-                                      ),
-                                      trailing: InkWell(
-                                        onTap: () {
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
                                           Navigator.pushNamed(context,
-                                                  EditAddressPage.routeName,
-                                                  arguments:
-                                                      address.toAddressItem())
-                                              .then((value) => ctx
-                                                  .read<CheckOutCubit>()
-                                                  .fetchAddresses());
+                                                  SearchPlacesScreen.routeName)
+                                              .then((value) => {
+                                                    ctx
+                                                        .read<CheckOutCubit>()
+                                                        .fetchAddresses()
+                                                  });
                                         },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                AppColors.colorPrimaryDark),
                                         child: loading
                                             ? const Text("Loading...")
                                             : Text(
-                                                Ed,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displaySmall
-                                                    ?.copyWith(
-                                                        color: AppColors
-                                                            .colorPrimary,
-                                                        fontSize: 16.sp),
+                                                Aut,
+                                                style: const TextStyle(
+                                                    color: Colors.white),
                                               ),
                                       ),
-                                    ),
-                                  ),
-                                  if (adds.indexOf(address) == adds.length - 1)
-                                    const SizedBox(
-                                      height: 100,
-                                    )
+                                      SizedBox(
+                                        height: sHeight * 0.02,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          Navigator.pushNamed(context,
+                                                  AddAddressPage.routeName)
+                                              .then((value) => {
+                                                    ctx
+                                                        .read<CheckOutCubit>()
+                                                        .fetchAddresses()
+                                                  });
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                AppColors.colorPrimaryDark),
+                                        child: loading
+                                            ? const Text("Loading...")
+                                            : Text(
+                                                Man,
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                      ),
+                                    ],
+                                  )
                                 ],
-                              ))
-                          .toList(),
-                    );
-                  })
-            ],
-          );
-        },
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(false); // User does not confirm
+                                  },
+                                  child: loading
+                                      ? const Text("Loading...")
+                                      : Text(
+                                          Can,
+                                          style: const TextStyle(
+                                              color: Colors.red),
+                                        ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: loading
+                          ? const Text("Loading...")
+                          : Text(AAdd,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(color: AppColors.colorPrimary)),
+                    ),
+                  ],
+                ),
+                const Divider(
+                  color: Colors.grey,
+                ),
+                state.maybeWhen(
+                    orElse: () => const Padding(
+                          padding: EdgeInsets.all(20),
+                          child: HomeLoadingWidget(),
+                        ),
+                    error: (error) {
+                      // getLocation().then((value) =>
+                      //     ctx.read<CheckOutCubit>().fetchAddresses());
+                      // ctx.read<CheckOutCubit>().fetchAddresses();
+                      return Container();
+                    },
+                    addresses: (adds) {
+                      // context.read<CheckOutCubit>().fetchAddresses();
+                      // if (adds.isEmpty) {
+                      //   // getLocation();
+                      // }
+                      if (adds.isNotEmpty) {
+                        // Check if the list of addresses is not empty
+                        // Check if none of the addresses are selected
+                        // adds[0].selected = false;
+                        // AddressSelectedChoices.notSelcted;
+
+                        if (!adds.any((address) => address.selected == true)) {
+                          if (loading == false) {
+                            _markSelectedAddress(ctx, adds.last, adds, true);
+                            // ctx
+                            //     .read<CheckOutCubit>()
+                            //     .setSelectedAddress(adds.last);
+                          }
+                          // widget.onAddressClicked.call(adds[0]);
+                          // adds[0].selected = true;
+                          // ctx.read<CheckOutCubit>().setSelectedAddress(adds[0]);
+                          print("newherewego");
+                          // Set the first address as selected
+                          // Dispatch the updated list of addresses to the CheckOutCubit
+                        } else if (adds.last.selected && !done) {
+                          // done = true;
+                          widget.onAddressClicked.call(adds.last);
+                        }
+                      }
+                      return Column(
+                        children: adds
+                            .map((address) => Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: ListTile(
+                                        onTap: () {
+                                          _markSelectedAddress(
+                                              ctx, address, adds, false);
+                                        },
+                                        leading: Radio<AddressSelectedChoices>(
+                                          value: address.selected != true
+                                              ? AddressSelectedChoices.selected
+                                              : AddressSelectedChoices
+                                                  .notSelcted,
+                                          groupValue: _addSelected,
+                                          onChanged: (value) {
+                                            _markSelectedAddress(
+                                                ctx, address, adds, false);
+                                          },
+                                        ),
+                                        title: Text(
+                                          "${address.name}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                        ),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            RichText(
+                                                text: TextSpan(children: [
+                                              TextSpan(
+                                                  text: loading
+                                                      ? "Loading..."
+                                                      : Co,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall
+                                                      ?.copyWith(
+                                                          color: AppColors
+                                                              .secondaryTextColor)),
+                                              TextSpan(
+                                                  text: "${address.country}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall
+                                                      ?.copyWith())
+                                            ])),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            RichText(
+                                                text: TextSpan(children: [
+                                              TextSpan(
+                                                  text: loading
+                                                      ? "Loading..."
+                                                      : Ci,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall
+                                                      ?.copyWith(
+                                                          color: AppColors
+                                                              .secondaryTextColor)),
+                                              TextSpan(
+                                                  text: "${address.city}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall
+                                                      ?.copyWith())
+                                            ])),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            RichText(
+                                                text: TextSpan(children: [
+                                              TextSpan(
+                                                  text: loading
+                                                      ? "Loading..."
+                                                      : SC,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall
+                                                      ?.copyWith(
+                                                          color: AppColors
+                                                              .secondaryTextColor)),
+                                              TextSpan(
+                                                  text: "${address.subCounty}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall
+                                                      ?.copyWith())
+                                            ]))
+                                          ],
+                                        ),
+                                        trailing: InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(context,
+                                                    EditAddressPage.routeName,
+                                                    arguments:
+                                                        address.toAddressItem())
+                                                .then((value) => ctx
+                                                    .read<CheckOutCubit>()
+                                                    .fetchAddresses());
+                                          },
+                                          child: loading
+                                              ? const Text("Loading...")
+                                              : Text(
+                                                  Ed,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall
+                                                      ?.copyWith(
+                                                          color: AppColors
+                                                              .colorPrimary,
+                                                          fontSize: 16.sp),
+                                                ),
+                                        ),
+                                      ),
+                                    ),
+                                    if (adds.indexOf(address) ==
+                                        adds.length - 1)
+                                      const SizedBox(
+                                        height: 100,
+                                      )
+                                  ],
+                                ))
+                            .toList(),
+                      );
+                    })
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -431,47 +458,50 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
   }
 
   Future<void> getLocation() async {
-    try {
-      setState(() {
-        loading = true;
-      });
-      print("here we go");
-      var status = await Permission.location.request();
-      print(status.isPermanentlyDenied);
-      if (status.isGranted) {
-        Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high,
-        );
-
+    if (done1 == false) {
+      try {
         setState(() {
-          latitude = position.latitude;
-          longitude = position.longitude;
+          loading = true;
+        });
+        print("here we go");
+        var status = await Permission.location.request();
+        print(status.isPermanentlyDenied);
+        if (status.isGranted) {
+          Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high,
+          );
+
+          setState(() {
+            done1 = true;
+            latitude = position.latitude;
+            longitude = position.longitude;
+            print(latitude);
+            print(longitude);
+            if (latitude != null && longitude != null) {
+              getAddressFromLatLng(latitude.toString(), longitude.toString());
+            } else {
+              displaySnack(context,
+                  "Please add your address by pressing \"Add Address\"");
+            }
+            loading = false;
+          });
           print(latitude);
           print(longitude);
-          if (latitude != null && longitude != null) {
-            getAddressFromLatLng(latitude.toString(), longitude.toString());
-          } else {
-            displaySnack(
-                context, "Please add your address by pressing \"Add Address\"");
-          }
-          loading = false;
-        });
-        print(latitude);
-        print(longitude);
-      } else {
+        } else {
+          displaySnack(
+              context, "Please add your address by pressing \"Add Address\"");
+          setState(() {
+            loading = false;
+          });
+        }
+      } catch (e) {
         displaySnack(
             context, "Please add your address by pressing \"Add Address\"");
         setState(() {
           loading = false;
         });
+        print('Error getting location: $e');
       }
-    } catch (e) {
-      displaySnack(
-          context, "Please add your address by pressing \"Add Address\"");
-      setState(() {
-        loading = false;
-      });
-      print('Error getting location: $e');
     }
   }
 
@@ -490,7 +520,9 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       }
 
       if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
+       // Placemark place = placemarks[0];
+        Placemark place =
+            (placemarks.length > 3) ? placemarks[3] : placemarks[0];
 
         // Extract street information
         String street = place.street ?? '';
@@ -498,13 +530,27 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
         String locality = place.locality ?? '';
         String subLocal = place.subLocality ?? '';
         String country = place.country ?? '';
+        print(
+            "Street: $street, SubLocality: $subLocality, Locality: $locality, SubLocal: $subLocal, Country: $country");
         try {
           setState(() {
             loading = true;
           });
+          // context.read<AddressCubit>().addAddress(
+          //     '1',
+          //     street.isNotEmpty ? street : subLocal!,
+          //     1,
+          //     1,
+          //     country,
+          //     latitude,
+          //     longitude);
           Map<String, dynamic> payload = {
             "regionId": 1,
-            "city": 1,
+            "city": cities
+                .firstWhere((e) => e.cityName == locality,
+                    orElse: () => CityData(
+                        cityId: 1, cityName: "Addis Ababa", countryId: 1))
+                .cityId,
             "country": country,
             "physicalAddress": street.isNotEmpty ? street : subLocal,
             "latitude": latitude,
@@ -533,6 +579,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                 loading = false;
               });
               setState(() {});
+              // context.read<CheckOutCubit>().fetchAddresses();
 
               // Handle the case when statusCode is '000'
             } else {
@@ -562,4 +609,46 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       return "No street address found";
     }
   }
+
+  Future<void> fetchCity() async {
+    try {
+      setState(() {
+        loading = true;
+      });
+      print("hereeee");
+
+      final response = await http.get(Uri.https(
+          "api.commercepal.com:2096", "/prime/api/v1/service/cities"));
+      // print(response.body);
+      var data = jsonDecode(response.body);
+      cities.clear();
+      for (var b in data['data']) {
+        cities.add(CityData(
+            cityId: b['cityId'],
+            cityName: b['cityName'],
+            countryId: b['countryId']));
+      }
+      print(cities.length);
+      setState(() {
+        loading = false;
+      });
+      // }
+    } catch (e) {
+      print(e.toString());
+      setState(() {
+        loading = false;
+      });
+    }
+    setState(() {
+      loading = false;
+    });
+  }
+}
+
+class CityData {
+  final String cityName;
+  final int cityId;
+  final int countryId;
+  CityData(
+      {required this.countryId, required this.cityId, required this.cityName});
 }
