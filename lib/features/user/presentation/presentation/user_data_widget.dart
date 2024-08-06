@@ -373,15 +373,15 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               });
             },
           ),
-          const Divider(),
-          UserMenuItem(
-            icon: FontAwesomeIcons.language,
-            title: translatedStrings['change_language']!,
-            language: dropdownValue,
-            onClick: () {
-              buildLanguageDialog(context);
-            },
-          ),
+          // const Divider(),
+          // UserMenuItem(
+          //   icon: FontAwesomeIcons.language,
+          //   title: translatedStrings['change_language']!,
+          //   language: dropdownValue,
+          //   onClick: () {
+          //     buildLanguageDialog(context);
+          //   },
+          // ),
           // Padding(
           //   padding: const EdgeInsets.symmetric(horizontal: 10),
           //   child: Row(
