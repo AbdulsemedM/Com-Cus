@@ -521,6 +521,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       }
 
       if (placemarks.isNotEmpty) {
+       // Placemark place = placemarks[0];
         Placemark place =
             (placemarks.length > 3) ? placemarks[3] : placemarks[0];
 

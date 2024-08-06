@@ -303,7 +303,7 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
                             maxCrossAxisExtent: 80,
                             childAspectRatio:
                                 MediaQuery.of(context).size.height > 896
-                                    ? 0.2
+                                    ? 0.35
                                     : 1 / 2.4,
                             // childAspectRatio: 1 / 2.4,
                             crossAxisSpacing: 20,
