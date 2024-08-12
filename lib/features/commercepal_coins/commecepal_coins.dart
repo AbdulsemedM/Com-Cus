@@ -4,6 +4,7 @@ import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/features/commercepal_coins/withdraw_coins_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -177,10 +178,14 @@ class _CommecepalCoinsState extends State<CommecepalCoins> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.colorPrimaryDark),
               onPressed: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                // builder: (context) => const WithdrawMoney()));
+                var result = Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const WithdrawCoinsPage()));
+                if (result != null) {
+                  fetchFloatingBalance();
+                  fetchTrnxsdata();
+                }
               },
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

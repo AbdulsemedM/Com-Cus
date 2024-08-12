@@ -36,6 +36,7 @@ class ValidateRepoImpl implements ValidateRepo {
       final payload = {"user": user, "type": type, "code": otp};
       final response =
           await apiProvider.post(payload, EndPoints.validateOtp.url);
+      print(response['statusCode']);
       if (response['statusCode'] == '000') {
         // update status
         final authStatus = await AuthModel.getAuthStatus(prefsData);
