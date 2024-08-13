@@ -74,12 +74,12 @@ class CheckOutRepoImpl implements CheckOutRepo {
               ? EndPoints.businessCheckOut.url
               : EndPoints.checkOut.url);
       print("orderrefhere");
-      print(response['OrderRef']);
+      print(response['orderRef']);
       // final cResponse = jsonDecode(response);
       // print("decoded");
       // print(cResponse);
       if (response['statusCode'] == '000') {
-        final orderRef = response['OrderRef'];
+        final orderRef = response['orderRef'];
         // save it
         pData.writeData("order_ref", orderRef);
         return orderRef;

@@ -6,6 +6,7 @@ import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
+import 'package:commercepal/features/check_out/presentation/widgets/check_out_addresse_widget.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class SearchPlacesScreen extends StatefulWidget {
   State<SearchPlacesScreen> createState() => _SearchPlacesScreenState();
 }
 
-const kGoogleApiKey = 'AIzaSyBGkJQ-2ETFvoaTYJhW7F1IKM3PkhDeZHs';
+const kGoogleApiKey = 'AIzaSyCIT1EnxieoKNoDmPiNvrf2kSLD6Xkohtw';
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
@@ -42,10 +43,12 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
 
   final Mode _mode = Mode.overlay;
   var loading = false;
+  List<CityData> cities = [];
   @override
   void initState() {
     super.initState();
     getLocation();
+    fetchCity();
   }
 
   @override
@@ -199,8 +202,12 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
             loading = true;
           });
           Map<String, dynamic> payload = {
-            "region": subLocality.isNotEmpty ? subLocality : locality,
-            "city": locality,
+            "regionId": subLocality.isNotEmpty ? subLocality : locality,
+            "city": cities
+                .firstWhere((e) => e.cityName == locality,
+                    orElse: () => CityData(
+                        cityId: 1, cityName: "Addis Ababa", countryId: 1))
+                .cityId,
             "country": country,
             "physicalAddress": pAddress != ''
                 ? pAddress
@@ -210,6 +217,18 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
             "latitude": latitude,
             "longitude": longitude
           };
+          // {
+          //   "regionId": 1,
+          //   "city": cities
+          //       .firstWhere((e) => e.cityName == locality,
+          //           orElse: () => CityData(
+          //               cityId: 1, cityName: "Addis Ababa", countryId: 1))
+          //       .cityId,
+          //   "country": country,
+          //   "physicalAddress": street.isNotEmpty ? street : subLocal,
+          //   "latitude": latitude,
+          //   "longitude": longitude
+          // };
           print(payload);
           final prefsData = getIt<PrefsData>();
           final isUserLoggedIn =
@@ -382,5 +401,39 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
       });
       print('Error getting location: $e');
     }
+  }
+
+  Future<void> fetchCity() async {
+    try {
+      setState(() {
+        loading = true;
+      });
+      print("hereeee");
+
+      final response = await http.get(Uri.https(
+          "api.commercepal.com:2096", "/prime/api/v1/service/cities"));
+      // print(response.body);
+      var data = jsonDecode(response.body);
+      cities.clear();
+      for (var b in data['data']) {
+        cities.add(CityData(
+            cityId: b['cityId'],
+            cityName: b['cityName'],
+            countryId: b['countryId']));
+      }
+      print(cities.length);
+      setState(() {
+        loading = false;
+      });
+      // }
+    } catch (e) {
+      print(e.toString());
+      setState(() {
+        loading = false;
+      });
+    }
+    setState(() {
+      loading = false;
+    });
   }
 }

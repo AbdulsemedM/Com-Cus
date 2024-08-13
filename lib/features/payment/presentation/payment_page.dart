@@ -10,6 +10,7 @@ import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/cash_payment/presentation/cash_payment_page.dart';
 import 'package:commercepal/features/cbe_birr/cbe_birr.dart';
+import 'package:commercepal/features/commercepal_coins_checkout/commercepal_coins_checkout.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_loading_widget.dart';
 import 'package:commercepal/features/epg/epg_payment.dart';
@@ -211,6 +212,12 @@ class _PaymentPageState extends State<PaymentPage> {
     } else if (e.name!.toLowerCase().contains("hijra bank") == true) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const HijraBankLoan()));
+    } else if (e.name!.toLowerCase().contains("commercepal commission coin") ==
+        true) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CommercepalCoinsCheckout()));
     } else if (e.paymentMode == PaymentMode.loan) {
       print(e.name!.toLowerCase());
       _showModalBottomSheet(context, e.id!, (MarkUpItem markUpItem) {
