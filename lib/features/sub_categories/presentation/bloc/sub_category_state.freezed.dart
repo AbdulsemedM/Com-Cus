@@ -12,7 +12,7 @@ part of 'sub_category_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SubCategoryState {
@@ -85,6 +85,9 @@ class _$SubCategoryStateCopyWithImpl<$Res, $Val extends SubCategoryState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of SubCategoryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -101,6 +104,9 @@ class __$$SubCategoryStateInitImplCopyWithImpl<$Res>
   __$$SubCategoryStateInitImplCopyWithImpl(_$SubCategoryStateInitImpl _value,
       $Res Function(_$SubCategoryStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SubCategoryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -221,6 +227,8 @@ class __$$SubCategoryStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$SubCategoryStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SubCategoryState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -260,7 +268,9 @@ class _$SubCategoryStateErrorImpl implements SubCategoryStateError {
   @override
   int get hashCode => Object.hash(runtimeType, errorMessage);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SubCategoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubCategoryStateErrorImplCopyWith<_$SubCategoryStateErrorImpl>
@@ -348,7 +358,10 @@ abstract class SubCategoryStateError implements SubCategoryState {
       _$SubCategoryStateErrorImpl;
 
   String get errorMessage;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SubCategoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubCategoryStateErrorImplCopyWith<_$SubCategoryStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -369,6 +382,9 @@ class __$$SubCategoryStateLoadingImplCopyWithImpl<$Res>
       _$SubCategoryStateLoadingImpl _value,
       $Res Function(_$SubCategoryStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SubCategoryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -491,6 +507,8 @@ class __$$SubCategoryStateSubCategoriesImplCopyWithImpl<$Res>
       $Res Function(_$SubCategoryStateSubCategoriesImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SubCategoryState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -539,7 +557,9 @@ class _$SubCategoryStateSubCategoriesImpl
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_subCategories));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SubCategoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubCategoryStateSubCategoriesImplCopyWith<
@@ -629,7 +649,10 @@ abstract class SubCategoryStateSubCategories implements SubCategoryState {
       _$SubCategoryStateSubCategoriesImpl;
 
   List<SubCategory> get subCategories;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SubCategoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubCategoryStateSubCategoriesImplCopyWith<
           _$SubCategoryStateSubCategoriesImpl>
       get copyWith => throw _privateConstructorUsedError;

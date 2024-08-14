@@ -12,7 +12,7 @@ part of 'selected_product_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SelectedProductState {
@@ -85,6 +85,9 @@ class _$SelectedProductStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of SelectedProductState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -104,6 +107,9 @@ class __$$SelectedProductStateInitialImplCopyWithImpl<$Res>
       _$SelectedProductStateInitialImpl _value,
       $Res Function(_$SelectedProductStateInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SelectedProductState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -223,6 +229,9 @@ class __$$SelectedProductStateLoadingImplCopyWithImpl<$Res>
       _$SelectedProductStateLoadingImpl _value,
       $Res Function(_$SelectedProductStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SelectedProductState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -345,6 +354,8 @@ class __$$SelectedProductStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$SelectedProductStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SelectedProductState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -383,7 +394,9 @@ class _$SelectedProductStateErrorImpl implements SelectedProductStateError {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SelectedProductState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SelectedProductStateErrorImplCopyWith<_$SelectedProductStateErrorImpl>
@@ -470,7 +483,10 @@ abstract class SelectedProductStateError implements SelectedProductState {
       _$SelectedProductStateErrorImpl;
 
   String get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SelectedProductState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SelectedProductStateErrorImplCopyWith<_$SelectedProductStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -495,6 +511,8 @@ class __$$SelectedProductStateProductImplCopyWithImpl<$Res>
       $Res Function(_$SelectedProductStateProductImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SelectedProductState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -533,7 +551,9 @@ class _$SelectedProductStateProductImpl implements SelectedProductStateProduct {
   @override
   int get hashCode => Object.hash(runtimeType, product);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SelectedProductState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SelectedProductStateProductImplCopyWith<_$SelectedProductStateProductImpl>
@@ -620,7 +640,10 @@ abstract class SelectedProductStateProduct implements SelectedProductState {
       final SelectedProductDetails product) = _$SelectedProductStateProductImpl;
 
   SelectedProductDetails get product;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SelectedProductState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SelectedProductStateProductImplCopyWith<_$SelectedProductStateProductImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -12,7 +12,7 @@ part of 'order_tracking_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$OrderTrackingState {
@@ -84,6 +84,9 @@ class _$OrderTrackingStateCopyWithImpl<$Res, $Val extends OrderTrackingState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of OrderTrackingState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -102,6 +105,9 @@ class __$$OrderTrackingStateInitImplCopyWithImpl<$Res>
       _$OrderTrackingStateInitImpl _value,
       $Res Function(_$OrderTrackingStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of OrderTrackingState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -220,6 +226,9 @@ class __$$OrderTrackingStateLoadingImplCopyWithImpl<$Res>
       _$OrderTrackingStateLoadingImpl _value,
       $Res Function(_$OrderTrackingStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of OrderTrackingState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -340,6 +349,8 @@ class __$$OrderTrackingStateDataImplCopyWithImpl<$Res>
       $Res Function(_$OrderTrackingStateDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OrderTrackingState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -379,7 +390,9 @@ class _$OrderTrackingStateDataImpl implements OrderTrackingStateData {
   @override
   int get hashCode => Object.hash(runtimeType, orderTrackingData);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OrderTrackingState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OrderTrackingStateDataImplCopyWith<_$OrderTrackingStateDataImpl>
@@ -466,7 +479,10 @@ abstract class OrderTrackingStateData implements OrderTrackingState {
       final OrderTrackingData orderTrackingData) = _$OrderTrackingStateDataImpl;
 
   OrderTrackingData get orderTrackingData;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OrderTrackingState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OrderTrackingStateDataImplCopyWith<_$OrderTrackingStateDataImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -491,6 +507,8 @@ class __$$OrderTrackingStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$OrderTrackingStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OrderTrackingState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -529,7 +547,9 @@ class _$OrderTrackingStateErrorImpl implements OrderTrackingStateError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OrderTrackingState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OrderTrackingStateErrorImplCopyWith<_$OrderTrackingStateErrorImpl>
@@ -616,7 +636,10 @@ abstract class OrderTrackingStateError implements OrderTrackingState {
       _$OrderTrackingStateErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OrderTrackingState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OrderTrackingStateErrorImplCopyWith<_$OrderTrackingStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

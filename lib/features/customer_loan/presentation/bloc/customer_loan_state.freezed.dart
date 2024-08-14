@@ -12,7 +12,7 @@ part of 'customer_loan_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$CustomerLoanState {
@@ -102,6 +102,9 @@ class _$CustomerLoanStateCopyWithImpl<$Res, $Val extends CustomerLoanState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -119,6 +122,9 @@ class __$$CustomerLoanStateInitImplCopyWithImpl<$Res>
   __$$CustomerLoanStateInitImplCopyWithImpl(_$CustomerLoanStateInitImpl _value,
       $Res Function(_$CustomerLoanStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -258,6 +264,8 @@ class __$$CustomerLoanStateLoadingImplCopyWithImpl<$Res>
       $Res Function(_$CustomerLoanStateLoadingImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -296,7 +304,9 @@ class _$CustomerLoanStateLoadingImpl implements CustomerLoanStateLoading {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CustomerLoanStateLoadingImplCopyWith<_$CustomerLoanStateLoadingImpl>
@@ -401,7 +411,10 @@ abstract class CustomerLoanStateLoading implements CustomerLoanState {
       _$CustomerLoanStateLoadingImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomerLoanStateLoadingImplCopyWith<_$CustomerLoanStateLoadingImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -425,6 +438,8 @@ class __$$CustomerLoanStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$CustomerLoanStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -463,7 +478,9 @@ class _$CustomerLoanStateErrorImpl implements CustomerLoanStateError {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CustomerLoanStateErrorImplCopyWith<_$CustomerLoanStateErrorImpl>
@@ -568,7 +585,10 @@ abstract class CustomerLoanStateError implements CustomerLoanState {
       _$CustomerLoanStateErrorImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomerLoanStateErrorImplCopyWith<_$CustomerLoanStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -593,6 +613,8 @@ class __$$CustomerLoanStateDisplayErrorImplCopyWithImpl<$Res>
       $Res Function(_$CustomerLoanStateDisplayErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -632,7 +654,9 @@ class _$CustomerLoanStateDisplayErrorImpl
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CustomerLoanStateDisplayErrorImplCopyWith<
@@ -738,7 +762,10 @@ abstract class CustomerLoanStateDisplayError implements CustomerLoanState {
       _$CustomerLoanStateDisplayErrorImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomerLoanStateDisplayErrorImplCopyWith<
           _$CustomerLoanStateDisplayErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -764,6 +791,8 @@ class __$$CustomerLoanStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$CustomerLoanStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -802,7 +831,9 @@ class _$CustomerLoanStateSuccessImpl implements CustomerLoanStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CustomerLoanStateSuccessImplCopyWith<_$CustomerLoanStateSuccessImpl>
@@ -907,7 +938,10 @@ abstract class CustomerLoanStateSuccess implements CustomerLoanState {
       _$CustomerLoanStateSuccessImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomerLoanStateSuccessImplCopyWith<_$CustomerLoanStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -932,6 +966,8 @@ class __$$CustomerLoanStateProductsImplCopyWithImpl<$Res>
       $Res Function(_$CustomerLoanStateProductsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -988,7 +1024,9 @@ class _$CustomerLoanStateProductsImpl implements CustomerLoanStateProducts {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_products), pricesSummary);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CustomerLoanStateProductsImplCopyWith<_$CustomerLoanStateProductsImpl>
@@ -1094,7 +1132,10 @@ abstract class CustomerLoanStateProducts implements CustomerLoanState {
 
   List<NewPricedProduct> get products;
   PricesSummary get pricesSummary;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CustomerLoanState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomerLoanStateProductsImplCopyWith<_$CustomerLoanStateProductsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

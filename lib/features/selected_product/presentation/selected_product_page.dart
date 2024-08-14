@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/di/injector.dart';
@@ -24,7 +25,7 @@ import 'package:commercepal/features/selected_product/presentation/widgets/add_p
 import 'package:commercepal/features/selected_product/presentation/widgets/review_product.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -98,7 +99,7 @@ class SelectedProductDataWidget extends StatefulWidget {
 }
 
 class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
-  final CarouselController _controller = CarouselController();
+  // final CarouselController _controller = CarouselController();
   final TextEditingController promoController = TextEditingController();
   final GlobalKey<FormState> mykey = GlobalKey();
   String? newPrice;
@@ -234,7 +235,7 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                 Stack(
                   children: [
                     CarouselSlider(
-                      carouselController: _controller,
+                      // carouselController: _controller,
                       options: CarouselOptions(
                           onPageChanged: (index, reason) {
                             setState(() {

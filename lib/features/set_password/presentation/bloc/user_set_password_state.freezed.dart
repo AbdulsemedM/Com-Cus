@@ -12,7 +12,7 @@ part of 'user_set_password_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UserSetPasswordState {
@@ -91,6 +91,9 @@ class _$UserSetPasswordStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -110,6 +113,9 @@ class __$$UserSetPasswordStateInitImplCopyWithImpl<$Res>
       _$UserSetPasswordStateInitImpl _value,
       $Res Function(_$UserSetPasswordStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -234,6 +240,9 @@ class __$$UserSetPasswordStateLoadingImplCopyWithImpl<$Res>
       _$UserSetPasswordStateLoadingImpl _value,
       $Res Function(_$UserSetPasswordStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -362,6 +371,8 @@ class __$$UserSetPasswordStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$UserSetPasswordStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -400,7 +411,9 @@ class _$UserSetPasswordStateErrorImpl implements UserSetPasswordStateError {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserSetPasswordStateErrorImplCopyWith<_$UserSetPasswordStateErrorImpl>
@@ -493,7 +506,10 @@ abstract class UserSetPasswordStateError implements UserSetPasswordState {
       _$UserSetPasswordStateErrorImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserSetPasswordStateErrorImplCopyWith<_$UserSetPasswordStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -518,6 +534,8 @@ class __$$UserSetPasswordStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$UserSetPasswordStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -556,7 +574,9 @@ class _$UserSetPasswordStateSuccessImpl implements UserSetPasswordStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserSetPasswordStateSuccessImplCopyWith<_$UserSetPasswordStateSuccessImpl>
@@ -649,7 +669,10 @@ abstract class UserSetPasswordStateSuccess implements UserSetPasswordState {
       _$UserSetPasswordStateSuccessImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserSetPasswordStateSuccessImplCopyWith<_$UserSetPasswordStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -674,6 +697,8 @@ class __$$UserSetPasswordStatePasswordImplCopyWithImpl<$Res>
       $Res Function(_$UserSetPasswordStatePasswordImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -713,7 +738,9 @@ class _$UserSetPasswordStatePasswordImpl
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserSetPasswordStatePasswordImplCopyWith<
@@ -807,7 +834,10 @@ abstract class UserSetPasswordStatePassword implements UserSetPasswordState {
       _$UserSetPasswordStatePasswordImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserSetPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserSetPasswordStatePasswordImplCopyWith<
           _$UserSetPasswordStatePasswordImpl>
       get copyWith => throw _privateConstructorUsedError;

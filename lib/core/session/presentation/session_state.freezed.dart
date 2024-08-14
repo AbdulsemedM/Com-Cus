@@ -12,7 +12,7 @@ part of 'session_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SessionState {
@@ -96,6 +96,9 @@ class _$SessionStateCopyWithImpl<$Res, $Val extends SessionState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -112,6 +115,9 @@ class __$$SessionStateInitImplCopyWithImpl<$Res>
   __$$SessionStateInitImplCopyWithImpl(_$SessionStateInitImpl _value,
       $Res Function(_$SessionStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -238,6 +244,9 @@ class __$$SessionStateLoadingImplCopyWithImpl<$Res>
   __$$SessionStateLoadingImplCopyWithImpl(_$SessionStateLoadingImpl _value,
       $Res Function(_$SessionStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -370,6 +379,8 @@ class __$$SessionStateForceUpdateImplCopyWithImpl<$Res>
       $Res Function(_$SessionStateForceUpdateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -409,7 +420,9 @@ class _$SessionStateForceUpdateImpl implements SessionStateForceUpdate {
   @override
   int get hashCode => Object.hash(runtimeType, platform);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SessionStateForceUpdateImplCopyWith<_$SessionStateForceUpdateImpl>
@@ -508,7 +521,10 @@ abstract class SessionStateForceUpdate implements SessionState {
       _$SessionStateForceUpdateImpl;
 
   String get platform;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SessionStateForceUpdateImplCopyWith<_$SessionStateForceUpdateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -527,6 +543,9 @@ class __$$SessionStateLoginImplCopyWithImpl<$Res>
   __$$SessionStateLoginImplCopyWithImpl(_$SessionStateLoginImpl _value,
       $Res Function(_$SessionStateLoginImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -656,6 +675,8 @@ class __$$SessionStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$SessionStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -694,7 +715,9 @@ class _$SessionStateErrorImpl implements SessionStateError {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SessionStateErrorImplCopyWith<_$SessionStateErrorImpl> get copyWith =>
@@ -792,7 +815,10 @@ abstract class SessionStateError implements SessionState {
   const factory SessionStateError(final String error) = _$SessionStateErrorImpl;
 
   String get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SessionStateErrorImplCopyWith<_$SessionStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -816,6 +842,8 @@ class __$$SessionBusinessUserStateImplCopyWithImpl<$Res>
       $Res Function(_$SessionBusinessUserStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -855,7 +883,9 @@ class _$SessionBusinessUserStateImpl implements SessionBusinessUserState {
   @override
   int get hashCode => Object.hash(runtimeType, isBusiness);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SessionBusinessUserStateImplCopyWith<_$SessionBusinessUserStateImpl>
@@ -954,7 +984,10 @@ abstract class SessionBusinessUserState implements SessionState {
       _$SessionBusinessUserStateImpl;
 
   bool get isBusiness;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SessionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SessionBusinessUserStateImplCopyWith<_$SessionBusinessUserStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

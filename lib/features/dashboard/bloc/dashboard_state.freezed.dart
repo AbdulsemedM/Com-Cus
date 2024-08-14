@@ -12,7 +12,7 @@ part of 'dashboard_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$DashboardState {
@@ -91,6 +91,9 @@ class _$DashboardStateCopyWithImpl<$Res, $Val extends DashboardState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -107,6 +110,9 @@ class __$$DashboardInitStateImplCopyWithImpl<$Res>
   __$$DashboardInitStateImplCopyWithImpl(_$DashboardInitStateImpl _value,
       $Res Function(_$DashboardInitStateImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -229,6 +235,9 @@ class __$$DashboardLoadingStateImplCopyWithImpl<$Res>
   __$$DashboardLoadingStateImplCopyWithImpl(_$DashboardLoadingStateImpl _value,
       $Res Function(_$DashboardLoadingStateImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -356,6 +365,8 @@ class __$$DashboardBusinessStateImplCopyWithImpl<$Res>
       $Res Function(_$DashboardBusinessStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -395,7 +406,9 @@ class _$DashboardBusinessStateImpl implements DashboardBusinessState {
   @override
   int get hashCode => Object.hash(runtimeType, isBusiness);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DashboardBusinessStateImplCopyWith<_$DashboardBusinessStateImpl>
@@ -489,7 +502,10 @@ abstract class DashboardBusinessState implements DashboardState {
       _$DashboardBusinessStateImpl;
 
   bool get isBusiness;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DashboardBusinessStateImplCopyWith<_$DashboardBusinessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -512,6 +528,8 @@ class __$$DashboardSuccessStateImplCopyWithImpl<$Res>
       $Res Function(_$DashboardSuccessStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -550,7 +568,9 @@ class _$DashboardSuccessStateImpl implements DashboardSuccessState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DashboardSuccessStateImplCopyWith<_$DashboardSuccessStateImpl>
@@ -644,7 +664,10 @@ abstract class DashboardSuccessState implements DashboardState {
       _$DashboardSuccessStateImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DashboardSuccessStateImplCopyWith<_$DashboardSuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -668,6 +691,8 @@ class __$$DashboardUserSwicthedStateImplCopyWithImpl<$Res>
       $Res Function(_$DashboardUserSwicthedStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -707,7 +732,9 @@ class _$DashboardUserSwicthedStateImpl implements DashboardUserSwicthedState {
   @override
   int get hashCode => Object.hash(runtimeType, switched);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DashboardUserSwicthedStateImplCopyWith<_$DashboardUserSwicthedStateImpl>
@@ -801,7 +828,10 @@ abstract class DashboardUserSwicthedState implements DashboardState {
       _$DashboardUserSwicthedStateImpl;
 
   bool get switched;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DashboardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DashboardUserSwicthedStateImplCopyWith<_$DashboardUserSwicthedStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

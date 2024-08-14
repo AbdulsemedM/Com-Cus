@@ -12,7 +12,7 @@ part of 'payment_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$PaymentState {
@@ -98,6 +98,9 @@ class _$PaymentStateCopyWithImpl<$Res, $Val extends PaymentState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -114,6 +117,9 @@ class __$$PaymentStateInitImplCopyWithImpl<$Res>
   __$$PaymentStateInitImplCopyWithImpl(_$PaymentStateInitImpl _value,
       $Res Function(_$PaymentStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -242,6 +248,9 @@ class __$$PaymentStateLoadingImplCopyWithImpl<$Res>
   __$$PaymentStateLoadingImplCopyWithImpl(_$PaymentStateLoadingImpl _value,
       $Res Function(_$PaymentStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -374,6 +383,8 @@ class __$$PaymentStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$PaymentStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -412,7 +423,9 @@ class _$PaymentStateErrorImpl implements PaymentStateError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PaymentStateErrorImplCopyWith<_$PaymentStateErrorImpl> get copyWith =>
@@ -513,7 +526,10 @@ abstract class PaymentStateError implements PaymentState {
       _$PaymentStateErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PaymentStateErrorImplCopyWith<_$PaymentStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -535,6 +551,8 @@ class __$$PaymentStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$PaymentStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -581,7 +599,9 @@ class _$PaymentStateSuccessImpl implements PaymentStateSuccess {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_paymentMethods));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PaymentStateSuccessImplCopyWith<_$PaymentStateSuccessImpl> get copyWith =>
@@ -682,7 +702,10 @@ abstract class PaymentStateSuccess implements PaymentState {
       _$PaymentStateSuccessImpl;
 
   List<PaymentMethods> get paymentMethods;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PaymentStateSuccessImplCopyWith<_$PaymentStateSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -706,6 +729,8 @@ class __$$PaymentStateFinancialInstImplCopyWithImpl<$Res>
       $Res Function(_$PaymentStateFinancialInstImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -753,7 +778,9 @@ class _$PaymentStateFinancialInstImpl implements PaymentStateFinancialInst {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_institutions));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PaymentStateFinancialInstImplCopyWith<_$PaymentStateFinancialInstImpl>
@@ -855,7 +882,10 @@ abstract class PaymentStateFinancialInst implements PaymentState {
       _$PaymentStateFinancialInstImpl;
 
   List<FinancialInstitution> get institutions;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PaymentStateFinancialInstImplCopyWith<_$PaymentStateFinancialInstImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -879,6 +909,8 @@ class __$$PaymentStateMarkUpItemsImplCopyWithImpl<$Res>
       $Res Function(_$PaymentStateMarkUpItemsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -925,7 +957,9 @@ class _$PaymentStateMarkUpItemsImpl implements PaymentStateMarkUpItems {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_markUpItems));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PaymentStateMarkUpItemsImplCopyWith<_$PaymentStateMarkUpItemsImpl>
@@ -1026,7 +1060,10 @@ abstract class PaymentStateMarkUpItems implements PaymentState {
       _$PaymentStateMarkUpItemsImpl;
 
   List<MarkUpItem> get markUpItems;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PaymentStateMarkUpItemsImplCopyWith<_$PaymentStateMarkUpItemsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

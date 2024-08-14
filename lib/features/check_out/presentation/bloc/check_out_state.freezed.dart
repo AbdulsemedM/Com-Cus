@@ -12,7 +12,7 @@ part of 'check_out_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$CheckOutState {
@@ -114,6 +114,9 @@ class _$CheckOutStateCopyWithImpl<$Res, $Val extends CheckOutState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -130,6 +133,9 @@ class __$$CheckOutStateInitImplCopyWithImpl<$Res>
   __$$CheckOutStateInitImplCopyWithImpl(_$CheckOutStateInitImpl _value,
       $Res Function(_$CheckOutStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -274,6 +280,9 @@ class __$$CheckOutStateLoadingImplCopyWithImpl<$Res>
   __$$CheckOutStateLoadingImplCopyWithImpl(_$CheckOutStateLoadingImpl _value,
       $Res Function(_$CheckOutStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -422,6 +431,8 @@ class __$$CheckOutStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$CheckOutStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -460,7 +471,9 @@ class _$CheckOutStateErrorImpl implements CheckOutStateError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CheckOutStateErrorImplCopyWith<_$CheckOutStateErrorImpl> get copyWith =>
@@ -577,7 +590,10 @@ abstract class CheckOutStateError implements CheckOutState {
       _$CheckOutStateErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CheckOutStateErrorImplCopyWith<_$CheckOutStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -599,6 +615,8 @@ class __$$CheckOutStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$CheckOutStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -637,7 +655,9 @@ class _$CheckOutStateSuccessImpl implements CheckOutStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CheckOutStateSuccessImplCopyWith<_$CheckOutStateSuccessImpl>
@@ -755,7 +775,10 @@ abstract class CheckOutStateSuccess implements CheckOutState {
       _$CheckOutStateSuccessImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CheckOutStateSuccessImplCopyWith<_$CheckOutStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -779,6 +802,8 @@ class __$$CheckOutStateAddressesImplCopyWithImpl<$Res>
       $Res Function(_$CheckOutStateAddressesImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -824,7 +849,9 @@ class _$CheckOutStateAddressesImpl implements CheckOutStateAddresses {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_message));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CheckOutStateAddressesImplCopyWith<_$CheckOutStateAddressesImpl>
@@ -941,7 +968,10 @@ abstract class CheckOutStateAddresses implements CheckOutState {
       _$CheckOutStateAddressesImpl;
 
   List<Address> get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CheckOutStateAddressesImplCopyWith<_$CheckOutStateAddressesImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -963,6 +993,8 @@ class __$$CheckOutStateItemsImplCopyWithImpl<$Res>
       $Res Function(_$CheckOutStateItemsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1008,7 +1040,9 @@ class _$CheckOutStateItemsImpl implements CheckOutStateItems {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_message));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CheckOutStateItemsImplCopyWith<_$CheckOutStateItemsImpl> get copyWith =>
@@ -1125,7 +1159,10 @@ abstract class CheckOutStateItems implements CheckOutState {
       _$CheckOutStateItemsImpl;
 
   List<CartItem> get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CheckOutStateItemsImplCopyWith<_$CheckOutStateItemsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1147,6 +1184,8 @@ class __$$CheckOutStateAmountImplCopyWithImpl<$Res>
       $Res Function(_$CheckOutStateAmountImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1186,7 +1225,9 @@ class _$CheckOutStateAmountImpl implements CheckOutStateAmount {
   @override
   int get hashCode => Object.hash(runtimeType, totalAmount);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CheckOutStateAmountImplCopyWith<_$CheckOutStateAmountImpl> get copyWith =>
@@ -1303,7 +1344,10 @@ abstract class CheckOutStateAmount implements CheckOutState {
       _$CheckOutStateAmountImpl;
 
   String get totalAmount;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CheckOutStateAmountImplCopyWith<_$CheckOutStateAmountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1327,6 +1371,8 @@ class __$$CheckOutStateShippingFeeImplCopyWithImpl<$Res>
       $Res Function(_$CheckOutStateShippingFeeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1366,7 +1412,9 @@ class _$CheckOutStateShippingFeeImpl implements CheckOutStateShippingFee {
   @override
   int get hashCode => Object.hash(runtimeType, totalAmount);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CheckOutStateShippingFeeImplCopyWith<_$CheckOutStateShippingFeeImpl>
@@ -1483,7 +1531,10 @@ abstract class CheckOutStateShippingFee implements CheckOutState {
       _$CheckOutStateShippingFeeImpl;
 
   String get totalAmount;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CheckOutStateShippingFeeImplCopyWith<_$CheckOutStateShippingFeeImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1506,6 +1557,8 @@ class __$$CheckOutStateBusinessImplCopyWithImpl<$Res>
       $Res Function(_$CheckOutStateBusinessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1545,7 +1598,9 @@ class _$CheckOutStateBusinessImpl implements CheckOutStateBusiness {
   @override
   int get hashCode => Object.hash(runtimeType, isBusiness);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CheckOutStateBusinessImplCopyWith<_$CheckOutStateBusinessImpl>
@@ -1662,7 +1717,10 @@ abstract class CheckOutStateBusiness implements CheckOutState {
       _$CheckOutStateBusinessImpl;
 
   bool get isBusiness;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CheckOutState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CheckOutStateBusinessImplCopyWith<_$CheckOutStateBusinessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

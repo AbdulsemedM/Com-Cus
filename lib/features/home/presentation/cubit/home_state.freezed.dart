@@ -12,7 +12,7 @@ part of 'home_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$HomeState {
@@ -83,6 +83,9 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -99,6 +102,9 @@ class __$$HomeStateInitImplCopyWithImpl<$Res>
   __$$HomeStateInitImplCopyWithImpl(
       _$HomeStateInitImpl _value, $Res Function(_$HomeStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -213,6 +219,9 @@ class __$$HomeStateLoadingImplCopyWithImpl<$Res>
   __$$HomeStateLoadingImplCopyWithImpl(_$HomeStateLoadingImpl _value,
       $Res Function(_$HomeStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -330,6 +339,8 @@ class __$$HomeStateSchemasImplCopyWithImpl<$Res>
       $Res Function(_$HomeStateSchemasImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -369,7 +380,9 @@ class _$HomeStateSchemasImpl implements HomeStateSchemas {
   @override
   int get hashCode => Object.hash(runtimeType, homePageSchema);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$HomeStateSchemasImplCopyWith<_$HomeStateSchemasImpl> get copyWith =>
@@ -456,7 +469,10 @@ abstract class HomeStateSchemas implements HomeState {
       _$HomeStateSchemasImpl;
 
   SchemaSettingsModel get homePageSchema;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$HomeStateSchemasImplCopyWith<_$HomeStateSchemasImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -478,6 +494,8 @@ class __$$HomeStateErrorImplCopyWithImpl<$Res>
       _$HomeStateErrorImpl _value, $Res Function(_$HomeStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -516,7 +534,9 @@ class _$HomeStateErrorImpl implements HomeStateError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$HomeStateErrorImplCopyWith<_$HomeStateErrorImpl> get copyWith =>
@@ -602,7 +622,10 @@ abstract class HomeStateError implements HomeState {
   const factory HomeStateError(final String message) = _$HomeStateErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$HomeStateErrorImplCopyWith<_$HomeStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

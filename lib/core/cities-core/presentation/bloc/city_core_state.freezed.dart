@@ -12,7 +12,7 @@ part of 'city_core_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$CityCoreState {
@@ -96,6 +96,9 @@ class _$CityCoreStateCopyWithImpl<$Res, $Val extends CityCoreState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -112,6 +115,9 @@ class __$$CityCoreStateInitImplCopyWithImpl<$Res>
   __$$CityCoreStateInitImplCopyWithImpl(_$CityCoreStateInitImpl _value,
       $Res Function(_$CityCoreStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -238,6 +244,9 @@ class __$$CityCoreStateLoadingImplCopyWithImpl<$Res>
   __$$CityCoreStateLoadingImplCopyWithImpl(_$CityCoreStateLoadingImpl _value,
       $Res Function(_$CityCoreStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -368,6 +377,8 @@ class __$$CityCoreStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$CityCoreStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -406,7 +417,9 @@ class _$CityCoreStateErrorImpl implements CityCoreStateError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CityCoreStateErrorImplCopyWith<_$CityCoreStateErrorImpl> get copyWith =>
@@ -505,7 +518,10 @@ abstract class CityCoreStateError implements CityCoreState {
       _$CityCoreStateErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CityCoreStateErrorImplCopyWith<_$CityCoreStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -527,6 +543,8 @@ class __$$CityCoreStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$CityCoreStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -565,7 +583,9 @@ class _$CityCoreStateSuccessImpl implements CityCoreStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CityCoreStateSuccessImplCopyWith<_$CityCoreStateSuccessImpl>
@@ -665,7 +685,10 @@ abstract class CityCoreStateSuccess implements CityCoreState {
       _$CityCoreStateSuccessImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CityCoreStateSuccessImplCopyWith<_$CityCoreStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -687,6 +710,8 @@ class __$$CityCoreStateCitiesImplCopyWithImpl<$Res>
       $Res Function(_$CityCoreStateCitiesImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -731,7 +756,9 @@ class _$CityCoreStateCitiesImpl implements CityCoreStateCities {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_cities));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CityCoreStateCitiesImplCopyWith<_$CityCoreStateCitiesImpl> get copyWith =>
@@ -830,7 +857,10 @@ abstract class CityCoreStateCities implements CityCoreState {
       _$CityCoreStateCitiesImpl;
 
   List<City> get cities;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CityCoreStateCitiesImplCopyWith<_$CityCoreStateCitiesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -854,6 +884,8 @@ class __$$CityCoreStateCountriesImplCopyWithImpl<$Res>
       $Res Function(_$CityCoreStateCountriesImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -900,7 +932,9 @@ class _$CityCoreStateCountriesImpl implements CityCoreStateCountries {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_countries));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CityCoreStateCountriesImplCopyWith<_$CityCoreStateCountriesImpl>
@@ -999,7 +1033,10 @@ abstract class CityCoreStateCountries implements CityCoreState {
       _$CityCoreStateCountriesImpl;
 
   List<Country> get countries;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CityCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CityCoreStateCountriesImplCopyWith<_$CityCoreStateCountriesImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

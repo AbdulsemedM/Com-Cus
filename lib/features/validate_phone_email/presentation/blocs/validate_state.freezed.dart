@@ -12,7 +12,7 @@ part of 'validate_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ValidateState {
@@ -90,6 +90,9 @@ class _$ValidateStateCopyWithImpl<$Res, $Val extends ValidateState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ValidateState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -106,6 +109,9 @@ class __$$ValidateStateInitImplCopyWithImpl<$Res>
   __$$ValidateStateInitImplCopyWithImpl(_$ValidateStateInitImpl _value,
       $Res Function(_$ValidateStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ValidateState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -229,6 +235,8 @@ class __$$ValidateStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$ValidateStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ValidateState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -267,7 +275,9 @@ class _$ValidateStateErrorImpl implements ValidateStateError {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ValidateState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ValidateStateErrorImplCopyWith<_$ValidateStateErrorImpl> get copyWith =>
@@ -360,7 +370,10 @@ abstract class ValidateStateError implements ValidateState {
       _$ValidateStateErrorImpl;
 
   String get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ValidateState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ValidateStateErrorImplCopyWith<_$ValidateStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -382,6 +395,8 @@ class __$$ValidateStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$ValidateStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ValidateState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -420,7 +435,9 @@ class _$ValidateStateSuccessImpl implements ValidateStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, success);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ValidateState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ValidateStateSuccessImplCopyWith<_$ValidateStateSuccessImpl>
@@ -514,7 +531,10 @@ abstract class ValidateStateSuccess implements ValidateState {
       _$ValidateStateSuccessImpl;
 
   String get success;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ValidateState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ValidateStateSuccessImplCopyWith<_$ValidateStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -533,6 +553,9 @@ class __$$ValidateStateOtpImplCopyWithImpl<$Res>
   __$$ValidateStateOtpImplCopyWithImpl(_$ValidateStateOtpImpl _value,
       $Res Function(_$ValidateStateOtpImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ValidateState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -653,6 +676,9 @@ class __$$ValidateStateLoadingImplCopyWithImpl<$Res>
   __$$ValidateStateLoadingImplCopyWithImpl(_$ValidateStateLoadingImpl _value,
       $Res Function(_$ValidateStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ValidateState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

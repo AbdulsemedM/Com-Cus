@@ -12,7 +12,7 @@ part of 'special_order_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SpecialOrderState {
@@ -90,6 +90,9 @@ class _$SpecialOrderStateCopyWithImpl<$Res, $Val extends SpecialOrderState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -107,6 +110,9 @@ class __$$SpecialOrderStateInitImplCopyWithImpl<$Res>
   __$$SpecialOrderStateInitImplCopyWithImpl(_$SpecialOrderStateInitImpl _value,
       $Res Function(_$SpecialOrderStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -231,6 +237,9 @@ class __$$SpecialOrderStateLoadingImplCopyWithImpl<$Res>
       _$SpecialOrderStateLoadingImpl _value,
       $Res Function(_$SpecialOrderStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -357,6 +366,8 @@ class __$$SpecialOrderStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$SpecialOrderStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -395,7 +406,9 @@ class _$SpecialOrderStateErrorImpl implements SpecialOrderStateError {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SpecialOrderStateErrorImplCopyWith<_$SpecialOrderStateErrorImpl>
@@ -488,7 +501,10 @@ abstract class SpecialOrderStateError implements SpecialOrderState {
       _$SpecialOrderStateErrorImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SpecialOrderStateErrorImplCopyWith<_$SpecialOrderStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -513,6 +529,8 @@ class __$$SpecialOrderStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$SpecialOrderStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -551,7 +569,9 @@ class _$SpecialOrderStateSuccessImpl implements SpecialOrderStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SpecialOrderStateSuccessImplCopyWith<_$SpecialOrderStateSuccessImpl>
@@ -644,7 +664,10 @@ abstract class SpecialOrderStateSuccess implements SpecialOrderState {
       _$SpecialOrderStateSuccessImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SpecialOrderStateSuccessImplCopyWith<_$SpecialOrderStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -668,6 +691,8 @@ class __$$SpecialOrderStateOrdersImplCopyWithImpl<$Res>
       $Res Function(_$SpecialOrderStateOrdersImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -713,7 +738,9 @@ class _$SpecialOrderStateOrdersImpl implements SpecialOrderStateOrders {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_orders));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SpecialOrderStateOrdersImplCopyWith<_$SpecialOrderStateOrdersImpl>
@@ -806,7 +833,10 @@ abstract class SpecialOrderStateOrders implements SpecialOrderState {
       _$SpecialOrderStateOrdersImpl;
 
   List<SpecialOrderItem> get orders;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SpecialOrderState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SpecialOrderStateOrdersImplCopyWith<_$SpecialOrderStateOrdersImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

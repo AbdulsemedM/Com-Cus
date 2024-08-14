@@ -12,7 +12,7 @@ part of 'reset_pass_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ResetPassState {
@@ -96,6 +96,9 @@ class _$ResetPassStateCopyWithImpl<$Res, $Val extends ResetPassState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -112,6 +115,9 @@ class __$$ResetPassStateInitImplCopyWithImpl<$Res>
   __$$ResetPassStateInitImplCopyWithImpl(_$ResetPassStateInitImpl _value,
       $Res Function(_$ResetPassStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -239,6 +245,9 @@ class __$$ResetPassStateLoadingImplCopyWithImpl<$Res>
   __$$ResetPassStateLoadingImplCopyWithImpl(_$ResetPassStateLoadingImpl _value,
       $Res Function(_$ResetPassStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -366,6 +375,9 @@ class __$$ResetPassStateCodeImplCopyWithImpl<$Res>
   __$$ResetPassStateCodeImplCopyWithImpl(_$ResetPassStateCodeImpl _value,
       $Res Function(_$ResetPassStateCodeImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -494,6 +506,9 @@ class __$$ResetPassStatePasswordImplCopyWithImpl<$Res>
       _$ResetPassStatePasswordImpl _value,
       $Res Function(_$ResetPassStatePasswordImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -624,6 +639,8 @@ class __$$ResetPassStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$ResetPassStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -662,7 +679,9 @@ class _$ResetPassStateErrorImpl implements ResetPassStateError {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ResetPassStateErrorImplCopyWith<_$ResetPassStateErrorImpl> get copyWith =>
@@ -761,7 +780,10 @@ abstract class ResetPassStateError implements ResetPassState {
       _$ResetPassStateErrorImpl;
 
   String get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ResetPassStateErrorImplCopyWith<_$ResetPassStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -784,6 +806,8 @@ class __$$ResetPassStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$ResetPassStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -822,7 +846,9 @@ class _$ResetPassStateSuccessImpl implements ResetPassStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ResetPassStateSuccessImplCopyWith<_$ResetPassStateSuccessImpl>
@@ -921,7 +947,10 @@ abstract class ResetPassStateSuccess implements ResetPassState {
       _$ResetPassStateSuccessImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ResetPassState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ResetPassStateSuccessImplCopyWith<_$ResetPassStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

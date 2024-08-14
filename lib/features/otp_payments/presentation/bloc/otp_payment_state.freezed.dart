@@ -12,7 +12,7 @@ part of 'otp_payment_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$OtpPaymentState {
@@ -102,6 +102,9 @@ class _$OtpPaymentStateCopyWithImpl<$Res, $Val extends OtpPaymentState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -118,6 +121,9 @@ class __$$OtpPaymentStateInitImplCopyWithImpl<$Res>
   __$$OtpPaymentStateInitImplCopyWithImpl(_$OtpPaymentStateInitImpl _value,
       $Res Function(_$OtpPaymentStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -253,6 +259,9 @@ class __$$OtpPaymentStateLoadingImplCopyWithImpl<$Res>
       _$OtpPaymentStateLoadingImpl _value,
       $Res Function(_$OtpPaymentStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -389,6 +398,8 @@ class __$$OtpPaymentStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$OtpPaymentStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -427,7 +438,9 @@ class _$OtpPaymentStateErrorImpl implements OtpPaymentStateError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OtpPaymentStateErrorImplCopyWith<_$OtpPaymentStateErrorImpl>
@@ -533,7 +546,10 @@ abstract class OtpPaymentStateError implements OtpPaymentState {
       _$OtpPaymentStateErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OtpPaymentStateErrorImplCopyWith<_$OtpPaymentStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -558,6 +574,8 @@ class __$$OtpPaymentStateConfirmationImplCopyWithImpl<$Res>
       $Res Function(_$OtpPaymentStateConfirmationImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -596,7 +614,9 @@ class _$OtpPaymentStateConfirmationImpl implements OtpPaymentStateConfirmation {
   @override
   int get hashCode => Object.hash(runtimeType, name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OtpPaymentStateConfirmationImplCopyWith<_$OtpPaymentStateConfirmationImpl>
@@ -701,7 +721,10 @@ abstract class OtpPaymentStateConfirmation implements OtpPaymentState {
       _$OtpPaymentStateConfirmationImpl;
 
   String get name;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OtpPaymentStateConfirmationImplCopyWith<_$OtpPaymentStateConfirmationImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -725,6 +748,8 @@ class __$$OtpPaymentStateRedirectImplCopyWithImpl<$Res>
       $Res Function(_$OtpPaymentStateRedirectImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -763,7 +788,9 @@ class _$OtpPaymentStateRedirectImpl implements OtpPaymentStateRedirect {
   @override
   int get hashCode => Object.hash(runtimeType, phone);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OtpPaymentStateRedirectImplCopyWith<_$OtpPaymentStateRedirectImpl>
@@ -868,7 +895,10 @@ abstract class OtpPaymentStateRedirect implements OtpPaymentState {
       _$OtpPaymentStateRedirectImpl;
 
   String? get phone;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OtpPaymentStateRedirectImplCopyWith<_$OtpPaymentStateRedirectImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -887,6 +917,9 @@ class __$$OtpPaymentStateOtpImplCopyWithImpl<$Res>
   __$$OtpPaymentStateOtpImplCopyWithImpl(_$OtpPaymentStateOtpImpl _value,
       $Res Function(_$OtpPaymentStateOtpImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1024,6 +1057,8 @@ class __$$OtpPaymentStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$OtpPaymentStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1062,7 +1097,9 @@ class _$OtpPaymentStateSuccessImpl implements OtpPaymentStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OtpPaymentStateSuccessImplCopyWith<_$OtpPaymentStateSuccessImpl>
@@ -1167,7 +1204,10 @@ abstract class OtpPaymentStateSuccess implements OtpPaymentState {
       _$OtpPaymentStateSuccessImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OtpPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OtpPaymentStateSuccessImplCopyWith<_$OtpPaymentStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

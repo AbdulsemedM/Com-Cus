@@ -12,7 +12,7 @@ part of 'user_orders_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UserOrdersState {
@@ -84,6 +84,9 @@ class _$UserOrdersStateCopyWithImpl<$Res, $Val extends UserOrdersState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of UserOrdersState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -100,6 +103,9 @@ class __$$UserOrdersStateInitImplCopyWithImpl<$Res>
   __$$UserOrdersStateInitImplCopyWithImpl(_$UserOrdersStateInitImpl _value,
       $Res Function(_$UserOrdersStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of UserOrdersState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -217,6 +223,9 @@ class __$$UserOrdersStateLoadingImplCopyWithImpl<$Res>
       _$UserOrdersStateLoadingImpl _value,
       $Res Function(_$UserOrdersStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of UserOrdersState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -335,6 +344,8 @@ class __$$UserOrdersStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$UserOrdersStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserOrdersState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -373,7 +384,9 @@ class _$UserOrdersStateErrorImpl implements UserOrdersStateError {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserOrdersState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserOrdersStateErrorImplCopyWith<_$UserOrdersStateErrorImpl>
@@ -461,7 +474,10 @@ abstract class UserOrdersStateError implements UserOrdersState {
       _$UserOrdersStateErrorImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserOrdersState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserOrdersStateErrorImplCopyWith<_$UserOrdersStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -484,6 +500,8 @@ class __$$UserOrdersStateOrdersImplCopyWithImpl<$Res>
       $Res Function(_$UserOrdersStateOrdersImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserOrdersState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -529,7 +547,9 @@ class _$UserOrdersStateOrdersImpl implements UserOrdersStateOrders {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_orders));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserOrdersState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserOrdersStateOrdersImplCopyWith<_$UserOrdersStateOrdersImpl>
@@ -616,7 +636,10 @@ abstract class UserOrdersStateOrders implements UserOrdersState {
       _$UserOrdersStateOrdersImpl;
 
   List<UserOrder> get orders;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserOrdersState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserOrdersStateOrdersImplCopyWith<_$UserOrdersStateOrdersImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

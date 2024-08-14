@@ -12,7 +12,7 @@ part of 'user_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UserState {
@@ -83,6 +83,9 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of UserState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -99,6 +102,9 @@ class __$$UserStateInitImplCopyWithImpl<$Res>
   __$$UserStateInitImplCopyWithImpl(
       _$UserStateInitImpl _value, $Res Function(_$UserStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of UserState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -213,6 +219,9 @@ class __$$UserStateNotLoggedInImplCopyWithImpl<$Res>
   __$$UserStateNotLoggedInImplCopyWithImpl(_$UserStateNotLoggedInImpl _value,
       $Res Function(_$UserStateNotLoggedInImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of UserState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -331,6 +340,8 @@ class __$$UserStateDataImplCopyWithImpl<$Res>
       _$UserStateDataImpl _value, $Res Function(_$UserStateDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -370,7 +381,9 @@ class _$UserStateDataImpl implements UserStateData {
   @override
   int get hashCode => Object.hash(runtimeType, userModel);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserStateDataImplCopyWith<_$UserStateDataImpl> get copyWith =>
@@ -455,7 +468,10 @@ abstract class UserStateData implements UserState {
   const factory UserStateData(final UserModel userModel) = _$UserStateDataImpl;
 
   UserModel get userModel;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserStateDataImplCopyWith<_$UserStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -477,6 +493,8 @@ class __$$UserStateErrorImplCopyWithImpl<$Res>
       _$UserStateErrorImpl _value, $Res Function(_$UserStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -515,7 +533,9 @@ class _$UserStateErrorImpl implements UserStateError {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserStateErrorImplCopyWith<_$UserStateErrorImpl> get copyWith =>
@@ -601,7 +621,10 @@ abstract class UserStateError implements UserState {
   const factory UserStateError(final String error) = _$UserStateErrorImpl;
 
   String get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserStateErrorImplCopyWith<_$UserStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

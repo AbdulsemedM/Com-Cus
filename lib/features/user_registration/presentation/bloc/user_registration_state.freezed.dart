@@ -12,7 +12,7 @@ part of 'user_registration_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UserRegistrationState {
@@ -91,6 +91,9 @@ class _$UserRegistrationStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -110,6 +113,9 @@ class __$$UserRegistrationStateInitImplCopyWithImpl<$Res>
       _$UserRegistrationStateInitImpl _value,
       $Res Function(_$UserRegistrationStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -234,6 +240,9 @@ class __$$UserRegistrationStateLoadingImplCopyWithImpl<$Res>
       _$UserRegistrationStateLoadingImpl _value,
       $Res Function(_$UserRegistrationStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -363,6 +372,8 @@ class __$$UserRegistrationStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$UserRegistrationStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -401,7 +412,9 @@ class _$UserRegistrationStateErrorImpl implements UserRegistrationStateError {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserRegistrationStateErrorImplCopyWith<_$UserRegistrationStateErrorImpl>
@@ -494,7 +507,10 @@ abstract class UserRegistrationStateError implements UserRegistrationState {
       _$UserRegistrationStateErrorImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserRegistrationStateErrorImplCopyWith<_$UserRegistrationStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -519,6 +535,8 @@ class __$$UserRegistrationStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$UserRegistrationStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -558,7 +576,9 @@ class _$UserRegistrationStateSuccessImpl
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserRegistrationStateSuccessImplCopyWith<
@@ -652,7 +672,10 @@ abstract class UserRegistrationStateSuccess implements UserRegistrationState {
       _$UserRegistrationStateSuccessImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserRegistrationStateSuccessImplCopyWith<
           _$UserRegistrationStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -678,6 +701,8 @@ class __$$UserRegistrationStatePasswordImplCopyWithImpl<$Res>
       $Res Function(_$UserRegistrationStatePasswordImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -717,7 +742,9 @@ class _$UserRegistrationStatePasswordImpl
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserRegistrationStatePasswordImplCopyWith<
@@ -811,7 +838,10 @@ abstract class UserRegistrationStatePassword implements UserRegistrationState {
       _$UserRegistrationStatePasswordImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserRegistrationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserRegistrationStatePasswordImplCopyWith<
           _$UserRegistrationStatePasswordImpl>
       get copyWith => throw _privateConstructorUsedError;

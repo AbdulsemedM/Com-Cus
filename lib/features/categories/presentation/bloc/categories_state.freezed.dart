@@ -12,7 +12,7 @@ part of 'categories_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$CategoriesState {
@@ -96,6 +96,9 @@ class _$CategoriesStateCopyWithImpl<$Res, $Val extends CategoriesState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -114,6 +117,9 @@ class __$$CategoriesStateInitStateImplCopyWithImpl<$Res>
       _$CategoriesStateInitStateImpl _value,
       $Res Function(_$CategoriesStateInitStateImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -244,6 +250,9 @@ class __$$CategoriesStateLoadingStateImplCopyWithImpl<$Res>
       _$CategoriesStateLoadingStateImpl _value,
       $Res Function(_$CategoriesStateLoadingStateImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -378,6 +387,8 @@ class __$$CategoriesStateParentCategoriesStateImplCopyWithImpl<$Res>
       $Res Function(_$CategoriesStateParentCategoriesStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -426,7 +437,9 @@ class _$CategoriesStateParentCategoriesStateImpl
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_pCategories));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CategoriesStateParentCategoriesStateImplCopyWith<
@@ -527,7 +540,10 @@ abstract class CategoriesStateParentCategoriesState implements CategoriesState {
       _$CategoriesStateParentCategoriesStateImpl;
 
   List<ParentCategoryModel> get pCategories;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CategoriesStateParentCategoriesStateImplCopyWith<
           _$CategoriesStateParentCategoriesStateImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -553,6 +569,8 @@ class __$$CategoriesStateCategoriesStateImplCopyWithImpl<$Res>
       $Res Function(_$CategoriesStateCategoriesStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -610,7 +628,9 @@ class _$CategoriesStateCategoriesStateImpl
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_pCategories), pName);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CategoriesStateCategoriesStateImplCopyWith<
@@ -712,7 +732,10 @@ abstract class CategoriesStateCategoriesState implements CategoriesState {
 
   List<CategoryModel> get pCategories;
   String get pName;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CategoriesStateCategoriesStateImplCopyWith<
           _$CategoriesStateCategoriesStateImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -737,6 +760,8 @@ class __$$CategoriesStateErrorStateImplCopyWithImpl<$Res>
       $Res Function(_$CategoriesStateErrorStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -775,7 +800,9 @@ class _$CategoriesStateErrorStateImpl implements CategoriesStateErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CategoriesStateErrorStateImplCopyWith<_$CategoriesStateErrorStateImpl>
@@ -874,7 +901,10 @@ abstract class CategoriesStateErrorState implements CategoriesState {
       _$CategoriesStateErrorStateImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CategoriesState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CategoriesStateErrorStateImplCopyWith<_$CategoriesStateErrorStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

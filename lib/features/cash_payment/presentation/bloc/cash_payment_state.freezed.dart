@@ -12,7 +12,7 @@ part of 'cash_payment_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$CashPaymentState {
@@ -90,6 +90,9 @@ class _$CashPaymentStateCopyWithImpl<$Res, $Val extends CashPaymentState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -106,6 +109,9 @@ class __$$CashPaymentStateInitImplCopyWithImpl<$Res>
   __$$CashPaymentStateInitImplCopyWithImpl(_$CashPaymentStateInitImpl _value,
       $Res Function(_$CashPaymentStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -229,6 +235,9 @@ class __$$CashPaymentStateLoadingImplCopyWithImpl<$Res>
       _$CashPaymentStateLoadingImpl _value,
       $Res Function(_$CashPaymentStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -354,6 +363,8 @@ class __$$CashPaymentStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$CashPaymentStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -392,7 +403,9 @@ class _$CashPaymentStateErrorImpl implements CashPaymentStateError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CashPaymentStateErrorImplCopyWith<_$CashPaymentStateErrorImpl>
@@ -485,7 +498,10 @@ abstract class CashPaymentStateError implements CashPaymentState {
       _$CashPaymentStateErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CashPaymentStateErrorImplCopyWith<_$CashPaymentStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -510,6 +526,8 @@ class __$$CashPaymentStateValidateCodeImplCopyWithImpl<$Res>
       $Res Function(_$CashPaymentStateValidateCodeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -549,7 +567,9 @@ class _$CashPaymentStateValidateCodeImpl
   @override
   int get hashCode => Object.hash(runtimeType, code);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CashPaymentStateValidateCodeImplCopyWith<
@@ -643,7 +663,10 @@ abstract class CashPaymentStateValidateCode implements CashPaymentState {
       _$CashPaymentStateValidateCodeImpl;
 
   String get code;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CashPaymentStateValidateCodeImplCopyWith<
           _$CashPaymentStateValidateCodeImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -668,6 +691,8 @@ class __$$CashPaymentStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$CashPaymentStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -706,7 +731,9 @@ class _$CashPaymentStateSuccessImpl implements CashPaymentStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CashPaymentStateSuccessImplCopyWith<_$CashPaymentStateSuccessImpl>
@@ -799,7 +826,10 @@ abstract class CashPaymentStateSuccess implements CashPaymentState {
       _$CashPaymentStateSuccessImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CashPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CashPaymentStateSuccessImplCopyWith<_$CashPaymentStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

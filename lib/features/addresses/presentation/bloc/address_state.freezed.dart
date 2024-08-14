@@ -12,7 +12,7 @@ part of 'address_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AddressState {
@@ -90,6 +90,9 @@ class _$AddressStateCopyWithImpl<$Res, $Val extends AddressState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -106,6 +109,9 @@ class __$$AddressStateInitImplCopyWithImpl<$Res>
   __$$AddressStateInitImplCopyWithImpl(_$AddressStateInitImpl _value,
       $Res Function(_$AddressStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -226,6 +232,9 @@ class __$$AddressStateLoadingImplCopyWithImpl<$Res>
   __$$AddressStateLoadingImplCopyWithImpl(_$AddressStateLoadingImpl _value,
       $Res Function(_$AddressStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -350,6 +359,8 @@ class __$$AddressStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$AddressStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -388,7 +399,9 @@ class _$AddressStateErrorImpl implements AddressStateError {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddressStateErrorImplCopyWith<_$AddressStateErrorImpl> get copyWith =>
@@ -480,7 +493,10 @@ abstract class AddressStateError implements AddressState {
   const factory AddressStateError(final String error) = _$AddressStateErrorImpl;
 
   String get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddressStateErrorImplCopyWith<_$AddressStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -502,6 +518,8 @@ class __$$AddressStateDataImplCopyWithImpl<$Res>
       $Res Function(_$AddressStateDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -546,7 +564,9 @@ class _$AddressStateDataImpl implements AddressStateData {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddressStateDataImplCopyWith<_$AddressStateDataImpl> get copyWith =>
@@ -639,7 +659,10 @@ abstract class AddressStateData implements AddressState {
       _$AddressStateDataImpl;
 
   List<AddressItem> get data;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddressStateDataImplCopyWith<_$AddressStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -661,6 +684,8 @@ class __$$AddressStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$AddressStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -699,7 +724,9 @@ class _$AddressStateSuccessImpl implements AddressStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddressStateSuccessImplCopyWith<_$AddressStateSuccessImpl> get copyWith =>
@@ -792,7 +819,10 @@ abstract class AddressStateSuccess implements AddressState {
       _$AddressStateSuccessImpl;
 
   String get msg;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddressState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddressStateSuccessImplCopyWith<_$AddressStateSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -12,7 +12,7 @@ part of 'login_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$LoginState {
@@ -96,6 +96,9 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -112,6 +115,9 @@ class __$$LoginStateInitImplCopyWithImpl<$Res>
   __$$LoginStateInitImplCopyWithImpl(
       _$LoginStateInitImpl _value, $Res Function(_$LoginStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -238,6 +244,9 @@ class __$$LoginStateLoadingImplCopyWithImpl<$Res>
   __$$LoginStateLoadingImplCopyWithImpl(_$LoginStateLoadingImpl _value,
       $Res Function(_$LoginStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -367,6 +376,8 @@ class __$$LoginStateErrorImplCopyWithImpl<$Res>
       _$LoginStateErrorImpl _value, $Res Function(_$LoginStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -405,7 +416,9 @@ class _$LoginStateErrorImpl implements LoginStateError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LoginStateErrorImplCopyWith<_$LoginStateErrorImpl> get copyWith =>
@@ -503,7 +516,10 @@ abstract class LoginStateError implements LoginState {
   const factory LoginStateError(final String message) = _$LoginStateErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoginStateErrorImplCopyWith<_$LoginStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -525,6 +541,8 @@ class __$$LoginStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$LoginStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -563,7 +581,9 @@ class _$LoginStateSuccessImpl implements LoginStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LoginStateSuccessImplCopyWith<_$LoginStateSuccessImpl> get copyWith =>
@@ -662,7 +682,10 @@ abstract class LoginStateSuccess implements LoginState {
       _$LoginStateSuccessImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoginStateSuccessImplCopyWith<_$LoginStateSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -684,6 +707,8 @@ class __$$LoginStateSetPinImplCopyWithImpl<$Res>
       $Res Function(_$LoginStateSetPinImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -723,7 +748,9 @@ class _$LoginStateSetPinImpl implements LoginStateSetPin {
   @override
   int get hashCode => Object.hash(runtimeType, phoneNumber);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LoginStateSetPinImplCopyWith<_$LoginStateSetPinImpl> get copyWith =>
@@ -822,7 +849,10 @@ abstract class LoginStateSetPin implements LoginState {
       _$LoginStateSetPinImpl;
 
   String get phoneNumber;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoginStateSetPinImplCopyWith<_$LoginStateSetPinImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -846,6 +876,8 @@ class __$$LoginStateprovidePhoneImplCopyWithImpl<$Res>
       $Res Function(_$LoginStateprovidePhoneImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -884,7 +916,9 @@ class _$LoginStateprovidePhoneImpl implements LoginStateprovidePhone {
   @override
   int get hashCode => Object.hash(runtimeType, provide);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LoginStateprovidePhoneImplCopyWith<_$LoginStateprovidePhoneImpl>
@@ -983,7 +1017,10 @@ abstract class LoginStateprovidePhone implements LoginState {
       _$LoginStateprovidePhoneImpl;
 
   String get provide;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoginStateprovidePhoneImplCopyWith<_$LoginStateprovidePhoneImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

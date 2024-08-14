@@ -12,7 +12,7 @@ part of 'sahay_payment_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SahayPaymentState {
@@ -96,6 +96,9 @@ class _$SahayPaymentStateCopyWithImpl<$Res, $Val extends SahayPaymentState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -113,6 +116,9 @@ class __$$SahayPaymentStateInitImplCopyWithImpl<$Res>
   __$$SahayPaymentStateInitImplCopyWithImpl(_$SahayPaymentStateInitImpl _value,
       $Res Function(_$SahayPaymentStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -243,6 +249,9 @@ class __$$SahayPaymentStateLoadingImplCopyWithImpl<$Res>
       _$SahayPaymentStateLoadingImpl _value,
       $Res Function(_$SahayPaymentStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -375,6 +384,8 @@ class __$$SahayPaymentStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$SahayPaymentStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -413,7 +424,9 @@ class _$SahayPaymentStateErrorImpl implements SahayPaymentStateError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SahayPaymentStateErrorImplCopyWith<_$SahayPaymentStateErrorImpl>
@@ -512,7 +525,10 @@ abstract class SahayPaymentStateError implements SahayPaymentState {
       _$SahayPaymentStateErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SahayPaymentStateErrorImplCopyWith<_$SahayPaymentStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -537,6 +553,8 @@ class __$$SahayPaymentStateConfirmationImplCopyWithImpl<$Res>
       $Res Function(_$SahayPaymentStateConfirmationImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -576,7 +594,9 @@ class _$SahayPaymentStateConfirmationImpl
   @override
   int get hashCode => Object.hash(runtimeType, name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SahayPaymentStateConfirmationImplCopyWith<
@@ -676,7 +696,10 @@ abstract class SahayPaymentStateConfirmation implements SahayPaymentState {
       _$SahayPaymentStateConfirmationImpl;
 
   String get name;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SahayPaymentStateConfirmationImplCopyWith<
           _$SahayPaymentStateConfirmationImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -696,6 +719,9 @@ class __$$SahayPaymentStateOtpImplCopyWithImpl<$Res>
   __$$SahayPaymentStateOtpImplCopyWithImpl(_$SahayPaymentStateOtpImpl _value,
       $Res Function(_$SahayPaymentStateOtpImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -829,6 +855,8 @@ class __$$SahayPaymentStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$SahayPaymentStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -867,7 +895,9 @@ class _$SahayPaymentStateSuccessImpl implements SahayPaymentStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SahayPaymentStateSuccessImplCopyWith<_$SahayPaymentStateSuccessImpl>
@@ -966,7 +996,10 @@ abstract class SahayPaymentStateSuccess implements SahayPaymentState {
       _$SahayPaymentStateSuccessImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SahayPaymentState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SahayPaymentStateSuccessImplCopyWith<_$SahayPaymentStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

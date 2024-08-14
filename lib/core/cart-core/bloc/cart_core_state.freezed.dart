@@ -12,7 +12,7 @@ part of 'cart_core_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$CartCoreState {
@@ -102,6 +102,9 @@ class _$CartCoreStateCopyWithImpl<$Res, $Val extends CartCoreState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -118,6 +121,9 @@ class __$$CartCoreStateInitImplCopyWithImpl<$Res>
   __$$CartCoreStateInitImplCopyWithImpl(_$CartCoreStateInitImpl _value,
       $Res Function(_$CartCoreStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -253,6 +259,8 @@ class __$$CartCoreStateErrorImplCopyWithImpl<$Res>
       $Res Function(_$CartCoreStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -292,7 +300,9 @@ class _$CartCoreStateErrorImpl implements CartCoreStateError {
   @override
   int get hashCode => Object.hash(runtimeType, errorMessage);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CartCoreStateErrorImplCopyWith<_$CartCoreStateErrorImpl> get copyWith =>
@@ -397,7 +407,10 @@ abstract class CartCoreStateError implements CartCoreState {
       _$CartCoreStateErrorImpl;
 
   String get errorMessage;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CartCoreStateErrorImplCopyWith<_$CartCoreStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -416,6 +429,9 @@ class __$$CartCoreStateLoadingImplCopyWithImpl<$Res>
   __$$CartCoreStateLoadingImplCopyWithImpl(_$CartCoreStateLoadingImpl _value,
       $Res Function(_$CartCoreStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -552,6 +568,8 @@ class __$$CartCoreStateSuccessImplCopyWithImpl<$Res>
       $Res Function(_$CartCoreStateSuccessImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -590,7 +608,9 @@ class _$CartCoreStateSuccessImpl implements CartCoreStateSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, success);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CartCoreStateSuccessImplCopyWith<_$CartCoreStateSuccessImpl>
@@ -696,7 +716,10 @@ abstract class CartCoreStateSuccess implements CartCoreState {
       _$CartCoreStateSuccessImpl;
 
   String get success;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CartCoreStateSuccessImplCopyWith<_$CartCoreStateSuccessImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -718,6 +741,8 @@ class __$$CartCoreStateDataImplCopyWithImpl<$Res>
       $Res Function(_$CartCoreStateDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -763,7 +788,9 @@ class _$CartCoreStateDataImpl implements CartCoreStateData {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_product));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CartCoreStateDataImplCopyWith<_$CartCoreStateDataImpl> get copyWith =>
@@ -868,7 +895,10 @@ abstract class CartCoreStateData implements CartCoreState {
       _$CartCoreStateDataImpl;
 
   List<CartItem> get product;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CartCoreStateDataImplCopyWith<_$CartCoreStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -889,6 +919,9 @@ class __$$CartCoreStateLoginUserImplCopyWithImpl<$Res>
       _$CartCoreStateLoginUserImpl _value,
       $Res Function(_$CartCoreStateLoginUserImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1024,6 +1057,9 @@ class __$$CartCoreStateCheckOutUserImplCopyWithImpl<$Res>
       _$CartCoreStateCheckOutUserImpl _value,
       $Res Function(_$CartCoreStateCheckOutUserImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CartCoreState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
