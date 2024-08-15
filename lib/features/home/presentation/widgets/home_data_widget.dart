@@ -10,7 +10,7 @@ import 'package:commercepal/features/sub_categories/presentation/sub_categories_
 import 'package:commercepal/features/top_deals/top_deals_dashboard.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../app/utils/assets.dart';
@@ -101,7 +101,7 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
   String eHint = '';
   String fHint = '';
   String gHint = '';
-  final CarouselController _controller = CarouselController();
+  // final CarouselController _controller = CarouselController();
   int _current = 0;
 
   @override
@@ -338,7 +338,7 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
       ? Stack(
           children: [
             CarouselSlider(
-              carouselController: _controller,
+              // carouselController: _controller,
               options: CarouselOptions(
                   onPageChanged: (index, reason) {
                     setState(() {
