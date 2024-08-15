@@ -51,7 +51,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   void initState() {
-    // use this to refresh the carts state
     context.read<CartCoreCubit>().getItems();
     super.initState();
     fetchHints();
@@ -305,9 +304,6 @@ class _DashboardPageState extends State<DashboardPage> {
       setState(() {
         shouldUpdate = updateInfo.isMandatory;
       });
-      // print("here is the update");
-      // print(latestVersion);
-      // print(updateInfo.isMandatory);
     } else if (platform.isIOS) {
       final status = await newVersion.getVersionStatus();
       latestVersion = status?.storeVersion ?? '';
