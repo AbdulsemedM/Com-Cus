@@ -82,8 +82,6 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                         child: Text("Product Name"),
                       ),
                       TextFormField(
-                        // initialValue:
-                        //     hereData!.isNotEmpty ? hereData![0] : null,
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: AppColors.greyColor,
@@ -249,9 +247,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                           if (value?.isEmpty == true) {
                             return 'Description is required';
                           }
-                          // else if (!isValidEmail(value!)) {
-                          //   return 'Please enter a valid email';
-                          // }
+
                           return null;
                         },
                       ),
@@ -273,12 +269,6 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                           });
                         },
                         validator: (value) {
-                          // if (value?.isEmpty == true) {
-                          //   return 'Link is required';
-                          // }
-                          // else if (!isValidEmail(value!)) {
-                          //   return 'Please enter a valid email';
-                          // }
                           return null;
                         },
                       ),
