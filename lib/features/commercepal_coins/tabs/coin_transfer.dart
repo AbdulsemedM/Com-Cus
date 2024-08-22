@@ -132,6 +132,7 @@ class _CoinTransferState extends State<CoinTransfer> {
                         var done = await submitForm(pNumber);
                         if (done) {
                           displaySnack(context, "Coin transfered successfully");
+                          Navigator.pop(context, true);
                         } else {
                           displaySnack(context, message);
                         }
