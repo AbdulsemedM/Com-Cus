@@ -30,7 +30,6 @@ class _CommercepalCoinsCheckoutState extends State<CommercepalCoinsCheckout> {
   String? message;
   @override
   Widget build(BuildContext context) {
-    // var sHeight = MediaQuery.of(context).size.height * 1;
     var sWidth = MediaQuery.of(context).size.width * 1;
     return Scaffold(
       appBar: AppBar(
@@ -102,26 +101,20 @@ class _CommercepalCoinsCheckoutState extends State<CommercepalCoinsCheckout> {
         );
 
         var data = jsonDecode(response.body);
-        // print(data);
 
         if (data['statusCode'] == '000') {
           setState(() {
             balance = data['balance'].toString();
             loading = false;
           });
-          // Handle the case when statusCode is '000'
         } else {
-          // Retry logic
           if (retryCount < 5) {
-            // Retry after num + 1 seconds
             await Future.delayed(Duration(seconds: retryCount++));
-            // Call the function again with an increased retryCount
             await fetchFloatingBalance(retryCount: retryCount + 1);
           } else {
             setState(() {
               loading = true;
             });
-            // Retry limit reached, handle accordingly
           }
         }
       }
