@@ -229,8 +229,6 @@ class _CommecepalCoinsState extends State<CommecepalCoins> {
         );
 
         var data = jsonDecode(response.body);
-        // print(data);
-
         if (data['Status'] == '000') {
           setState(() {
             for (var datas in data['data']) {
@@ -245,9 +243,7 @@ class _CommecepalCoinsState extends State<CommecepalCoins> {
             loading = false;
           });
           print(trnxs.length);
-          // Handle the case when statusCode is '000'
         } else {
-          // Retry logic
           if (retryCount < 5) {
             // Retry after num + 1 seconds
             await Future.delayed(Duration(seconds: retryCount++));
