@@ -189,8 +189,8 @@ class _UserSetPasswordPageState extends State<UserSetPasswordPage>
           }
 
           if (!v.isStrongPass()) {
-            // return "Password must have at least one special character, a number & a capital letter";
-            return "Password should be at least 8 characters";
+            return "Password must have at least one special character, a number & a capital letter";
+            // return "Password should be at least 8 characters";
           }
           return null;
         },

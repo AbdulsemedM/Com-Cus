@@ -12,8 +12,9 @@ extension StringUtils on String {
   }
 
   bool isStrongPass() {
-    String pattern =r'^[a-zA-Z0-9]{8}$';
-        // r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    String pattern =
+        // r'^[a-zA-Z0-9]{8}$';
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(this);
   }
