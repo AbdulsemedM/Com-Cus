@@ -76,7 +76,7 @@ class _AppState extends State<App> {
       );
     } else {
       return Directionality(
-        textDirection: TextDirection.ltr, // Set the text direction
+        textDirection: TextDirection.ltr,
         child: Scaffold(
           body: Center(
             child: Column(
