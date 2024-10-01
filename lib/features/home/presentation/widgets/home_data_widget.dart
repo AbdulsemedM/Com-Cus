@@ -9,6 +9,7 @@ import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
 import 'package:commercepal/features/sub_categories/presentation/sub_categories_page.dart';
 import 'package:commercepal/features/top_deals/top_deals_dashboard.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,9 +40,14 @@ class HomePageDataWidget extends StatefulWidget {
 
 class _HomePageDataWidgetState extends State<HomePageDataWidget> {
   var loading = false;
+  List<SchemaSections>? _mostPopular;
+
   @override
   void initState() {
     super.initState();
+    _mostPopular = widget.schema.schemaSections
+        ?.where((element) => element.key == "most_popular")
+        .toList();
     fetchHints();
   }
 
@@ -179,13 +185,45 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  topBrands?.first.displayName ?? "",
-                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16.sp),
+                child: FutureBuilder<String>(
+                  future: TranslationService.translate(
+                      topBrands?.first.displayName ?? ""), // Translate hint
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text(
+                          "..."); // Show loading indicator for hint
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        topBrands?.first.displayName ?? "",
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium
+                            ?.copyWith(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16.sp),
+                      ); // Show error for hint
+                    } else {
+                      return Text(
+                        snapshot.data ?? topBrands?.first.displayName ?? "",
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium
+                            ?.copyWith(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16.sp),
+                      ); // Display translated hint
+                    }
+                  },
                 ),
+                // Text(
+                //   topBrands?.first.displayName ?? "",
+                //   style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                //       color: Colors.black,
+                //       fontWeight: FontWeight.w500,
+                //       fontSize: 16.sp),
+                // ),
               ),
               SizedBox(
                 height: 150,
@@ -277,48 +315,42 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
   }
 
   Widget _buildMostPopular() {
-    final mostPopular = widget.schema.schemaSections
-        ?.where((element) => element.key == "most_popular");
-
-    return mostPopular?.isNotEmpty == true
+    return _mostPopular?.isNotEmpty == true
         ? Column(
             children: [
-              const SizedBox(
-                height: 20,
-              ),
-              TitleWidget(
-                title: mostPopular?.first.displayName ?? "",
-              ),
-              const SizedBox(
-                height: 5,
-              ),
+              const SizedBox(height: 20),
+              TitleWidget(title: _mostPopular?.first.displayName ?? ""),
+              const SizedBox(height: 5),
               Container(
                 padding: const EdgeInsets.only(left: 10),
                 height: 170,
-                child: mostPopular?.first.items?.isNotEmpty == true
+                child: _mostPopular?.first.items?.isNotEmpty == true
                     ? GridView(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 80,
-                            childAspectRatio:
-                                MediaQuery.of(context).size.height > 896
-                                    ? 0.35
-                                    : 1 / 2.4,
-                            // childAspectRatio: 1 / 2.4,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
-                        children: mostPopular!.first.items!
+                          maxCrossAxisExtent: 80,
+                          childAspectRatio:
+                              MediaQuery.of(context).size.height > 896
+                                  ? 0.35
+                                  : 1 / 2.4,
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 20,
+                        ),
+                        children: _mostPopular!.first.items!
                             .map((e) => Builder(
                                 builder: (ctx) => GestureDetector(
                                       onTap: () {
-                                        Navigator.pushNamed(context,
-                                            SubCategoriesPage.routeName,
-                                            arguments: CategoryModel(
-                                                image: e.mobileImage,
-                                                id: e.categoryId,
-                                                parentId: e.parentCategoryId,
-                                                pCategoryName: e.name));
+                                        Navigator.pushNamed(
+                                          context,
+                                          SubCategoriesPage.routeName,
+                                          arguments: CategoryModel(
+                                            image: e.mobileImage,
+                                            id: e.categoryId,
+                                            parentId: e.parentCategoryId,
+                                            pCategoryName: e.name,
+                                          ),
+                                        );
                                       },
                                       child: PopularWidgetItem(
                                         schemaItem: e,
@@ -334,39 +366,41 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
         : const SizedBox();
   }
 
-  Widget _buildHomeSlider() => (widget.schema.banners?.isNotEmpty == true)
-      ? Stack(
-          children: [
-            CarouselSlider(
-              // carouselController: _controller,
-              options: CarouselOptions(
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index;
-                    });
-                  },
-                  viewportFraction: 1.0,
-                  enlargeCenterPage: false,
-                  autoPlay: true,
-                  height: 200.0),
-              items: widget.schema.banners?.map((i) {
-                return Builder(
-                    builder: (BuildContext context) => CachedNetworkImage(
-                          imageUrl: i,
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                          placeholder: (ctx, url) => Container(
-                            color: Colors.grey.shade200,
-                          ),
-                        )
-                    // return Image.asset("assets/images/response.jpeg",
-                    //     width: double.infinity, fit: BoxFit.cover);
-                    );
-              }).toList(),
-            )
-          ],
-        )
-      : const SizedBox();
+  Widget _buildHomeSlider() => HomeSlider(banners: widget.schema.banners);
+  // Widget _buildHomeSlider() =>
+  // (widget.schema.banners?.isNotEmpty == true)
+  //     ? Stack(
+  //         children: [
+  //           CarouselSlider(
+  //             // carouselController: _controller,
+  //             options: CarouselOptions(
+  //                 onPageChanged: (index, reason) {
+  //                   setState(() {
+  //                     _current = index;
+  //                   });
+  //                 },
+  //                 viewportFraction: 1.0,
+  //                 enlargeCenterPage: false,
+  //                 autoPlay: true,
+  //                 height: 200.0),
+  //             items: widget.schema.banners?.map((i) {
+  //               return Builder(
+  //                   builder: (BuildContext context) => CachedNetworkImage(
+  //                         imageUrl: i,
+  //                         errorWidget: (context, url, error) =>
+  //                             Icon(Icons.error),
+  //                         placeholder: (ctx, url) => Container(
+  //                           color: Colors.grey.shade200,
+  //                         ),
+  //                       )
+  //                   // return Image.asset("assets/images/response.jpeg",
+  //                   //     width: double.infinity, fit: BoxFit.cover);
+  //                   );
+  //             }).toList(),
+  //           )
+  //         ],
+  //       )
+  //     : const SizedBox();
 
   Widget _buildHomeOriginalsCategories() => Padding(
         padding: const EdgeInsets.all(8.0),
@@ -455,5 +489,53 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
             ],
           )
         : const SizedBox();
+  }
+}
+
+class HomeSlider extends StatefulWidget {
+  final List<String>? banners;
+
+  const HomeSlider({Key? key, this.banners}) : super(key: key);
+
+  @override
+  _HomeSliderState createState() => _HomeSliderState();
+}
+
+class _HomeSliderState extends State<HomeSlider> {
+  int _current = 0; // Track the current index
+
+  @override
+  Widget build(BuildContext context) {
+    return (widget.banners?.isNotEmpty == true)
+        ? Stack(
+            children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _current = index; // Update the current index
+                    });
+                  },
+                  viewportFraction: 1.0,
+                  enlargeCenterPage: false,
+                  autoPlay: true,
+                  height: 200.0,
+                ),
+                items: widget.banners!.map((i) {
+                  return Builder(
+                    builder: (BuildContext context) => CachedNetworkImage(
+                      imageUrl: i,
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      placeholder: (ctx, url) => Container(
+                        color: Colors.grey.shade200,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              // Optional: Add indicator or other widgets on top of the slider
+            ],
+          )
+        : const SizedBox(); // Return an empty SizedBox if no banners are available
   }
 }

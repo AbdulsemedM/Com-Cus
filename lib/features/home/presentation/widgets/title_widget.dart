@@ -1,3 +1,4 @@
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,22 +19,63 @@ class TitleWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 16.sp),
+          FutureBuilder<String>(
+            future: TranslationService.translate(title), // Translate hint
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Text("..."); // Show loading indicator for hint
+              } else if (snapshot.hasError) {
+                return Text(title,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.sp)); // Show error for hint
+              } else {
+                return Text(snapshot.data ?? title,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.sp)); // Display translated hint
+              }
+            },
           ),
+          // Text(
+          //   title,
+          //   style: Theme.of(context).textTheme.displayMedium?.copyWith(
+          //       color: Colors.black,
+          //       fontWeight: FontWeight.w500,
+          //       fontSize: 16.sp),
+          // ),
           if (optionTitle != null) const Spacer(),
           if (optionTitle != null)
-            Text(
-              optionTitle!,
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium
-                  ?.copyWith(color: AppColors.colorPrimary, fontSize: 16.sp),
+            FutureBuilder<String>(
+              future:
+                  TranslationService.translate(optionTitle!), // Translate hint
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Text("..."); // Show loading indicator for hint
+                } else if (snapshot.hasError) {
+                  return Text(
+                    optionTitle!,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                        color: AppColors.colorPrimary, fontSize: 16.sp),
+                  ); // Show error for hint
+                } else {
+                  return Text(
+                    snapshot.data ?? optionTitle!,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                        color: AppColors.colorPrimary, fontSize: 16.sp),
+                  ); // Display translated hint
+                }
+              },
             ),
+          // Text(
+          //   optionTitle!,
+          //   style: Theme.of(context)
+          //       .textTheme
+          //       .displayMedium
+          //       ?.copyWith(color: AppColors.colorPrimary, fontSize: 16.sp),
+          // ),
         ],
       ),
     );

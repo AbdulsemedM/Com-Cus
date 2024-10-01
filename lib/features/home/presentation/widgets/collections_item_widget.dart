@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -45,15 +46,44 @@ class CollectionsItemWidget extends StatelessWidget {
             Padding(
               padding:
                   const EdgeInsets.only(right: 8.0, top: 8, bottom: 8, left: 8),
-              child: Text(
-                "${item?.name}",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context)
-                    .textTheme
-                    .displayMedium
-                    ?.copyWith(fontSize: 15.sp),
+              child: FutureBuilder<String>(
+                future: TranslationService.translate(
+                    "${item?.name}"), // Translate hint
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Text("..."); // Show loading indicator for hint
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      "${item?.name}",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context)
+                          .textTheme
+                          .displayMedium
+                          ?.copyWith(fontSize: 15.sp),
+                    ); // Show error for hint
+                  } else {
+                    return Text(
+                      snapshot.data ?? "${item?.name}",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context)
+                          .textTheme
+                          .displayMedium
+                          ?.copyWith(fontSize: 15.sp),
+                    ); // Display translated hint
+                  }
+                },
               ),
+              // Text(
+              //   "${item?.name}",
+              //   maxLines: 2,
+              //   overflow: TextOverflow.ellipsis,
+              //   style: Theme.of(context)
+              //       .textTheme
+              //       .displayMedium
+              //       ?.copyWith(fontSize: 15.sp),
+              // ),
             )
           ],
         ),

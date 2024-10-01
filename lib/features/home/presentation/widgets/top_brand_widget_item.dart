@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -44,12 +45,38 @@ class TopBrandWidgetItem extends StatelessWidget {
             height: 10,
           ),
           SizedBox(
-            child: Text(title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      fontSize: 12.sp,
-                    )),
+            child: FutureBuilder<String>(
+              future: TranslationService.translate(title), // Translate hint
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Text("..."); // Show loading indicator for hint
+                } else if (snapshot.hasError) {
+                  return Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                          fontSize: 12.sp,
+                        ),
+                  ); // Show error for hint
+                } else {
+                  return Text(
+                    snapshot.data ?? title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                          fontSize: 12.sp,
+                        ),
+                  ); // Display translated hint
+                }
+              },
+            ),
+            // Text(title,
+            //     maxLines: 2,
+            //     overflow: TextOverflow.ellipsis,
+            //     style: Theme.of(context).textTheme.displayMedium?.copyWith(
+            //           fontSize: 12.sp,
+            //         )),
           ),
         ],
       ),

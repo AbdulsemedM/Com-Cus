@@ -24,6 +24,7 @@ import 'package:commercepal/features/selected_product/presentation/bloc/selected
 import 'package:commercepal/features/selected_product/presentation/widgets/add_product_review.dart';
 import 'package:commercepal/features/selected_product/presentation/widgets/review_product.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter/widgets.dart';
@@ -109,6 +110,10 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
   num _selectedFeature = -1;
   DateTime currentDate = DateTime.now();
   bool added = false;
+  late Future<String> _translatedProductName;
+  late Future<String> _translatedProductDesc;
+  late Future<String> _translatedSimilar;
+  late Future<String> _translatedReview;
 
   @override
   void initState() {
@@ -118,6 +123,18 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
       _selectedFeature =
           widget.selectedProductDetails.subProducts?[0].subProductId ?? -1;
     });
+    _translatedProductName = TranslationService.translate(
+      widget.selectedProductDetails.productName ?? '',
+    );
+    _translatedProductDesc = TranslationService.translate(
+      widget.selectedProductDetails.descriptionBasedProduct ?? '',
+    );
+    _translatedSimilar = TranslationService.translate(
+      'Similar Products',
+    );
+    _translatedReview = TranslationService.translate(
+      'Reviews',
+    );
   }
 
   @override
@@ -131,21 +148,92 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                   delegate: SliverChildListDelegate([
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(widget.selectedProductDetails.productName ?? '',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: AppColors.colorPrimary,
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.w500)),
+                  child: FutureBuilder<String>(
+                    future: _translatedProductName, // Translate hint
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text(
+                            "..."); // Show loading indicator for hint
+                      } else if (snapshot.hasError) {
+                        return Text(
+                            widget.selectedProductDetails.productName ?? '',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                    color: AppColors.colorPrimary,
+                                    fontSize: 22.sp,
+                                    fontWeight: FontWeight
+                                        .w500)); // Show error for hint
+                      } else {
+                        return Text(
+                            snapshot.data ??
+                                widget.selectedProductDetails.productName ??
+                                '',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                    color: AppColors.colorPrimary,
+                                    fontSize: 22.sp,
+                                    fontWeight: FontWeight
+                                        .w500)); // Display translated hint
+                      }
+                    },
+                  ),
+                  // Text(widget.selectedProductDetails.productName ?? '',
+                  //     style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  //         color: AppColors.colorPrimary,
+                  //         fontSize: 22.sp,
+                  //         fontWeight: FontWeight.w500)),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    widget.selectedProductDetails.descriptionBasedProduct ?? '',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.black),
+                  child: FutureBuilder<String>(
+                    future: _translatedProductDesc, // Translate hint
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text(
+                            "..."); // Show loading indicator for hint
+                      } else if (snapshot.hasError) {
+                        return Text(
+                          widget.selectedProductDetails
+                                  .descriptionBasedProduct ??
+                              '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: Colors.black),
+                        ); // Show error for hint
+                      } else {
+                        return Text(
+                          snapshot.data ??
+                              widget.selectedProductDetails
+                                  .descriptionBasedProduct ??
+                              '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: Colors.black),
+                        ); // Display translated hint
+                      }
+                    },
                   ),
+                  // Text(
+                  //   widget.selectedProductDetails.descriptionBasedProduct ?? '',
+                  //   style: Theme.of(context)
+                  //       .textTheme
+                  //       .bodyMedium
+                  //       ?.copyWith(color: Colors.black),
+                  // ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -232,67 +320,76 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                     ],
                   ),
                 ),
-                Stack(
-                  children: [
-                    CarouselSlider(
-                      // carouselController: _controller,
-                      options: CarouselOptions(
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              _current = index;
-                            });
-                          },
-                          viewportFraction: 1.0,
-                          enlargeCenterPage: false,
-                          autoPlay: true,
-                          height: 200.0),
-                      items:
-                          widget.selectedProductDetails.productImages.map((i) {
-                        return Builder(
-                            builder: (BuildContext context) =>
-                                CachedNetworkImage(
-                                  imageUrl: i,
-                                  errorWidget: (context, url, error) =>
-                                      Container(
-                                    color: Colors.grey.shade200,
-                                  ),
-                                  placeholder: (ctx, url) => Container(
-                                    color: Colors.grey.shade200,
-                                  ),
-                                )
-                            // return Image.asset("assets/images/response.jpeg",
-                            //     width: double.infinity, fit: BoxFit.cover);
-                            );
-                      }).toList(),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: MediaQuery.of(context).size.width / 3,
-                      right: MediaQuery.of(context).size.width / 3,
-                      child: SizedBox(
-                        height: 12,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: widget
-                                .selectedProductDetails.productImages.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: index == _current
-                                          ? AppColors.colorPrimary
-                                          : Colors.grey,
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(6))),
-                                  width: 20,
-                                ),
-                              );
-                            }),
-                      ),
-                    )
-                  ],
+                CarouselSliderWidget(
+                  images: widget.selectedProductDetails.productImages,
+                  currentIndex: _current,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _current = index;
+                    });
+                  },
                 ),
+                // Stack(
+                //   children: [
+                //     CarouselSlider(
+                //       // carouselController: _controller,
+                //       options: CarouselOptions(
+                //           onPageChanged: (index, reason) {
+                //             setState(() {
+                //               _current = index;
+                //             });
+                //           },
+                //           viewportFraction: 1.0,
+                //           enlargeCenterPage: false,
+                //           autoPlay: true,
+                //           height: 200.0),
+                //       items:
+                //           widget.selectedProductDetails.productImages.map((i) {
+                //         return Builder(
+                //             builder: (BuildContext context) =>
+                //                 CachedNetworkImage(
+                //                   imageUrl: i,
+                //                   errorWidget: (context, url, error) =>
+                //                       Container(
+                //                     color: Colors.grey.shade200,
+                //                   ),
+                //                   placeholder: (ctx, url) => Container(
+                //                     color: Colors.grey.shade200,
+                //                   ),
+                //                 )
+                //             // return Image.asset("assets/images/response.jpeg",
+                //             //     width: double.infinity, fit: BoxFit.cover);
+                //             );
+                //       }).toList(),
+                //     ),
+                //     Positioned(
+                //       bottom: 0,
+                //       left: MediaQuery.of(context).size.width / 3,
+                //       right: MediaQuery.of(context).size.width / 3,
+                //       child: SizedBox(
+                //         height: 12,
+                //         child: ListView.builder(
+                //             scrollDirection: Axis.horizontal,
+                //             itemCount: widget
+                //                 .selectedProductDetails.productImages.length,
+                //             itemBuilder: (context, index) {
+                //               return Padding(
+                //                 padding: const EdgeInsets.all(4.0),
+                //                 child: Container(
+                //                   decoration: BoxDecoration(
+                //                       color: index == _current
+                //                           ? AppColors.colorPrimary
+                //                           : Colors.grey,
+                //                       borderRadius: const BorderRadius.all(
+                //                           Radius.circular(6))),
+                //                   width: 20,
+                //                 ),
+                //               );
+                //             }),
+                //       ),
+                //     )
+                //   ],
+                // ),
               ])),
 
               // SliverList(
@@ -628,7 +725,7 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                   ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, top: 30),
-                  child: _buildTitle("Reviews"),
+                  child: _buildTitle2("Reviews"),
                 ),
               ])),
               //   SliverToBoxAdapter(
@@ -777,12 +874,150 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
   }
 
   Widget _buildTitle(String title) {
-    return Text(
-      title,
-      style: Theme.of(context)
-          .textTheme
-          .titleLarge
-          ?.copyWith(color: Colors.black, fontSize: 18.sp),
+    return FutureBuilder<String>(
+      future: _translatedSimilar, // Translate hint
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text("..."); // Show loading indicator for hint
+        } else if (snapshot.hasError) {
+          return Text(
+            'Similar Products',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(color: Colors.black, fontSize: 18.sp),
+          ); // Show error for hint
+        } else {
+          return Text(
+            snapshot.data ?? 'Similar Products',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(color: Colors.black, fontSize: 18.sp),
+          ); // Display translated hint
+        }
+      },
+    );
+    // Text(
+    //   title,
+    //   style: Theme.of(context)
+    //       .textTheme
+    //       .titleLarge
+    //       ?.copyWith(color: Colors.black, fontSize: 18.sp),
+    // );
+  }
+
+  Widget _buildTitle2(String title) {
+    return FutureBuilder<String>(
+      future: _translatedReview, // Translate hint
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text("..."); // Show loading indicator for hint
+        } else if (snapshot.hasError) {
+          return Text(
+            'Reviews',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(color: Colors.black, fontSize: 18.sp),
+          ); // Show error for hint
+        } else {
+          return Text(
+            snapshot.data ?? 'reviews',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(color: Colors.black, fontSize: 18.sp),
+          ); // Display translated hint
+        }
+      },
+    );
+    // Text(
+    //   title,
+    //   style: Theme.of(context)
+    //       .textTheme
+    //       .titleLarge
+    //       ?.copyWith(color: Colors.black, fontSize: 18.sp),
+    // );
+  }
+}
+
+class CarouselSliderWidget extends StatelessWidget {
+  final List<String> images;
+  final Function(int, CarouselPageChangedReason)
+      onPageChanged; // Accept both index and reason
+  final int currentIndex;
+
+  const CarouselSliderWidget({
+    Key? key,
+    required this.images,
+    required this.onPageChanged,
+    required this.currentIndex,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        CarouselSlider(
+          options: CarouselOptions(
+            onPageChanged: (index, reason) {
+              // Use both index and reason here
+              onPageChanged(
+                  index, reason); // Call the provided onPageChanged function
+            },
+            viewportFraction: 1.0,
+            enlargeCenterPage: false,
+            autoPlay: true,
+            height: 200.0,
+          ),
+          items: images.map((i) {
+            return Builder(
+              builder: (BuildContext context) => CachedNetworkImage(
+                imageUrl: i,
+                errorWidget: (context, url, error) =>
+                    Container(color: Colors.grey.shade200),
+                placeholder: (ctx, url) =>
+                    Container(color: Colors.grey.shade200),
+              ),
+            );
+          }).toList(),
+        ),
+        Positioned(
+          bottom: 0,
+          left: MediaQuery.of(context).size.width / 3,
+          right: MediaQuery.of(context).size.width / 3,
+          child: SizedBox(
+            height: 12,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: images.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: index == currentIndex
+                          ? AppColors.colorPrimary
+                          : Colors.grey,
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                    ),
+                    width: 20,
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

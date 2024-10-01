@@ -16,6 +16,7 @@ import 'package:commercepal/features/login/provide_phoneNumber_dialog.dart/provi
 import 'package:commercepal/features/reset_password/presentation/reset_pass_page.dart';
 import 'package:commercepal/features/set_password/presentation/user_set_password_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/user_registration_page.dart';
@@ -288,7 +289,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: MediaQuery.of(context).size.height * 0.25,
                       ),
                       Text(
-                        translatedStrings['continue']!,
+                        lHint,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(
@@ -307,8 +308,7 @@ class _LoginPageState extends State<LoginPage> {
                               _emailOrPhone = value;
                             });
                           },
-                          decoration: buildInputDecoration(
-                              translatedStrings['email_or_phone']!)),
+                          decoration: buildInputDecoration(cHint)),
                       const SizedBox(
                         height: 16,
                       ),
@@ -353,7 +353,7 @@ class _LoginPageState extends State<LoginPage> {
                               borderSide: BorderSide.none),
                           focusedErrorBorder: const OutlineInputBorder(
                               borderSide: BorderSide.none),
-                          hintText: translatedStrings['password']!,
+                          hintText: pHint,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -372,14 +372,42 @@ class _LoginPageState extends State<LoginPage> {
                                 //  loading
                                 //     ? const Text("Loading...")
                                 //     :
-                                Text(
-                              translatedStrings['forgot_password']!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                      color: AppColors.secondaryTextColor),
+                                FutureBuilder<String>(
+                              future: TranslationService.translate(
+                                  "Forgot Password"), // Translate hint
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Text(
+                                      "..."); // Show loading indicator for hint
+                                } else if (snapshot.hasError) {
+                                  return Text('Forgot Password',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                              color: AppColors
+                                                  .secondaryTextColor)); // Show error for hint
+                                } else {
+                                  return Text(
+                                      snapshot.data ?? 'Forgot Password',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                              color: AppColors
+                                                  .secondaryTextColor)); // Display translated hint
+                                }
+                              },
                             ),
+                            // Text(
+                            //   "Forgot Password",
+                            //   style: Theme.of(context)
+                            //       .textTheme
+                            //       .bodyMedium
+                            //       ?.copyWith(
+                            //           color: AppColors.secondaryTextColor),
+                            // ),
                           ),
                         ],
                       ),
@@ -397,9 +425,26 @@ class _LoginPageState extends State<LoginPage> {
                                   .loginUser(_emailOrPhone!, _pass!);
                             }
                           }),
-                      const Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("or sign in with"),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: FutureBuilder<String>(
+                          future: TranslationService.translate(
+                              "or sign in with"), // Translate hint
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Text(
+                                  "..."); // Show loading indicator for hint
+                            } else if (snapshot.hasError) {
+                              return Text(
+                                  'or sign in with'); // Show error for hint
+                            } else {
+                              return Text(snapshot.data ??
+                                  'or sign in with'); // Display translated hint
+                            }
+                          },
+                        ),
+                        // Text("or sign in with"),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -469,13 +514,37 @@ class _LoginPageState extends State<LoginPage> {
                               // loading
                               //     ? Text('Loading...')
                               //     :
-                              Text(
-                            translatedStrings['create_account']!,
-                            style: const TextStyle(
-                              color: AppColors.colorPrimaryDark,
-                              decoration: TextDecoration.underline,
-                            ),
+
+                              FutureBuilder<String>(
+                            future: TranslationService.translate(
+                                "Create Account"), // Translate hint
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Text(
+                                    "..."); // Show loading indicator for hint
+                              } else if (snapshot.hasError) {
+                                return Text('Create Account',
+                                    style: const TextStyle(
+                                      color: AppColors.colorPrimaryDark,
+                                      decoration: TextDecoration.underline,
+                                    )); // Show error for hint
+                              } else {
+                                return Text(snapshot.data ?? 'Create Account',
+                                    style: const TextStyle(
+                                      color: AppColors.colorPrimaryDark,
+                                      decoration: TextDecoration.underline,
+                                    )); // Display translated hint
+                              }
+                            },
                           ),
+                          // Text(
+                          //   "Create Account",
+                          //   style: const TextStyle(
+                          //     color: AppColors.colorPrimaryDark,
+                          //     decoration: TextDecoration.underline,
+                          //   ),
+                          // ),
                         ),
                       )
                     ],

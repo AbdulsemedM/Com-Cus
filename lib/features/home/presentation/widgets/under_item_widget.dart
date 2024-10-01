@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,13 +56,47 @@ class UnderItemWidget extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: Text(
-                    "${item?.name}",
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                        fontSize: 14.sp, fontWeight: FontWeight.normal),
+                  child: FutureBuilder<String>(
+                    future: TranslationService.translate(
+                        "${item?.name}"), // Translate hint
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text(
+                            "..."); // Show loading indicator for hint
+                      } else if (snapshot.hasError) {
+                        return Text(
+                          "${item?.name}",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.normal),
+                        ); // Show error for hint
+                      } else {
+                        return Text(
+                          snapshot.data ?? "${item?.name}",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.normal),
+                        ); // Display translated hint
+                      }
+                    },
                   ),
+                  // Text(
+                  //   "${item?.name}",
+                  //   maxLines: 3,
+                  //   overflow: TextOverflow.ellipsis,
+                  //   style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  //       fontSize: 14.sp, fontWeight: FontWeight.normal),
+                  // ),
                 ),
                 const SizedBox(
                   height: 10,

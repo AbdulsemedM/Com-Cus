@@ -5,6 +5,7 @@ import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,18 @@ class _AddProductReviewState extends State<AddProductReview> {
   var sent = false;
   var loading = false;
   double ratings = 2.5;
+  late Future<String> tTitle;
+  late Future<String> tSubTitle;
+  late Future<String> tPost;
   TextEditingController description = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    tTitle = TranslationService.translate("Add your product review here");
+    tSubTitle = TranslationService.translate("Describe your experience");
+    tPost = TranslationService.translate("Post");
+  }
+
   @override
   Widget build(BuildContext context) {
     return sent
@@ -30,10 +42,30 @@ class _AddProductReviewState extends State<AddProductReview> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Add your product review here",
-                  style: TextStyle(color: Colors.black, fontSize: 18),
+                FutureBuilder<String>(
+                  future: tTitle, // Translate hint
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text(
+                          "..."); // Show loading indicator for hint
+                    } else if (snapshot.hasError) {
+                      return Text('Add your product review here',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18)); // Show error for hint
+                    } else {
+                      return Text(
+                          snapshot.data ?? 'Add your product review here',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18)); // Display translated hint
+                    }
+                  },
                 ),
+                // Text(
+                //   "Add your product review here",
+                //   style: TextStyle(color: Colors.black, fontSize: 18),
+                // ),
                 SizedBox(
                   height: 10,
                 ),
@@ -59,7 +91,23 @@ class _AddProductReviewState extends State<AddProductReview> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text("Describe your experience"),
+                        child: FutureBuilder<String>(
+                          future: tSubTitle, // Translate hint
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Text(
+                                  "..."); // Show loading indicator for hint
+                            } else if (snapshot.hasError) {
+                              return Text(
+                                  'Describe your experience'); // Show error for hint
+                            } else {
+                              return Text(snapshot.data ??
+                                  'Describe your experience'); // Display translated hint
+                            }
+                          },
+                        ),
+                        // Text("Describe your experience"),
                       ),
                       TextFormField(
                         controller: description,
@@ -96,26 +144,47 @@ class _AddProductReviewState extends State<AddProductReview> {
                           : SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          AppColors.colorPrimaryDark),
-                                  onPressed: () async {
-                                    bool done = await sendData();
-                                    if (done) {
-                                      displaySnack(context,
-                                          "Review and rating placed successfully.");
-                                      setState(() {
-                                        sent = true;
-                                      });
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        AppColors.colorPrimaryDark),
+                                onPressed: () async {
+                                  bool done = await sendData();
+                                  if (done) {
+                                    displaySnack(context,
+                                        "Review and rating placed successfully.");
+                                    setState(() {
+                                      sent = true;
+                                    });
+                                  } else {
+                                    displaySnack(context,
+                                        "Something went wrong, please try again");
+                                  }
+                                },
+                                child: FutureBuilder<String>(
+                                  future: tPost, // Translate hint
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Text(
+                                          "..."); // Show loading indicator for hint
+                                    } else if (snapshot.hasError) {
+                                      return Text('Post',
+                                          style: TextStyle(
+                                              color: AppColors
+                                                  .bgColor)); // Show error for hint
                                     } else {
-                                      displaySnack(context,
-                                          "Something went wrong, please try again");
+                                      return Text(snapshot.data ?? 'Post',
+                                          style: TextStyle(
+                                              color: AppColors
+                                                  .bgColor)); // Display translated hint
                                     }
                                   },
-                                  child: Text(
-                                    'Post',
-                                    style: TextStyle(color: AppColors.bgColor),
-                                  )))
+                                ),
+                                // Text(
+                                //   'Post',
+                                //   style: TextStyle(color: AppColors.bgColor),
+                                // )
+                              ))
                     ],
                   )),
                 )

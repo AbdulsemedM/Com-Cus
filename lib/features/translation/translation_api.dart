@@ -1,15 +1,19 @@
 import 'dart:convert';
 
+import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:http/http.dart' as http;
 import 'package:translator/translator.dart';
 
-class TranslationApi {
-  static final _apiKey = 'AIzaSyDmf-zlsUHhh_9kgfAfXfsUdGqWmiiYSQU';
-
-  static Future<String> translate(String message, String toLanguageCode) async {
+class TranslationService {
+  static final _apiKey = 'AIzaSyAporxDZGXGxQPXtY2zucYPikKGyqSiNeA';
+  static final language = GlobalStrings.getGlobalString();
+  static Future<String> translate(String message) async {
+    if (language == "en") {
+      return message;
+    }
     final Uri uri = Uri.parse(
-      'https://translation.googleapis.com/language/translate/v2?target=$toLanguageCode&key=$_apiKey&q=$message',
+      'https://translation.googleapis.com/language/translate/v2?target=$language&key=$_apiKey&q=$message',
     );
 
     final response = await http.post(uri);

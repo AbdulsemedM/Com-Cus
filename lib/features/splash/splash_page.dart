@@ -3,6 +3,7 @@ import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/assets.dart';
 import 'package:commercepal/core/session/presentation/session_bloc.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,15 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     context.read<SessionCubit>().saveHash();
     super.initState();
+    _initializeSplash();
+  }
+
+  Future<void> _initializeSplash() async {
+    // Fetch and apply the language every time SplashPage is loaded
+    String lang = await getStoredLang();
+    GlobalStrings.setGlobalString(lang);
+    setState(() {}); // Ensure the UI is updated with the new language
+    context.read<SessionCubit>().saveHash();
   }
 
   @override
@@ -34,7 +44,7 @@ class _SplashPageState extends State<SplashPage> {
       child: BlocListener<SplashPageCubit, SplashPageState>(
         listener: (context, state) {
           state.whenOrNull(redirectToDashboard: () async {
-            await translateStrings();
+            // await translateStrings();
             Navigator.popAndPushNamed(context, DashboardPage.routeName);
           });
         },

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -49,28 +50,89 @@ class PopularWidgetItem extends StatelessWidget {
               ),
               SizedBox(
                 width: 100,
-                child: Text(
-                  schemaItem.name ?? "...",
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displaySmall
-                      ?.copyWith(fontSize: sHeight > 896 ? 12 : 14.sp),
+                child: FutureBuilder<String>(
+                  future: TranslationService.translate(
+                      schemaItem.name ?? "..."), // Translate hint
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text(
+                          "..."); // Show loading indicator for hint
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        schemaItem.name ?? "...",
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall
+                            ?.copyWith(fontSize: sHeight > 896 ? 12 : 14.sp),
+                      ); // Show error for hint
+                    } else {
+                      return Text(
+                        snapshot.data ?? schemaItem.name ?? "...",
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall
+                            ?.copyWith(fontSize: sHeight > 896 ? 12 : 14.sp),
+                      ); // Display translated hint
+                    }
+                  },
                 ),
+                //     Text(
+                //   schemaItem.name ?? "...",
+                //   overflow: TextOverflow.ellipsis,
+                //   maxLines: 2,
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .displaySmall
+                //       ?.copyWith(fontSize: sHeight > 896 ? 12 : 14.sp),
+                // ),
               ),
               Spacer(),
               SizedBox(
                 width: 100,
-                child: Text(
-                  schemaItem.sectionDescription ?? "",
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: sHeight > 896 ? 12 : 12.sp),
+                child: FutureBuilder<String>(
+                  future: TranslationService.translate(
+                      schemaItem.sectionDescription ?? ""), // Translate hint
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text(
+                          "..."); // Show loading indicator for hint
+                    } else if (snapshot.hasError) {
+                      return Text(schemaItem.sectionDescription ?? "",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                  fontSize: sHeight > 896
+                                      ? 12
+                                      : 12.sp)); // Show error for hint
+                    } else {
+                      return Text(
+                          snapshot.data ??
+                              schemaItem.sectionDescription ??
+                              "...",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                  fontSize: sHeight > 896
+                                      ? 12
+                                      : 12.sp)); // Display translated hint
+                    }
+                  },
                 ),
+                // Text(
+                //   schemaItem.sectionDescription ?? "",
+                //   overflow: TextOverflow.ellipsis,
+                //   maxLines: 1,
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .bodyMedium
+                //       ?.copyWith(fontSize: sHeight > 896 ? 12 : 12.sp),
+                // ),
               ),
               const SizedBox(
                 height: 10,

@@ -4,6 +4,7 @@ import 'package:commercepal/features/my_special_orders/add_special_orders.dart';
 import 'package:commercepal/features/products/presentation/cubit/product_cubit.dart';
 import 'package:commercepal/features/products/presentation/search_product_page.dart';
 import 'package:commercepal/features/products/presentation/widgets/products_page_data.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,21 +48,51 @@ class ProductsPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.card_giftcard_outlined,
                       color: AppColors.colorPrimaryDark,
                     ),
-                    SizedBox(
-                        width: 8), // Adjust the spacing between icon and text
-                    Text(
-                      "Special Order",
-                      style: TextStyle(
-                          color: AppColors.colorPrimaryDark,
-                          fontWeight: FontWeight.w800),
+                    SizedBox(width: 8),
+
+                    FutureBuilder<String>(
+                      future: TranslationService.translate(
+                          "Special Order"), // Translate hint
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text(
+                              "..."); // Show loading indicator for hint
+                        } else if (snapshot.hasError) {
+                          return Text(
+                            "Special Order",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: AppColors.colorPrimaryDark,
+                                fontWeight: FontWeight.w800),
+                          ); // Show error for hint
+                        } else {
+                          return Text(
+                            snapshot.data ?? "Special Order",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: AppColors.colorPrimaryDark,
+                                fontWeight: FontWeight.w800),
+                          ); // Display translated hint
+                        }
+                      },
                     ),
+                    // Adjust the spacing between icon and text
+                    // Text(
+                    //   "Special Order",
+                    //   style: TextStyle(
+                    //       color: AppColors.colorPrimaryDark,
+                    //       fontWeight: FontWeight.w800),
+                    // ),
                   ],
                 ),
               ),

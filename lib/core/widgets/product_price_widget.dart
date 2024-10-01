@@ -5,6 +5,7 @@ import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,10 +43,13 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
   var loading = false;
   TextEditingController promoCodeController = TextEditingController();
   String totalCheckoutPrice = "";
+  late Future<String> hintTranslationFuture;
+  late Future<String> labelTranslationFuture;
   @override
   void initState() {
     super.initState();
-
+    hintTranslationFuture = TranslationService.translate("Ex: Test Promo-code");
+    labelTranslationFuture = TranslationService.translate("Promo-Code");
     fetchHints();
     // print("object");
     // print(widget.items!.length);
@@ -192,27 +196,99 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
           Expanded(
             child: SizedBox(
               height: 40,
-              child: TextField(
-                controller: promoCodeController,
-                decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(10),
-                    isDense: true,
-                    fillColor: Colors.white,
-                    filled: true,
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: AppColors.colorPrimary, width: 1),
-                      borderRadius: BorderRadius.all(Radius.circular(0)),
-                    ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: AppColors.colorPrimary, width: 1),
-                      borderRadius: BorderRadius.all(Radius.circular(0)),
-                    ),
-                    hintStyle: TextStyle(
-                        color: AppColors.colorPrimary, fontSize: 14.sp),
-                    hintText: "Ex: Test Promo-code",
-                    labelText: "Promo-Code"),
+              child: FutureBuilder<String>(
+                future: hintTranslationFuture,
+                builder: (context, hintSnapshot) {
+                  if (hintSnapshot.connectionState == ConnectionState.waiting) {
+                    // While loading, you can show a placeholder or loading indicator
+                    return TextField(
+                      controller: promoCodeController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(10),
+                        isDense: true,
+                        fillColor: Colors.white,
+                        filled: true,
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.colorPrimary, width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(0)),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.colorPrimary, width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(0)),
+                        ),
+                        hintText: "...", // Placeholder while loading hint
+                        hintStyle: TextStyle(
+                            color: AppColors.colorPrimary, fontSize: 14.sp),
+                      ),
+                    );
+                  } else if (hintSnapshot.hasError) {
+                    // Handle error case for hint
+                    return TextField(
+                      controller: promoCodeController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(10),
+                        isDense: true,
+                        fillColor: Colors.white,
+                        filled: true,
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.colorPrimary, width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(0)),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.colorPrimary, width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(0)),
+                        ),
+                        hintText:
+                            "Ex: Test Promo-code", // Default value on error
+                        hintStyle: TextStyle(
+                            color: AppColors.colorPrimary, fontSize: 14.sp),
+                      ),
+                    );
+                  } else {
+                    // Build TextField with translated hint text
+                    return FutureBuilder<String>(
+                      future: labelTranslationFuture,
+                      builder: (context, labelSnapshot) {
+                        return TextField(
+                          controller: promoCodeController,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(10),
+                            isDense: true,
+                            fillColor: Colors.white,
+                            filled: true,
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.colorPrimary, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(0)),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.colorPrimary, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(0)),
+                            ),
+                            hintText: hintSnapshot.data ??
+                                "Ex: Test Promo-code", // Use translated hint
+                            hintStyle: TextStyle(
+                                color: AppColors.colorPrimary, fontSize: 14.sp),
+                            labelText: labelSnapshot.connectionState ==
+                                    ConnectionState.waiting
+                                ? "..." // Placeholder while loading label
+                                : labelSnapshot.hasError
+                                    ? "Promo-Code" // Default label on error
+                                    : labelSnapshot.data ??
+                                        "Promo-Code", // Use translated label
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
               ),
             ),
           ),
@@ -225,10 +301,28 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               color: AppColors.colorPrimary, // Replace with appropriate color
-              child: Text(
-                "APPLY",
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+              child: FutureBuilder<String>(
+                future: TranslationService.translate("Apply"), // Translate hint
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Text("..."); // Show loading indicator for hint
+                  } else if (snapshot.hasError) {
+                    return Text('Apply',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp)); // Show error for hint
+                  } else {
+                    return Text(snapshot.data ?? 'Apply',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp)); // Display translated hint
+                  }
+                },
               ),
+              // Text(
+              //   "APPLY",
+              //   style: TextStyle(color: Colors.white, fontSize: 14.sp),
+              // ),
             ),
           ),
         ],

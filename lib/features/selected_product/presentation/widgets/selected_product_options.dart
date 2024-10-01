@@ -1,4 +1,5 @@
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +23,11 @@ class SelectedProductOptions extends StatefulWidget {
 
 class _SelectedProductOptionsState extends State<SelectedProductOptions> {
   bool _open = false;
+  late Future<String> tTitle;
+  late Future<String> tSubTitle;
+  late Future<List<String>>
+      translateData; // Replace this with your translation method
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +35,14 @@ class _SelectedProductOptionsState extends State<SelectedProductOptions> {
       print(_open);
       _open = true;
     }
+    tTitle = TranslationService.translate(widget.title);
+    tSubTitle = TranslationService.translate(widget.subTitle ?? "");
+    translateData = translateMyData(widget.data ?? []);
+  }
+
+  Future<List<String>> translateMyData(List<String> data) async {
+    // Use Future.wait to translate each item in the list
+    return Future.wait(data.map((e) => TranslationService.translate(e)));
   }
 
   @override
@@ -56,13 +70,45 @@ class _SelectedProductOptionsState extends State<SelectedProductOptions> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.title,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(color: Colors.black, fontSize: 18.sp),
+                    FutureBuilder<String>(
+                      future: tTitle, // Translate hint
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text(
+                              "..."); // Show loading indicator for hint
+                        } else if (snapshot.hasError) {
+                          return Text(widget.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      color: Colors.black,
+                                      fontSize: 18.sp)); // Show error for hint
+                        } else {
+                          return Text(snapshot.data ?? widget.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      color: Colors.black,
+                                      fontSize:
+                                          18.sp)); // Display translated hint
+                        }
+                      },
                     ),
+
+                    // Text(
+                    //   widget.title,
+                    //   style: Theme.of(context)
+                    //       .textTheme
+                    //       .titleMedium
+                    //       ?.copyWith(color: Colors.black, fontSize: 18.sp),
+                    // ),
                     // FutureBuilder<String>(
                     //   future: Translations.translatedText(
                     //       widget.title, GlobalStrings.getGlobalString()),
@@ -91,9 +137,31 @@ class _SelectedProductOptionsState extends State<SelectedProductOptions> {
                     if (widget.subTitle != null)
                       Row(
                         children: [
-                          Text(
-                            widget.subTitle!,
+                          FutureBuilder<String>(
+                            future: tSubTitle, // Translate hint
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Text(
+                                    "..."); // Show loading indicator for hint
+                              } else if (snapshot.hasError) {
+                                return Text(
+                                  widget.subTitle ?? '',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ); // Show error for hint
+                              } else {
+                                return Text(
+                                  snapshot.data ?? widget.subTitle ?? "",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ); // Display translated hint
+                              }
+                            },
                           ),
+                          // Text(
+                          //   widget.subTitle!,
+                          // ),
                         ],
                       ),
                     // FutureBuilder<String>(
@@ -127,20 +195,37 @@ class _SelectedProductOptionsState extends State<SelectedProductOptions> {
             if (widget.data?.isNotEmpty == true && _open)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: widget.data!
-                      .map((e) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "• $e",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(color: AppColors.primaryTextColor),
-                            ),
-                          ))
-                      .toList(),
+                child: FutureBuilder<List<String>>(
+                  future: translateData, // Call the translation method
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                          child:
+                              CircularProgressIndicator()); // Loading indicator
+                    } else if (snapshot.hasError) {
+                      return Center(
+                          child:
+                              Text('Error: ${snapshot.error}')); // Handle error
+                    } else if (snapshot.hasData) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: snapshot.data!
+                            .map((e) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "• $e",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                            color: AppColors.primaryTextColor),
+                                  ),
+                                ))
+                            .toList(),
+                      );
+                    }
+                    return Container(); // Fallback in case of unexpected behavior
+                  },
                 ),
               )
           ],

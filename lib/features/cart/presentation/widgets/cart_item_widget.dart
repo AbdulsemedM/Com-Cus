@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,25 +81,84 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "${widget.cartItem.name}",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.colorPrimary, fontSize: 14.sp),
+                FutureBuilder<String>(
+                  future: TranslationService.translate(
+                      "${widget.cartItem.name}"), // Translate hint
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text(
+                          "..."); // Show loading indicator for hint
+                    } else if (snapshot.hasError) {
+                      return Text('${widget.cartItem.name}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                  color: AppColors.colorPrimary,
+                                  fontSize: 14.sp)); // Show error for hint
+                    } else {
+                      return Text(snapshot.data ?? '${widget.cartItem.name}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                  color: AppColors.colorPrimary,
+                                  fontSize: 14.sp)); // Display translated hint
+                    }
+                  },
                 ),
+                // Text(
+                //   "${widget.cartItem.name}",
+                //   style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                //       color: AppColors.colorPrimary, fontSize: 14.sp),
+                // ),
                 if (widget.cartItem.description != null)
                   const SizedBox(
                     height: 5,
                   ),
                 if (widget.cartItem.description != null)
-                  Text(
-                    "${widget.cartItem.description}",
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontSize: 13.sp, color: Colors.black),
+                  FutureBuilder<String>(
+                    future: TranslationService.translate(
+                        "${widget.cartItem.description}"), // Translate hint
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text(
+                            "..."); // Show loading indicator for hint
+                      } else if (snapshot.hasError) {
+                        return Text('${widget.cartItem.description}',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    fontSize: 13.sp,
+                                    color:
+                                        Colors.black)); // Show error for hint
+                      } else {
+                        return Text(
+                            snapshot.data ?? '${widget.cartItem.description}',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    fontSize: 13.sp,
+                                    color: Colors
+                                        .black)); // Display translated hint
+                      }
+                    },
                   ),
+                // Text(
+                //   "${widget.cartItem.description}",
+                //   maxLines: 2,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .bodyMedium
+                //       ?.copyWith(fontSize: 13.sp, color: Colors.black),
+                // ),
                 const SizedBox(
                   height: 10,
                 ),

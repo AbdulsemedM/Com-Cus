@@ -1,4 +1,5 @@
 import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -81,15 +82,52 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: Text(
-                      "${widget.product.name}",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.normal,
-                          ),
+                    child: FutureBuilder<String>(
+                      future: TranslationService.translate(
+                          "${widget.product.name}"), // Translate hint
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text(
+                              "..."); // Show loading indicator for hint
+                        } else if (snapshot.hasError) {
+                          return Text(
+                            "${widget.product.name}",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall
+                                ?.copyWith(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                          ); // Show error for hint
+                        } else {
+                          return Text(
+                            snapshot.data ?? "${widget.product.name}",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall
+                                ?.copyWith(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                          ); // Display translated hint
+                        }
+                      },
                     ),
+                    // Text(
+                    //   "${widget.product.name}",
+                    //   maxLines: 2,
+                    //   overflow: TextOverflow.ellipsis,
+                    //   style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    //         fontSize: 14.sp,
+                    //         fontWeight: FontWeight.normal,
+                    //       ),
+                    // ),
                   ),
                   const SizedBox(
                     height: 5,

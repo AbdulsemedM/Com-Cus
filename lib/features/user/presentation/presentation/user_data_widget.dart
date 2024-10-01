@@ -13,6 +13,7 @@ import 'package:commercepal/features/login/presentation/login_page.dart';
 import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
 import 'package:commercepal/features/splash/splash_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user/presentation/bloc/user_cubit.dart';
@@ -23,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -82,40 +84,61 @@ class _UserDataWidgetState extends State<UserDataWidget> {
       child: ListView(
         children: [
           InkWell(
-              onTap: () {
-                context.read<UserCubit>().logOutUser();
-                // update dashboard bottom nav bar
-                context.read<DashboardCubit>().checkIfUserIsABusiness();
+            onTap: () {
+              context.read<UserCubit>().logOutUser();
+              // update dashboard bottom nav bar
+              context.read<DashboardCubit>().checkIfUserIsABusiness();
+            },
+            child:
+                // Text(
+                //   "Log Out",
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .titleMedium
+                //       ?.copyWith(color: AppColors.colorPrimary, fontSize: 14.sp),
+                //   textAlign: TextAlign.right,
+                // )
+                FutureBuilder<String>(
+              future: TranslationService.translate("LogOut"), // Translate hint
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Text("..."); // Show loading indicator for hint
+                } else if (snapshot.hasError) {
+                  return Text('LogOut',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: AppColors.colorPrimary, fontSize: 14.sp),
+                      textAlign: TextAlign.right); // Show error for hint
+                } else {
+                  return Text(
+                    snapshot.data ?? 'LogOut',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColors.colorPrimary, fontSize: 14.sp),
+                    textAlign: TextAlign.right,
+                  ); // Display translated hint
+                }
               },
-              child: Text(
-                translatedStrings['logout']!,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(color: AppColors.colorPrimary, fontSize: 14.sp),
-                textAlign: TextAlign.right,
-              )
-              // FutureBuilder<String>(
-              //   future: Translations.translatedText(
-              //       "Log Out", GlobalStrings.getGlobalString()),
-              //   //  translatedText("Log Out", 'en', dropdownValue),
-              //   builder: (context, snapshot) {
-              //     if (snapshot.connectionState == ConnectionState.done) {
-              //       return Text(
-              //         snapshot.data ?? 'Log Out',
-              //         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              //             color: AppColors.colorPrimary, fontSize: 14.sp),
-              //         textAlign: TextAlign.right,
-              //       );
-              //     } else {
-              //       return Text(
-              //         'Loading...',
-              //         textAlign: TextAlign.right,
-              //       ); // Or any loading indicator
-              //     }
-              //   },
-              // ),
-              ),
+            ),
+            // FutureBuilder<String>(
+            //   future: Translations.translatedText(
+            //       "Log Out", GlobalStrings.getGlobalString()),
+            //   //  translatedText("Log Out", 'en', dropdownValue),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.done) {
+            //       return Text(
+            //         snapshot.data ?? 'Log Out',
+            //         style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            //             color: AppColors.colorPrimary, fontSize: 14.sp),
+            //         textAlign: TextAlign.right,
+            //       );
+            //     } else {
+            //       return Text(
+            //         'Loading...',
+            //         textAlign: TextAlign.right,
+            //       ); // Or any loading indicator
+            //     }
+            //   },
+            // ),
+          ),
 
           const SizedBox(
             height: 12,
@@ -231,7 +254,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           ),
           UserMenuItem(
             icon: Icons.attach_money_outlined,
-            title: translatedStrings['commercepal_coins']!,
+            title: "Commecepal Coins",
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
@@ -245,7 +268,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           const Divider(),
           UserMenuItem(
             icon: Icons.share_outlined,
-            title: translatedStrings['share_app']!,
+            title: "Share App/ Invite Friends",
             language: dropdownValue,
             onClick: () async {
               if (valid == "logout") {
@@ -266,7 +289,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           const Divider(),
           UserMenuItem(
             icon: Icons.production_quantity_limits_outlined,
-            title: translatedStrings['special_orders']!,
+            title: "Special Orders",
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
@@ -282,7 +305,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           const Divider(),
           UserMenuItem(
             icon: Icons.contact_support_outlined,
-            title: translatedStrings['contact']!,
+            title: "Contact Us",
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
@@ -298,7 +321,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           const Divider(),
           UserMenuItem(
             icon: Icons.list_alt_outlined,
-            title: translatedStrings['my_orders']!,
+            title: "My Orders",
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
@@ -308,23 +331,23 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               }
             },
           ),
-          const Divider(),
-          UserMenuItem(
-            icon: Icons.maps_home_work_outlined,
-            title: translatedStrings['addresses']!,
-            language: dropdownValue,
-            onClick: () {
-              if (valid == "logout") {
-                Navigator.pushNamed(context, LoginPage.routeName);
-              } else {
-                Navigator.pushNamed(context, AddressesPage.routeName);
-              }
-            },
-          ),
+          // const Divider(),
+          // UserMenuItem(
+          //   icon: Icons.maps_home_work_outlined,
+          //   title: "Addresses",
+          //   language: dropdownValue,
+          //   onClick: () {
+          //     if (valid == "logout") {
+          //       Navigator.pushNamed(context, LoginPage.routeName);
+          //     } else {
+          //       Navigator.pushNamed(context, AddressesPage.routeName);
+          //     }
+          //   },
+          // ),
           const Divider(),
           UserMenuItem(
             icon: Icons.password_outlined,
-            title: translatedStrings['change_password']!,
+            title: "Change Password",
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
@@ -349,7 +372,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               builder: (ctx, state) {
                 return UserMenuItem(
                   icon: Icons.edit_document,
-                  title: translatedStrings['privacy_policy']!,
+                  title: "Privacy Policy",
                   language: dropdownValue,
                   onClick: () {
                     ctx.read<UserCubit>().openPrivatePolicy();
@@ -361,7 +384,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           const Divider(),
           UserMenuItem(
             icon: Icons.delete,
-            title: translatedStrings['delete_account']!,
+            title: "Delete Your Account",
             language: dropdownValue,
             onClick: () {
               displaySnackWithAction(
@@ -373,15 +396,15 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               });
             },
           ),
-          // const Divider(),
-          // UserMenuItem(
-          //   icon: FontAwesomeIcons.language,
-          //   title: translatedStrings['change_language']!,
-          //   language: dropdownValue,
-          //   onClick: () {
-          //     buildLanguageDialog(context);
-          //   },
-          // ),
+          const Divider(),
+          UserMenuItem(
+            icon: FontAwesomeIcons.language,
+            title: "Change Language",
+            language: dropdownValue,
+            onClick: () {
+              buildLanguageDialog(context);
+            },
+          ),
           // Padding(
           //   padding: const EdgeInsets.symmetric(horizontal: 10),
           //   child: Row(
@@ -445,7 +468,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             child: Row(
               children: [
                 Text(
-                  translatedStrings['personal_details']!,
+                  "Personal Details",
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium
@@ -559,68 +582,85 @@ class _UserDataWidgetState extends State<UserDataWidget> {
     {'name': 'English', 'locale': "en"},
     {'name': 'አማርኛ', 'locale': "am"},
     {'name': 'Somali', 'locale': 'so'},
-    // {'name': 'Afaan Oromoo', 'locale': 'om'},
+    {'name': 'Afaan Oromoo', 'locale': 'om'},
     {'name': 'ٱلْعَرَبِيَّة', 'locale': 'ar'},
   ];
 
   buildLanguageDialog(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (builder) {
-          return AlertDialog(
-            backgroundColor: Colors.white,
-            title: FutureBuilder<String>(
-              future: Translations.translatedText(
-                  "Choose Language", GlobalStrings.getGlobalString()),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Text(
-                    snapshot.data ?? 'Default Text',
-                  );
-                } else {
-                  return Text(
-                    'Loading...',
-                  );
-                }
+      context: context,
+      builder: (builder) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: FutureBuilder<String>(
+            future: Translations.translatedText(
+              "Choose Language",
+              GlobalStrings.getGlobalString(),
+            ),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Text(
+                  snapshot.data ?? 'Default Text',
+                );
+              } else {
+                return Text('Loading...');
+              }
+            },
+          ),
+          content: Container(
+            width: double.maxFinite,
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    child: Text(locale[index]['name']),
+                    onTap: () async {
+                      String selectedLocale =
+                          locale[index]['locale'].toString();
+                      print(selectedLocale);
+
+                      // Persist the selected locale and update state
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setString("lang", selectedLocale);
+
+                      // Set the global string immediately after the language change
+                      GlobalStrings.setGlobalString(selectedLocale);
+
+                      setState(() {
+                        langCode =
+                            selectedLocale; // Update the state for the current widget
+                      });
+
+                      // Ensure the change is applied before navigating
+                      Future.delayed(Duration(milliseconds: 100), () {
+                        Restart.restartApp(
+                          notificationTitle: 'Restarting App',
+                          notificationBody:
+                              'Please tap here to open the app again after language change.',
+                        );
+                        // Navigator.pushNamedAndRemoveUntil(
+                        //   context,
+                        //   SplashPage.routeName,
+                        //   (route) => false,
+                        // );
+                      });
+                    },
+                  ),
+                );
               },
+              separatorBuilder: (context, index) {
+                return Divider(
+                  color: AppColors.colorPrimaryDark,
+                );
+              },
+              itemCount: locale.length,
             ),
-            content: Container(
-              width: double.maxFinite,
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        child: Text(locale[index]['name']),
-                        onTap: () async {
-                          String selectedLocale =
-                              locale[index]['locale'].toString();
-                          print(selectedLocale);
-                          GlobalStrings.setGlobalString(selectedLocale);
-                          setState(() {
-                            langCode = selectedLocale;
-                          });
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          await prefs.setString("lang", selectedLocale);
-                          // await prefs.setBool('repeat', true);
-                          // ignore: use_build_context_synchronously
-                          // await translateStrings();
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, SplashPage.routeName, (route) => false);
-                        },
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      color: AppColors.colorPrimaryDark,
-                    );
-                  },
-                  itemCount: locale.length),
-            ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
