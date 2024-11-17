@@ -36,6 +36,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   double? longitude;
   String pAddress = '';
   static late CameraPosition initialCameraPosition;
+  // List<Map<String, dynamic>> results = []; // Empty list by default
 
   Set<Marker> markersList = {};
 
@@ -148,7 +149,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.colorPrimary),
-                  onPressed: _handlePressButton,
+                  onPressed: openPlaceSearchBottomSheet,
                   child: Row(
                     children: [
                       Icon(Icons.search),
@@ -435,5 +436,110 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
     setState(() {
       loading = false;
     });
+  }
+
+  void openPlaceSearchBottomSheet() async {
+    String query = '';
+    List<Map<String, dynamic>> results = [];
+
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Makes it full-screen
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  TextField(
+                    onChanged: (value) {
+                      query = value;
+                    },
+                    decoration: const InputDecoration(
+                      hintText: 'Enter place name',
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (query.isNotEmpty) {
+                        final places = await fetchPlaces(query);
+                        setState(() {
+                          results = places;
+                        });
+                      }
+                    },
+                    child: const Text('Search'),
+                  ),
+                  if (results.isNotEmpty)
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: results.length,
+                        itemBuilder: (context, index) {
+                          final place = results[index];
+                          return ListTile(
+                            title: Text(place["name"]),
+                            onTap: () {
+                              setState(() {
+                                latitude = place["lat"];
+                                longitude = place["lon"];
+                              });
+                              Navigator.pop(context); // Close the bottom sheet
+                              updateMapLocation(latitude!, longitude!);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> fetchPlaces(String query) async {
+    final url =
+        'https://nominatim.openstreetmap.org/search?format=json&q=$query';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+      print("response.body is here");
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data.map((place) {
+          return {
+            "name": place["display_name"],
+            "lat": double.parse(place["lat"]),
+            "lon": double.parse(place["lon"]),
+          };
+        }).toList();
+      } else {
+        throw Exception('Failed to fetch places');
+      }
+    } catch (e) {
+      print("Error fetching places: $e");
+      return [];
+    }
+  }
+
+  void updateMapLocation(double lat, double lon) {
+    markersList.clear();
+    markersList.add(Marker(
+      markerId: const MarkerId("selected_place"),
+      position: LatLng(lat, lon),
+      infoWindow: const InfoWindow(title: "Selected Place"),
+    ));
+
+    googleMapController.animateCamera(
+      CameraUpdate.newLatLngZoom(LatLng(lat, lon), 14.0),
+    );
+
+    setState(() {});
   }
 }

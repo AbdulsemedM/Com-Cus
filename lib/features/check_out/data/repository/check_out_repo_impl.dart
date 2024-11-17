@@ -111,7 +111,9 @@ class CheckOutRepoImpl implements CheckOutRepo {
           isUserBusiness
               ? EndPoints.businessDeliveryFee.url
               : EndPoints.deliveryFee.url);
-      final dResponse = jsonDecode(response);
+      final dResponse = (response);
+      print("here comes the fee");
+      print(dResponse);
       if (dResponse['statusCode'] == '000') {
         if (dResponse['totalDeliveryFee'] == null) {
           throw 'Unable to calculate delivery fee. Try again later';
