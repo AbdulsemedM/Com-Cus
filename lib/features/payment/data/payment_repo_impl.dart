@@ -1,7 +1,13 @@
+// import 'dart:convert';
+
 import 'package:commercepal/app/data/network/api_provider.dart';
 import 'package:commercepal/app/data/network/end_points.dart';
+// import 'package:commercepal/app/di/injector.dart';
+// import 'package:commercepal/core/data/prefs_data.dart';
+// import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/payment/data/dto/payment_modes_dto.dart';
 import 'package:injectable/injectable.dart';
+// import 'package:http/http.dart' as http;
 
 import '../domain/payment_repo.dart';
 
@@ -14,12 +20,21 @@ class PaymentRepoImpl implements PaymentRepo {
   @override
   Future<List<PaymentMethods>> fetchPaymentModes() async {
     try {
+      // final prefsData = getIt<PrefsData>();
+      // final token = await prefsData.readData(PrefsKeys.userToken.name);
+      // final data = await http.get(
+      //     Uri.https("pay.commercepal.com", "/payment/v1/request"),
+      //     headers: <String, String>{"Authorization": "Bearer $token"});
+      // print(data.body);
+      // var response = jsonDecode(data.body);
       final response = await apiProvider.get(EndPoints.paymentModes.url);
       if (response['statusCode'] == '000') {
+        print("response");
         final rObject = PaymentModesDto.fromJson(response);
         if (rObject.data?.paymentMethods?.isEmpty == true) {
           throw 'Payment modes not found';
         }
+        // print(response);
         return rObject.data!.paymentMethods!;
       } else {
         throw response['statusDescription'];

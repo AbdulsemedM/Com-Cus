@@ -73,8 +73,8 @@ class CheckOutRepoImpl implements CheckOutRepo {
           isUserBusiness
               ? EndPoints.businessCheckOut.url
               : EndPoints.checkOut.url);
-      print("orderrefhere");
-      print(response['orderRef']);
+      // print("orderrefhere");
+      // print(response['orderRef']);
       // final cResponse = jsonDecode(response);
       // print("decoded");
       // print(cResponse);
@@ -84,18 +84,18 @@ class CheckOutRepoImpl implements CheckOutRepo {
         pData.writeData("order_ref", orderRef);
         return orderRef;
       } else {
-        print("here is the error");
+        // print("here is the error");
         throw response['statusDescription'];
       }
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       rethrow;
     }
   }
 
   @override
   Future<num> getDeliveryFee(String orderRef, int? addressId) async {
-    print("getDeliveryFee");
+    // print("getDeliveryFee");
     try {
       final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
       final payLoad = switch (isUserBusiness) {
@@ -112,8 +112,8 @@ class CheckOutRepoImpl implements CheckOutRepo {
               ? EndPoints.businessDeliveryFee.url
               : EndPoints.deliveryFee.url);
       final dResponse = (response);
-      print("here comes the fee");
-      print(dResponse);
+      // print("here comes the fee");
+      // print(dResponse);
       if (dResponse['statusCode'] == '000') {
         if (dResponse['totalDeliveryFee'] == null) {
           throw 'Unable to calculate delivery fee. Try again later';

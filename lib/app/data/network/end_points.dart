@@ -52,8 +52,8 @@ extension Url on EndPoints {
   static String baseUrlCustomer =
       'https://api.commercepal.com:2096/prime/api/v1/customer';
   static String baseUrlCustomer2 =
-      'https://api.commercepal.com:2095/prime/api/v1/customer';
-  static String payments = "https://api.commercepal.com:2095/payment/v1";
+      'https://payment.commercepal.com/prime/api/v1/customer';
+  static String payments = "https://pay.commercepal.com/payment/v1";
   static String financials =
       "https://api.commercepal.com:2087/api/v1/financial/payment";
   static String businessBaseUrl =
