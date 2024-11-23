@@ -432,7 +432,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
         print(payload);
 
         final response = await http.post(
-            Uri.https("api.commercepal.com:2095",
+            Uri.https("pay.commercepal.com",
                 "/payment/v1/halalPay/calculate-loan-amounts"),
             body: jsonEncode(payload),
             headers: <String, String>{"Authorization": "Bearer $token"});
@@ -515,7 +515,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/payment/v1/request",
           ),
           body: jsonEncode(payload),
@@ -591,7 +591,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/payment/v1/halalPay/confirm",
           ),
           body: jsonEncode(payload),
@@ -650,7 +650,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
       if (isUserLoggedIn) {
         final response = await http.get(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/payment/v1/halalPay/markups",
           ),
           headers: <String, String>{

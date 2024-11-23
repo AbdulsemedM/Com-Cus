@@ -280,7 +280,7 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/payment/v1/request",
           ),
           body: jsonEncode(payload),

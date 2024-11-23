@@ -56,13 +56,13 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
   }
 
   void instr(List<String> trr) async {
-    print("funcallled");
+    // print("funcallled");
     for (var e in trr) {
       addAddHint =
           await Translations.translatedText(e, GlobalStrings.getGlobalString());
-      print("funtranslated");
+      // print("funtranslated");
       aHint = await addAddHint;
-      print(aHint);
+      // print(aHint);
       setState(() {
         _paymentInstructionsT.add(addAddHint);
       });
@@ -93,7 +93,7 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
     bHint = await enterHint;
     dHint = await validateHint;
 
-    print(pHint);
+    // print(pHint);
 
     setState(() {
       loading = false;

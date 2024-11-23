@@ -54,14 +54,20 @@ class SelectedProductPage extends StatefulWidget {
   State<SelectedProductPage> createState() => _SelectedProductPageState();
 }
 
-String? id;
+dynamic id;
 
 class _SelectedProductPageState extends State<SelectedProductPage> {
   @override
+  void initState() {
+    super.initState();
+    print("set first sub product as default");
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Map args = ModalRoute.of(context)?.settings.arguments as Map;
-    id = args['p_id'].toString();
-    print(id);
+    id = args['p_id'];
+    print(id.runtimeType);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -107,7 +113,7 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
   String? prize;
   var loading = false;
   int _current = 0;
-  num _selectedFeature = -1;
+  String _selectedFeature = "-1";
   DateTime currentDate = DateTime.now();
   bool added = false;
   late Future<String> _translatedProductName;
@@ -118,10 +124,10 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
   @override
   void initState() {
     super.initState();
+    print("set first sub product as default");
     setState(() {
-      // set first sub product as default
       _selectedFeature =
-          widget.selectedProductDetails.subProducts?[0].subProductId ?? -1;
+          widget.selectedProductDetails.subProducts?[0].subProductId ?? "-1";
     });
     _translatedProductName = TranslationService.translate(
       widget.selectedProductDetails.productName ?? '',

@@ -48,7 +48,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
 
     // Use await to get the actual string value from the futures
     it = await items;
-    print("herrerererere");
+    // print("herrerererere");
 
     setState(() {
       loading = false;
@@ -115,8 +115,8 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
     SFee = await ShipFee;
     OTot = await OrderTot;
     SBill = await ShipBill;
-    print("herrerererere");
-    print(OSumm);
+    // print("herrerererere");
+    // print(OSumm);
 
     setState(() {
       loading = false;
@@ -142,7 +142,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
           state.maybeWhen(
               orElse: () {},
               error: (error) {
-                print("hereisthererorror");
+                // print("hereisthererorror");
                 displaySnack(context, error);
               },
               addresses: (adds) {
@@ -360,7 +360,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                           height: 40,
                           child: ElevatedButton(
                             onPressed: () async {
-                              print(_total);
+                              // print(_total);
                               // RegExp regExp = RegExp(r'\b\d+(\.\d+)?\b');
                               // Iterable<Match> matches =
                               //     regExp.allMatches(_total!);

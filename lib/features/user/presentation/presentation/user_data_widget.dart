@@ -331,19 +331,19 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               }
             },
           ),
-          // const Divider(),
-          // UserMenuItem(
-          //   icon: Icons.maps_home_work_outlined,
-          //   title: "Addresses",
-          //   language: dropdownValue,
-          //   onClick: () {
-          //     if (valid == "logout") {
-          //       Navigator.pushNamed(context, LoginPage.routeName);
-          //     } else {
-          //       Navigator.pushNamed(context, AddressesPage.routeName);
-          //     }
-          //   },
-          // ),
+          const Divider(),
+          UserMenuItem(
+            icon: Icons.maps_home_work_outlined,
+            title: "Addresses",
+            language: dropdownValue,
+            onClick: () {
+              if (valid == "logout") {
+                Navigator.pushNamed(context, LoginPage.routeName);
+              } else {
+                Navigator.pushNamed(context, AddressesPage.routeName);
+              }
+            },
+          ),
           const Divider(),
           UserMenuItem(
             icon: Icons.password_outlined,
@@ -396,15 +396,15 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               });
             },
           ),
-          const Divider(),
-          UserMenuItem(
-            icon: FontAwesomeIcons.language,
-            title: "Change Language",
-            language: dropdownValue,
-            onClick: () {
-              buildLanguageDialog(context);
-            },
-          ),
+          // const Divider(),
+          // UserMenuItem(
+          //   icon: FontAwesomeIcons.language,
+          //   title: "Change Language",
+          //   language: dropdownValue,
+          //   onClick: () {
+          //     buildLanguageDialog(context);
+          //   },
+          // ),
           // Padding(
           //   padding: const EdgeInsets.symmetric(horizontal: 10),
           //   child: Row(

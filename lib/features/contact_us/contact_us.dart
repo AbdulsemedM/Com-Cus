@@ -11,7 +11,7 @@ class ContactUsPage extends StatefulWidget {
 }
 
 class _ContactUsPageState extends State<ContactUsPage> {
-  final String phoneNumber = "+251 91-530-4067";
+  final String phoneNumber = "+251 90- 060-7175";
   final String phoneNumber2 = "+251 91-530-4065";
   final String phoneNumber3 = "9491";
   final String url = "https://commercepal.com/browse";

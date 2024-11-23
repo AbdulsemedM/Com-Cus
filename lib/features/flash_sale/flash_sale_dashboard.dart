@@ -414,24 +414,29 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
                                                         ))),
                                                     onPressed: () {
                                                       CartItem myItem = CartItem(
-                                                          productId: int.parse(
-                                                              myFlashSaleProducts[index]
+                                                          productId:
+                                                              (myFlashSaleProducts[index]
                                                                   .productId),
                                                           name:
-                                                              myFlashSaleProducts[index]
+                                                              myFlashSaleProducts[
+                                                                      index]
                                                                   .productName,
-                                                          image: myFlashSaleProducts[index]
+                                                          image: myFlashSaleProducts[
+                                                                  index]
                                                               .mobileThumbnail,
                                                           description: '-',
                                                           price:
-                                                              myFlashSaleProducts[index]
+                                                              myFlashSaleProducts[
+                                                                      index]
                                                                   .flashSalePrice,
                                                           currency: "ETB",
-                                                          subProductId: int.parse(
-                                                              myFlashSaleProducts[index]
+                                                          subProductId:
+                                                              (myFlashSaleProducts[
+                                                                      index]
                                                                   .subProductId),
                                                           quantity: int.parse(
-                                                              myFlashSaleProducts[index]
+                                                              myFlashSaleProducts[
+                                                                      index]
                                                                   .minOrder));
                                                       context
                                                           .read<CartCoreCubit>()
@@ -468,7 +473,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      // print(isUserLoggedIn);
       if (isUserLoggedIn) {
         // final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
@@ -482,9 +487,9 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
             'Content-Type': 'application/json; charset=UTF-8',
           },
         );
-        print('hererererer');
+        // print('hererererer');
         var datas = jsonDecode(response.body);
-        print(datas);
+        // print(datas);
         myFlashSaleProducts.clear();
         if (datas['statusCode'] == "000") {
           for (var i in datas['data']['products']) {
@@ -503,7 +508,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
               productRating: i['productRating'].toString(),
             ));
           }
-          print(myFlashSaleProducts.length);
+          // print(myFlashSaleProducts.length);
         } else {
           throw datas['statusDescription'] ?? 'Error fetching Flash-Sales';
         }

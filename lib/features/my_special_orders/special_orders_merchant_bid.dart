@@ -301,7 +301,7 @@ class _MerchantBidsState extends State<MerchantBids> {
                             var quantity = data['data']['quantity'];
                             var productImage = data['data']['productImage'];
                             var unique_id = data['data']['unique_id'];
-                            int productId = data['data']['productId'];
+                            String productId = data['data']['productId'];
                             var totalPrice = data['data']['totalPrice'];
                             var subProductId = data['data']['subProductId'];
 

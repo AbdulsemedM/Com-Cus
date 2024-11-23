@@ -221,7 +221,7 @@ class _CommecepalCoinsState extends State<CommecepalCoins> {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/prime/api/v1/customer/accounts/commission-transactions",
             {"pageNumber": '20'},
           ),
@@ -242,7 +242,7 @@ class _CommecepalCoinsState extends State<CommecepalCoins> {
             }
             loading = false;
           });
-          print(trnxs.length);
+          // print(trnxs.length);
         } else {
           if (retryCount < 5) {
             // Retry after num + 1 seconds
@@ -277,7 +277,7 @@ class _CommecepalCoinsState extends State<CommecepalCoins> {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/prime/api/v1/customer/accounts/commission-balance",
           ),
           headers: <String, String>{"Authorization": "Bearer $token"},

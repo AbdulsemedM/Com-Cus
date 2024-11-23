@@ -45,9 +45,9 @@ class _AddAddressPageState extends State<AddAddressPage> {
     pHint = await physicalAddressHintFuture;
     cHint = await subcityHint;
     aHint = await addAddHint;
-    print("herrerererere");
-    print(pHint);
-    print(cHint);
+    // print("herrerererere");
+    // print(pHint);
+    // print(cHint);
 
     setState(() {
       loading = false;

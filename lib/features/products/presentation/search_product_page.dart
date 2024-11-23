@@ -2,7 +2,8 @@ import 'package:commercepal/features/products/presentation/widgets/products_page
 import 'package:flutter/material.dart';
 
 class SearchProductPage extends StatefulWidget {
-  const SearchProductPage({Key? key}) : super(key: key);
+  final String? val;
+  const SearchProductPage({Key? key, this.val}) : super(key: key);
 
   @override
   State<SearchProductPage> createState() => _SearchProductPageState();
@@ -11,6 +12,6 @@ class SearchProductPage extends StatefulWidget {
 class _SearchProductPageState extends State<SearchProductPage> {
   @override
   Widget build(BuildContext context) {
-    return ProductsStatePage();
+    return ProductsStatePage(val: widget.val,);
   }
 }

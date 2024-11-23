@@ -25,14 +25,14 @@ void main() {
       currency: 'ETB',
       price: '9000',
       quantity: 1,
-      subProductId: 1,
-      productId: 2);
+      subProductId: "1",
+      productId: "2");
 
 
   test("given a cart item with a prod of same id exists, deleting one does not delete the other one", () async {
       // insert
      await cartRepositoryImpl.addToCart(cartItem);
-     await cartRepositoryImpl.addToCart(cartItem.copyWith(subProductId: 2));
+     await cartRepositoryImpl.addToCart(cartItem.copyWith(subProductId: "2"));
 
       // delete
      await cartRepositoryImpl.deleteItem(cartItem);
@@ -40,7 +40,7 @@ void main() {
      final cItem = await cartDao.getCartItemBySubProductId(cartItem.subProductId!);
      expect(cItem, isNull);
 
-     final cItem2 = await cartDao.getCartItemBySubProductId(2);
+     final cItem2 = await cartDao.getCartItemBySubProductId("2");
      expect(cItem2, isNotNull);
   });
 

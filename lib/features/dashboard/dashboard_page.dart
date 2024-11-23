@@ -86,9 +86,9 @@ class _DashboardPageState extends State<DashboardPage> {
     cHint = await subcityHint;
     aHint = await addAddHint;
     uHint = await userHint;
-    print("herrerererere");
-    print(pHint);
-    print(cHint);
+    // print("herrerererere");
+    // print(pHint);
+    // print(cHint);
 
     setState(() {
       loading = false;
@@ -104,8 +104,8 @@ class _DashboardPageState extends State<DashboardPage> {
       if (args.containsKey("redirect_to")) {
         if (args['redirect_to'] == 'cart') {
           redirect = true;
-          print(_hasUserSwitchedToBusiness);
-          print("_hasUserSwitchedToBusiness");
+          // print(_hasUserSwitchedToBusiness);
+          // print("_hasUserSwitchedToBusiness");
           _selectedTab = _hasUserSwitchedToBusiness ? 1 : 2;
           setState(() {});
         }
@@ -137,7 +137,7 @@ class _DashboardPageState extends State<DashboardPage> {
               // adjust index to match new list
               if (state.switched) {
                 if (_selectedTab == 3) {
-                  print(" Switched hererrer");
+                  // print(" Switched hererrer");
                   _selectedTab = _selectedTab - 1;
                 }
                 if (redirect) {

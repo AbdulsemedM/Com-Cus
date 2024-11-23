@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:commercepal/app/data/network/api_provider.dart';
 import 'package:commercepal/app/data/network/end_points.dart';
+import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/features/check_out/data/dto/addresses_dto.dart';
 import 'package:commercepal/features/check_out/data/models/address.dart';
 import 'package:commercepal/features/check_out/domain/check_out_repo.dart';
@@ -12,6 +13,7 @@ import '../../../../core/cart-core/dao/cart_dao.dart';
 import '../../../../core/data/prefs_data.dart';
 import '../../../../core/data/prefs_data_impl.dart';
 import '../../../../core/session/domain/session_repo.dart';
+import 'package:http/http.dart' as http;
 
 @Injectable(as: CheckOutRepo)
 class CheckOutRepoImpl implements CheckOutRepo {
@@ -42,13 +44,23 @@ class CheckOutRepoImpl implements CheckOutRepo {
     }
   }
 
+  String determineProvider(String input) {
+    if (input.startsWith('sh')) {
+      return 'Shein';
+    } else if (input.startsWith('alb')) {
+      return 'Alibaba';
+    } else {
+      return 'Commercepal';
+    }
+  }
+
   @override
   Future<String> generateOrderRef() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? value;
     try {
       value = prefs.getString('promocode') ?? 'none';
-      print('Value from SharedPreferences: $value');
+      // print('Value from SharedPreferences: $value');
     } catch (e) {
       print('Error accessing SharedPreferences: $e');
     }
@@ -57,22 +69,53 @@ class CheckOutRepoImpl implements CheckOutRepo {
       final cartItems = await cartDao.getAllItems();
       final request = {
         "paymentMethod": "Murabaha",
-        if (value != "none") "promoCode": value,
+        // if (value != "none") "promoCode": value,
+        "orderComment": "orderComment",
         "items": cartItems
             .map((e) => {
-                  "productId": e.productId,
-                  "subProductId": e.subProductId,
-                  "quantity": e.quantity
+                  "itemId": e.productId.toString(),
+                  "configurationId": e.subProductId.toString(),
+                  "quantity": e.quantity.toString(),
+                  "itemComment": "",
+                  if (value != "none") "promotionId": value,
+                  // "promotionId": "",
+                  "provider": determineProvider(e.productId ?? "")
+
+                  // "productId": e.productId,
+                  // "subProductId": e.subProductId,
+                  // "quantity": e.quantity
                 })
             .toList()
       };
       // print("hererequest");
       // print(request);
-      final response = await apiProvider.post(
-          request,
-          isUserBusiness
-              ? EndPoints.businessCheckOut.url
-              : EndPoints.checkOut.url);
+// <<<<<<< New-Providers
+      // final response = await apiProvider.post(
+      //     request,
+      //     isUserBusiness
+      //         ? EndPoints.businessCheckOut.url
+      //         : EndPoints.checkOut.url);
+      // print(request);
+      final prefsData = getIt<PrefsData>();
+      // final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      final token = await prefsData.readData(PrefsKeys.userToken.name);
+      final checkout = await http.post(
+          Uri.https(
+              "api.commercepal.com:2096", "/prime/api/v1/data/order/check-out"),
+          body: jsonEncode(request),
+          headers: <String, String>{
+            "Authorization": "Bearer $token",
+            "Content-type": "application/json; charset=utf-8"
+          });
+      var response = jsonDecode(checkout.body);
+      // print(response);
+// =======
+//       final response = await apiProvider.post(
+//           request,
+//           isUserBusiness
+//               ? EndPoints.businessCheckOut.url
+//               : EndPoints.checkOut.url);
+// >>>>>>> main
       // print("orderrefhere");
       // print(response['orderRef']);
       // final cResponse = jsonDecode(response);
@@ -82,6 +125,8 @@ class CheckOutRepoImpl implements CheckOutRepo {
         final orderRef = response['orderRef'];
         // save it
         pData.writeData("order_ref", orderRef);
+        await pData.writeData(PrefsKeys.deliveryFee.name,
+            response['priceSummary']['deliveryFee'].toString());
         return orderRef;
       } else {
         // print("here is the error");
@@ -111,19 +156,30 @@ class CheckOutRepoImpl implements CheckOutRepo {
           isUserBusiness
               ? EndPoints.businessDeliveryFee.url
               : EndPoints.deliveryFee.url);
-      final dResponse = (response);
-      // print("here comes the fee");
-      // print(dResponse);
-      if (dResponse['statusCode'] == '000') {
-        if (dResponse['totalDeliveryFee'] == null) {
+// <<<<<<< New-Providers
+      // print(response['totalDeliveryFee']);
+      // print("The total delivery fee is here");
+      // // final dResponse = jsonDecode(response);
+      // print("The changed total delivery fee is here");
+      // print(response);
+      if (response['statusCode'] == '000') {
+        if (response['totalDeliveryFee'] == null) {
+// =======
+//       final dResponse = (response);
+//       // print("here comes the fee");
+//       // print(dResponse);
+//       if (dResponse['statusCode'] == '000') {
+//         if (dResponse['totalDeliveryFee'] == null) {
+// >>>>>>> main
           throw 'Unable to calculate delivery fee. Try again later';
         }
+        // print(resp['statusCode']);
         // save delivery fee
         await pData.writeData(PrefsKeys.deliveryFee.name,
-            dResponse['totalDeliveryFee'].toString());
-        return dResponse['totalDeliveryFee'];
+            response['totalDeliveryFee'].toString());
+        return response['totalDeliveryFee'];
       } else {
-        throw dResponse['statusDescription'];
+        throw response['statusDescription'];
       }
     } catch (e) {
       rethrow;

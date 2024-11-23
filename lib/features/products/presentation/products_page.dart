@@ -14,10 +14,17 @@ import 'cubit/product_state.dart';
 import 'widgets/search_product_widget.dart';
 
 //TODO: find/change to use only one BlocBuilder
-class ProductsPage extends StatelessWidget {
+class ProductsPage extends StatefulWidget {
   static const routeName = "/products_page";
 
   const ProductsPage({Key? key}) : super(key: key);
+
+  @override
+  _ProductsPageState createState() => _ProductsPageState();
+}
+
+class _ProductsPageState extends State<ProductsPage> {
+  String? prompt;
 
   @override
   Widget build(BuildContext context) {
@@ -27,82 +34,84 @@ class ProductsPage extends StatelessWidget {
       child: BlocBuilder<ProductCubit, ProductState>(
         builder: (ctx, state) {
           return Scaffold(
-            floatingActionButton: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-              child: ElevatedButton(
-                // style: ElevatedButton.styleFrom(
-                //     backgroundColor: AppColors.secondaryTextColor),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddSpecialOrders()));
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                    AppColors.colorSecondaryDark,
-                  ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.card_giftcard_outlined,
-                      color: AppColors.colorPrimaryDark,
-                    ),
-                    SizedBox(width: 8),
+            // floatingActionButton: Padding(
+            //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+            //   child: ElevatedButton(
+            //     // style: ElevatedButton.styleFrom(
+            //     //     backgroundColor: AppColors.secondaryTextColor),
+            //     onPressed: () {
+            //       Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: (context) => AddSpecialOrders()));
+            //     },
+            //     style: ButtonStyle(
+            //       backgroundColor: MaterialStateProperty.all<Color>(
+            //         AppColors.colorSecondaryDark,
+            //       ),
+            //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //         RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(8.0),
+            //         ),
+            //       ),
+            //     ),
+            //     child: Row(
+            //       mainAxisSize: MainAxisSize.min,
+            //       children: [
+            //         Icon(
+            //           Icons.card_giftcard_outlined,
+            //           color: AppColors.colorPrimaryDark,
+            //         ),
+            //         SizedBox(width: 8),
 
-                    FutureBuilder<String>(
-                      future: TranslationService.translate(
-                          "Special Order"), // Translate hint
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Text(
-                              "..."); // Show loading indicator for hint
-                        } else if (snapshot.hasError) {
-                          return Text(
-                            "Special Order",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: AppColors.colorPrimaryDark,
-                                fontWeight: FontWeight.w800),
-                          ); // Show error for hint
-                        } else {
-                          return Text(
-                            snapshot.data ?? "Special Order",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: AppColors.colorPrimaryDark,
-                                fontWeight: FontWeight.w800),
-                          ); // Display translated hint
-                        }
-                      },
-                    ),
-                    // Adjust the spacing between icon and text
-                    // Text(
-                    //   "Special Order",
-                    //   style: TextStyle(
-                    //       color: AppColors.colorPrimaryDark,
-                    //       fontWeight: FontWeight.w800),
-                    // ),
-                  ],
-                ),
-              ),
-            ),
+            //         FutureBuilder<String>(
+            //           future: TranslationService.translate(
+            //               "Special Order"), // Translate hint
+            //           builder: (context, snapshot) {
+            //             if (snapshot.connectionState ==
+            //                 ConnectionState.waiting) {
+            //               return const Text(
+            //                   "..."); // Show loading indicator for hint
+            //             } else if (snapshot.hasError) {
+            //               return Text(
+            //                 "Special Order",
+            //                 maxLines: 2,
+            //                 overflow: TextOverflow.ellipsis,
+            //                 style: TextStyle(
+            //                     color: AppColors.colorPrimaryDark,
+            //                     fontWeight: FontWeight.w800),
+            //               ); // Show error for hint
+            //             } else {
+            //               return Text(
+            //                 snapshot.data ?? "Special Order",
+            //                 maxLines: 2,
+            //                 overflow: TextOverflow.ellipsis,
+            //                 style: TextStyle(
+            //                     color: AppColors.colorPrimaryDark,
+            //                     fontWeight: FontWeight.w800),
+            //               ); // Display translated hint
+            //             }
+            //           },
+            //         ),
+            //         // Adjust the spacing between icon and text
+            //         // Text(
+            //         //   "Special Order",
+            //         //   style: TextStyle(
+            //         //       color: AppColors.colorPrimaryDark,
+            //         //       fontWeight: FontWeight.w800),
+            //         // ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             backgroundColor: Colors.white,
             appBar: args['search'] != null
                 ? _buildSearchAppBar(ctx)
                 : buildCommerceAppBar(context, args['title'] ?? "Items"),
             body: args['search'] != null
-                ? const SearchProductPage()
+                ? SearchProductPage(
+                    val: prompt,
+                  )
                 : ProductsPageData(
                     subCatId: args['sub_cat_id'],
                     queryParams: args['query'],
@@ -112,23 +121,26 @@ class ProductsPage extends StatelessWidget {
       ),
     );
   }
-}
 
-AppBar _buildSearchAppBar(BuildContext ctx) {
-  return AppBar(
-    title: SearchProductWidget(
-      onChanged: (value) {
-        if (value.isEmpty == true) {
-          return;
-        }
-        ctx.read<ProductCubit>().searchProduct(value);
-      },
-    ),
-    actions: const [
-      Padding(
-        padding: EdgeInsets.only(right: 10.0),
-        child: CartWidget(),
-      )
-    ],
-  );
+  AppBar _buildSearchAppBar(BuildContext ctx) {
+    return AppBar(
+      title: SearchProductWidget(
+        onChanged: (value) {
+          if (value.isEmpty) return;
+
+          setState(() {
+            prompt = value;
+          });
+
+          ctx.read<ProductCubit>().searchProduct(value, null);
+        },
+      ),
+      actions: const [
+        Padding(
+          padding: EdgeInsets.only(right: 10.0),
+          child: CartWidget(),
+        )
+      ],
+    );
+  }
 }

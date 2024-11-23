@@ -124,11 +124,11 @@ class _MobileTopupState extends State<MobileTopup> {
                           if (regExp1.hasMatch(pNumberController.text)) {
                             pNumber = pNumberController.text
                                 .replaceFirst(RegExp('^0'), '251');
-                            print(pNumber);
+                            // print(pNumber);
                           } else if (regExp2.hasMatch(pNumberController.text)) {
                             pNumber = pNumberController.text
                                 .replaceFirst(RegExp(r'^\+'), '');
-                            print(pNumber);
+                            // print(pNumber);
                           }
                           var done = await submitForm(pNumber);
                           if (done) {
@@ -166,11 +166,11 @@ class _MobileTopupState extends State<MobileTopup> {
           "amount": amountController.text,
           "phoneNumber": pNumber
         };
-        print(payload);
+        // print(payload);
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/prime/api/v1/customer/accounts/airtime-top-up",
           ),
           body: jsonEncode(payload),
@@ -181,7 +181,7 @@ class _MobileTopupState extends State<MobileTopup> {
         );
 
         var data = jsonDecode(response.body);
-        print(data);
+        // print(data);
 
         if (data['statusCode'] == '000') {
           setState(() {

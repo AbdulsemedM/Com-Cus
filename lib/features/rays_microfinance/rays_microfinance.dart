@@ -432,7 +432,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
         print(payload);
 
         final response = await http.post(
-            Uri.https("api.commercepal.com:2095",
+            Uri.https("pay.commercepal.com",
                 "/payment/v1/rays/calculate-loan-amounts"),
             body: jsonEncode(payload),
             headers: <String, String>{"Authorization": "Bearer $token"});
@@ -515,7 +515,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/payment/v1/request",
           ),
           body: jsonEncode(payload),
@@ -591,7 +591,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/payment/v1/rays/confirm",
           ),
           body: jsonEncode(payload),
@@ -650,7 +650,7 @@ class _RaysMicrofinanceState extends State<RaysMicrofinance> {
       if (isUserLoggedIn) {
         final response = await http.get(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/payment/v1/rays/markups",
           ),
           headers: <String, String>{

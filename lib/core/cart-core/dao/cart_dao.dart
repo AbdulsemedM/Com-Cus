@@ -16,10 +16,10 @@ abstract class CartDao {
   Future<CartItem?> getCartItem(int productId);
 
   @Query("SELECT * FROM CartItem WHERE subProductId = :subProductId")
-  Future<CartItem?> getCartItemBySubProductId(int subProductId);
+  Future<CartItem?> getCartItemBySubProductId(String subProductId);
 
   @Query("DELETE FROM CartItem WHERE subProductId = :subProductId")
-  Future<void> deleteItem(int subProductId);
+  Future<void> deleteItem(String subProductId);
 
   @Query("DELETE FROM CartItem")
   Future<void> nuke();

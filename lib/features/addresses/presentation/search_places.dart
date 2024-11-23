@@ -110,7 +110,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                         onPressed: () async {
                           String add = await getAddressFromLatLng(
                               latitude.toString(), longitude.toString());
-                          print(add);
+                          // print(add);
                           if (add == "No street address found") {
                             displaySnack(context, "Please try again.");
                           } else {
@@ -230,7 +230,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
           //   "latitude": latitude,
           //   "longitude": longitude
           // };
-          print(payload);
+          // print(payload);
           final prefsData = getIt<PrefsData>();
           final isUserLoggedIn =
               await prefsData.contains(PrefsKeys.userToken.name);
@@ -246,7 +246,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
             );
 
             var data = jsonDecode(response.body);
-            print(data);
+            // print(data);
 
             if (data['statusCode'] == '000') {
               setState(() {
@@ -329,8 +329,8 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
         apiHeaders: await const GoogleApiHeaders().getHeaders());
 
     PlacesDetailsResponse detail = await places.getDetailsByPlaceId(p.placeId!);
-    print("herererererere");
-    print(p.description);
+    // print("herererererere");
+    // print(p.description);
     List<String> parts = p.description.toString().split(',');
     String firstPart =
         parts.isNotEmpty ? parts[0].trim() : p.description.toString();
@@ -361,9 +361,9 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
       setState(() {
         loading = true;
       });
-      print("here we go");
+      // print("here we go");
       var status = await Permission.location.request();
-      print(status.isPermanentlyDenied);
+      // print(status.isPermanentlyDenied);
       if (status.isGranted) {
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
@@ -372,8 +372,8 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
         setState(() {
           latitude = position.latitude;
           longitude = position.longitude;
-          print(latitude);
-          print(longitude);
+          // print(latitude);
+          // print(longitude);
           if (latitude != null && longitude != null) {
             initialCameraPosition = CameraPosition(
                 target: LatLng(latitude!, longitude!), zoom: 14.0);
@@ -383,8 +383,8 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
           }
           loading = false;
         });
-        print(latitude);
-        print(longitude);
+        // print(latitude);
+        // print(longitude);
       } else {
         setState(() {
           latitude = 9.0192;
@@ -400,7 +400,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
             CameraPosition(target: LatLng(9.0192, 38.7525), zoom: 14.0);
         loading = false;
       });
-      print('Error getting location: $e');
+      // print('Error getting location: $e');
     }
   }
 
@@ -409,7 +409,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
       setState(() {
         loading = true;
       });
-      print("hereeee");
+      // print("hereeee");
 
       final response = await http.get(Uri.https(
           "api.commercepal.com:2096", "/prime/api/v1/service/cities"));
@@ -422,7 +422,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
             cityName: b['cityName'],
             countryId: b['countryId']));
       }
-      print(cities.length);
+      // print(cities.length);
       setState(() {
         loading = false;
       });

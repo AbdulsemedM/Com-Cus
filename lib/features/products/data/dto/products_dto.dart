@@ -19,15 +19,59 @@ class ProductsDto {
     _statusMessage = statusMessage;
     _statusCode = statusCode;
   }
+  void parseProducts(Map<String, dynamic> json) {
+    // Initialize details
+    _details = [];
 
-  ProductsDto.fromJson(dynamic json) {
-    _statusDescription = json['statusDescription'];
-    if (json['details'] != null) {
-      _details = [];
+    // Check for products in different possible formats
+    if (json['responseData'] != null &&
+        json['responseData']['products'] != null) {
+      // Case 1: products exist under responseData
+      json['responseData']['products'].forEach((v) {
+        _details?.add(ProductDetails.fromJson(v));
+      });
+    } else if (json['details'] != null) {
+      // Case 2: products exist directly under details
       json['details'].forEach((v) {
         _details?.add(ProductDetails.fromJson(v));
       });
+    } else if (json['products'] != null) {
+      // Case 3: products exist directly under products key
+      json['products'].forEach((v) {
+        _details?.add(ProductDetails.fromJson(v));
+      });
+    } else {
+      // Case 4: No products found
+      print("No products found in the response.");
     }
+
+    // Print details for debugging
+    print("Parsed products count: ${_details?.length}");
+  }
+
+  ProductsDto.fromJson(dynamic json) {
+    _statusDescription = json['statusDescription'];
+
+    print("counting");
+    try {
+      parseProducts(json);
+    } catch (e) {
+      print("Error parsing products: $e");
+    }
+    // print(json['responseData']['products'] != null);
+    // if (json['responseData']['products'] != null) {
+    //   _details = [];
+    //   json['responseData']['products'].forEach((v) {
+    //     _details?.add(ProductDetails.fromJson(v));
+    //     // print("counting");
+    //     // print(details!.length);
+    //   });
+    // } else if (json['details'] != null) {
+    //   json['details'].forEach((v) {
+    //     _details?.add(ProductDetails.fromJson(v));
+    //     print(details!.length);
+    //   });
+    // }
     _statusMessage = json['statusMessage'];
     _statusCode = json['statusCode'];
   }
@@ -62,7 +106,8 @@ class ProductsDto {
     final map = <String, dynamic>{};
     map['statusDescription'] = _statusDescription;
     if (_details != null) {
-      map['details'] = _details?.map((v) => v.toJson()).toList();
+      map['responseData']['products'] =
+          _details?.map((v) => v.toJson()).toList();
     }
     map['statusMessage'] = _statusMessage;
     map['statusCode'] = _statusCode;
@@ -76,51 +121,51 @@ ProductDetails detailsFromJson(String str) =>
 String detailsToJson(ProductDetails data) => json.encode(data.toJson());
 
 class ProductDetails {
-  ProductDetails({
-    String? specialInstruction,
-    List<SubProducts>? subProducts,
-    num? offerPrice,
-    dynamic actualPrice,
-    String? productSubCategoryIdName,
-    num? productId,
-    String? productName,
-    dynamic minOrder,
-    String? shortDescription,
-    String? manufacturer,
-    String? mobileVideo,
-    String? webImage,
-    String? webThumbnail,
-    List<Reviews>? reviews,
-    String? productParentCategoryIdName,
-    String? discountType,
-    String? currency,
-    num? productRating,
-    String? productType,
-    List<FeatureDetails>? featureDetails,
-    String? mobileImage,
-    String? uniqueId,
-    num? quantity,
-    num? productParentCategoryId,
-    String? unitOfMeasure,
-    List<More>? more,
-    num? productSubCategoryId,
-    num? ratingCount,
-    String? webVideo,
-    num? discountAmount,
-    num? moqValue,
-    num? primarySubProduct,
-    num? unitPrice,
-    List<String>? productImages,
-    String? productCategoryIdName,
-    num? productCategoryId,
-    dynamic maxOrder,
-    String? mobileThumbnail,
-    String? productDescription,
-    dynamic isDiscounted,
-    num? discountValue,
-    String? discountDescription,
-    num? merchantId
-  }) {
+  ProductDetails(
+      {String? specialInstruction,
+      List<SubProducts>? subProducts,
+      num? offerPrice,
+      dynamic actualPrice,
+      String? productSubCategoryIdName,
+      String? productId,
+      String? productName,
+      dynamic minOrder,
+      String? shortDescription,
+      String? manufacturer,
+      String? mobileVideo,
+      String? webImage,
+      String? webThumbnail,
+      List<Reviews>? reviews,
+      String? productParentCategoryIdName,
+      String? discountType,
+      String? currency,
+      num? productRating,
+      String? productType,
+      List<FeatureDetails>? featureDetails,
+      String? mobileImage,
+      String? uniqueId,
+      num? quantity,
+      num? productParentCategoryId,
+      String? unitOfMeasure,
+      List<More>? more,
+      num? productSubCategoryId,
+      num? ratingCount,
+      String? webVideo,
+      num? discountAmount,
+      num? moqValue,
+      num? primarySubProduct,
+      num? unitPrice,
+      String? provider,
+      List<String>? productImages,
+      String? productCategoryIdName,
+      num? productCategoryId,
+      dynamic maxOrder,
+      String? mobileThumbnail,
+      String? productDescription,
+      dynamic isDiscounted,
+      num? discountValue,
+      String? discountDescription,
+      num? merchantId}) {
     _specialInstruction = specialInstruction;
     _subProducts = subProducts;
     _offerPrice = offerPrice;
@@ -154,6 +199,7 @@ class ProductDetails {
     _moqValue = moqValue;
     _primarySubProduct = primarySubProduct;
     _unitPrice = unitPrice;
+    _provider = provider;
     _productImages = productImages;
     _productCategoryIdName = productCategoryIdName;
     _discountType = discountType;
@@ -168,77 +214,104 @@ class ProductDetails {
   }
 
   ProductDetails.fromJson(dynamic json) {
-    _specialInstruction = json['SpecialInstruction'];
-    if (json['subProducts'] != null) {
-      _subProducts = [];
-      json['subProducts'].forEach((v) {
-        _subProducts?.add(SubProducts.fromJson(v));
-      });
+    print("here is the json");
+    print(json['ProductId']);
+    String pid = json['ProductId'].toString();
+    try {
+      _specialInstruction = json['SpecialInstruction'] ?? "";
+      if (json['subProducts'] != null) {
+        _subProducts = [];
+        json['subProducts'].forEach((v) {
+          _subProducts?.add(SubProducts.fromJson(v));
+        });
+      } else {
+        _subProducts = [];
+      }
+      _provider = json['Provider'] ?? ""; //////////////////////////////////
+      _offerPrice = json['offerPrice'] ?? "";
+      _actualPrice = json['actualPrice'] ?? "";
+      _productSubCategoryIdName = json['ProductSubCategoryIdName'] ?? "";
+      //////////////////////////////////
+      _productName =
+          json['productName'] ?? ""; //////////////////////////////////
+      _minOrder = json['minOrder'] ?? "";
+      _shortDescription = json['ShortDescription'] ?? '';
+      _manufacturer = json['manufacturer'] ?? "";
+      _mobileVideo = json['mobileVideo'] ?? "";
+      _webImage = json['webImage'] ?? ""; ////////////////////////////////////
+      _webThumbnail = json['webThumbnail'] ?? "";
+      if (json['reviews'] != null) {
+        _reviews = [];
+        json['reviews'].forEach((v) {
+          _reviews?.add(Reviews.fromJson(v));
+        });
+      } else {
+        _reviews = [];
+      }
+      _productParentCategoryIdName = json['ProductParentCategoryIdName'] ?? "";
+      _discountType = json['discountType'] ?? "";
+      _currency =
+          json['currency'] ?? ""; ///////////////////////////////////////
+      _productRating = json['productRating'] ?? 0;
+      _productType = json['productType'] ?? "";
+      if (json['featureDetails'] != null) {
+        _featureDetails = [];
+        json['featureDetails'].forEach((v) {
+          _featureDetails?.add(FeatureDetails.fromJson(v));
+        });
+      } else {
+        _featureDetails = [];
+      }
+      _mobileImage = json['mobileImage'] ?? "";
+      _uniqueId =
+          json['unique_id'] ?? ""; //////////////////////////////////////
+      _quantity = json['quantity'] ?? "";
+      _productParentCategoryId = json['ProductParentCategoryId'] ?? "";
+      _unitOfMeasure = json['unitOfMeasure'] ?? "";
+      if (json['more'] != null) {
+        _more = [];
+        json['more'].forEach((v) {
+          _more?.add(More.fromJson(v));
+        });
+      } else {
+        _more = [];
+      }
+      _productSubCategoryId = json['ProductSubCategoryId'] ?? "";
+      _ratingCount = json['ratingCount'] ?? "";
+      _webVideo = json['webVideo'] ?? "";
+      _discountAmount = json['DiscountAmount'] ?? "";
+      _moqValue = json['moq_value'] ?? "";
+      if (json['primarySubProduct'] != null) {
+        _primarySubProduct = json['primarySubProduct'];
+      } else {
+        _primarySubProduct = 0;
+      }
+      if (json['PrimarySubProduct'] != null) {
+        _primarySubProduct = json['PrimarySubProduct'];
+      } else {
+        _primarySubProduct = 0;
+      }
+      _unitPrice = json['UnitPrice'] ??
+          json['unitPrice']; ///////////////////////////////////
+      _productImages = json['ProductImages'] != null
+          ? json['ProductImages'].cast<String>()
+          : [];
+      _productCategoryIdName = json['ProductCategoryIdName'] ?? "";
+      _discountType = json['DiscountType'] ?? "";
+      _productCategoryId = json['ProductCategoryId'] ?? "";
+      _maxOrder = json['maxOrder'] ?? "";
+      _mobileThumbnail = json['mobileThumbnail'] ?? "";
+      _productDescription = json['ProductDescription'] ?? "";
+      _isDiscounted = json['IsDiscounted'] ?? json['isDiscounted'] ?? "";
+      _discountValue = json['DiscountValue'] ?? "";
+      _discountDescription = json['discountDescription'] ?? "";
+      _merchantId = json['merchantId'] ?? "";
+      print("every thing was great!");
+      _productId = pid;
+      print("until!");
+    } catch (e) {
+      print(e.toString());
     }
-    _offerPrice = json['offerPrice'];
-    _actualPrice = json['actualPrice'];
-    _productSubCategoryIdName = json['ProductSubCategoryIdName'];
-    _productId = json['ProductId'];
-    _productName = json['productName'];
-    _minOrder = json['minOrder'];
-    _shortDescription = json['ShortDescription'];
-    _manufacturer = json['manufacturer'];
-    _mobileVideo = json['mobileVideo'];
-    _webImage = json['webImage'];
-    _webThumbnail = json['webThumbnail'];
-    if (json['reviews'] != null) {
-      _reviews = [];
-      json['reviews'].forEach((v) {
-        _reviews?.add(Reviews.fromJson(v));
-      });
-    }
-    _productParentCategoryIdName = json['ProductParentCategoryIdName'];
-    _discountType = json['discountType'];
-    _currency = json['currency'];
-    _productRating = json['productRating'];
-    _productType = json['productType'];
-    if (json['featureDetails'] != null) {
-      _featureDetails = [];
-      json['featureDetails'].forEach((v) {
-        _featureDetails?.add(FeatureDetails.fromJson(v));
-      });
-    }
-    _mobileImage = json['mobileImage'];
-    _uniqueId = json['unique_id'];
-    _quantity = json['quantity'];
-    _productParentCategoryId = json['ProductParentCategoryId'];
-    _unitOfMeasure = json['unitOfMeasure'];
-    if (json['more'] != null) {
-      _more = [];
-      json['more'].forEach((v) {
-        _more?.add(More.fromJson(v));
-      });
-    }
-    _productSubCategoryId = json['ProductSubCategoryId'];
-    _ratingCount = json['ratingCount'];
-    _webVideo = json['webVideo'];
-    _discountAmount = json['DiscountAmount'];
-    _moqValue = json['moq_value'];
-    if( json['primarySubProduct'] != null){
-      _primarySubProduct = json['primarySubProduct'];
-    }
-    if( json['PrimarySubProduct'] != null){
-      _primarySubProduct = json['PrimarySubProduct'];
-    }
-    _unitPrice = json['UnitPrice'] ?? json['unitPrice'];
-    _productImages = json['ProductImages'] != null
-        ? json['ProductImages'].cast<String>()
-        : [];
-    _productCategoryIdName = json['ProductCategoryIdName'];
-    _discountType = json['DiscountType'];
-    _productCategoryId = json['ProductCategoryId'];
-    _maxOrder = json['maxOrder'];
-    _mobileThumbnail = json['mobileThumbnail'];
-    _productDescription = json['ProductDescription'];
-    _isDiscounted = json['IsDiscounted'] ?? json['isDiscounted'];
-    _discountValue = json['DiscountValue'];
-    _discountDescription = json['discountDescription'];
-    _merchantId = json['merchantId'];
   }
 
   String? _specialInstruction;
@@ -246,7 +319,7 @@ class ProductDetails {
   dynamic _offerPrice;
   dynamic _actualPrice;
   String? _productSubCategoryIdName;
-  num? _productId;
+  String? _productId;
   String? _productName;
   dynamic _minOrder;
   String? _shortDescription;
@@ -258,138 +331,140 @@ class ProductDetails {
   String? _productParentCategoryIdName;
   String? _discountType;
   String? _currency;
-  num? _productRating;
+  dynamic _productRating;
   String? _productType;
   List<FeatureDetails>? _featureDetails;
   String? _mobileImage;
   String? _uniqueId;
-  num? _quantity;
-  num? _productParentCategoryId;
+  dynamic _quantity;
+  dynamic _productParentCategoryId;
   String? _unitOfMeasure;
   List<More>? _more;
-  num? _productSubCategoryId;
-  num? _ratingCount;
+  dynamic _productSubCategoryId;
+  dynamic _ratingCount;
   String? _webVideo;
-  num? _discountAmount;
-  num? _moqValue;
-  num? _primarySubProduct;
+  dynamic _discountAmount;
+  dynamic _moqValue;
+  dynamic _primarySubProduct;
   dynamic _unitPrice;
+  String? _provider;
   List<String>? _productImages;
   String? _productCategoryIdName;
-  num? _productCategoryId;
+  dynamic _productCategoryId;
   dynamic _maxOrder;
   String? _mobileThumbnail;
   String? _productDescription;
   dynamic _isDiscounted;
-  num? _discountValue;
+  dynamic _discountValue;
   String? _discountDescription;
-  num? _merchantId;
+  dynamic _merchantId;
 
-  ProductDetails copyWith({
-    String? specialInstruction,
-    List<SubProducts>? subProducts,
-    dynamic offerPrice,
-    num? actualPrice,
-    String? productSubCategoryIdName,
-    num? productId,
-    String? productName,
-    dynamic minOrder,
-    String? shortDescription,
-    String? manufacturer,
-    String? mobileVideo,
-    String? webImage,
-    String? webThumbnail,
-    List<Reviews>? reviews,
-    String? productParentCategoryIdName,
-    String? discountType,
-    String? currency,
-    num? productRating,
-    String? productType,
-    List<FeatureDetails>? featureDetails,
-    String? mobileImage,
-    String? uniqueId,
-    num? quantity,
-    num? productParentCategoryId,
-    String? unitOfMeasure,
-    List<More>? more,
-    num? productSubCategoryId,
-    num? ratingCount,
-    String? webVideo,
-    num? discountAmount,
-    num? moqValue,
-    num? primarySubProduct,
-    num? unitPrice,
-    List<String>? productImages,
-    String? productCategoryIdName,
-    num? productCategoryId,
-    num? maxOrder,
-    String? mobileThumbnail,
-    String? productDescription,
-    dynamic isDiscounted,
-    num? discountValue,
-    String? discountDescription,
-    num? merchantId
-  }) =>
+  ProductDetails copyWith(
+          {String? specialInstruction,
+          List<SubProducts>? subProducts,
+          dynamic offerPrice,
+          num? actualPrice,
+          String? productSubCategoryIdName,
+          String? productId,
+          String? productName,
+          dynamic minOrder,
+          String? shortDescription,
+          String? manufacturer,
+          String? mobileVideo,
+          String? webImage,
+          String? webThumbnail,
+          List<Reviews>? reviews,
+          String? productParentCategoryIdName,
+          String? discountType,
+          String? currency,
+          num? productRating,
+          String? productType,
+          List<FeatureDetails>? featureDetails,
+          String? mobileImage,
+          String? uniqueId,
+          num? quantity,
+          num? productParentCategoryId,
+          String? unitOfMeasure,
+          List<More>? more,
+          num? productSubCategoryId,
+          num? ratingCount,
+          String? webVideo,
+          num? discountAmount,
+          num? moqValue,
+          num? primarySubProduct,
+          num? unitPrice,
+          String? provider,
+          List<String>? productImages,
+          String? productCategoryIdName,
+          num? productCategoryId,
+          num? maxOrder,
+          String? mobileThumbnail,
+          String? productDescription,
+          dynamic isDiscounted,
+          num? discountValue,
+          String? discountDescription,
+          num? merchantId}) =>
       ProductDetails(
-        specialInstruction: specialInstruction ?? _specialInstruction,
-        subProducts: subProducts ?? _subProducts,
-        offerPrice: offerPrice ?? _offerPrice,
-        actualPrice: actualPrice ?? _actualPrice,
-        productSubCategoryIdName:
-            productSubCategoryIdName ?? _productSubCategoryIdName,
-        productId: productId ?? _productId,
-        productName: productName ?? _productName,
-        minOrder: minOrder ?? _minOrder,
-        shortDescription: shortDescription ?? _shortDescription,
-        manufacturer: manufacturer ?? _manufacturer,
-        mobileVideo: mobileVideo ?? _mobileVideo,
-        webImage: webImage ?? _webImage,
-        webThumbnail: webThumbnail ?? _webThumbnail,
-        reviews: reviews ?? _reviews,
-        productParentCategoryIdName:
-            productParentCategoryIdName ?? _productParentCategoryIdName,
-        discountType: discountType ?? _discountType,
-        currency: currency ?? _currency,
-        productRating: productRating ?? _productRating,
-        productType: productType ?? _productType,
-        featureDetails: featureDetails ?? _featureDetails,
-        mobileImage: mobileImage ?? _mobileImage,
-        uniqueId: uniqueId ?? _uniqueId,
-        quantity: quantity ?? _quantity,
-        productParentCategoryId:
-            productParentCategoryId ?? _productParentCategoryId,
-        unitOfMeasure: unitOfMeasure ?? _unitOfMeasure,
-        more: more ?? _more,
-        productSubCategoryId: productSubCategoryId ?? _productSubCategoryId,
-        ratingCount: ratingCount ?? _ratingCount,
-        webVideo: webVideo ?? _webVideo,
-        discountAmount: discountAmount ?? _discountAmount,
-        moqValue: moqValue ?? _moqValue,
-        primarySubProduct: primarySubProduct ?? _primarySubProduct,
-        unitPrice: unitPrice ?? _unitPrice,
-        productImages: productImages ?? _productImages,
-        productCategoryIdName: productCategoryIdName ?? _productCategoryIdName,
-        productCategoryId: productCategoryId ?? _productCategoryId,
-        maxOrder: maxOrder ?? _maxOrder,
-        mobileThumbnail: mobileThumbnail ?? _mobileThumbnail,
-        productDescription: productDescription ?? _productDescription,
-        isDiscounted: isDiscounted ?? _isDiscounted,
-        discountValue: discountValue ?? _discountValue,
-        discountDescription: discountDescription ?? _discountDescription,
-        merchantId: merchantId ?? _merchantId
-      );
+          specialInstruction: specialInstruction ?? _specialInstruction,
+          subProducts: subProducts ?? _subProducts,
+          offerPrice: offerPrice ?? _offerPrice,
+          actualPrice: actualPrice ?? _actualPrice,
+          productSubCategoryIdName:
+              productSubCategoryIdName ?? _productSubCategoryIdName,
+          productId: productId ?? _productId,
+          productName: productName ?? _productName,
+          minOrder: minOrder ?? _minOrder,
+          shortDescription: shortDescription ?? _shortDescription,
+          manufacturer: manufacturer ?? _manufacturer,
+          mobileVideo: mobileVideo ?? _mobileVideo,
+          webImage: webImage ?? _webImage,
+          webThumbnail: webThumbnail ?? _webThumbnail,
+          reviews: reviews ?? _reviews,
+          productParentCategoryIdName:
+              productParentCategoryIdName ?? _productParentCategoryIdName,
+          discountType: discountType ?? _discountType,
+          currency: currency ?? _currency,
+          productRating: productRating ?? _productRating,
+          productType: productType ?? _productType,
+          featureDetails: featureDetails ?? _featureDetails,
+          mobileImage: mobileImage ?? _mobileImage,
+          uniqueId: uniqueId ?? _uniqueId,
+          quantity: quantity ?? _quantity,
+          productParentCategoryId:
+              productParentCategoryId ?? _productParentCategoryId,
+          unitOfMeasure: unitOfMeasure ?? _unitOfMeasure,
+          more: more ?? _more,
+          productSubCategoryId: productSubCategoryId ?? _productSubCategoryId,
+          ratingCount: ratingCount ?? _ratingCount,
+          webVideo: webVideo ?? _webVideo,
+          discountAmount: discountAmount ?? _discountAmount,
+          moqValue: moqValue ?? _moqValue,
+          primarySubProduct: primarySubProduct ?? _primarySubProduct,
+          unitPrice: unitPrice ?? _unitPrice,
+          provider: provider ?? _provider,
+          productImages: productImages ?? _productImages,
+          productCategoryIdName:
+              productCategoryIdName ?? _productCategoryIdName,
+          productCategoryId: productCategoryId ?? _productCategoryId,
+          maxOrder: maxOrder ?? _maxOrder,
+          mobileThumbnail: mobileThumbnail ?? _mobileThumbnail,
+          productDescription: productDescription ?? _productDescription,
+          isDiscounted: isDiscounted ?? _isDiscounted,
+          discountValue: discountValue ?? _discountValue,
+          discountDescription: discountDescription ?? _discountDescription,
+          merchantId: merchantId ?? _merchantId);
 
   String? get specialInstruction => _specialInstruction;
 
   List<SubProducts>? get subProducts => _subProducts;
 
-  num? get offerPrice => _offerPrice;
+  dynamic get offerPrice => _offerPrice;
 
-  num? get actualPrice => _actualPrice;
+  dynamic get actualPrice => _actualPrice;
 
   String? get productSubCategoryIdName => _productSubCategoryIdName;
 
-  num? get productId => _productId;
+  String? get productId => _productId;
 
   String? get productName => _productName;
 
@@ -433,7 +508,7 @@ class ProductDetails {
 
   num? get productSubCategoryId => _productSubCategoryId;
 
-  num? get ratingCount => _ratingCount;
+  dynamic get ratingCount => _ratingCount;
 
   String? get webVideo => _webVideo;
 
@@ -441,9 +516,11 @@ class ProductDetails {
 
   num? get moqValue => _moqValue;
 
-  num? get primarySubProduct => _primarySubProduct;
+  dynamic get primarySubProduct => _primarySubProduct;
 
   dynamic get unitPrice => _unitPrice;
+
+  String? get provider => _provider;
 
   List<String>? get productImages => _productImages;
 
@@ -507,6 +584,7 @@ class ProductDetails {
     map['moq_value'] = _moqValue;
     map['PrimarySubProduct'] = _primarySubProduct;
     map['UnitPrice'] = _unitPrice;
+    map['Provider'] = _provider;
     map['ProductImages'] = _productImages;
     map['ProductCategoryIdName'] = _productCategoryIdName;
     map['DiscountType'] = _discountType;
@@ -522,20 +600,22 @@ class ProductDetails {
   }
 
   Product toProduct() => Product(
-      mobileImage,
+      webImage,
       productName,
       currency,
       unitPrice,
-      ratingCount,
+      // ratingCount,
       productId,
-      shortDescription,
+      // shortDescription,
       subProducts?.isNotEmpty == true
           ? subProducts![0].subProductId
           : primarySubProduct,
       subProducts?.length,
-      isDiscounted,
-      offerPrice,
-      _quantity, _merchantId);
+      // isDiscounted,
+      // offerPrice,
+      // _quantity,
+      // _merchantId,
+      provider);
 }
 
 More moreFromJson(String str) => More.fromJson(json.decode(str));
@@ -828,13 +908,13 @@ class Reviews {
 
   String? get reviewerName => _reviewerName;
 
-  num? get rating => _rating;
+  dynamic get rating => _rating;
 
   String? get reviewerProfileImageUrl => _reviewerProfileImageUrl;
 
   String? get description => _description;
 
-  num? get id => _id;
+  dynamic get id => _id;
 
   String? get title => _title;
 
@@ -859,21 +939,21 @@ String subProductsToJson(SubProducts data) => json.encode(data.toJson());
 class SubProducts {
   SubProducts({
     String? mobileImage,
-    num? offerPrice,
+    dynamic offerPrice,
     List<String>? subProductImages,
     String? webVideo,
-    num? discountAmount,
+    dynamic discountAmount,
     String? shortDescription,
     List<Features>? features,
-    num? unitPrice,
+    dynamic unitPrice,
     String? mobileVideo,
     String? webImage,
     String? webThumbnail,
-    num? subProductId,
+    dynamic subProductId,
     String? discountType,
     String? mobileThumbnail,
-    num? isDiscounted,
-    num? discountValue,
+    dynamic isDiscounted,
+    dynamic discountValue,
     String? discountDescription,
   }) {
     _mobileImage = mobileImage;
@@ -923,39 +1003,39 @@ class SubProducts {
   }
 
   String? _mobileImage;
-  num? _offerPrice;
+  dynamic _offerPrice;
   List<String>? _subProductImages;
   String? _webVideo;
-  num? _discountAmount;
+  dynamic _discountAmount;
   String? _shortDescription;
   List<Features>? _features;
-  num? _unitPrice;
+  dynamic _unitPrice;
   String? _mobileVideo;
   String? _webImage;
   String? _webThumbnail;
-  num? _subProductId;
+  dynamic _subProductId;
   String? _discountType;
   String? _mobileThumbnail;
-  num? _isDiscounted;
-  num? _discountValue;
+  dynamic _isDiscounted;
+  dynamic _discountValue;
   String? _discountDescription;
 
   SubProducts copyWith({
     String? mobileImage,
-    num? offerPrice,
+    dynamic offerPrice,
     List<String>? subProductImages,
     String? webVideo,
-    num? discountAmount,
+    dynamic discountAmount,
     String? shortDescription,
     List<Features>? features,
-    num? unitPrice,
+    dynamic unitPrice,
     String? mobileVideo,
     String? webImage,
     String? webThumbnail,
-    num? subProductId,
+    dynamic subProductId,
     String? discountType,
     String? mobileThumbnail,
-    num? isDiscounted,
+    dynamic isDiscounted,
     num? discountValue,
     String? discountDescription,
   }) =>
@@ -981,19 +1061,19 @@ class SubProducts {
 
   String? get mobileImage => _mobileImage;
 
-  num? get offerPrice => _offerPrice;
+  dynamic get offerPrice => _offerPrice;
 
   List<String>? get subProductImages => _subProductImages;
 
   String? get webVideo => _webVideo;
 
-  num? get discountAmount => _discountAmount;
+  dynamic get discountAmount => _discountAmount;
 
   String? get shortDescription => _shortDescription;
 
   List<Features>? get features => _features;
 
-  num? get unitPrice => _unitPrice;
+  dynamic get unitPrice => _unitPrice;
 
   String? get mobileVideo => _mobileVideo;
 
@@ -1001,15 +1081,15 @@ class SubProducts {
 
   String? get webThumbnail => _webThumbnail;
 
-  num? get subProductId => _subProductId;
+  String? get subProductId => _subProductId;
 
   String? get discountType => _discountType;
 
   String? get mobileThumbnail => _mobileThumbnail;
 
-  num? get isDiscounted => _isDiscounted;
+  dynamic get isDiscounted => _isDiscounted;
 
-  num? get discountValue => _discountValue;
+  dynamic get discountValue => _discountValue;
 
   String? get discountDescription => _discountDescription;
 

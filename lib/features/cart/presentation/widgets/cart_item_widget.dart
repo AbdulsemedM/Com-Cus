@@ -31,7 +31,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
   @override
   void initState() {
     super.initState();
-    prints(widget.cartItem);
+    // prints(widget.cartItem);
     _deleteCartItem();
     setState(() {
       _quantity = widget.cartItem.quantity ?? 1;
@@ -112,11 +112,13 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 //   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 //       color: AppColors.colorPrimary, fontSize: 14.sp),
                 // ),
-                if (widget.cartItem.description != null)
+                if (widget.cartItem.description != null &&
+                    widget.cartItem.description != "provider")
                   const SizedBox(
                     height: 5,
                   ),
-                if (widget.cartItem.description != null)
+                if (widget.cartItem.description != null &&
+                    widget.cartItem.description != "provider")
                   FutureBuilder<String>(
                     future: TranslationService.translate(
                         "${widget.cartItem.description}"), // Translate hint
@@ -174,80 +176,84 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                           ?.copyWith(color: Colors.black, fontSize: 14),
                     ),
                     const Spacer(),
-                    Container(
-                        height: 40,
-                        width: 70,
-                        child: TextFormField(
-                          onTapOutside: (event) {
-                            amountFocus.unfocus();
-                            amount.clear();
-                          },
-                          onChanged: (value) {
-                            String inputValue = amount.text;
-                            int? parsedValue = parsePositiveInteger(inputValue);
-                            if (parsedValue != null) {
-                              setState(() {
-                                _quantity = parsedValue;
-                              });
-                              context
-                                  .read<CartCoreCubit>()
-                                  .changeCartItemQuantity(
-                                      widget.cartItem, _quantity);
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            LengthLimitingTextInputFormatter(5),
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          controller: amount,
-                          focusNode: amountFocus,
-                          // maxLength: 5,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            // labelText: "Phone Number*".tr,
-                          ),
-                          onEditingComplete: () {
-                            String inputValue = amount.text;
-                            int? parsedValue = parsePositiveInteger(inputValue);
-                            if (parsedValue != null) {
-                              setState(() {
-                                _quantity = parsedValue;
-                              });
-                              context
-                                  .read<CartCoreCubit>()
-                                  .changeCartItemQuantity(
-                                      widget.cartItem, _quantity);
-                            }
-                            amount.clear();
-                          },
-                        )),
+                    if (widget.cartItem.description != "provider")
+                      Container(
+                          height: 40,
+                          width: 70,
+                          child: TextFormField(
+                            onTapOutside: (event) {
+                              amountFocus.unfocus();
+                              amount.clear();
+                            },
+                            onChanged: (value) {
+                              String inputValue = amount.text;
+                              int? parsedValue =
+                                  parsePositiveInteger(inputValue);
+                              if (parsedValue != null) {
+                                setState(() {
+                                  _quantity = parsedValue;
+                                });
+                                context
+                                    .read<CartCoreCubit>()
+                                    .changeCartItemQuantity(
+                                        widget.cartItem, _quantity);
+                              }
+                            },
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              LengthLimitingTextInputFormatter(5),
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            controller: amount,
+                            focusNode: amountFocus,
+                            // maxLength: 5,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              // labelText: "Phone Number*".tr,
+                            ),
+                            onEditingComplete: () {
+                              String inputValue = amount.text;
+                              int? parsedValue =
+                                  parsePositiveInteger(inputValue);
+                              if (parsedValue != null) {
+                                setState(() {
+                                  _quantity = parsedValue;
+                                });
+                                context
+                                    .read<CartCoreCubit>()
+                                    .changeCartItemQuantity(
+                                        widget.cartItem, _quantity);
+                              }
+                              amount.clear();
+                            },
+                          )),
                     SizedBox(
                       width: 10,
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 6),
-                      decoration: const BoxDecoration(color: AppColors.bg1),
-                      child: InkWell(
-                        onTap: () {
-                          if (_quantity > 1) {
-                            setState(() {
-                              _quantity -= 1;
-                            });
-                            context
-                                .read<CartCoreCubit>()
-                                .changeCartItemQuantity(
-                                    widget.cartItem, _quantity);
-                          }
-                        },
-                        child: Text(
-                          "-",
-                          style:
-                              TextStyle(fontSize: 18.sp, color: Colors.black),
+                    if (widget.cartItem.description != "provider")
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 6),
+                        decoration: const BoxDecoration(color: AppColors.bg1),
+                        child: InkWell(
+                          onTap: () {
+                            if (_quantity > 1) {
+                              setState(() {
+                                _quantity -= 1;
+                              });
+                              context
+                                  .read<CartCoreCubit>()
+                                  .changeCartItemQuantity(
+                                      widget.cartItem, _quantity);
+                            }
+                          },
+                          child: Text(
+                            "-",
+                            style:
+                                TextStyle(fontSize: 18.sp, color: Colors.black),
+                          ),
                         ),
                       ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
@@ -255,25 +261,28 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                         style: TextStyle(color: Colors.black, fontSize: 18.sp),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 6),
-                      decoration: const BoxDecoration(color: AppColors.bg1),
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            _quantity += 1;
-                          });
-                          context.read<CartCoreCubit>().changeCartItemQuantity(
-                              widget.cartItem, _quantity);
-                        },
-                        child: Text(
-                          "+",
-                          style:
-                              TextStyle(fontSize: 18.sp, color: Colors.black),
+                    if (widget.cartItem.description != "provider")
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 6),
+                        decoration: const BoxDecoration(color: AppColors.bg1),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _quantity += 1;
+                            });
+                            context
+                                .read<CartCoreCubit>()
+                                .changeCartItemQuantity(
+                                    widget.cartItem, _quantity);
+                          },
+                          child: Text(
+                            "+",
+                            style:
+                                TextStyle(fontSize: 18.sp, color: Colors.black),
+                          ),
                         ),
                       ),
-                    ),
                     const SizedBox(
                       width: 10,
                     )
