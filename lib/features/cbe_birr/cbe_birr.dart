@@ -146,11 +146,11 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                                     if (regExp1.hasMatch(pNumber!)) {
                                       pNumber = pNumber!
                                           .replaceFirst(RegExp('^0'), '251');
-                                      print(pNumber);
+                                      // print(pNumber);
                                     } else if (regExp2.hasMatch(pNumber!)) {
                                       pNumber = pNumber!
                                           .replaceFirst(RegExp(r'^\+'), '');
-                                      print(pNumber);
+                                      // print(pNumber);
                                     }
                                     final prefsData = getIt<PrefsData>();
                                     final isUserLoggedIn = await prefsData
@@ -199,12 +199,12 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      // print(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         bool isit = await hasUserSwitchedToBusiness();
         final orderRef = await prefsData.readData("order_ref");
-        print(orderRef);
+        // print(orderRef);
         Map<String, dynamic> payload = {
           "ServiceCode": "CHECKOUT",
           "PaymentType": "CBE-BIRR",
@@ -213,11 +213,11 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
           "OrderRef": orderRef,
           "Currency": "ETB"
         };
-        print(payload);
+        // print(payload);
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/payment/v1/request",
           ),
           body: jsonEncode(payload),
@@ -225,12 +225,12 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
         );
 
         var data = jsonDecode(response.body);
-        print(data);
+        // print(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("epg_done", "yes");
-          print(data['PaymentUrl']);
+          // print(data['PaymentUrl']);
           setState(() {
             loading = false;
           });

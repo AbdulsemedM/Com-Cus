@@ -145,11 +145,11 @@ class _EPGPaymentState extends State<EPGPayment> {
                                     if (regExp1.hasMatch(pNumber!)) {
                                       pNumber = pNumber!
                                           .replaceFirst(RegExp('^0'), '251');
-                                      print(pNumber);
+                                      // print(pNumber);
                                     } else if (regExp2.hasMatch(pNumber!)) {
                                       pNumber = pNumber!
                                           .replaceFirst(RegExp(r'^\+'), '');
-                                      print(pNumber);
+                                      // print(pNumber);
                                     }
                                     var done = await sendPassword();
                                     if (done) {}
@@ -206,11 +206,11 @@ class _EPGPaymentState extends State<EPGPayment> {
           "OrderRef": orderRef,
           "Currency": "ETB"
         };
-        print(payload);
+        // print(payload);
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/payment/v1/request",
           ),
           body: jsonEncode(payload),
@@ -218,7 +218,7 @@ class _EPGPaymentState extends State<EPGPayment> {
         );
 
         var data = jsonDecode(response.body);
-        print(data);
+        // print(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();

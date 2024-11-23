@@ -30,25 +30,25 @@ class PaymentCubit extends Cubit<PaymentState> {
     final loanPaymentMode =
         data.where((element) => element.name?.toLowerCase() == "loan");
     // get loans
-    final loans = await customerLoanRepo.fetchFinancialInstitutions();
+    // final loans = await customerLoanRepo.fetchFinancialInstitutions();
     // add as payment method
     if (loanPaymentMode.isNotEmpty) {
       // remove existing and add new one
       data.removeWhere((element) => element.name?.toLowerCase() == "loan");
     }
 
-    data.add(PaymentMethods(
-        name: "Loan",
-        iconUrl: "loan.png",
-        paymentMethod: "LOAN",
-        items: loans
-            .map((e) => PaymentMethodItem(
-                iconUrl: "loan.png",
-                name: e.name,
-                paymentMode: PaymentMode.loan,
-                paymentMethod: e.code,
-                id: e.id))
-            .toList()));
+    // data.add(PaymentMethods(
+    //     name: "Loan",
+    //     iconUrl: "loan.png",
+    //     paymentMethod: "LOAN",
+    //     items: loans
+    //         .map((e) => PaymentMethodItem(
+    //             iconUrl: "loan.png",
+    //             name: e.name,
+    //             paymentMode: PaymentMode.loan,
+    //             paymentMethod: e.code,
+    //             id: e.id))
+    //         .toList()));
   }
 
   void fetchMarkUps(num institutionId) async {

@@ -15,7 +15,7 @@ class SelectedProductPageRepositoryImpl implements SelectedProductRepo {
       : super();
 
   @override
-  Future<SelectedProductDetails> getProductDetails(num prodId) async {
+  Future<SelectedProductDetails> getProductDetails(String prodId) async {
     try {
       final hasUserSwitchedToBusiness =
           await sessionRepo.hasUserSwitchedToBusiness();
@@ -29,6 +29,8 @@ class SelectedProductPageRepositoryImpl implements SelectedProductRepo {
         print(response);
 
         final productObj = SelectedProductDto.fromJson(response);
+        print("selected product is featched");
+        print(productObj.details!.first);
         // TODO: add check if product exists, anyway this '.first' handles the exception for us
         return productObj.details!.first;
       } else {

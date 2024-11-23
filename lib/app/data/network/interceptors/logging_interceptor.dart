@@ -14,57 +14,57 @@ class LoggingInterceptor extends Interceptor {
   @override
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    logPrint('******************************************');
-    logPrint('*** API Request - Start ***');
+    // logPrint('******************************************');
+    // logPrint('*** API Request - Start ***');
 
-    printKV('URI', options.uri);
-    printKV('METHOD', options.method);
-    logPrint('HEADERS:');
-    options.headers.forEach((key, dynamic v) => printKV(' - $key', '$v'));
-    logPrint('BODY:');
-    logPrint(' \n ');
-    printAll(options.data ?? '');
-    logPrint(' \n ');
+    // printKV('URI', options.uri);
+    // printKV('METHOD', options.method);
+    // logPrint('HEADERS:');
+    // options.headers.forEach((key, dynamic v) => printKV(' - $key', '$v'));
+    // logPrint('BODY:');
+    // logPrint(' \n ');
+    // printAll(options.data ?? '');
+    // logPrint(' \n ');
 
-    logPrint('*** API Request - End ***');
+    // logPrint('*** API Request - End ***');
 
     return handler.next(options);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    logPrint('*** Api Error - Start ***:');
+    // logPrint('*** Api Error - Start ***:');
 
-    logPrint('URI: ${err.requestOptions.uri}');
-    if (err.response != null) {
-      logPrint('STATUS CODE: ${err.response?.statusCode?.toString()}');
-    }
-    logPrint('$err');
-    if (err.response != null) {
-      printKV('REDIRECT', err.response?.realUri ?? '');
-      logPrint('BODY:');
-      printAll(err.response?.data.toString());
-    }
+    // logPrint('URI: ${err.requestOptions.uri}');
+    // if (err.response != null) {
+    //   logPrint('STATUS CODE: ${err.response?.statusCode?.toString()}');
+    // }
+    // logPrint('$err');
+    // if (err.response != null) {
+    //   printKV('REDIRECT', err.response?.realUri ?? '');
+    //   logPrint('BODY:');
+    //   printAll(err.response?.data.toString());
+    // }
 
-    logPrint('*** Api Error - End ***:');
-    logPrint('******************************************');
+    // logPrint('*** Api Error - End ***:');
+    // logPrint('******************************************');
     return handler.next(err);
   }
 
   @override
   Future onResponse(
       Response response, ResponseInterceptorHandler handler) async {
-    logPrint('*** Api Response - Start ***');
+    // logPrint('*** Api Response - Start ***');
 
-    printKV('URI', response.requestOptions.uri);
-    printKV('STATUS CODE', response.statusCode ?? '');
-    printKV('REDIRECT', response.isRedirect ?? false);
-    logPrint('BODY:');
-    logPrint(' \n ');
-    printAll( jsonEncode(response.data));
-    logPrint(' \n ');
-    logPrint('*** Api Response - End ***');
-    logPrint('******************************************');
+    // printKV('URI', response.requestOptions.uri);
+    // printKV('STATUS CODE', response.statusCode ?? '');
+    // printKV('REDIRECT', response.isRedirect ?? false);
+    // logPrint('BODY:');
+    // logPrint(' \n ');
+    // printAll( jsonEncode(response.data));
+    // logPrint(' \n ');
+    // logPrint('*** Api Response - End ***');
+    // logPrint('******************************************');
 
     return handler.next(response);
   }

@@ -57,8 +57,8 @@ class _CartPageState extends State<CartPage> {
     // Use await to get the actual string value from the futures
     sCart = await Shopping;
     it = await items;
-    print("herrerererere");
-    print(sCart);
+    // print("herrerererere");
+    // print(sCart);
 
     setState(() {
       loading = false;

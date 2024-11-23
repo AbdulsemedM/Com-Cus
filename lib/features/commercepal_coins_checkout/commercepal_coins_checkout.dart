@@ -94,7 +94,7 @@ class _CommercepalCoinsCheckoutState extends State<CommercepalCoinsCheckout> {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/prime/api/v1/customer/accounts/commission-balance",
           ),
           headers: <String, String>{"Authorization": "Bearer $token"},
@@ -147,11 +147,11 @@ class _CommercepalCoinsCheckoutState extends State<CommercepalCoinsCheckout> {
           "OrderRef": orderRef,
           "Currency": "ETB"
         };
-        print(payload);
+        // print(payload);
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/payment/v1/request",
           ),
           body: jsonEncode(payload),
@@ -159,7 +159,7 @@ class _CommercepalCoinsCheckoutState extends State<CommercepalCoinsCheckout> {
         );
 
         var data = jsonDecode(response.body);
-        print(data);
+        // print(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:commercepal/app/data/network/api_provider.dart';
 import 'package:commercepal/app/data/network/end_points.dart';
 import 'package:commercepal/features/payment/data/dto/payment_modes_dto.dart';
@@ -16,6 +18,9 @@ class PaymentRepoImpl implements PaymentRepo {
     try {
       final response = await apiProvider.get(EndPoints.paymentModes.url);
       if (response['statusCode'] == '000') {
+        print(response);
+        // print("here we returned");
+        // print(rObject);
         final rObject = PaymentModesDto.fromJson(response);
         if (rObject.data?.paymentMethods?.isEmpty == true) {
           throw 'Payment modes not found';

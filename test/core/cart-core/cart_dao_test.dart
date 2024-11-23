@@ -25,8 +25,8 @@ void main() {
       currency: 'ETB',
       price: '9000',
       quantity: 1,
-      subProductId: 1,
-      productId: 2);
+      subProductId: "1",
+      productId: "2");
 
   test("given a cart item it is added successfully", () async {
     await cartDao.insert(cartItem);
@@ -52,12 +52,12 @@ void main() {
   test("nuke() clears all cart items", () async {
     // insert
     await cartDao.insert(cartItem);
-    await cartDao.insert(cartItem.copyWith(subProductId: 4));
+    await cartDao.insert(cartItem.copyWith(subProductId: "4"));
 
     await cartDao.nuke();
 
     final cItem =
-    await cartDao.getCartItemBySubProductId(cartItem.subProductId!);
+        await cartDao.getCartItemBySubProductId(cartItem.subProductId!);
     expect(cItem, isNull);
   });
 }

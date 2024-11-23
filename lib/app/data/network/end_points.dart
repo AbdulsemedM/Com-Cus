@@ -48,12 +48,14 @@ enum EndPoints {
 
 extension Url on EndPoints {
   static String baseUrl = 'https://api.commercepal.com:2096/prime/api/v1/app';
+  static String baseUrl3 =
+      'https://api.commercepal.com:2096/prime/api/v1/app/mobile';
   static String baseUrl2 = 'https://api.commercepal.com:2096/prime/api/v1';
   static String baseUrlCustomer =
       'https://api.commercepal.com:2096/prime/api/v1/customer';
   static String baseUrlCustomer2 =
-      'https://api.commercepal.com:2095/prime/api/v1/customer';
-  static String payments = "https://api.commercepal.com:2095/payment/v1";
+      'https://pay.commercepal.com/prime/api/v1/customer';
+  static String payments = "https://pay.commercepal.com/payment/v1";
   static String financials =
       "https://api.commercepal.com:2087/api/v1/financial/payment";
   static String businessBaseUrl =
@@ -72,7 +74,7 @@ extension Url on EndPoints {
       case EndPoints.subCategories:
         return '$baseUrl/get-sub-categories';
       case EndPoints.products:
-        return "$baseUrl/get-list-products";
+        return "$baseUrl3/get-list-products";
       case EndPoints.productsDetails:
         return "$baseUrl/get-products";
       case EndPoints.searchProduct:

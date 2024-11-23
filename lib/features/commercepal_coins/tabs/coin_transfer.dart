@@ -123,11 +123,11 @@ class _CoinTransferState extends State<CoinTransfer> {
                         if (regExp1.hasMatch(pNumberController.text)) {
                           pNumber = pNumberController.text
                               .replaceFirst(RegExp('^0'), '251');
-                          print(pNumber);
+                          // print(pNumber);
                         } else if (regExp2.hasMatch(pNumberController.text)) {
                           pNumber = pNumberController.text
                               .replaceFirst(RegExp(r'^\+'), '');
-                          print(pNumber);
+                          // print(pNumber);
                         }
                         var done = await submitForm(pNumber);
                         if (done) {
@@ -163,11 +163,11 @@ class _CoinTransferState extends State<CoinTransfer> {
           "amount": amountController.text,
           "receiverContact": pNumber
         };
-        print(payload);
+        // print(payload);
 
         final response = await http.post(
           Uri.https(
-            "api.commercepal.com:2095",
+            "pay.commercepal.com",
             "/prime/api/v1/customer/accounts/transfer-balance",
           ),
           body: jsonEncode(payload),
@@ -178,7 +178,7 @@ class _CoinTransferState extends State<CoinTransfer> {
         );
 
         var data = jsonDecode(response.body);
-        print(data);
+        // print(data);
 
         if (data['statusCode'] == '000') {
           setState(() {

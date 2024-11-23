@@ -90,8 +90,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
     Aut = await Automatic;
     Man = await Manual;
     Can = await Cancel;
-    print("herrerererere");
-    print(AAdd);
+    // print("herrerererere");
+    // print(AAdd);
 
     setState(() {
       loading = false;
@@ -290,7 +290,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                           // widget.onAddressClicked.call(adds[0]);
                           // adds[0].selected = true;
                           // ctx.read<CheckOutCubit>().setSelectedAddress(adds[0]);
-                          print("newherewego");
+                          // print("newherewego");
                           // Set the first address as selected
                           // Dispatch the updated list of addresses to the CheckOutCubit
                         } else if (adds.last.selected && !done) {
@@ -464,7 +464,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
         setState(() {
           loading = true;
         });
-        print("here we go");
+        // print("here we go");
         var status = await Permission.location.request();
         print(status.isPermanentlyDenied);
         if (status.isGranted) {
@@ -476,8 +476,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             done1 = true;
             latitude = position.latitude;
             longitude = position.longitude;
-            print(latitude);
-            print(longitude);
+            // print(latitude);
+            // print(longitude);
             if (latitude != null && longitude != null) {
               getAddressFromLatLng(latitude.toString(), longitude.toString());
             } else {
@@ -486,8 +486,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             }
             loading = false;
           });
-          print(latitude);
-          print(longitude);
+          // print(latitude);
+          // print(longitude);
         } else {
           displaySnack(
               context, "Please add your address by pressing \"Add Address\"");
@@ -512,8 +512,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
 
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
-      print(placemarks);
-      print("object");
+      // print(placemarks);
+      // print("object");
       for (Placemark placemark in placemarks) {
         String street = placemark.street ??
             ""; // Access the "Street" property and handle null values
@@ -531,8 +531,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
         String locality = place.locality ?? '';
         String subLocal = place.subLocality ?? '';
         String country = place.country ?? '';
-        print(
-            "Street: $street, SubLocality: $subLocality, Locality: $locality, SubLocal: $subLocal, Country: $country");
+        // print(
+        //     "Street: $street, SubLocality: $subLocality, Locality: $locality, SubLocal: $subLocal, Country: $country");
         try {
           setState(() {
             loading = true;
@@ -557,7 +557,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             "latitude": latitude,
             "longitude": longitude
           };
-          print(payload);
+          // print(payload);
           final prefsData = getIt<PrefsData>();
           final isUserLoggedIn =
               await prefsData.contains(PrefsKeys.userToken.name);
@@ -573,7 +573,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             );
 
             var data = jsonDecode(response.body);
-            print(data);
+            // print(data);
 
             if (data['statusCode'] == '000') {
               setState(() {
@@ -616,7 +616,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       setState(() {
         loading = true;
       });
-      print("hereeee");
+      // print("hereeee");
 
       final response = await http.get(Uri.https(
           "api.commercepal.com:2096", "/prime/api/v1/service/cities"));
@@ -629,7 +629,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             cityName: b['cityName'],
             countryId: b['countryId']));
       }
-      print(cities.length);
+      // print(cities.length);
       setState(() {
         loading = false;
       });

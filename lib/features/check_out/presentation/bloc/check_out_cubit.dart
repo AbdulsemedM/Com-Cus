@@ -111,6 +111,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       if (_selectedAddress == null && !_isUserBusiness) return;
       _deliveryFee = await checkOutRepo.getDeliveryFee(
           _orderRef!, _selectedAddress?.id?.toInt());
+      // print("the new error");
       emit(
           CheckOutState.shippingFee("${_cartItems[0].currency} $_deliveryFee"));
       // recalculate total

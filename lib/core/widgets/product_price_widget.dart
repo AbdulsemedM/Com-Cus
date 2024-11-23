@@ -73,9 +73,9 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
     tPrice = await totalPrice;
     sTit = await subTitle;
     bText = await butText;
-    print("herrerererere");
-    print(tPrice);
-    print(sTit);
+    // print("herrerererere");
+    // print(tPrice);
+    // print(sTit);
 
     setState(() {
       loading = false;
@@ -336,7 +336,7 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
         loading = true;
       });
 
-      print("hereeeewego");
+      // print("hereeeewego");
       Map<String, dynamic> payload = {
         "promoCode": promoCodeController.text,
         "items": []
@@ -349,7 +349,7 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
         };
         payload["items"].add(itemMap);
       }
-      print(payload);
+      // print(payload);
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       if (isUserLoggedIn) {
@@ -372,7 +372,7 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
                 data['priceSummary']['finalTotalCheckoutPrice'].toString();
             loading = false;
           });
-          print(totalCheckoutPrice);
+          // print(totalCheckoutPrice);
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("promocode", promoCodeController.text);
           prefs.setString("newTotalPrice", totalCheckoutPrice!);

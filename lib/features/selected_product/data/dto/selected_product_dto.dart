@@ -84,7 +84,7 @@ class SelectedProductDetails {
     num? offerPrice,
     num? actualPrice,
     String? productSubCategoryIdName,
-    num? productId,
+    dynamic productId,
     String? productName,
     num? minOrder,
     String? shortDescription,
@@ -168,17 +168,22 @@ class SelectedProductDetails {
   }
 
   SelectedProductDetails.fromJson(dynamic json) {
+    print(json);
     _specialInstruction = json['SpecialInstruction'];
+    print("1");
     if (json['subProducts'] != null) {
       _subProducts = [];
       json['subProducts'].forEach((v) {
         _subProducts?.add(SubProducts.fromJson(v));
       });
     }
+    print("2");
     _offerPrice = json['offerPrice'];
+    print("3");
     _actualPrice = json['actualPrice'];
+    print("4");
     _productSubCategoryIdName = json['ProductSubCategoryIdName'];
-    _productId = json['ProductId'];
+    _productId = (json['ProductId']);
     _productName = json['productName'];
     _minOrder = json['minOrder'];
     _shortDescription = json['ShortDescription'];
@@ -221,9 +226,26 @@ class SelectedProductDetails {
     _moqValue = json['moq_value'];
     _primarySubProduct = json['PrimarySubProduct'];
     _unitPrice = json['UnitPrice'];
-    _productImages = json['ProductImages'] != null
-        ? json['ProductImages'].cast<String>()
-        : [];
+    // _productImages = json['ProductImages'] != null
+    //     ? json['ProductImages'].cast<String>()
+    //     : [];
+    // _productImages = json['ProductImages'] != null
+    //     ? json['ProductImages']
+    //         // .cast<String>()
+    //         .where((image) => image != null) // Filter out null and empty values
+    //         .toList()
+    //     : [];
+    print("image here");
+    // print(json['ProductImages'][5]);
+    if (json['ProductImages'] != null) {
+      _productImages = [];
+      json['ProductImages'].forEach((x) {
+        if (x.toString() != "null") {
+          _productImages!.add(x.toString());
+        }
+        // (x.toString() != "null" ? _productImages!.add(x.toString()) : null);
+      });
+    }
     _productCategoryIdName = json['ProductCategoryIdName'];
     _discountType = json['DiscountType'];
     _productCategoryId = json['ProductCategoryId'];
@@ -233,6 +255,7 @@ class SelectedProductDetails {
     _isDiscounted = json['IsDiscounted'];
     _discountValue = json['DiscountValue'];
     _discountDescription = json['discountDescription'];
+    print("5");
   }
 
   String? _specialInstruction;
@@ -240,7 +263,7 @@ class SelectedProductDetails {
   num? _offerPrice;
   num? _actualPrice;
   String? _productSubCategoryIdName;
-  num? _productId;
+  dynamic _productId;
   String? _productName;
   num? _minOrder;
   String? _shortDescription;
@@ -283,7 +306,7 @@ class SelectedProductDetails {
   List<Product>? similarProducts;
   Map<String, List<Features>> features = {};
   num? priceBasedOnSubProducts;
-  num? selectedSubProductId;
+  String? selectedSubProductId;
   String? descriptionBasedProduct;
   String? selectedSubProductImage;
   String? deliveryDate;
@@ -294,7 +317,7 @@ class SelectedProductDetails {
     num? offerPrice,
     num? actualPrice,
     String? productSubCategoryIdName,
-    num? productId,
+    dynamic productId,
     String? productName,
     num? minOrder,
     String? shortDescription,
@@ -390,7 +413,7 @@ class SelectedProductDetails {
 
   String? get productSubCategoryIdName => _productSubCategoryIdName;
 
-  num? get productId => _productId;
+  dynamic get productId => _productId;
 
   String? get productName => _productName;
 
@@ -525,13 +548,13 @@ class SelectedProductDetails {
   }
 
   CartItem toCartItem() => CartItem(
-      productId: productId?.toInt(),
+      productId: productId.toString(),
       name: productName,
       description: descriptionBasedProduct,
       quantity: 1,
       currency: currency,
       price: priceBasedOnSubProducts.toString(),
-      subProductId: selectedSubProductId?.toInt(),
+      subProductId: selectedSubProductId!.toString(),
       image: selectedSubProductImage);
 }
 
@@ -655,7 +678,7 @@ class Items {
   String? _webImage;
   String? _webThumbnail;
   String? _name;
-  num? _id;
+  dynamic _id;
   String? _mobileThumbnail;
   String? _sectionType;
   num? _categoryId;
@@ -693,7 +716,7 @@ class Items {
 
   String? get name => _name;
 
-  num? get id => _id;
+  dynamic get id => _id;
 
   String? get mobileThumbnail => _mobileThumbnail;
 
@@ -866,7 +889,7 @@ class SubProducts {
     String? mobileVideo,
     String? webImage,
     String? webThumbnail,
-    num? subProductId,
+    dynamic subProductId,
     String? discountType,
     String? mobileThumbnail,
     num? isDiscounted,
@@ -893,6 +916,8 @@ class SubProducts {
   }
 
   SubProducts.fromJson(dynamic json) {
+    print(json);
+    print(json['SubProductId'].runtimeType);
     _mobileImage = json['mobileImage'];
     _offerPrice = json['offerPrice'];
     _subProductImages = json['subProductImages'] != null
@@ -911,7 +936,8 @@ class SubProducts {
     _mobileVideo = json['mobileVideo'];
     _webImage = json['webImage'];
     _webThumbnail = json['webThumbnail'];
-    _subProductId = json['SubProductId'];
+    _subProductId = json['SubProductId'].toString();
+    print("11");
     _discountType = json['DiscountType'];
     _mobileThumbnail = json['mobileThumbnail'];
     _isDiscounted = json['IsDiscounted'];
@@ -930,7 +956,7 @@ class SubProducts {
   String? _mobileVideo;
   String? _webImage;
   String? _webThumbnail;
-  num? _subProductId;
+  dynamic _subProductId;
   String? _discountType;
   String? _mobileThumbnail;
   num? _isDiscounted;
@@ -949,7 +975,7 @@ class SubProducts {
     String? mobileVideo,
     String? webImage,
     String? webThumbnail,
-    num? subProductId,
+    String? subProductId,
     String? discountType,
     String? mobileThumbnail,
     num? isDiscounted,
@@ -998,7 +1024,7 @@ class SubProducts {
 
   String? get webThumbnail => _webThumbnail;
 
-  num? get subProductId => _subProductId;
+  String? get subProductId => _subProductId;
 
   String? get discountType => _discountType;
 
@@ -1078,7 +1104,7 @@ class Features {
 
   // Added manually for easy parsing in ui
   String? mobileImage;
-  num? subProdId;
+  String? subProdId;
 
   Features copyWith({
     String? featureValue,

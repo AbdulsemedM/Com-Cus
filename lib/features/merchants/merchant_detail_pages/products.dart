@@ -396,22 +396,24 @@ class _MerchantProductsState extends State<MerchantProducts> {
                                                     ))),
                                                 onPressed: () {
                                                   CartItem myItem = CartItem(
-                                                      productId: int.parse(
-                                                          myMerchantProducts![index]
+                                                      productId:
+                                                          (myMerchantProducts![
+                                                                  index]
                                                               .productId),
-                                                      name:
-                                                          myMerchantProducts[index]
-                                                              .productName,
-                                                      image:
-                                                          myMerchantProducts[index]
-                                                              .mobileThumbnail,
+                                                      name: myMerchantProducts[
+                                                              index]
+                                                          .productName,
+                                                      image: myMerchantProducts[
+                                                              index]
+                                                          .mobileThumbnail,
                                                       description: '-',
                                                       price:
                                                           myMerchantProducts[index]
                                                               .actualPrice,
                                                       currency: "ETB",
-                                                      subProductId: int.parse(
-                                                          myMerchantProducts[index]
+                                                      subProductId:
+                                                          (myMerchantProducts[
+                                                                  index]
                                                               .subProductId),
                                                       quantity: int.parse(
                                                           myMerchantProducts[index]

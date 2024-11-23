@@ -1,13 +1,15 @@
-import 'package:commercepal/app/utils/app_colors.dart';
-import 'package:commercepal/app/utils/decoration.dart';
+// import 'package:commercepal/app/utils/app_colors.dart';
+// import 'package:commercepal/app/utils/decoration.dart';
+import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/core/widgets/product_item_widget.dart';
+import 'package:commercepal/features/alibaba_product_view/alibaba_products_screen.dart';
 import 'package:commercepal/features/products/presentation/widgets/product_not_found.dart';
 import 'package:commercepal/features/selected_product/presentation/selected_product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../app/di/injector.dart';
-import '../../../dashboard/widgets/home_error_widget.dart';
+// import '../../../../app/di/injector.dart';
+// import '../../../dashboard/widgets/home_error_widget.dart';
 import '../../../dashboard/widgets/home_loading_widget.dart';
 import '../../domain/product.dart';
 import '../cubit/product_cubit.dart';
@@ -45,7 +47,8 @@ class _ProductsPageDataState extends State<ProductsPageData> {
 class ProductsStatePage extends StatefulWidget {
   final num? subCatId;
   final Map? queryParams;
-  ProductsStatePage({Key? key, this.subCatId, this.queryParams})
+  final String? val;
+  ProductsStatePage({Key? key, this.subCatId, this.queryParams, this.val})
       : super(key: key);
 
   @override
@@ -67,6 +70,8 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductCubit, ProductState>(
       builder: (context, state) {
+        print("ohmystate");
+        print(state);
         return state.maybeWhen(
           orElse: () => const SizedBox(),
           error: (String error) => ProductNotFound(error: error),
@@ -154,23 +159,60 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
               //   ),
               // ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.88,
+                height: MediaQuery.of(context).size.height * 0.85,
                 child: GridView.count(
                   controller: scrollController,
                   crossAxisCount: 2,
-                  childAspectRatio: 0.81,
+                  childAspectRatio: 0.76,
                   children: List.generate(
-                    products.length,
-                    (index) => ProductItemWidget(
-                      product: products[index],
-                      onItemClick: (Product prod) {
-                        Navigator.pushNamed(
-                          context,
-                          SelectedProductPage.routeName,
-                          arguments: {"p_id": prod.id},
+                    products.length + 1, // Add 1 for the button
+                    (index) {
+                      if (index < products.length) {
+                        // Display ProductItemWidget if index is within products list
+                        return ProductItemWidget(
+                          product: products[index],
+                          onItemClick: (Product prod) {
+                            if (prod.provider == "Commercepal") {
+                              Navigator.pushNamed(
+                                context,
+                                SelectedProductPage.routeName,
+                                arguments: {"p_id": prod.id},
+                              );
+                            } else if (prod.provider == "Alibaba" ||
+                                prod.provider == "Shein") {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AlibabaProductsScreen(
+                                    productId: prod.id!,
+                                    provider: prod.provider!,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                         );
-                      },
-                    ),
+                      } else if (widget.subCatId == null) {
+                        // Display ElevatedButton as the last item
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: AppButtonWidget(
+                              onClick: () {
+                                String prompt = widget.val ?? "";
+                                print(widget.val);
+                                context
+                                    .read<ProductCubit>()
+                                    .searchProduct(prompt, 50);
+                              },
+                              text: "Load More",
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
                   ),
                 ),
               ),

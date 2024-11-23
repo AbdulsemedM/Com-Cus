@@ -19,7 +19,7 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
   SelectedProductCubit(this.selectedProductRepo)
       : super(const SelectedProductState.initial());
 
-  void fetchProduct(num productId) async {
+  void fetchProduct(dynamic productId) async {
     try {
       emit(const SelectedProductState.loading());
       final response = await selectedProductRepo.getProductDetails(productId);
@@ -38,18 +38,20 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
           _selectedProductDetails?.shortDescription;
       _selectedProductDetails?.selectedSubProductImage =
           _selectedProductDetails?.mobileImage == ""
-              ? _selectedProductDetails?.mobileThumbnail
+              ? _selectedProductDetails?.webImage
               : _selectedProductDetails?.mobileImage;
       _selectedProductDetails?.priceBasedOnSubProducts =
           _selectedProductDetails?.subProducts?.first.offerPrice;
+      print(_selectedProductDetails?.productId);
       _selectedProductDetails?.selectedSubProductId =
           _selectedProductDetails?.subProducts?.isNotEmpty == true
-              ? _selectedProductDetails?.subProducts![0].subProductId
-              : _selectedProductDetails?.productId;
+              ? _selectedProductDetails?.subProducts![0].subProductId.toString()
+              : _selectedProductDetails?.productId.toString();
 
       _setProductImage();
       _setSimilarProducts();
       _setProductFeatures();
+      print("here is the error");
       _setProductPriceBasedOnSubProd();
       _setDeliveryTime();
 
@@ -70,14 +72,16 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
                 e.name,
                 null,
                 null,
-                null,
-                e.id,
-                "",
+                // null,
+                e.id.toString(),
+                // "",
                 null,
                 _selectedProductDetails?.subProducts?.length ?? 0,
-                null,
-                null,
-                _selectedProductDetails?.quantity, null))
+                // null,
+                // null,
+                // _selectedProductDetails?.quantity,
+                // null,
+                null))
             .toList();
       }
     }
@@ -128,7 +132,7 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
         _selectedProductDetails!.subProducts?.first.offerPrice;
   }
 
-  void changeProductPrice(num subProdId) {
+  void changeProductPrice(String subProdId) {
     final subProduct = _selectedProductDetails?.subProducts
         ?.where((element) => element.subProductId == subProdId)
         .first;
@@ -163,7 +167,7 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
 
   void _setDeliveryTime() {
     final now = DateTime.now();
-    final daysLater =DateTime(now.year, now.month, now.day+3);
+    final daysLater = DateTime(now.year, now.month, now.day + 3);
 
     _selectedProductDetails?.deliveryDate =
         "${DateFormat("MMM dd").format(now)} - ${DateFormat("MMM dd").format(daysLater)} ";

@@ -10,8 +10,8 @@ class CartItem {
   final String? currency;
   String? price;
   int? quantity;
-  final int? productId;
-  int? subProductId;
+  final String? productId;
+  String? subProductId;
   final int? merchantId;
 
   CartItem(
@@ -23,31 +23,30 @@ class CartItem {
       this.price,
       this.quantity,
       this.productId,
-      this.subProductId, this.merchantId});
+      this.subProductId,
+      this.merchantId});
 
-  CartItem copyWith({
-    @PrimaryKey(autoGenerate: true) final int? id,
-    final String? name,
-    final String? image,
-    final String? description,
-    final String? currency,
-    String? price,
-    int? quantity,
-    final int? productId,
-    int? subProductId,
-    int? merchantId
-  }) {
+  CartItem copyWith(
+      {@PrimaryKey(autoGenerate: true) final int? id,
+      final dynamic name,
+      final dynamic image,
+      final dynamic description,
+      final dynamic currency,
+      dynamic price,
+      int? quantity,
+      final dynamic productId,
+      dynamic subProductId,
+      int? merchantId}) {
     return CartItem(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      image: image ?? this.image,
-      description: description ?? this.description,
-      currency: currency ?? this.currency,
-      price: price ?? this.price,
-      quantity: quantity ?? this.quantity,
-      productId: productId ?? this.productId,
-      subProductId: subProductId ?? this.subProductId,
-      merchantId: merchantId ?? this.merchantId
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        image: image ?? this.image,
+        description: description ?? this.description,
+        currency: currency ?? this.currency,
+        price: price ?? this.price,
+        quantity: quantity ?? this.quantity,
+        productId: productId ?? this.productId,
+        subProductId: subProductId ?? this.subProductId,
+        merchantId: merchantId ?? this.merchantId);
   }
 }

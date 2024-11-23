@@ -92,6 +92,8 @@
     <string>UIInterfaceOrientationLandscapeLeft</string>
     <string>UIInterfaceOrientationLandscapeRight</string>
   </array>
+  <key>NSCameraUsageDescription</key>
+  <string>Your app needs access to the camera</string>
   <key>UIViewControllerBasedStatusBarAppearance</key>
   <false/>
   <key>CFBundleURLTypes</key>

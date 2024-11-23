@@ -418,24 +418,29 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                                                         ))),
                                                     onPressed: () {
                                                       CartItem myItem = CartItem(
-                                                          productId: int.parse(
-                                                              myTopDealsProducts[index]
+                                                          productId:
+                                                              (myTopDealsProducts[index]
                                                                   .productId),
                                                           name:
-                                                              myTopDealsProducts[index]
+                                                              myTopDealsProducts[
+                                                                      index]
                                                                   .productName,
-                                                          image: myTopDealsProducts[index]
+                                                          image: myTopDealsProducts[
+                                                                  index]
                                                               .mobileThumbnail,
                                                           description: '-',
                                                           price:
-                                                              myTopDealsProducts[index]
+                                                              myTopDealsProducts[
+                                                                      index]
                                                                   .actualPrice,
                                                           currency: "ETB",
-                                                          subProductId: int.parse(
-                                                              myTopDealsProducts[index]
+                                                          subProductId:
+                                                              (myTopDealsProducts[
+                                                                      index]
                                                                   .subProductId),
                                                           quantity: int.parse(
-                                                              myTopDealsProducts[index]
+                                                              myTopDealsProducts[
+                                                                      index]
                                                                   .minOrder));
                                                       context
                                                           .read<CartCoreCubit>()

@@ -96,7 +96,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `image` TEXT, `description` TEXT, `currency` TEXT, `price` TEXT, `quantity` INTEGER, `productId` INTEGER, `subProductId` INTEGER, `merchantId` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `image` TEXT, `description` TEXT, `currency` TEXT, `price` TEXT, `quantity` INTEGER, `productId` TEXT, `subProductId` TEXT, `merchantId` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -151,8 +151,8 @@ class _$CartDao extends CartDao {
             currency: row['currency'] as String?,
             price: row['price'] as String?,
             quantity: row['quantity'] as int?,
-            productId: row['productId'] as int?,
-            subProductId: row['subProductId'] as int?,
+            productId: row['productId'] as String?,
+            subProductId: row['subProductId'] as String?,
             merchantId: row['merchantId'] as int?),
         queryableName: 'CartItem',
         isView: false);
@@ -169,8 +169,8 @@ class _$CartDao extends CartDao {
             currency: row['currency'] as String?,
             price: row['price'] as String?,
             quantity: row['quantity'] as int?,
-            productId: row['productId'] as int?,
-            subProductId: row['subProductId'] as int?,
+            productId: row['productId'] as String?,
+            subProductId: row['subProductId'] as String?,
             merchantId: row['merchantId'] as int?));
   }
 
@@ -185,14 +185,14 @@ class _$CartDao extends CartDao {
             currency: row['currency'] as String?,
             price: row['price'] as String?,
             quantity: row['quantity'] as int?,
-            productId: row['productId'] as int?,
-            subProductId: row['subProductId'] as int?,
+            productId: row['productId'] as String?,
+            subProductId: row['subProductId'] as String?,
             merchantId: row['merchantId'] as int?),
         arguments: [productId]);
   }
 
   @override
-  Future<CartItem?> getCartItemBySubProductId(int subProductId) async {
+  Future<CartItem?> getCartItemBySubProductId(String subProductId) async {
     return _queryAdapter.query('SELECT * FROM CartItem WHERE subProductId = ?1',
         mapper: (Map<String, Object?> row) => CartItem(
             id: row['id'] as int?,
@@ -202,14 +202,14 @@ class _$CartDao extends CartDao {
             currency: row['currency'] as String?,
             price: row['price'] as String?,
             quantity: row['quantity'] as int?,
-            productId: row['productId'] as int?,
-            subProductId: row['subProductId'] as int?,
+            productId: row['productId'] as String,
+            subProductId: row['subProductId'] as String?,
             merchantId: row['merchantId'] as int?),
         arguments: [subProductId]);
   }
 
   @override
-  Future<void> deleteItem(int subProductId) async {
+  Future<void> deleteItem(String subProductId) async {
     await _queryAdapter.queryNoReturn(
         'DELETE FROM CartItem WHERE subProductId = ?1',
         arguments: [subProductId]);

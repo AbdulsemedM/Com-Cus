@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/flash_sale/flash_sale_dashboard.dart';
 import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
+import 'package:commercepal/features/provider_products/presentation/widgets/provider_products.dart';
 import 'package:commercepal/features/sub_categories/presentation/sub_categories_page.dart';
 import 'package:commercepal/features/top_deals/top_deals_dashboard.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
@@ -118,9 +120,19 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
             delegate: SliverChildListDelegate([
           const HomeSearchFieldWidget(),
           _buildHomeSlider(),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          //   child: AppButtonWidget(
+          //     onClick: () {
+          //       Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //               builder: (context) => const ProviderProducts()));
+          //     },
+          //     text: "Providers",
+          //   ),
+          // ),
           _buildHomeOriginalsCategories(),
           _buildMostPopular(),
           _buildCategories(),
@@ -151,7 +163,8 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
                       onTap: () {
                         Navigator.pushNamed(
                             context, SelectedProductPage.routeName, arguments: {
-                          "p_id": underPrice?.first.items?[index].prodId
+                          "p_id":
+                              underPrice?.first.items?[index].prodId.toString()
                         });
                       },
                       child: UnderItemWidget(
