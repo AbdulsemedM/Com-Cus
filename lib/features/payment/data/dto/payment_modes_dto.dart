@@ -187,14 +187,15 @@ class PaymentMethodItem {
       String? iconUrl,
       String? paymentType,
       String? paymentInstruction,
-      num? id, PaymentMode? paymentMode}) {
+      num? id,
+      PaymentMode? paymentMode}) {
     _name = name;
     _paymentMethod = paymentMethod;
     _iconUrl = iconUrl;
     _paymentType = paymentType;
     _paymentInstruction = paymentInstruction;
     _id = id;
-    _paymentMode  = paymentMode;
+    _paymentMode = paymentMode;
   }
 
   PaymentMethodItem.fromJson(dynamic json) {

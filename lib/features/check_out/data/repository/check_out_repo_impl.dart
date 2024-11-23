@@ -89,6 +89,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
       };
       // print("hererequest");
       // print(request);
+// <<<<<<< New-Providers
       // final response = await apiProvider.post(
       //     request,
       //     isUserBusiness
@@ -108,6 +109,13 @@ class CheckOutRepoImpl implements CheckOutRepo {
           });
       var response = jsonDecode(checkout.body);
       // print(response);
+// =======
+//       final response = await apiProvider.post(
+//           request,
+//           isUserBusiness
+//               ? EndPoints.businessCheckOut.url
+//               : EndPoints.checkOut.url);
+// >>>>>>> main
       // print("orderrefhere");
       // print(response['orderRef']);
       // final cResponse = jsonDecode(response);
@@ -125,7 +133,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
         throw response['statusDescription'];
       }
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       rethrow;
     }
   }
@@ -148,6 +156,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
           isUserBusiness
               ? EndPoints.businessDeliveryFee.url
               : EndPoints.deliveryFee.url);
+// <<<<<<< New-Providers
       // print(response['totalDeliveryFee']);
       // print("The total delivery fee is here");
       // // final dResponse = jsonDecode(response);
@@ -155,6 +164,13 @@ class CheckOutRepoImpl implements CheckOutRepo {
       // print(response);
       if (response['statusCode'] == '000') {
         if (response['totalDeliveryFee'] == null) {
+// =======
+//       final dResponse = (response);
+//       // print("here comes the fee");
+//       // print(dResponse);
+//       if (dResponse['statusCode'] == '000') {
+//         if (dResponse['totalDeliveryFee'] == null) {
+// >>>>>>> main
           throw 'Unable to calculate delivery fee. Try again later';
         }
         // print(resp['statusCode']);
