@@ -500,6 +500,7 @@ class checkOut_widget extends StatelessWidget {
 
                         // Create CartItem
                         CartItem myItem = CartItem(
+                          // id: productId,
                           description: "provider",
                           subProductId: sel[
                               'id'], // Assuming sel['id'] is fine as a string here
@@ -508,7 +509,7 @@ class checkOut_widget extends StatelessWidget {
                               sanitizeInput(sel['price'].toString()).toString(),
                           image: image.toString(),
                           productId: productId.toString(),
-                          id: id, // Use validated and parsed ID
+                          // id: id, // Use validated and parsed ID
                           quantity: count, // Use validated and parsed count
                         );
 

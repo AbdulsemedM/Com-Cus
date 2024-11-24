@@ -17,14 +17,25 @@ class CartRepositoryImpl implements CartRepository {
     try {
       final exist =
           await cartDao.getCartItemBySubProductId(cartItem.subProductId!);
+      var pros = await cartDao.getAllItems();
+      for (var i in pros) {
+        print(i.id);
+      }
       if (exist == null) {
+        print("it exists");
         await cartDao.insert(cartItem);
+        var pros = await cartDao.getAllItems();
+        for (var i in pros) {
+          print(i.id);
+        }
       } else {
+        print("it doesn't exists");
         // change item quantity
         exist.quantity = (exist.quantity! + 1);
         await cartDao.insert(exist);
       }
     } catch (e) {
+      print("the errir");
       Fimber.e(e.toString());
       rethrow;
     }
@@ -47,14 +58,29 @@ class CartRepositoryImpl implements CartRepository {
     try {
       final items = await cartDao.getAllItems();
       if (items.isEmpty) {
-        throw 'No items found';
+        throw Exception('No items found');
       } else {
+        // cartDao.nuke();
         return items;
       }
+    } on TypeError catch (e) {
+      await cartDao.nuke();
+      throw Exception('Data format issue: ${e.toString()}');
     } catch (e) {
+      // Handle other general errors
+      await cartDao.nuke();
       rethrow;
     }
   }
+
+  // void clearCart() async {
+  //   try {
+  //     await cartDao.nuke();
+  //     print('All cart items deleted successfully');
+  //   } catch (e) {
+  //     print('Failed to clear cart: $e');
+  //   }
+  // }
 
   @override
   Future updateItemInCart(CartItem cartItem) async {
