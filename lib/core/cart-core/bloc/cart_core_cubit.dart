@@ -17,7 +17,7 @@ class CartCoreCubit extends Cubit<CartCoreState> {
       : super(const CartCoreState.init()) {
     _listenForCartUpdates();
   }
-
+  
   _listenForCartUpdates() async {
     cartRepository.listenToCartUpdates().handleError((error) {
       emit(CartCoreState.error(error.toString()));
