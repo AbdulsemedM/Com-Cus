@@ -31,6 +31,10 @@ class PaymentCubit extends Cubit<PaymentState> {
         data.where((element) => element.name?.toLowerCase() == "loan");
     // get loans
     // final loans = await customerLoanRepo.fetchFinancialInstitutions();
+// <<<<<<< New-Providers
+// =======
+//     print("passed");
+// >>>>>>> main
     // add as payment method
     if (loanPaymentMode.isNotEmpty) {
       // remove existing and add new one
