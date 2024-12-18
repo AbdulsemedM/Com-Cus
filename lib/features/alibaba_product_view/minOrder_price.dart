@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class MinOrderPricePage extends StatefulWidget {
   final List<Prices> price;
-  const MinOrderPricePage({super.key, required this.price});
+  final String currentCountryForm;
+  const MinOrderPricePage(
+      {super.key, required this.price, required this.currentCountryForm});
 
   @override
   State<MinOrderPricePage> createState() => _MinOrderPricePageState();
@@ -34,7 +36,7 @@ class _MinOrderPricePageState extends State<MinOrderPricePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'ETB ${priceItem.price}',
+                      '${widget.currentCountryForm == "ETB" ? "ETB" : "\$"}  ${priceItem.price}',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,

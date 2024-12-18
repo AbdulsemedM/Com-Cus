@@ -14,6 +14,7 @@ import 'package:commercepal/app/data/network/end_points.dart';
 // import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/payment/data/dto/payment_modes_dto.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:http/http.dart' as http;
 
 import '../domain/payment_repo.dart';
@@ -25,19 +26,22 @@ class PaymentRepoImpl implements PaymentRepo {
   PaymentRepoImpl(this.apiProvider);
 
   @override
-  Future<List<PaymentMethods>> fetchPaymentModes() async {
+  Future<List<PaymentMethods>> fetchPaymentModes(String? currency) async {
     try {
       // final prefsData = getIt<PrefsData>();
       // final token = await prefsData.readData(PrefsKeys.userToken.name);
       // final data = await http.get(
       //     Uri.https("pay.commercepal.com", "/payment/v1/request"),
       //     headers: <String, String>{"Authorization": "Bearer $token"});
-      // print(data.body);
       // var response = jsonDecode(data.body);
-      final response = await apiProvider.get(EndPoints.paymentModes.url);
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // final String currentCountry = prefs.getString("currency") ?? "";
+      final response = await apiProvider.get(
+          "${EndPoints.paymentModes.url}&currency=${currency!.trim() == "\$" ? "USD" : currency == "ETB" ? "ETB" : ""}");
+      print("${EndPoints.paymentModes.url}?currency=$currency");
       if (response['statusCode'] == '000') {
 // <<<<<<< New-Providers
-//         print(response);
+        // print(response);
         // print("here we returned");
         // print(rObject);
 // =======

@@ -21,12 +21,18 @@ class ListItem {
 
 class AttributesListItem extends StatefulWidget {
   final Function(List<Map<String, dynamic>>) onProceed; // Add callback
+  final String minOrder;
+  final String currentCountryForm;
 
   final List<ListItem> items;
 
-  const AttributesListItem(
-      {Key? key, required this.items, required this.onProceed})
-      : super(key: key);
+  const AttributesListItem({
+    Key? key,
+    required this.items,
+    required this.onProceed,
+    required this.minOrder,
+    required this.currentCountryForm,
+  }) : super(key: key);
 
   @override
   _AttributesListItemState createState() => _AttributesListItemState();
@@ -34,14 +40,28 @@ class AttributesListItem extends StatefulWidget {
 
 class _AttributesListItemState extends State<AttributesListItem> {
   double totalPrice = 0.0;
+  int totalItemCount = 0;
 
   // List to store each item's id and calculated total price
   List<Map<String, dynamic>> selectedItems = [];
 
+  @override
+  void initState() {
+    super.initState();
+
+    // Set minOrder for the first item
+    if (widget.items.isNotEmpty) {
+      int minOrderValue = int.tryParse(widget.minOrder) ?? 0;
+      widget.items[0].count = minOrderValue;
+      _updateTotalPrice();
+    }
+  }
+
   void _updateTotalPrice() {
     setState(() {
-      // Reset total price and selected items list
+      // Reset total price, total item count, and selected items list
       totalPrice = 0.0;
+      totalItemCount = 0;
       selectedItems.clear();
 
       // Calculate total price and populate selectedItems list
@@ -49,6 +69,7 @@ class _AttributesListItemState extends State<AttributesListItem> {
         if (item.count > 0) {
           double itemTotal = item.price * item.count;
           totalPrice += itemTotal;
+          totalItemCount += item.count;
 
           selectedItems.add({
             'id': item.id,
@@ -57,12 +78,6 @@ class _AttributesListItemState extends State<AttributesListItem> {
           });
         }
       }
-
-      // Print each product's details
-      for (var prod in selectedItems) {
-        // print(prod);
-      }
-      // print("Total selected items: ${selectedItems.length}");
     });
   }
 
@@ -120,19 +135,22 @@ class _AttributesListItemState extends State<AttributesListItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Sub-Total: ETB ${totalPrice.toStringAsFixed(2)}',
+                'Sub-Total: ${widget.currentCountryForm == "ETB" ? "ETB" : "\$"} ${totalPrice.toStringAsFixed(2)}',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               SizedBox(
-                  width: 140,
-                  height: 50,
-                  child: AppButtonWidget(
-                    isLoading: false,
-                    text: "Proceed",
-                    onClick: () {
-                      widget.onProceed(selectedItems);
-                    },
-                  ))
+                width: 140,
+                height: 50,
+                child: AppButtonWidget(
+                  isLoading: false,
+                  text: "Proceed",
+                  onClick: totalItemCount >= int.parse(widget.minOrder)
+                      ? () {
+                          widget.onProceed(selectedItems);
+                        }
+                      : () {}, // Disable button if condition is not met
+                ),
+              )
             ],
           ),
         ),

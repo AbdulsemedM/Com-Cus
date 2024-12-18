@@ -149,6 +149,16 @@ class _CartPageState extends State<CartPage> {
                               previousValue + element.toDouble())
                       .formatCurrency(cartItems.first.currency),
                   onClick: () async {
+                    final firstCurrency = cartItems.first.currency;
+                    final isCurrencyConsistent = cartItems
+                        .every((item) => item.currency == firstCurrency);
+
+                    if (!isCurrencyConsistent) {
+                      displaySnack(
+                          context, "All items must have the same currency.");
+                      return; // Exit if currencies are not the same
+                    }
+
                     String valid = await fetchUser1(context: context);
                     if (valid == "logout") {
                       displaySnack(context, "Login to your account.");

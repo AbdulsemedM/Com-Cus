@@ -38,18 +38,18 @@ class SchemaItem {
   String? mobileImage;
   String? uniqueName;
   String? name;
-  num? parentCategoryId;
+  dynamic parentCategoryId;
   String? sectionDescription;
-  num? id;
+  dynamic id;
   String? mobileThumbnail;
   String? sectionType;
-  num? categoryId;
+  dynamic categoryId;
   String? isDiscounted;
   String? unitPrice;
   String? currency;
   String? actualPrice;
-  num? offerPrice;
-  num? prodId;
+  dynamic offerPrice;
+  dynamic prodId;
 
   SchemaItem(
       {this.mobileImage,

@@ -27,6 +27,39 @@ class CategoriesRepoImpl implements CategoriesRepo {
         if (pCategoriesObject.details?.isEmpty == true) {
           throw 'Parent categories not found';
         }
+
+//         print("Starting ParentCategoryModel mapping process...");
+
+//         final details = pCategoriesObject.details!;
+//         print("Details length: ${details.length}");
+
+//         for (var i = 0; i < details.length; i++) {
+//           final detail = details[i];
+//           print("Processing detail at index $i: $detail");
+
+//           try {
+//             final parentCategoryModel = detail.toParentCategoryModel();
+//             print("Converted to ParentCategoryModel: $parentCategoryModel");
+//           } catch (e, stackTrace) {
+//             print("Error converting detail at index $i: $e\n$stackTrace");
+//           }
+//         }
+
+// // Mapping process
+//         final parentCategoryModels = details.map((e) {
+//           print("Mapping detail: $e");
+//           try {
+//             final parentCategoryModel = e.toParentCategoryModel();
+//             print("Successfully mapped: $parentCategoryModel");
+//             return parentCategoryModel;
+//           } catch (e, stackTrace) {
+//             print("Error during mapping: $e\n$stackTrace");
+//             rethrow; // Rethrow to identify breaking issues
+//           }
+//         }).toList();
+
+//         print("Final mapped list: ${parentCategoryModels.last.name}");
+
         return pCategoriesObject.details!
             .map((e) => e.toParentCategoryModel())
             .toList();
@@ -45,9 +78,42 @@ class CategoriesRepoImpl implements CategoriesRepo {
           .get("${EndPoints.categories.url}?parentCat=$parentId");
       if (response['statusCode'] == "000") {
         final categories = CategoriesDto.fromJson(response);
+        print(response);
         if (categories.details?.isEmpty == true) {
           throw 'Categories not found';
         }
+        // Iterate through details step by step
+//         print("Starting mapping process...");
+
+//         final details = categories.details!;
+//         print("Details length: ${details.length}");
+//         for (var i = 0; i < details.length; i++) {
+//           final detail = details[i];
+//           print("Processing detail at index $i: $detail");
+
+//           try {
+//             final categoryModel = detail.toCategoryModel();
+//             print("Converted to CategoryModel: $categoryModel");
+//           } catch (e, stackTrace) {
+//             print("Error converting detail at index $i: $e\n$stackTrace");
+//           }
+//         }
+
+// // Collect all converted items into a list
+//         final categoryModels = details.map((e) {
+//           print("Mapping detail: $e");
+//           try {
+//             final categoryModel = e.toCategoryModel();
+//             print("Successfully mapped: $categoryModel");
+//             return categoryModel;
+//           } catch (e, stackTrace) {
+//             print("Error during mapping: $e\n$stackTrace");
+//             rethrow; // Rethrow to identify breaking issues
+//           }
+//         }).toList();
+
+//         print("Final mapped list: $categoryModels.");
+
         return categories.details!.map((e) => e.toCategoryModel()).toList();
       } else {
         throw response['statusMessage'];

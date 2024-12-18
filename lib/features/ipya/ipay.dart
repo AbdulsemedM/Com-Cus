@@ -1,36 +1,36 @@
 import 'dart:convert';
 
-// import 'package:commercepal/app/data/network/api_provider.dart';
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
-// import 'package:commercepal/core/cart-core/dao/cart_dao.dart';
-// import 'package:commercepal/core/cart-core/domain/cart_item.dart';
+import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
-// import 'package:commercepal/features/otp_payments/data/otp_payment_repo_imp.dart';
-// import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import '../../../core/cart-core/dao/cart_dao.dart';
+import 'package:http/http.dart' as http;
 
-class CBEBirrPayment extends StatefulWidget {
-  static const routeName = "/cbebirr_payment";
-
-  const CBEBirrPayment({super.key});
+class Ipay extends StatefulWidget {
+  const Ipay({super.key});
 
   @override
-  State<CBEBirrPayment> createState() => _CBEBirrPaymentState();
+  State<Ipay> createState() => _IpayState();
 }
 
-class _CBEBirrPaymentState extends State<CBEBirrPayment> {
+class _IpayState extends State<Ipay> {
+  List<String> _instructions = [];
   @override
-  void initState() {
-    super.initState();
-    fetchHints();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final Map args = ModalRoute.of(context)?.settings.arguments as Map;
+    if (args['payment_instruction'] != null) {
+      _instructions =
+          (args['payment_instruction'] as String).convertStringToList('data');
+      setState(() {});
+    }
   }
 
   void fetchHints() async {
@@ -40,18 +40,7 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
 
     physicalAddressHintFuture = Translations.translatedText(
         "Enter your phone number below", GlobalStrings.getGlobalString());
-    // subcityHint = Translations.translatedText(
-    //     "Sub city", GlobalStrings.getGlobalString());
-    // addAddHint = Translations.translatedText(
-    //     "Add Address", GlobalStrings.getGlobalString());
-
-    // Use await to get the actual string value from the futures
     pHint = await physicalAddressHintFuture;
-    // cHint = await subcityHint;
-    // aHint = await addAddHint;
-    // print("herrerererere");
-    // print(pHint);
-    // print(cHint);
 
     setState(() {
       loading = false;
@@ -59,14 +48,40 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
   }
 
   var physicalAddressHintFuture;
-  // var subcityHint;
-  // var addAddHint;
   String pHint = '';
-  // String cHint = '';
-  // String aHint = '';
   final GlobalKey<FormState> myKey = GlobalKey();
   String? pNumber;
   var loading = false;
+  Widget _buildPaymentInstructions() {
+    if (_instructions.isNotEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.withOpacity(0.4), width: 1)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(cHint),
+            const SizedBox(
+              height: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _instructions
+                  .map((e) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("- $e"),
+                      ))
+                  .toList(),
+            )
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var sHeight = MediaQuery.of(context).size.height * 1;
@@ -74,13 +89,14 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "CBE BIRR Pay",
+          "IPay",
           style: TextStyle(fontSize: sWidth * 0.05),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            _buildPaymentInstructions(),
             Form(
                 key: myKey,
                 child: Padding(
@@ -92,8 +108,7 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                         children: [
                           Padding(
                               padding: EdgeInsets.symmetric(vertical: 8.0),
-                              child:
-                                  loading ? Text("Loading...") : Text(pHint)),
+                              child: Text("Enter your phone number below")),
                         ],
                       ),
                       TextFormField(
@@ -177,6 +192,7 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                                     } else {
                                       return Text(
                                         snapshot.data ?? 'Submit',
+                                        style: TextStyle(color: Colors.white),
                                       );
                                     }
                                   },

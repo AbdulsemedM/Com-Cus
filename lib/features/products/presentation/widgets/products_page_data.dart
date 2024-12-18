@@ -2,6 +2,7 @@
 // import 'package:commercepal/app/utils/decoration.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/core/widgets/product_item_widget.dart';
+import 'package:commercepal/features/alibaba_new/providers_products_screen.dart';
 import 'package:commercepal/features/alibaba_product_view/alibaba_products_screen.dart';
 import 'package:commercepal/features/products/presentation/widgets/product_not_found.dart';
 import 'package:commercepal/features/selected_product/presentation/selected_product_page.dart';
@@ -70,8 +71,8 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductCubit, ProductState>(
       builder: (context, state) {
-        print("ohmystate");
-        print(state);
+        // print("ohmystate");
+        // print(state);
         return state.maybeWhen(
           orElse: () => const SizedBox(),
           error: (String error) => ProductNotFound(error: error),
@@ -173,6 +174,7 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                           product: products[index],
                           onItemClick: (Product prod) {
                             if (prod.provider == "Commercepal") {
+                              print("it's true it's commercepal profuct");
                               Navigator.pushNamed(
                                 context,
                                 SelectedProductPage.routeName,
@@ -183,12 +185,17 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AlibabaProductsScreen(
+                                  builder: (context) => ProvidersProductsScreen(
                                     productId: prod.id!,
-                                    provider: prod.provider!,
+                                    // provider: prod.provider!,
                                   ),
                                 ),
                               );
+                            } else {
+                              print(prod.id
+                                  ?.toString()
+                                  .contains(RegExp(r'^[0-9]+$')));
+                              print("it's true it's product");
                             }
                           },
                         );
@@ -222,6 +229,8 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
       },
     );
   }
+
+ 
 
   void scrollListener() {
     if (scrollController.position.pixels ==

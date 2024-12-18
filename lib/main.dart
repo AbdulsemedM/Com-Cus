@@ -1,12 +1,13 @@
 import 'dart:io';
 
+// import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/utils/app_bloc_observer.dart';
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
-import 'package:commercepal/features/translation/translation_widget.dart';
+// import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -45,6 +46,8 @@ void main() async {
   }
   String lang = await getStoredLang();
   GlobalStrings.setGlobalString(lang);
+  // final countryManager = CountryManager();
+  // await countryManager.fetchAndStoreCountry();
 
   Bloc.observer = AppBlocObserver();
 

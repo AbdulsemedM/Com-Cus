@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
+import 'package:commercepal/features/alibaba_new/providers_products_screen.dart';
+import 'package:commercepal/features/alibaba_product_view/alibaba_products_screen.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/flash_sale/flash_sale_dashboard.dart';
 import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
@@ -120,7 +122,7 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
             delegate: SliverChildListDelegate([
           const HomeSearchFieldWidget(),
           _buildHomeSlider(),
-          const SizedBox(height: 10),
+          // const SizedBox(height: 10),
           // Padding(
           //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
           //   child: AppButtonWidget(
@@ -161,11 +163,21 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
                     onTap: () {},
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushNamed(
-                            context, SelectedProductPage.routeName, arguments: {
-                          "p_id":
-                              underPrice?.first.items?[index].prodId.toString()
-                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProvidersProductsScreen(
+                              productId: underPrice!.first.items![index].prodId
+                                  .toString(),
+                              // provider: "Shein",
+                            ),
+                          ),
+                        );
+                        // Navigator.pushNamed(
+                        //     context, SelectedProductPage.routeName, arguments: {
+                        //   "p_id":
+                        //       underPrice?.first.items?[index].prodId.toString()
+                        // });
                       },
                       child: UnderItemWidget(
                           item: underPrice?.first.items?[index]),
@@ -416,7 +428,7 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
   //     : const SizedBox();
 
   Widget _buildHomeOriginalsCategories() => Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -522,29 +534,33 @@ class _HomeSliderState extends State<HomeSlider> {
     return (widget.banners?.isNotEmpty == true)
         ? Stack(
             children: [
-              CarouselSlider(
-                options: CarouselOptions(
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index; // Update the current index
-                    });
-                  },
-                  viewportFraction: 1.0,
-                  enlargeCenterPage: false,
-                  autoPlay: true,
-                  height: 200.0,
-                ),
-                items: widget.banners!.map((i) {
-                  return Builder(
-                    builder: (BuildContext context) => CachedNetworkImage(
-                      imageUrl: i,
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                      placeholder: (ctx, url) => Container(
-                        color: Colors.grey.shade200,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _current = index; // Update the current index
+                      });
+                    },
+                    viewportFraction: 1.0,
+                    enlargeCenterPage: false,
+                    autoPlay: true,
+                    height: 150.0,
+                  ),
+                  items: widget.banners!.map((i) {
+                    return Builder(
+                      builder: (BuildContext context) => CachedNetworkImage(
+                        fit: BoxFit.fill,
+                        imageUrl: i,
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        placeholder: (ctx, url) => Container(
+                          color: Colors.grey.shade200,
+                        ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
               // Optional: Add indicator or other widgets on top of the slider
             ],

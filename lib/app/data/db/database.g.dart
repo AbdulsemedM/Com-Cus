@@ -202,7 +202,7 @@ class _$CartDao extends CartDao {
             currency: row['currency'] as String?,
             price: row['price'] as String?,
             quantity: row['quantity'] as int?,
-            productId: row['productId'] as String,
+            productId: row['productId'] as String?,
             subProductId: row['subProductId'] as String?,
             merchantId: row['merchantId'] as int?),
         arguments: [subProductId]);

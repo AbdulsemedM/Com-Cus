@@ -51,6 +51,7 @@ extension Url on EndPoints {
   static String baseUrl3 =
       'https://api.commercepal.com:2096/prime/api/v1/app/mobile';
   static String baseUrl2 = 'https://api.commercepal.com:2096/prime/api/v1';
+  static String baseUrl4 = 'https://api.commercepal.com/prime/api/v1';
   static String baseUrlCustomer =
       'https://api.commercepal.com:2096/prime/api/v1/customer';
   static String baseUrlCustomer2 =
@@ -61,7 +62,7 @@ extension Url on EndPoints {
 // >>>>>>> main
   static String payments = "https://pay.commercepal.com/payment/v1";
   static String financials =
-      "https://api.commercepal.com:2087/api/v1/financial/payment";
+      "https://financial.commercepal.com/api/v1/financial/payment";
   static String businessBaseUrl =
       'https://api.commercepal.com:2096/prime/api/v1/business';
 
@@ -92,7 +93,7 @@ extension Url on EndPoints {
       case EndPoints.deliveryFee:
         return "$baseUrlCustomer/order/assign-delivery-address";
       case EndPoints.paymentModes:
-        return '$baseUrl2/service/payment-method?userType=C';
+        return '$baseUrl4/service/payment-method?userType=C';
       case EndPoints.pay:
         return '$payments/request';
       case EndPoints.userDetails:

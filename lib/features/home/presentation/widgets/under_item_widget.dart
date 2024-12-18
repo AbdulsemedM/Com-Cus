@@ -127,7 +127,9 @@ class UnderItemWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "${item?.offerPrice.formatCurrency(item?.currency)}",
+                        item?.currency == 'USD'
+                            ? '\$${item?.offerPrice}'
+                            : '${item?.offerPrice} ${item?.currency}',
                         style: Theme.of(context)
                             .textTheme
                             .displayMedium

@@ -1,4 +1,5 @@
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/translator/translator.dart';
 import 'package:commercepal/features/addresses/presentation/addresses_page.dart';
@@ -52,15 +53,34 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   String dropdownValue = "";
   String langCode = 'en';
   String valid = 'login';
+  String? _selectedCurrency;
+  final countryManager = CountryManager();
 
   @override
   void initState() {
     super.initState();
     checkToken();
+    _loadSelectedCurrency();
     setState(() {
       dropdownValue = list.first;
     });
     // setLangCode();
+  }
+
+  Future<void> _loadSelectedCurrency() async {
+    // await countryManager.loadCountryFromPreferences();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String currentCountry = prefs.getString("currency") ?? "";
+    if (currentCountry == "ETB") {
+      _selectedCurrency = "ETB";
+    } else {
+      _selectedCurrency = "USD";
+    }
+  }
+
+  Future<void> _saveSelectedCurrency(String currency) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("currency", currency);
   }
 
   Future<void> checkToken() async {
@@ -361,6 +381,16 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             },
           ),
           const Divider(),
+          UserMenuItem(
+            icon: Icons.currency_exchange_outlined,
+            title: "Change Currency",
+            language: dropdownValue,
+            onClick: () {
+              _buildCurrencyDialog(context);
+            },
+          ),
+          const Divider(),
+
           BlocProvider(
             create: (context) => getIt<UserCubit>(),
             child: BlocConsumer<UserCubit, UserState>(
@@ -388,7 +418,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             language: dropdownValue,
             onClick: () {
               displaySnackWithAction(
-                  context, "Your account will deleted", "Continue", () {
+                  context, "Your account will be deleted", "Continue", () {
                 displaySnack(context, "Account deleted successfully");
                 context.read<UserCubit>().logOutUser();
 
@@ -502,6 +532,54 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           )
         ],
       ),
+    );
+  }
+
+  Future<void> _buildCurrencyDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Change Currency"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text("ETB"),
+                leading: Radio<String>(
+                  value: "ETB",
+                  groupValue: _selectedCurrency,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedCurrency = value;
+                        _saveSelectedCurrency(value);
+                      });
+                      Navigator.of(context).pop(); // Close the dialog
+                    }
+                  },
+                ),
+              ),
+              ListTile(
+                title: const Text("USD"),
+                leading: Radio<String>(
+                  value: "USD",
+                  groupValue: _selectedCurrency,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedCurrency = value;
+                        _saveSelectedCurrency(value);
+                      });
+                      Navigator.of(context).pop(); // Close the dialog
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

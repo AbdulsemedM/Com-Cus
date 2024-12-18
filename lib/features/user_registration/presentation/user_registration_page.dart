@@ -7,6 +7,7 @@ import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/bloc/user_registration_cubit.dart';
 import 'package:commercepal/features/user_registration/presentation/bloc/user_registration_state.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +34,8 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
   String? _phoneNumber;
   String? _city;
   var loading = false;
+  Country? _selectedCountry;
+
   @override
   void initState() {
     super.initState();
@@ -222,23 +225,114 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
   }
 
   _buildPhoneNumberField() {
-    return TextFormField(
-      keyboardType: TextInputType.phone,
-      validator: (v) {
-        if (v?.isEmpty == true) {
-          return "Phone number is required";
-        }
-        return null;
-      },
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      onChanged: (value) {
-        setState(() {
-          _phoneNumber = value;
-        });
-      },
-      decoration: buildInputDecoration(loading ? "Loading..." : dHint),
+    return Row(
+      children: [
+        // Country selector
+        Container(
+          height: 60,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: InkWell(
+            onTap: () {
+              showCountryPicker(
+                context: context,
+                showPhoneCode: true,
+                searchAutofocus: true,
+                onSelect: (Country country) {
+                  // print("country: ${country.}");
+                  setState(() {
+                    _selectedCountry = country;
+                  });
+                },
+                countryListTheme: CountryListThemeData(
+                  flagSize: 25,
+                  backgroundColor: Colors.white,
+                  textStyle: const TextStyle(fontSize: 16),
+                  bottomSheetHeight: 500,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                  ),
+                  inputDecoration: InputDecoration(
+                    labelText: 'Search',
+                    hintText: 'Start typing to search',
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: const Color(0xFF8C98A8).withOpacity(0.2),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_selectedCountry != null) ...[
+                    Text(_selectedCountry!.flagEmoji),
+                    const SizedBox(width: 8),
+                    Text('+${_selectedCountry!.phoneCode}'),
+                  ] else
+                    const Text('🏳️ +?'),
+                  const Icon(Icons.arrow_drop_down),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        // Phone number input field
+        Expanded(
+          child: TextFormField(
+            keyboardType: TextInputType.phone,
+            validator: (v) {
+              if (v?.isEmpty == true) {
+                return "Phone number is required";
+              }
+              if (_selectedCountry == null) {
+                return "Please select country";
+              }
+              return null;
+            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: (value) {
+              setState(() {
+                _phoneNumber = value;
+                final completePhoneNumber =
+                    '${_selectedCountry?.phoneCode}$_phoneNumber';
+                print("completePhoneNumber: $completePhoneNumber");
+              });
+            },
+            decoration: buildInputDecoration(loading ? "Loading..." : dHint),
+          ),
+        ),
+      ],
     );
   }
+
+  // _buildPhoneNumberField() {
+  //   return TextFormField(
+  //     keyboardType: TextInputType.phone,
+  //     validator: (v) {
+  //       if (v?.isEmpty == true) {
+  //         return "Phone number is required";
+  //       }
+  //       return null;
+  //     },
+  //     autovalidateMode: AutovalidateMode.onUserInteraction,
+  //     onChanged: (value) {
+  //       setState(() {
+  //         _phoneNumber = value;
+  //       });
+  //     },
+  //     decoration: buildInputDecoration(loading ? "Loading..." : dHint),
+  //   );
+  // }
 
   _buildEmailField() {
     return TextFormField(

@@ -188,7 +188,11 @@ class PaymentMethodItem {
       String? paymentType,
       String? paymentInstruction,
       num? id,
+      bool? hasVariant,
+      List<ItemVariant>? itemVariants,
       PaymentMode? paymentMode}) {
+    _hasVariant = hasVariant;
+    _itemVariants = itemVariants;
     _name = name;
     _paymentMethod = paymentMethod;
     _iconUrl = iconUrl;
@@ -199,6 +203,17 @@ class PaymentMethodItem {
   }
 
   PaymentMethodItem.fromJson(dynamic json) {
+    print('hasVariant');
+    print(json['name']);
+    print(json['itemVariants']);
+    _hasVariant = json['hasVariant'];
+    if(json['itemVariants']!=null){
+      _itemVariants = [];
+      json['itemVariants'].forEach((v) {
+        _itemVariants?.add(ItemVariant.fromJson(v));
+      });
+    }
+    // _itemVariants = json['itemVariants'];
     _name = json['name'];
     _paymentMethod = json['paymentMethod'];
     _iconUrl = json['iconUrl'];
@@ -213,18 +228,24 @@ class PaymentMethodItem {
   String? _paymentType;
   String? _paymentInstruction;
   PaymentMode? _paymentMode;
+  bool? _hasVariant;
+  List<ItemVariant>? _itemVariants;
 
   PaymentMethodItem copyWith(
           {String? name,
           String? paymentMethod,
           String? iconUrl,
           String? paymentType,
+          bool? hasVariant,
+          List<ItemVariant>? itemVariants,
           String? paymentInstruction}) =>
       PaymentMethodItem(
           name: name ?? _name,
           paymentMethod: paymentMethod ?? _paymentMethod,
           iconUrl: iconUrl ?? _iconUrl,
           paymentType: paymentType ?? _paymentType,
+          hasVariant: hasVariant ?? _hasVariant,
+          itemVariants: itemVariants ?? _itemVariants,
           paymentInstruction: paymentInstruction ?? _paymentInstruction);
 
   String? get name => _name;
@@ -237,6 +258,10 @@ class PaymentMethodItem {
 
   String? get paymentInstruction => _paymentInstruction;
 
+  bool? get hasVariant => _hasVariant;
+
+  List<ItemVariant>? get itemVariants => _itemVariants;
+
   num? get id => _id;
 
   PaymentMode? get paymentMode => _paymentMode;
@@ -247,6 +272,33 @@ class PaymentMethodItem {
     map['paymentMethod'] = _paymentMethod;
     map['iconUrl'] = _iconUrl;
     map['paymentType'] = _paymentType;
+    map['hasVariant'] = _hasVariant;
     return map;
+  }
+}
+
+class ItemVariant {
+  final String? name;
+  final String? paymentMethod;
+  final String? iconUrl;
+  final String? paymentType;
+  final String? paymentInstruction;
+
+  ItemVariant({
+    this.name,
+    this.paymentMethod,
+    this.iconUrl,
+    this.paymentType,
+    this.paymentInstruction,
+  });
+
+  factory ItemVariant.fromJson(Map<String, dynamic> json) {
+    return ItemVariant(
+      name: json['name'],
+      paymentMethod: json['paymentMethod'],
+      iconUrl: json['iconUrl'],
+      paymentType: json['paymentType'],
+      paymentInstruction: (json['paymentInstruction']),
+    );
   }
 }

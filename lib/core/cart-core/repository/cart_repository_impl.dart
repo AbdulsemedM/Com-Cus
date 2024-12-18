@@ -19,14 +19,14 @@ class CartRepositoryImpl implements CartRepository {
           await cartDao.getCartItemBySubProductId(cartItem.subProductId!);
       var pros = await cartDao.getAllItems();
       for (var i in pros) {
-        print(i.id);
+        print("it exists");
+        print(i.price);
       }
       if (exist == null) {
-        print("it exists");
         await cartDao.insert(cartItem);
         var pros = await cartDao.getAllItems();
         for (var i in pros) {
-          print(i.id);
+          // print(i.subProductId);
         }
       } else {
         print("it doesn't exists");
@@ -47,6 +47,12 @@ class CartRepositoryImpl implements CartRepository {
   @override
   Future deleteItem(CartItem cartItem) async {
     try {
+      var pros = await cartDao.getAllItems();
+      for (var i in pros) {
+        if (i.productId == cartItem.productId) {
+          await cartDao.deleteItem(i.subProductId!);
+        }
+      }
       await cartDao.deleteItem(cartItem.subProductId!);
     } catch (e) {
       rethrow;
@@ -58,7 +64,7 @@ class CartRepositoryImpl implements CartRepository {
     try {
       final items = await cartDao.getAllItems();
       if (items.isEmpty) {
-        throw Exception('No items found');
+        throw ('No items found');
       } else {
         // cartDao.nuke();
         return items;

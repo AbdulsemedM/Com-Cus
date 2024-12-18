@@ -10,16 +10,16 @@
       <string>Editor</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>fb1195814604908102</string>
+        <string>fb524460320580061</string>
         <string>com.googleusercontent.apps.842396421818-vic25tc3ps0s8e5oirdglaj99chhe5li</string>
       </array>
     </dict>
   </array>
 
   <key>FacebookAppID</key>
-  <string>1195814604908102</string>
+  <string>524460320580061</string>
   <key>FacebookClientToken</key>
-  <string>444dd114870cdf867580be7ff1c20771</string>
+  <string>676297477516af6b78fd63351f08c826</string>
   <key>FacebookDisplayName</key>
   <string>CommercePal</string>
   <key>GIDClientID</key>

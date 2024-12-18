@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
+import 'package:commercepal/core/cart-core/cart_widget.dart';
 import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/features/alibaba_product_view/attributes_list_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +18,7 @@ import 'package:commercepal/features/alibaba_product_view/attribute_image_slider
 import 'package:commercepal/features/alibaba_product_view/attribute_modal_screen.dart';
 import 'package:commercepal/features/alibaba_product_view/image_slider.dart';
 import 'package:commercepal/features/alibaba_product_view/minOrder_price.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AlibabaProductsScreen extends StatefulWidget {
   final String productId;
@@ -34,11 +37,12 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
     fetchProductItem();
   }
 
+  String currentCountryForm = "";
   void handleImageSelected(int index) {
     // Handle the selected image index
     // print('Selected image index: $index');
   }
-
+  final countryManager = CountryManager();
   String prodName = "";
   List<String> mainPics = [];
   List<Prices> myPriceRange = [];
@@ -56,6 +60,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
       bottomNavigationBar: loading
           ? Container(height: 70)
           : checkOut_widget(
+              currentCountryForm: currentCountryForm,
               minOrder: myPriceRange[0].minOr,
               price: totalPrice,
               prodName: prodName,
@@ -70,6 +75,9 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
           "Place your order",
           style: Theme.of(context).textTheme.displaySmall,
         ),
+        actions: const [
+          CartWidget(),
+        ],
       ),
       body: SafeArea(
           child: SingleChildScrollView(
@@ -97,6 +105,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: MinOrderPricePage(
+                      currentCountryForm: currentCountryForm,
                       price: myPriceRange,
                     ),
                   ),
@@ -111,70 +120,108 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
                   if (myListItem.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: GestureDetector(
-                          onTap: () {
-                            if (myListItem.isNotEmpty) {
-                              showCupertinoModalBottomSheet(
-                                isDismissible: false,
-                                context: context,
-                                builder: (context) => GestureDetector(
-                                  onVerticalDragUpdate: (_) {},
-                                  child: AttributeModalScreen(
-                                    myAttributes: myProdAttr,
-                                    myPrices: myPriceRange,
-                                    myConfig: myConfigs,
-                                    onProceed: handleProceed,
-                                  ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Description above the button
+                          Text(
+                            "Customize your product by selecting the attributes below:",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: Colors.grey[700],
                                 ),
-                              );
-                            } else {
-                              displaySnack(context, "There are no Attributes");
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize
-                                    .min, // Ensures the Row only takes minimum space needed
-                                children: [
-                                  Container(
+                          ),
+                          const SizedBox(
+                              height:
+                                  8), // Space between the description and the button
+                          GestureDetector(
+                            onTap: () {
+                              if (myListItem.isNotEmpty) {
+                                showCupertinoModalBottomSheet(
+                                  isDismissible: false,
+                                  context: context,
+                                  builder: (context) => GestureDetector(
+                                    onVerticalDragUpdate: (_) {},
+                                    child: AttributeModalScreen(
+                                      currentCountryForm: currentCountryForm,
+                                      myAttributes: myProdAttr,
+                                      myPrices: myPriceRange,
+                                      myConfig: myConfigs,
+                                      onProceed: handleProceed,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                displaySnack(
+                                    context, "There are no Attributes");
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
                                     decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 168, 123, 144),
-                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: const LinearGradient(
+                                        colors: [
+                                          Color.fromARGB(255, 168, 123, 144),
+                                          Color.fromARGB(255, 123, 77, 136),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.1),
+                                          blurRadius: 6,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0,
-                                        vertical:
-                                            10), // Add padding here for spacing inside the container
+                                      horizontal: 16.0,
+                                      vertical: 12.0,
+                                    ),
                                     child: Row(
-                                      mainAxisSize: MainAxisSize
-                                          .min, // Ensures the inner Row only takes up space needed
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "Select Attributes (${myProdAttr.length})",
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyLarge,
+                                              .bodyLarge
+                                              ?.copyWith(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                         ),
                                         const SizedBox(
                                             width:
-                                                4), // Add a small space between text and icon if needed
+                                                8), // Space between text and icon
                                         const Icon(
-                                            Icons.arrow_forward_ios_rounded),
+                                          Icons.arrow_forward_ios_rounded,
+                                          color: Colors.white,
+                                          size: 16,
+                                        ),
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ],
-                          )),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   GestureDetector(
                     onTap: () {
                       showCupertinoModalBottomSheet(
                         context: context,
                         builder: (context) => AttributeModalScreen(
+                          currentCountryForm: currentCountryForm,
                           myAttributes: myProdAttr,
                           myPrices: myPriceRange,
                           myConfig: myConfigs,
@@ -183,9 +230,23 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
                       );
                     },
                     child: AttributeImageScroller(
-                        imageUrls:
-                            myProdAttr.map((e) => e.MiniImageUrl).toList(),
-                        onImageSelected: handleImageSelected),
+                      imageUrls:
+                          myProdAttr.map((e) => e.MiniImageUrl ?? '').toList(),
+                      onImageSelected: (selectedImage) {
+                        // Perform any specific action for image selection here if needed
+                        // Then redirect to the modal
+                        showCupertinoModalBottomSheet(
+                          context: context,
+                          builder: (context) => AttributeModalScreen(
+                            currentCountryForm: currentCountryForm,
+                            myAttributes: myProdAttr,
+                            myPrices: myPriceRange,
+                            myConfig: myConfigs,
+                            onProceed: handleProceed,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -232,24 +293,26 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
   Future<void> calculateTotal(List<Prices> priceRange) async {
     try {
       // Avoid calling setState unnecessarily
-      int loopCount = int.parse(priceRange[0].minOr);
-      for (int i = 0; i < loopCount; i++) {
-        setState(() {
-          if (myListItem.isNotEmpty) {
-            selectedItems.add({
-              'id': myListItem[0].id,
-              'price': myListItem[0].price,
-              'count': priceRange[0].minOr, // Add count for each product
-            });
-          } else {
-            selectedItems.add({
-              'id': "",
-              'price': priceRange[0].price,
-              'count': priceRange[0].minOr, // Add count for each product
-            });
-          }
-        });
-      }
+      // int loopCount = int.parse(priceRange[0].minOr);
+      // print("loopCount");
+      // print(loopCount);
+      // for (int i = 0; i < loopCount; i++) {
+      setState(() {
+        if (myListItem.isNotEmpty) {
+          selectedItems.add({
+            'id': myListItem[0].id,
+            'price': myListItem[0].price,
+            'count': priceRange[0].minOr, // Add count for each product
+          });
+        } else {
+          selectedItems.add({
+            'id': myListItem.isNotEmpty ? myListItem[0].id : "",
+            'price': priceRange[0].price,
+            'count': priceRange[0].minOr, // Add count for each product
+          });
+        }
+      });
+      // }
 
       // print("The min order:");
       // print(selectedItems.length);
@@ -306,16 +369,30 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
       // print(data);
 
       if (data['statusCode'] == '000') {
-        setState(() {
+        setState(() async {
           for (var picture in data['Pictures']) {
             mainPics.add(picture['Url']);
           }
+          // await countryManager.loadCountryFromPreferences();
+          // final String currentCountry = countryManager.country;
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          final String currentCountry = prefs.getString("currency") ?? "ETB";
+          currentCountryForm = currentCountry;
           prodName = data['OriginalTitle'];
           // print("the price range is here");
           myPriceRange = data["QuantityRanges"] != null
               ? parseQuantityRanges(
-                  List<Map<String, dynamic>>.from(data["QuantityRanges"]))
-              : [Prices(price: data['Price']['ConvertedPrice'], minOr: "1")];
+                  List<Map<String, dynamic>>.from(data["QuantityRanges"]),
+                  currentCountry)
+              : [
+                  Prices(
+                    price: (data['Price']['prices'] as List)
+                        .firstWhere((p) =>
+                            p['currencyCode'] == (currentCountry))['price']
+                        .toString(),
+                    minOr: "1",
+                  )
+                ];
           // print(myPriceRange[0].minOr);
           for (var attr in data['Attributes']) {
             if (attr['IsConfigurator'] == true
@@ -338,8 +415,8 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
           }
           // print("here are the atributes");
           // print(myProdAttr);
-          final productInfoList =
-              parseConfiguratorInfoList(data['ConfiguredItems']);
+          final productInfoList = parseConfiguratorInfoList(
+              data['ConfiguredItems'], currentCountry);
           for (var config in productInfoList) {
             myConfigs.add(ConfiguratorInfo(
                 id: config.id,
@@ -371,16 +448,24 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
     }
   }
 
-  List<Prices> parseQuantityRanges(List<Map<String, dynamic>> quantityRanges) {
+  List<Prices> parseQuantityRanges(
+      List<Map<String, dynamic>> quantityRanges, String country) {
     List<Prices> pricesList = [];
 
     for (int i = 0; i < quantityRanges.length; i++) {
       var minQuantity = quantityRanges[i]['MinQuantity'].toString();
-      var price = quantityRanges[i]['Price']['OriginalPrice'].toString();
-      String? maxQuantity;
 
+      // Get the prices array
+      var prices = quantityRanges[i]['Price']['prices'] as List;
+      // Select price based on country
+      var priceData = prices.firstWhere((p) => p['currencyCode'] == (country))
+          as Map<String, dynamic>;
+
+      var price = priceData['price'].toString();
+
+      String? maxQuantity;
       if (i == quantityRanges.length - 1) {
-        maxQuantity = null; // Last range, no upper limit
+        maxQuantity = null;
       } else {
         maxQuantity = (quantityRanges[i + 1]['MinQuantity'] - 1).toString();
       }
@@ -388,7 +473,6 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
       pricesList
           .add(Prices(price: price, minOr: minQuantity, maxOr: maxQuantity));
     }
-    // calculateTotal(pricesList);
     return pricesList;
   }
 
@@ -411,7 +495,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
       // Create ListItem using values from attribute and matchingConfig
       return ListItem(
           id: matchingConfig.id,
-          imageUrl: attribute.ImageUrl,
+          imageUrl: attribute.ImageUrl ?? '',
           title: attribute.Vid,
           price: matchingConfig.originalPrice,
           name: attribute.OriginalValue);
@@ -426,9 +510,10 @@ class checkOut_widget extends StatelessWidget {
   final bool config;
   final String productId;
   final String image;
+  final String currentCountryForm;
   final List<ListItem>? myList;
   final List<Map<String, dynamic>> selection;
-  const checkOut_widget({
+  checkOut_widget({
     required this.price,
     super.key,
     required this.prodName,
@@ -438,7 +523,9 @@ class checkOut_widget extends StatelessWidget {
     required this.productId,
     required this.image,
     required this.minOrder,
+    required this.currentCountryForm,
   });
+  final countryManager = CountryManager();
   String sanitizeInput(String input) {
     return input.replaceAll(RegExp(r'[^0-9.]'), '');
   }
@@ -459,7 +546,7 @@ class checkOut_widget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  "Total: ETB ${formatPrice(price)}",
+                  "Total: ${currentCountryForm == "ETB" ? "ETB" : "\$"} ${formatPrice(price)}",
                   style: Theme.of(context)
                       .textTheme
                       .displaySmall!
@@ -478,17 +565,30 @@ class checkOut_widget extends StatelessWidget {
               child: AppButtonWidget(
                 isLoading: false,
                 text: "Add to Cart",
-                onClick: () {
+                onClick: () async {
                   // print(minOrder);
-                  if (int.parse(minOrder) <= selection.length) {
-                    // print(int.parse(23).runtimeType);
+                  var mini = 0;
+                  for (var i in selection) {
+                    mini += int.parse(i['count'].toString());
+                  }
+                  print(mini);
+                  if (int.parse(minOrder) <= mini) {
                     try {
+                      // await countryManager.loadCountryFromPreferences();
+                      // final String currentCountry = countryManager.country;
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      final String currentCountry =
+                          prefs.getString("currency") ?? "ETB";
+                      print(currentCountry);
                       for (var sel in selection) {
+                        print("the id heer");
+                        print(sel['count']);
                         // Validate and parse 'id'
-                        final id =
-                            sel['id'] != null && sel['id'].toString().isNotEmpty
-                                ? int.tryParse(sel['id'].toString()) ?? 0
-                                : 0;
+                        // final id =
+                        //     sel['id'] != null && sel['id'].toString().isNotEmpty
+                        //         ? int.tryParse(sel['id'].toString()) ?? 0
+                        //         : 0;
 
                         // Validate and parse 'count'
                         final count = sel['count'] is int
@@ -500,7 +600,7 @@ class checkOut_widget extends StatelessWidget {
 
                         // Create CartItem
                         CartItem myItem = CartItem(
-                          // id: productId,
+                          currency: currentCountry == "ETB" ? "ETB" : "\$",
                           description: "provider",
                           subProductId: sel[
                               'id'], // Assuming sel['id'] is fine as a string here
@@ -557,20 +657,20 @@ class ProductAttributes {
   final String Vid;
   final String PropertyName;
   final bool IsConfigurator;
-  final String MiniImageUrl;
+  final String? MiniImageUrl;
   final String Value;
   final String OriginalValue;
-  final String ImageUrl;
+  final String? ImageUrl;
   final String Pid;
   final String OriginalPropertyName;
   ProductAttributes({
     required this.Vid,
     required this.PropertyName,
     required this.IsConfigurator,
-    required this.MiniImageUrl,
+    this.MiniImageUrl,
     required this.Value,
     required this.OriginalValue,
-    required this.ImageUrl,
+    this.ImageUrl,
     required this.Pid,
     required this.OriginalPropertyName,
   });

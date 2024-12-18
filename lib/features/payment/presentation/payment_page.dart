@@ -13,8 +13,10 @@ import 'package:commercepal/features/cbe_birr/cbe_birr.dart';
 import 'package:commercepal/features/commercepal_coins_checkout/commercepal_coins_checkout.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_loading_widget.dart';
+import 'package:commercepal/features/edahab/edahab.dart';
 import 'package:commercepal/features/epg/epg_payment.dart';
 import 'package:commercepal/features/hijra_bank_loan/hijra_bank.dart';
+import 'package:commercepal/features/ipya/ipay.dart';
 import 'package:commercepal/features/otp_payments/presentation/otp_payment_page.dart';
 import 'package:commercepal/features/payment/data/dto/payment_modes_dto.dart';
 import 'package:commercepal/features/payment/presentation/bloc/payment_cubit.dart';
@@ -42,6 +44,16 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
+  String currency = "";
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final Map args = ModalRoute.of(context)?.settings.arguments as Map;
+    currency = args['currency'];
+    print(currency);
+  }
+
   var loading = false;
   String? message;
   String? url;
@@ -72,7 +84,7 @@ class _PaymentPageState extends State<PaymentPage> {
         centerTitle: false,
       ),
       body: BlocProvider(
-        create: (context) => getIt<PaymentCubit>()..fetchPaymentModes(),
+        create: (context) => getIt<PaymentCubit>()..fetchPaymentModes(currency),
         child: BlocConsumer<PaymentCubit, PaymentState>(
           listener: (context, state) {},
           builder: (ctx, state) {
@@ -130,9 +142,39 @@ class _PaymentPageState extends State<PaymentPage> {
                                     var item = e.items![index];
 
                                     return InkWell(
-                                      onTap: () {
-                                        _redirectUserBasedOnPaymentMethod(
-                                            item, context);
+                                      onTap: () async {
+                                        if (item.hasVariant != null) {
+                                          print(item.name);
+                                          if (item.hasVariant!) {
+                                            var variant =
+                                                await showVariantsDialog(
+                                                    context,
+                                                    item.itemVariants!);
+                                            if (variant != null && mounted) {
+                                              final e = PaymentMethodItem(
+                                                  name: variant.name,
+                                                  paymentMethod:
+                                                      variant.paymentMethod,
+                                                  paymentInstruction: variant
+                                                      .paymentInstruction,
+                                                  iconUrl: variant.iconUrl,
+                                                  paymentType:
+                                                      variant.paymentType);
+                                              // print(e.name);
+                                              // print(e.paymentMethod);
+                                              // print(e.paymentInstruction);
+                                              // print(e.paymentType);
+                                              _redirectUserBasedOnPaymentMethod(
+                                                  e, context);
+                                            }
+                                          } else {
+                                            _redirectUserBasedOnPaymentMethod(
+                                                item, context);
+                                          }
+                                        } else {
+                                          _redirectUserBasedOnPaymentMethod(
+                                              item, context);
+                                        }
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.all(0),
@@ -185,7 +227,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
   void _redirectUserBasedOnPaymentMethod(
       PaymentMethodItem e, BuildContext context) {
-    // print(e.name);
+    print(e);
     if (e.name!.toLowerCase().contains("sahay") == true) {
       Navigator.pushNamed(context, SahayPayPage.routeName, arguments: {
         "cash_type": e.name,
@@ -232,7 +274,35 @@ class _PaymentPageState extends State<PaymentPage> {
         context,
         CBEBirrPayment.routeName,
       );
+    } else if (e.name!.toLowerCase().contains("ipay") == true) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Ipay(),
+          settings: RouteSettings(
+            arguments: {
+              "cash_type": e.paymentType,
+              "cash_type_name": e.name,
+              "payment_instruction": e.paymentInstruction
+            },
+          ),
+        ),
+      );
+    } else if (e.name!.toLowerCase().contains("edahab") == true) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const Edahab(),
+              settings: RouteSettings(
+                arguments: {
+                  "cash_type": e.paymentType,
+                  "cash_type_name": e.name,
+                  "payment_instruction": e.paymentInstruction
+                },
+              )));
     } else {
+      // print("it is e-birr");
+      // print(e.itemVariants![1].name);
       Navigator.pushNamed(context, CashPaymentPage.routeName, arguments: {
         "cash_type": e.paymentType,
         "cash_type_name": e.name,
@@ -250,5 +320,69 @@ void _showModalBottomSheet(
       institutionId: institutionId,
       onPeriodClicked: onPeriodClicked,
     ),
+  );
+}
+
+Future<ItemVariant?> showVariantsDialog(
+    BuildContext context, List<ItemVariant> variants) {
+  return showDialog<ItemVariant>(
+    context: context,
+    builder: (BuildContext context) {
+      int rowCount = (variants.length / 2).ceil(); // Assuming 2 items per row
+      double dialogHeight =
+          (rowCount * 100.0) + 100.0; // Height per row + padding
+      return AlertDialog(
+        title: Text("Select a Variant"),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: dialogHeight,
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
+            ),
+            itemCount: variants.length,
+            itemBuilder: (context, index) {
+              final variant = variants[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pop(context, variant); // Return the variant
+                },
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        variant.iconUrl ?? '',
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Icon(Icons.broken_image, size: 80),
+                      ),
+                    ),
+                    SizedBox(height: 4.0),
+                    Text(
+                      variant.name ?? '',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 12.0),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context), // Return null
+            child: Text("Cancel"),
+          ),
+        ],
+      );
+    },
   );
 }

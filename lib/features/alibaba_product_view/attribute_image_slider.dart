@@ -23,25 +23,21 @@ class _AttributeImageScrollerState extends State<AttributeImageScroller> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: widget.imageUrls.asMap().entries.map((entry) {
-          // int index = entry.key;
+          int index = entry.key; // Get the index
           String url = entry.value;
 
           return GestureDetector(
             onTap: () {
-              // setState(() {
-              //   selectedIndex = index; // Update selected index
-              // });
-              // widget.onImageSelected(index); // Call the callback
+              setState(() {
+                selectedIndex = index; // Update selected index
+              });
+              widget.onImageSelected(index); // Invoke the callback with index
             },
             child: Container(
               margin: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color:
-                      //  selectedIndex == index
-                      //     ? Colors.black
-                      // :
-                      Colors.grey.shade200,
+                  color: Colors.grey.shade200,
                   width: 2, // Border width
                 ),
                 borderRadius: BorderRadius.circular(8.0), // Rounded corners

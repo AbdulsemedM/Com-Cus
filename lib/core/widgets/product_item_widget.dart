@@ -1,4 +1,5 @@
 import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/features/alibaba_new/providers_products_screen.dart';
 import 'package:commercepal/features/alibaba_product_view/alibaba_products_screen.dart';
 import 'package:commercepal/features/selected_product/presentation/selected_product_page.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
@@ -336,10 +337,10 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                AlibabaProductsScreen(
+                                                ProvidersProductsScreen(
                                                   productId: widget.product.id!,
-                                                  provider:
-                                                      widget.product.provider!,
+                                                  // provider:
+                                                  //     widget.product.provider!,
                                                 )));
                                   }
                                   // if (widget.product.subProducts != null &&
@@ -360,7 +361,9 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
-                      "Price: ETB ${widget.product.price}",
+                      widget.product.currency == 'USD'
+                          ? '\$${widget.product.price}'
+                          : '${widget.product.price} ${widget.product.currency}',
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall!

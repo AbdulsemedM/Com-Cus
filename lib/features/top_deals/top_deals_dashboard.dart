@@ -88,8 +88,7 @@ class _TopDealsDashboardState extends State<TopDealsDashboard> {
                     child: const Column(
                       children: [
                         Center(
-                          child:
-                              Center(child: Text('No flash products found.')),
+                          child: Center(child: Text('No products found.')),
                         ),
                       ],
                     ),

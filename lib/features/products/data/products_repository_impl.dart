@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+import 'package:commercepal/app/app2.dart';
 import 'package:commercepal/app/data/network/api_provider.dart';
 import 'package:commercepal/app/data/network/end_points.dart';
 import 'package:commercepal/app/di/injector.dart';
+import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/products/data/dto/Products_dto.dart';
 import 'package:commercepal/features/products/domain/product.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/session/domain/session_repo.dart';
 import '../domain/products_repository.dart';
@@ -19,7 +22,7 @@ class ProductsRepositoryImpl implements ProductRepository {
   final SessionRepo sessionRepo;
 
   ProductsRepositoryImpl(this.sessionRepo, this.apiProvider);
-
+  final countryManager = CountryManager();
   @override
   Future<List<Product>> getProducts(
       num? subCatId, Map? queryParams, bool? filter) async {
@@ -59,7 +62,12 @@ class ProductsRepositoryImpl implements ProductRepository {
               "statusMessage": "Request Successful",
               "statusCode": "000"
             };
-            final prodObjs = ProductsDto.fromJson(myProducts);
+            // await countryManager.loadCountryFromPreferences();
+            // final String currentCountry = countryManager.country;
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            final String currentCountry = prefs.getString("currency") ?? "ETB";
+            final prodObjs = ProductsDto.fromJson(myProducts, currentCountry);
             print("yesss");
             if (prodObjs.details?.isEmpty == true) {
               throw 'No products found';
@@ -115,8 +123,12 @@ class ProductsRepositoryImpl implements ProductRepository {
         print("products");
         print(products);
         // var products = jsonDecode(response.body);
+        // await countryManager.loadCountryFromPreferences();
+        // final String currentCountry = countryManager.country;
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final String currentCountry = prefs.getString("currency") ?? "ETB";
         if (products["statusCode"] == "000") {
-          final prodObjs = ProductsDto.fromJson(products);
+          final prodObjs = ProductsDto.fromJson(products, currentCountry);
           print("hrreeerr");
           // print(jsonDecode(products));
           print("hrreeerr");
@@ -175,7 +187,11 @@ class ProductsRepositoryImpl implements ProductRepository {
         var products = jsonDecode(responseBody);
         print(products["statusCode"]);
         if (products["statusCode"] == "000") {
-          final prodObjs = ProductsDto.fromJson(products);
+          // await countryManager.loadCountryFromPreferences();
+          // final String currentCountry = countryManager.country;
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          final String currentCountry = prefs.getString("currency") ?? "ETB";
+          final prodObjs = ProductsDto.fromJson(products, currentCountry);
           if (prodObjs.details?.isEmpty == true) {
             throw 'No products found by that image URL';
           }
@@ -223,7 +239,11 @@ class ProductsRepositoryImpl implements ProductRepository {
         var products = jsonDecode(responseBody);
         print(products["statusCode"]);
         if (products["statusCode"] == "000") {
-          final prodObjs = ProductsDto.fromJson(products);
+          // await countryManager.loadCountryFromPreferences();
+          // final String currentCountry = countryManager.country;
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          final String currentCountry = prefs.getString("currency") ?? "ETB";
+          final prodObjs = ProductsDto.fromJson(products, currentCountry);
           if (prodObjs.details?.isEmpty == true) {
             throw 'No products found by that image';
           }
@@ -319,10 +339,20 @@ class ProductsRepositoryImpl implements ProductRepository {
           // 'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+
+      // final countryManager = CountryManager();
+      // await countryManager.loadCountryFromPreferences();
+      // final String currentCountry = countryManager.country;
+
       var products = jsonDecode(response.body);
+      // print("Current country from prod: ${currentCountry}"); // Added this line
       print(products);
       if (products["statusCode"] == "000") {
-        final prodObjs = ProductsDto.fromJson(products);
+        // await countryManager.loadCountryFromPreferences();
+        // final String currentCountry = countryManager.country;
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final String currentCountry = prefs.getString("currency") ?? "ETB";
+        final prodObjs = ProductsDto.fromJson(products, currentCountry);
         if (prodObjs.details?.isEmpty == true) {
           throw 'No products found by that name';
         }

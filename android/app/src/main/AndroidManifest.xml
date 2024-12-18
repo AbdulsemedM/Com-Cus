@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+     <queries>
+        <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
+    </queries>
 
     <application
         android:label="commercepal"
@@ -29,6 +32,9 @@
         
         <meta-data android:name="com.facebook.sdk.ClientToken" 
             android:value="@string/facebook_client_token"/>
+
+        <!-- <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/> -->
 
         <activity
             android:name=".MainActivity"

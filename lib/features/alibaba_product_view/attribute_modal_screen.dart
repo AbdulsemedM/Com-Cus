@@ -9,12 +9,14 @@ class AttributeModalScreen extends StatefulWidget {
   final List<ProductAttributes> myAttributes;
   final List<Prices> myPrices;
   final List<ConfiguratorInfo> myConfig;
+  final String currentCountryForm;
 
   const AttributeModalScreen(
       {super.key,
       required this.myAttributes,
       required this.myPrices,
       required this.myConfig,
+      required this.currentCountryForm,
       required this.onProceed});
   @override
   _AttributeModalScreenState createState() => _AttributeModalScreenState();
@@ -39,12 +41,11 @@ class _AttributeModalScreenState extends State<AttributeModalScreen> {
 
       // Create ListItem using values from attribute and matchingConfig
       return ListItem(
-        id: matchingConfig.id,
-        imageUrl: attribute.ImageUrl,
-        title: attribute.Vid,
-        price: matchingConfig.originalPrice,
-        name: attribute.OriginalValue
-      );
+          id: matchingConfig.id,
+          imageUrl: attribute.ImageUrl ?? "",
+          title: attribute.Vid,
+          price: matchingConfig.originalPrice,
+          name: attribute.OriginalValue);
     }).toList();
   }
 
@@ -89,12 +90,13 @@ class _AttributeModalScreenState extends State<AttributeModalScreen> {
                           errorWidget: (_, __, ___) => Container(
                             color: Colors.grey,
                           ),
-                          imageUrl: widget.myAttributes[0].MiniImageUrl,
+                          imageUrl: widget.myAttributes[0].MiniImageUrl ?? '',
                         ),
                       ),
                     ),
                     MinOrderPricePage(
                       price: widget.myPrices,
+                      currentCountryForm: widget.currentCountryForm,
                     ),
                   ],
                 ),
@@ -118,8 +120,10 @@ class _AttributeModalScreenState extends State<AttributeModalScreen> {
                 ),
               ),
               AttributesListItem(
+                currentCountryForm: widget.currentCountryForm,
                 items: myListItem,
                 onProceed: handleProceed,
+                minOrder: widget.myPrices[0].minOr,
               ),
             ],
           ),
@@ -148,16 +152,28 @@ class ConfiguratorInfo {
   });
 
   // Factory constructor to create an instance from JSON
-  factory ConfiguratorInfo.fromJson(Map<String, dynamic> json) {
+  factory ConfiguratorInfo.fromJson(Map<String, dynamic> json, String country) {
+    final pricesList = (json['Price']['prices'] as List<dynamic>);
+
+    // If country is ET, get price with isMainCurrency = true
+    // Otherwise, get price with isMainCurrency = false
+    final selectedPrice = pricesList.firstWhere(
+      (price) => price['currencyCode'] == (country),
+      orElse: () => {'price': json['Price']['OriginalPrice']},
+    );
+
     return ConfiguratorInfo(
       id: json['Id'] as String,
       vid: json['Configurators'][0]['Vid'] as String,
-      originalPrice: json['Price']['OriginalPrice'] as double,
+      originalPrice: (selectedPrice['price'] as num).toDouble(),
     );
   }
 }
 
 // Function to parse JSON data into a list of ConfiguratorInfo objects
-List<ConfiguratorInfo> parseConfiguratorInfoList(List<dynamic> jsonList) {
-  return jsonList.map((json) => ConfiguratorInfo.fromJson(json)).toList();
+List<ConfiguratorInfo> parseConfiguratorInfoList(
+    List<dynamic> jsonList, String countryForm) {
+  return jsonList
+      .map((json) => ConfiguratorInfo.fromJson(json, countryForm))
+      .toList();
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../app/utils/app_colors.dart';
@@ -82,8 +83,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FutureBuilder<String>(
-                  future: TranslationService.translate(
-                      "${widget.cartItem.name}"), // Translate hint
+                  future: TranslationService.translate(_getTruncatedText(
+                      widget.cartItem.name!)), // Translate hint
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Text(
@@ -167,7 +168,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 Row(
                   children: [
                     Text(
-                      '${widget.cartItem.currency ?? "ETB"} ${widget.cartItem.price}',
+                      '${widget.cartItem.currency} ${widget.cartItem.price} X ${widget.cartItem.quantity}',
                       // widget.cartItem.price
                       //     .formatCurrency(widget.cartItem.currency),
                       style: Theme.of(context)
@@ -254,13 +255,6 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                           ),
                         ),
                       ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        "$_quantity",
-                        style: TextStyle(color: Colors.black, fontSize: 18.sp),
-                      ),
-                    ),
                     if (widget.cartItem.description != "provider")
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -287,13 +281,24 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                       width: 10,
                     )
                   ],
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    "${widget.cartItem.currency} ${NumberFormat('#,##0.00').format(_quantity * double.parse(widget.cartItem.price!))}",
+                    style: TextStyle(color: Colors.black, fontSize: 18.sp),
+                  ),
+                ),
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  String _getTruncatedText(String text) {
+    return text.length > 20 ? "${text.substring(0, 30)}..." : text;
   }
 
   void _deleteCartItem() async {

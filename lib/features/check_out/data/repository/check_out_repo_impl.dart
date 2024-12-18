@@ -108,15 +108,13 @@ class CheckOutRepoImpl implements CheckOutRepo {
             "Content-type": "application/json; charset=utf-8"
           });
       var response = jsonDecode(checkout.body);
-      // print(response);
-// =======
 //       final response = await apiProvider.post(
 //           request,
 //           isUserBusiness
 //               ? EndPoints.businessCheckOut.url
 //               : EndPoints.checkOut.url);
-// >>>>>>> main
-      // print("orderrefhere");
+      print("orderrefhere");
+      print(response);
       // print(response['orderRef']);
       // final cResponse = jsonDecode(response);
       // print("decoded");

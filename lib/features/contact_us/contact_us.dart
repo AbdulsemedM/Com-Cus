@@ -11,8 +11,8 @@ class ContactUsPage extends StatefulWidget {
 }
 
 class _ContactUsPageState extends State<ContactUsPage> {
-  final String phoneNumber = "+251 90- 060-7175";
-  final String phoneNumber2 = "+251 91-530-4065";
+  final String phoneNumber = "+251 90-433-0066";
+  final String phoneNumber2 = "+251 90-433-0066";
   final String phoneNumber3 = "9491";
   final String url = "https://commercepal.com/browse";
   @override
@@ -72,36 +72,36 @@ class _ContactUsPageState extends State<ContactUsPage> {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: TextField(
-              readOnly: true,
-              controller: TextEditingController(text: phoneNumber2),
-              decoration: InputDecoration(
-                suffixIcon: GestureDetector(
-                  onTap: () async {
-                    final Uri launchUri = Uri(
-                      scheme: 'tel',
-                      path: phoneNumber2,
-                    );
-                    if (await canLaunch(launchUri.toString())) {
-                      await launch(launchUri.toString());
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('Could not launch $phoneNumber2')),
-                      );
-                    }
-                  },
-                  child: Icon(Icons.phone, color: Colors.green),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.all(16.0),
+          //   child: TextField(
+          //     readOnly: true,
+          //     controller: TextEditingController(text: phoneNumber2),
+          //     decoration: InputDecoration(
+          //       suffixIcon: GestureDetector(
+          //         onTap: () async {
+          //           final Uri launchUri = Uri(
+          //             scheme: 'tel',
+          //             path: phoneNumber2,
+          //           );
+          //           if (await canLaunch(launchUri.toString())) {
+          //             await launch(launchUri.toString());
+          //           } else {
+          //             ScaffoldMessenger.of(context).showSnackBar(
+          //               SnackBar(
+          //                   content: Text('Could not launch $phoneNumber2')),
+          //             );
+          //           }
+          //         },
+          //         child: Icon(Icons.phone, color: Colors.green),
+          //       ),
+          //       border: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(12.0),
+          //         borderSide: BorderSide(color: Colors.grey),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Padding(
             padding: EdgeInsets.all(16.0),
             child: TextField(

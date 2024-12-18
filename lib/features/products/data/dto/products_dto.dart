@@ -1,9 +1,10 @@
 import 'dart:convert';
 
+import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:commercepal/features/products/domain/product.dart';
 
 ProductsDto productsDtoFromJson(String str) =>
-    ProductsDto.fromJson(json.decode(str));
+    ProductsDto.fromJson(json.decode(str), null);
 
 String productsDtoToJson(ProductsDto data) => json.encode(data.toJson());
 
@@ -19,7 +20,7 @@ class ProductsDto {
     _statusMessage = statusMessage;
     _statusCode = statusCode;
   }
-  void parseProducts(Map<String, dynamic> json) {
+  void parseProducts(Map<String, dynamic> json, String? country) {
     // Initialize details
     _details = [];
 
@@ -28,33 +29,33 @@ class ProductsDto {
         json['responseData']['products'] != null) {
       // Case 1: products exist under responseData
       json['responseData']['products'].forEach((v) {
-        _details?.add(ProductDetails.fromJson(v));
+        _details?.add(ProductDetails.fromJson(v, country));
       });
     } else if (json['details'] != null) {
       // Case 2: products exist directly under details
       json['details'].forEach((v) {
-        _details?.add(ProductDetails.fromJson(v));
+        _details?.add(ProductDetails.fromJson(v, country));
       });
     } else if (json['products'] != null) {
       // Case 3: products exist directly under products key
       json['products'].forEach((v) {
-        _details?.add(ProductDetails.fromJson(v));
+        _details?.add(ProductDetails.fromJson(v, country));
       });
     } else {
       // Case 4: No products found
-      print("No products found in the response.");
+      // print("No products found in the response.");
     }
 
     // Print details for debugging
-    print("Parsed products count: ${_details?.length}");
+    // print("Parsed products count: ${_details?.length}");
   }
 
-  ProductsDto.fromJson(dynamic json) {
+  ProductsDto.fromJson(dynamic json, String? country) {
     _statusDescription = json['statusDescription'];
 
-    print("counting");
+    // print("counting");
     try {
-      parseProducts(json);
+      parseProducts(json, country);
     } catch (e) {
       print("Error parsing products: $e");
     }
@@ -116,7 +117,7 @@ class ProductsDto {
 }
 
 ProductDetails detailsFromJson(String str) =>
-    ProductDetails.fromJson(json.decode(str));
+    ProductDetails.fromJson(json.decode(str), str);
 
 String detailsToJson(ProductDetails data) => json.encode(data.toJson());
 
@@ -213,11 +214,38 @@ class ProductDetails {
     _merchantId = merchantId;
   }
 
-  ProductDetails.fromJson(dynamic json) {
-    print("here is the json");
-    print(json['ProductId']);
+  ProductDetails.fromJson(dynamic json, String? country) {
+    // countryManager.loadCountryFromPreferences();
+    print("the search is here");
+    print(json['Provider']);
+    print(country);
     String pid = json['ProductId'].toString();
     try {
+      if (json['prices'] != null && json['prices'] is List) {
+        var prices = json['prices'] as List;
+        if (country == 'ETB') {
+          // For Ethiopia, find price with isMainCurrency = true
+          var mainPrice = prices.firstWhere(
+            (price) => price['currencyCode'] == "ETB",
+            orElse: () => prices.first,
+          );
+          _unitPrice = mainPrice['price'];
+          _currency = mainPrice['currencyCode'];
+        } else {
+          // For other countries, find price with isMainCurrency = false
+          var foreignPrice = prices.firstWhere(
+            (price) => price['currencyCode'] == "USD",
+            orElse: () => prices.first,
+          );
+          _unitPrice = foreignPrice['price'];
+          _currency = foreignPrice['currencyCode'];
+        }
+      } else {
+        // Fallback to old price format
+        _unitPrice = json['UnitPrice'] ?? json['unitPrice'];
+        _currency = json['currency'] ?? "";
+      }
+
       _specialInstruction = json['SpecialInstruction'] ?? "";
       if (json['subProducts'] != null) {
         _subProducts = [];
@@ -227,7 +255,9 @@ class ProductDetails {
       } else {
         _subProducts = [];
       }
-      _provider = json['Provider'] ?? ""; //////////////////////////////////
+      _provider = json['Provider'] ??
+          json['provider'] ??
+          ""; //////////////////////////////////
       _offerPrice = json['offerPrice'] ?? "";
       _actualPrice = json['actualPrice'] ?? "";
       _productSubCategoryIdName = json['ProductSubCategoryIdName'] ?? "";
@@ -250,8 +280,8 @@ class ProductDetails {
       }
       _productParentCategoryIdName = json['ProductParentCategoryIdName'] ?? "";
       _discountType = json['discountType'] ?? "";
-      _currency =
-          json['currency'] ?? ""; ///////////////////////////////////////
+      // _currency =
+      //     json['currency'] ?? ""; ///////////////////////////////////////
       _productRating = json['productRating'] ?? 0;
       _productType = json['productType'] ?? "";
       if (json['featureDetails'] != null) {
@@ -291,8 +321,7 @@ class ProductDetails {
       } else {
         _primarySubProduct = 0;
       }
-      _unitPrice = json['UnitPrice'] ??
-          json['unitPrice']; ///////////////////////////////////
+      // _unitPrice = json['UnitPrice'] ?? json['unitPrice'];
       _productImages = json['ProductImages'] != null
           ? json['ProductImages'].cast<String>()
           : [];
@@ -306,9 +335,7 @@ class ProductDetails {
       _discountValue = json['DiscountValue'] ?? "";
       _discountDescription = json['discountDescription'] ?? "";
       _merchantId = json['merchantId'] ?? "";
-      print("every thing was great!");
       _productId = pid;
-      print("until!");
     } catch (e) {
       print(e.toString());
     }

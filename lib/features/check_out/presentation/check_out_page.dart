@@ -90,6 +90,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   String? _total;
   String? _shippingFee;
   bool _isUserBusiness = true;
+  String currency = "";
   void initState() {
     super.initState();
     // getLocation();
@@ -159,14 +160,23 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
               },
               shippingFee: (fee) {
                 setState(() {
+                  // Extract the currency part (assumes it's the first part before the number)
+                  final regex = RegExp(r'^\s*([^\d\s]+)');
+                  final match = regex.firstMatch(fee);
+
+                  if (match != null) {
+                    currency = match
+                        .group(1)!; // Get the matched currency symbol or code
+                  }
+                  // print(currency);
                   _shippingFee = fee;
-                  // print("shippingfeeeee");
-                  // print(_shippingFee);
                 });
               },
               //TODO: create state for redirecting to next stage
               success: (msg) {
-                Navigator.pushNamed(context, PaymentPage.routeName);
+                Navigator.pushNamed(context, PaymentPage.routeName, arguments: {
+                  'currency': currency,
+                });
               },
               isUserBusiness: (isUserBusiness) {
                 setState(() {

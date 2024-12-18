@@ -14,11 +14,13 @@ class PaymentCubit extends Cubit<PaymentState> {
   PaymentCubit(this.paymentRepo, this.customerLoanRepo)
       : super(const PaymentState.init());
 
-  void fetchPaymentModes() async {
+  void fetchPaymentModes(String? currency) async {
     try {
       emit(const PaymentState.loading());
-      final data = await paymentRepo.fetchPaymentModes();
-      await _attachFinancialInsts(data);
+      final data = await paymentRepo.fetchPaymentModes(currency);
+      if (currency == "ETB") {
+        await _attachFinancialInsts(data);
+      }
       emit(PaymentState.paymentMethods(data));
     } catch (e) {
       emit(PaymentState.error(e.toString()));
@@ -30,7 +32,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     final loanPaymentMode =
         data.where((element) => element.name?.toLowerCase() == "loan");
     // get loans
-    // final loans = await customerLoanRepo.fetchFinancialInstitutions();
+    final loans = await customerLoanRepo.fetchFinancialInstitutions();
 // <<<<<<< New-Providers
 // =======
 //     print("passed");
@@ -41,18 +43,18 @@ class PaymentCubit extends Cubit<PaymentState> {
       data.removeWhere((element) => element.name?.toLowerCase() == "loan");
     }
 
-    // data.add(PaymentMethods(
-    //     name: "Loan",
-    //     iconUrl: "loan.png",
-    //     paymentMethod: "LOAN",
-    //     items: loans
-    //         .map((e) => PaymentMethodItem(
-    //             iconUrl: "loan.png",
-    //             name: e.name,
-    //             paymentMode: PaymentMode.loan,
-    //             paymentMethod: e.code,
-    //             id: e.id))
-    //         .toList()));
+    data.add(PaymentMethods(
+        name: "Loan",
+        iconUrl: "loan.png",
+        paymentMethod: "LOAN",
+        items: loans
+            .map((e) => PaymentMethodItem(
+                iconUrl: "loan.png",
+                name: e.name,
+                paymentMode: PaymentMode.loan,
+                paymentMethod: e.code,
+                id: e.id))
+            .toList()));
   }
 
   void fetchMarkUps(num institutionId) async {
