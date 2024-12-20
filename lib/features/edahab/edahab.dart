@@ -125,6 +125,7 @@ class _EdahabState extends State<Edahab> {
                           });
                         },
                         validator: (value) {
+                          print(value);
                           // Define your regular expressions
                           var regExp1 = RegExp(r'^65\d{7}$');
                           var regExp2 = RegExp(r'^\66\d{7}$');
@@ -159,7 +160,7 @@ class _EdahabState extends State<Edahab> {
                                       loading = true;
                                     });
                                     var regExp1 = RegExp(r'^0\d{9}$');
-                                    var regExp2 = RegExp(r'^\+251\d{9}$');
+                                    var regExp2 = RegExp(r'^\+');
                                     if (regExp1.hasMatch(pNumber!)) {
                                       pNumber = pNumber!
                                           .replaceFirst(RegExp('^0'), '251');
@@ -225,11 +226,12 @@ class _EdahabState extends State<Edahab> {
         // print(orderRef);
         Map<String, dynamic> payload = {
           "ServiceCode": "CHECKOUT",
-          "PaymentType": "CBE-BIRR",
-          "PaymentMode": "CBE-BIRR",
+          "PaymentType": "EDAHAB",
+          "PaymentMode": "EDAHAB",
           "UserType": isit ? "C" : "B",
           "OrderRef": orderRef,
-          "Currency": "ETB"
+          "Currency": "ETB",
+          "PhoneNumber": pNumber
         };
         // print(payload);
 

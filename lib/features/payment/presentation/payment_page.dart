@@ -243,6 +243,14 @@ class _PaymentPageState extends State<PaymentPage> {
         context,
         EPGPayment.routeName,
       );
+    } else if (e.name!.toLowerCase().contains("m-pesa") == true) {
+      displaySnack(context, "Coming soon");
+    } else if (e.name!.toLowerCase().contains("mastercard") == true) {
+      displaySnack(context, "Coming soon");
+    } else if (e.name!.toLowerCase().contains("visa card") == true) {
+      displaySnack(context, "Coming soon");
+    } else if (e.name!.toLowerCase().contains("unionpay") == true) {
+      displaySnack(context, "Coming soon");
     } else if (e.name!.toLowerCase().contains("telebirr") == true) {
       // displaySnack(context, 'Will be available soon.');
       // if (url != null) {

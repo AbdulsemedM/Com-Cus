@@ -5,8 +5,10 @@ import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/core/widgets/input_decorations.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,27 +23,44 @@ class Ipay extends StatefulWidget {
 
 class _IpayState extends State<Ipay> {
   List<String> _instructions = [];
+  Country? _selectedCountry;
+  @override
+  void initState() {
+    super.initState();
+    fetchHints();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final Map args = ModalRoute.of(context)?.settings.arguments as Map;
-    if (args['payment_instruction'] != null) {
+    if (!mounted) return;
+
+    final Map? args = ModalRoute.of(context)?.settings.arguments as Map?;
+    if (args?['payment_instruction'] != null) {
       _instructions =
-          (args['payment_instruction'] as String).convertStringToList('data');
+          (args!['payment_instruction'] as String).convertStringToList('data');
       setState(() {});
     }
   }
 
   void fetchHints() async {
+    if (!mounted) return;
+
     setState(() {
       loading = true;
     });
 
-    physicalAddressHintFuture = Translations.translatedText(
-        "Enter your phone number below", GlobalStrings.getGlobalString());
-    pHint = await physicalAddressHintFuture;
+    try {
+      physicalAddressHintFuture = Translations.translatedText(
+          "Enter your phone number below", GlobalStrings.getGlobalString());
+      pHint = await physicalAddressHintFuture;
+    } catch (e) {
+      print('Error fetching hints: $e');
+      pHint = "Enter your phone number below"; // Fallback text
+    }
 
+    if (!mounted) return;
     setState(() {
       loading = false;
     });
@@ -111,36 +130,95 @@ class _IpayState extends State<Ipay> {
                               child: Text("Enter your phone number below")),
                         ],
                       ),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                            filled: true,
-                            fillColor: AppColors.greyColor,
-                            focusedBorder: InputBorder.none,
-                            focusedErrorBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none),
-                        keyboardType: TextInputType.phone,
-                        onChanged: (value) {
-                          setState(() {
-                            pNumber = value;
-                          });
-                        },
-                        validator: (value) {
-                          // Define your regular expressions
-                          var regExp1 = RegExp(r'^0\d{9}$');
-                          var regExp2 = RegExp(r'^\+251\d{9}$');
-                          var regExp3 = RegExp(r'^\251\d{9}$');
-
-                          // Check if the entered value matches either expression
-                          if (!(regExp1.hasMatch(value!) ||
-                              regExp3.hasMatch(value) ||
-                              regExp2.hasMatch(value))) {
-                            return 'Enter a valid mobile number';
-                          }
-
-                          // Validation passed
-                          return null;
-                        },
-                      ),
+                      Row(children: [
+                        // Country selector
+                        Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              showCountryPicker(
+                                context: context,
+                                showPhoneCode: true,
+                                searchAutofocus: true,
+                                onSelect: (Country country) {
+                                  setState(() {
+                                    _selectedCountry = country;
+                                  });
+                                },
+                                countryListTheme: CountryListThemeData(
+                                  flagSize: 25,
+                                  backgroundColor: Colors.white,
+                                  textStyle: const TextStyle(fontSize: 16),
+                                  bottomSheetHeight: 500,
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(20.0),
+                                    topRight: Radius.circular(20.0),
+                                  ),
+                                  inputDecoration: InputDecoration(
+                                    labelText: 'Search',
+                                    hintText: 'Start typing to search',
+                                    prefixIcon: const Icon(Icons.search),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: const Color(0xFF8C98A8)
+                                            .withOpacity(0.2),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (_selectedCountry != null) ...[
+                                    Text(_selectedCountry!.flagEmoji),
+                                    const SizedBox(width: 8),
+                                    Text('+${_selectedCountry!.phoneCode}'),
+                                  ] else
+                                    const Text('🏳️ +?'),
+                                  const Icon(Icons.arrow_drop_down),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        // Phone number input field
+                        Expanded(
+                          child: TextFormField(
+                            keyboardType: TextInputType.phone,
+                            validator: (v) {
+                              if (v?.isEmpty == true) {
+                                return "Phone number is required";
+                              }
+                              if (_selectedCountry == null) {
+                                return "Please select country";
+                              }
+                              return null;
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              setState(() {
+                                pNumber = value;
+                                final completePhoneNumber =
+                                    '${_selectedCountry?.phoneCode}$pNumber';
+                                print(
+                                    "completePhoneNumber: $completePhoneNumber");
+                              });
+                            },
+                            decoration: buildInputDecoration("Phone number"),
+                          ),
+                        ),
+                      ]),
                       SizedBox(
                         height: sHeight * 0.04,
                       ),
@@ -156,20 +234,17 @@ class _IpayState extends State<Ipay> {
                                     setState(() {
                                       loading = true;
                                     });
-                                    var regExp1 = RegExp(r'^0\d{9}$');
-                                    var regExp2 = RegExp(r'^\+251\d{9}$');
-                                    if (regExp1.hasMatch(pNumber!)) {
-                                      pNumber = pNumber!
-                                          .replaceFirst(RegExp('^0'), '251');
-                                      // print(pNumber);
-                                    } else if (regExp2.hasMatch(pNumber!)) {
+                                    var regExp2 = RegExp(r'^\+');
+                                    if (regExp2.hasMatch(pNumber!)) {
                                       pNumber = pNumber!
                                           .replaceFirst(RegExp(r'^\+'), '');
-                                      // print(pNumber);
                                     }
+                                    pNumber =
+                                        _selectedCountry!.phoneCode + pNumber!;
                                     // final prefsData = getIt<PrefsData>();
                                     // final isUserLoggedIn = await prefsData
                                     //     .contains(PrefsKeys.userToken.name);
+                                    print(pNumber);
                                     await sendData();
                                   }
                                 },
@@ -223,13 +298,14 @@ class _IpayState extends State<Ipay> {
         // print(orderRef);
         Map<String, dynamic> payload = {
           "ServiceCode": "CHECKOUT",
-          "PaymentType": "CBE-BIRR",
-          "PaymentMode": "CBE-BIRR",
+          "PaymentType": "IPAY",
+          "PaymentMode": "IPAY",
           "UserType": isit ? "C" : "B",
           "OrderRef": orderRef,
-          "Currency": "ETB"
+          "Currency": "USD",
+          "PhoneNumber": pNumber
         };
-        // print(payload);
+        print(payload);
 
         final response = await http.post(
           Uri.https(
@@ -241,12 +317,12 @@ class _IpayState extends State<Ipay> {
         );
 
         var data = jsonDecode(response.body);
-        // print(data);
+        print(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("epg_done", "yes");
-          // print(data['PaymentUrl']);
+          print(data['PaymentUrl']);
           setState(() {
             loading = false;
           });
