@@ -9,6 +9,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+class AttributeCombination {
+  final Map<String, ProductAttributes> attributes;
+  final int quantity;
+
+  AttributeCombination({
+    required this.attributes,
+    required this.quantity,
+  });
+
+  String get displayText {
+    return attributes.values
+        .map((attr) => '${attr.PropertyName}: ${attr.OriginalValue}')
+        .join(', ');
+  }
+}
+
 class ProductAttributesWidget extends StatefulWidget {
   final List<ProductAttributes> myProdAttr;
   final List<Prices> myPriceRange;
@@ -36,27 +52,32 @@ class ProductAttributesWidget extends StatefulWidget {
 class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
   late Map<String, List<ProductAttributes>> groupedAttributes;
   late Map<String, ProductAttributes?> selectedAttributes;
-  late TextEditingController quantityController;
+  late Map<String, TextEditingController> quantityControllers;
   String? errorText;
   GlobalKey<FormState> myKey = GlobalKey<FormState>();
   List<CartItem> myCart = [];
+  List<AttributeCombination> selectedCombinations = [];
+  Map<String, int> combinationQuantities = {};
+
+  int get totalQuantity =>
+      selectedCombinations.fold(0, (sum, combo) => sum + combo.quantity);
 
   @override
   void initState() {
     super.initState();
-    // Grouping the attributes by PropertyName
     groupedAttributes = _groupAttributesByPropertyName(widget.myProdAttr);
-    // Initialize selected attributes with null (no selection initially)
     selectedAttributes = {
       for (var group in groupedAttributes.keys) group: null,
     };
-    quantityController = TextEditingController();
-    quantityController.text = widget.myPriceRange[0].minOr;
+    quantityControllers = {
+      for (var attr in groupedAttributes[groupedAttributes.keys.last]!)
+        attr.Vid: TextEditingController(text: "0")
+    };
   }
 
   @override
   void dispose() {
-    quantityController.dispose();
+    quantityControllers.values.forEach((controller) => controller.dispose());
     super.dispose();
   }
 
@@ -73,63 +94,72 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
   }
 
   void _addToCartItems() {
-    if (myKey.currentState!.validate()) {
-      final selectedVids = selectedAttributes.values
-          .where((attribute) => attribute != null)
-          .map((attribute) => attribute!.Vid)
-          .join(", ");
-      final List<String> selectedVidList =
-          selectedVids.split(", ").map((vid) => vid.trim()).toList();
-      print(selectedVidList);
+    // if (myKey.currentState!.validate()) {
+    // Validate minimum order requirement
+    // if (!_isMinOrderValid()) {
+    //   // Show error message about minimum order not met
+    //   return;
+    // }
 
-      var myTheconfig;
+    // Get all selected combinations and their quantities
+    for (var combination in selectedCombinations) {
+      // Get the configuration for this combination
+      var combinationVids =
+          combination.attributes.values.map((attr) => attr.Vid).toList();
+      // print("combinationVids");
+      // print(combinationVids);
+
+      ProviderConfigModel? matchingConfig;
       if (widget.myConfig.isNotEmpty) {
-        final ProviderConfigModel theConfig =
-            widget.myConfig.firstWhere((config) {
-          // Check if all selectedVidList values exist in the config's vid list
-          return selectedVidList
-              .every((selectedVid) => config.vid.contains(selectedVid));
-        });
-        print("theConfig.id");
-        myTheconfig = theConfig;
+        try {
+          matchingConfig = widget.myConfig.firstWhere((config) {
+            return combinationVids.every((vid) => config.vid.contains(vid));
+          });
+        } catch (e) {
+          // No matching config found for this combination
+          print("No matching config found for combination: $combinationVids");
+          continue;
+        }
       }
-      final int quantity = int.tryParse(quantityController.text) ?? 0;
-
-// Find the applicable price based on the quantity range
-      final Prices? applicablePrice = widget.myPriceRange.firstWhere(
+      print("matchingConfig");
+      print(matchingConfig?.originalPrice);
+      // Find applicable price range for this combination's quantity
+      final Prices applicablePrice = widget.myPriceRange.firstWhere(
         (price) {
           final int minQuantity = int.parse(price.minOr);
           final int? maxQuantity =
               price.maxOr != null ? int.parse(price.maxOr!) : null;
 
-          // Check if quantity falls within this price range
-          return quantity >= minQuantity &&
-              (maxQuantity == null || quantity <= maxQuantity);
+          return combination.quantity >= minQuantity &&
+              (maxQuantity == null || combination.quantity <= maxQuantity);
         },
-        orElse: () => widget
-            .myPriceRange.first, // Return the first if no price range matches
+        orElse: () => widget.myPriceRange.first,
       );
-      if (applicablePrice != null) {
-        final double unitPrice = double.parse(applicablePrice.price);
-        final double totalPrice = unitPrice * quantity;
+      // print("applicablePrice");
+      // print(applicablePrice.price);
 
-        print("Total Price: $totalPrice");
-        setState(() {
-          myCart.add(CartItem(
-            currency: widget.currentCountry == "ETB" ? "ETB" : "\$",
-            description: "provider",
-            subProductId: myTheconfig == null ? "0" : myTheconfig.id,
-            name: widget.productName.toString(),
-            price: totalPrice.toString(),
-            image: widget.imageUrl.toString(),
-            productId: widget.productId.toString(),
-            // id: id, // Use validated and parsed ID
-            quantity: int.parse(
-                quantityController.text), // Use validated and parsed count
-          ));
-        });
-      }
+      // Calculate total price for this combination
+      final double unitPrice = double.parse(applicablePrice.price);
+      final double totalPrice = unitPrice * combination.quantity;
+
+      // Add to cart
+      // setState(() {
+      myCart.add(CartItem(
+        currency: widget.currentCountry == "ETB" ? "ETB" : "\$",
+        description: "provider",
+        subProductId: matchingConfig?.id ?? "0",
+        name: widget.productName.toString(),
+        price: matchingConfig?.originalPrice.toString(),
+        image: widget.imageUrl.toString(),
+        productId: widget.productId.toString(),
+        quantity: combination.quantity,
+      ));
+      print("myCart");
+      print(myCart.length);
+      // });
     }
+    _addToCart();
+    // }
   }
 
   String? _validateQuantity(String value) {
@@ -158,11 +188,21 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
 
   void _onItemClicked(String propertyName, ProductAttributes attribute) {
     setState(() {
-      // Toggle the selection: If the clicked attribute is already selected, unselect it; else, select it
+      // Simply update the selection without clearing previous combinations
       if (selectedAttributes[propertyName] == attribute) {
         selectedAttributes[propertyName] = null;
       } else {
         selectedAttributes[propertyName] = attribute;
+      }
+
+      // Initialize quantity for new combination if it's the last attribute
+      if (propertyName == groupedAttributes.keys.last &&
+          selectedAttributes[propertyName] != null &&
+          _canSelectLastAttribute()) {
+        String combinationKey = _getCombinationKey();
+        if (!combinationQuantities.containsKey(combinationKey)) {
+          combinationQuantities[combinationKey] = 0;
+        }
       }
     });
   }
@@ -174,17 +214,35 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
 
   bool _isMinOrderValid() {
     int totalQuantity = 0;
+
+    // Sum quantities from selectedCombinations
+    for (var combo in selectedCombinations) {
+      totalQuantity += combo.quantity;
+    }
+
+    // Sum quantities from combinationQuantities map
+    for (var quantity in combinationQuantities.values) {
+      totalQuantity += quantity;
+    }
+
+    // Sum quantities from myCart
     for (var item in myCart) {
       totalQuantity += item.quantity!;
     }
-    return int.parse(widget.myPriceRange[0].minOr) <= totalQuantity;
+
+    // Check if total meets minimum order requirement
+    return totalQuantity >= int.parse(widget.myPriceRange[0].minOr);
   }
 
-  void _showSelectedVids() {
+  void _addToCart() {
     for (var item in myCart) {
       context.read<CartCoreCubit>().addCartItem(item);
     }
     displaySnack(context, "Product added to cart successfully");
+    combinationQuantities.clear();
+    myCart.clear();
+    selectedCombinations.clear();
+    Navigator.pop(context);
     // Collect the selected Vids and display them
     // if (myKey.currentState!.validate()) {
     // final selectedVids = selectedAttributes.values
@@ -259,121 +317,298 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     // }
   }
 
-  @override
+  Widget _buildAttributeGrid(
+      String propertyName, List<ProductAttributes> items) {
+    bool isLastAttribute = propertyName == groupedAttributes.keys.last;
+
+    if (isLastAttribute) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              propertyName,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          if (!_canSelectLastAttribute())
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Please select options above first",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final attribute = items[index];
+              bool isSelected = selectedAttributes[propertyName] == attribute;
+              bool canSelect = _canSelectLastAttribute();
+
+              // Create a map of current selected attributes for this specific combination
+              Map<String, ProductAttributes> currentAttributes = {};
+              selectedAttributes.forEach((key, value) {
+                if (value != null && key != propertyName) {
+                  // Exclude the last property
+                  currentAttributes[key] = value;
+                }
+              });
+              // Add this specific last attribute
+              currentAttributes[propertyName] = attribute;
+
+              // Find quantity for this specific combination
+              int quantity = selectedCombinations
+                  .firstWhere(
+                    (combo) => _compareCombinations(
+                        combo.attributes, currentAttributes),
+                    orElse: () =>
+                        AttributeCombination(attributes: {}, quantity: 0),
+                  )
+                  .quantity;
+
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: isSelected
+                        ? AppColors.colorPrimaryDark
+                        : Colors.grey[300]!,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                  color: !canSelect ? Colors.grey[100] : null,
+                ),
+                child: ListTile(
+                  enabled: canSelect,
+                  onTap: () => canSelect
+                      ? _onItemClicked(propertyName, attribute)
+                      : null,
+                  leading: attribute.MiniImageUrl != null &&
+                          attribute.MiniImageUrl!.isNotEmpty
+                      ? Image.network(
+                          attribute.MiniImageUrl!,
+                          width: 50,
+                          height: 50,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.broken_image, size: 50);
+                          },
+                        )
+                      : Container(
+                          width: 50,
+                          height: 50,
+                          color: Colors.grey[200],
+                          child: Center(
+                            child: Text(
+                              attribute.OriginalValue.toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                  title: Text(
+                    attribute.OriginalValue.toString(),
+                    style: TextStyle(
+                      color: canSelect ? Colors.black : Colors.grey,
+                    ),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.remove_circle_outline,
+                          color: canSelect ? null : Colors.grey,
+                        ),
+                        onPressed: canSelect
+                            ? () => _updateQuantity(attribute.Vid, false)
+                            : null,
+                      ),
+                      SizedBox(
+                        width: 40,
+                        child: Text(
+                          quantity.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: canSelect ? Colors.black : Colors.grey,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.add_circle_outline,
+                          color: canSelect ? null : Colors.grey,
+                        ),
+                        onPressed: canSelect
+                            ? () => _updateQuantity(attribute.Vid, true)
+                            : null,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+
+          // Display selected combinations
+          if (selectedCombinations.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Selected Combinations:",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  ...selectedCombinations.map((combo) {
+                    return Card(
+                      child: ListTile(
+                        title: Text(combo.displayText),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Quantity: ${combo.quantity}",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                setState(() {
+                                  selectedCombinations.remove(combo);
+                                  String key = _getCombinationKeyFromAttributes(
+                                      combo.attributes);
+                                  combinationQuantities.remove(key);
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(
+                      "Total Quantity: $totalQuantity (Min. Order: ${widget.myPriceRange[0].minOr})",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: _isMinOrderMet() ? Colors.green : Colors.red,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      );
+    }
+
+    // Original grid view for non-last attributes
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            propertyName,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: items.length > 4 && items.length <= 8
+              ? 150
+              : items.length <= 4
+                  ? 80
+                  : 225,
+          child: GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              childAspectRatio: 1,
+            ),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final attribute = items[index];
+              bool isSelected = selectedAttributes[propertyName] == attribute;
+
+              return GestureDetector(
+                onTap: () => _onItemClicked(propertyName, attribute),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? AppColors.colorPrimaryDark.withOpacity(0.4)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                    border: isSelected
+                        ? Border.all(color: AppColors.colorPrimaryDark)
+                        : null,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: attribute.MiniImageUrl != null &&
+                            attribute.MiniImageUrl!.isNotEmpty
+                        ? Image.network(
+                            attribute.MiniImageUrl!,
+                            width: 50,
+                            height: 50,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.broken_image, size: 50);
+                            },
+                          )
+                        : Container(
+                            width: 50,
+                            height: _calculateHeight(
+                                attribute.OriginalValue.toString()),
+                            color: Colors.grey[200],
+                            child: Center(
+                              child: Text(
+                                attribute.OriginalValue.toString(),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Variations"),
+      ),
       body: ListView(
         children: [
-          // Main content with the attribute grid
           ListView.builder(
-            shrinkWrap: true, // Ensures proper scrolling inside ListView
-            physics:
-                NeverScrollableScrollPhysics(), // Avoid nested scroll issues
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
             itemCount: groupedAttributes.keys.length,
             itemBuilder: (context, index) {
               final propertyName = groupedAttributes.keys.elementAt(index);
               final items = groupedAttributes[propertyName]!;
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        propertyName,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: items.length > 4 && items.length <= 8
-                          ? 150
-                          : items.length <= 4
-                              ? 80
-                              : 225,
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4, childAspectRatio: 1),
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          final attribute = items[index];
-                          bool isSelected =
-                              selectedAttributes[propertyName] == attribute;
-
-                          return Padding(
-                            padding: const EdgeInsets.all(0),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  _onItemClicked(propertyName, attribute),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? AppColors.colorPrimaryDark
-                                              .withOpacity(0.4)
-                                          : Colors.transparent,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: attribute.MiniImageUrl != null &&
-                                                attribute
-                                                    .MiniImageUrl!.isNotEmpty
-                                            ? Image.network(
-                                                attribute.MiniImageUrl!,
-                                                width: 50,
-                                                height: 50,
-                                                errorBuilder: (context, error,
-                                                    stackTrace) {
-                                                  return const Icon(
-                                                      Icons.broken_image,
-                                                      size: 50);
-                                                },
-                                              )
-                                            : Container(
-                                                width: 50,
-                                                height: _calculateHeight(
-                                                    attribute.OriginalValue
-                                                        .toString()),
-                                                color: Colors.grey[200],
-                                                child: Center(
-                                                  child: Text(
-                                                    attribute.OriginalValue
-                                                        .toString(),
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                              )),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  attribute.MiniImageUrl != null &&
-                                          attribute.MiniImageUrl!.isNotEmpty
-                                      ? Text(
-                                          attribute.Vid,
-                                          style: const TextStyle(fontSize: 12),
-                                          overflow: TextOverflow.ellipsis,
-                                        )
-                                      : Container(),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              );
+              return _buildAttributeGrid(propertyName, items);
             },
           ),
           SizedBox(height: 10),
@@ -389,61 +624,62 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                     )),
                 Row(
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Form(
-                          key: myKey,
-                          child: TextFormField(
-                            controller: quantityController,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            decoration: const InputDecoration(
-                              labelText: "Enter Quantity",
-                              // errorText: errorText,
-                              border: OutlineInputBorder(),
-                            ),
-                            // onChanged: _validateQuantityInput,
-                            validator: (value) => _validateQuantity(value!),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              // color: AppColors.colorAccent,
-                              border: Border.all(color: AppColors.colorAccent),
-                              borderRadius: BorderRadius.circular(30)),
-                          child: IconButton(
-                            // highlightColor: AppColors.colorAccent,
-                            color: AppColors.colorAccent,
-                            onPressed: () {
-                              _addToCartItems();
-                              print(myCart.length);
-                            },
-                            icon: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors
-                                    .colorAccent, // Change to your desired color
-                                shape: BoxShape
-                                    .circle, // Optional: make it circular
-                              ),
-                              padding: const EdgeInsets.all(
-                                  8.0), // Adjust padding as needed
-                              child: Icon(Icons.add,
-                                  color: Colors
-                                      .white), // Adjust icon color for contrast
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
+                    // Expanded(
+                    //   flex: 2,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(16.0),
+                    //     child: Form(
+                    //       key: myKey,
+                    //       child: TextFormField(
+                    //         controller: quantityControllers[
+                    //             selectedAttributes.values.first?.Vid ?? ''],
+                    //         keyboardType: TextInputType.number,
+                    //         inputFormatters: [
+                    //           FilteringTextInputFormatter.digitsOnly,
+                    //         ],
+                    //         decoration: const InputDecoration(
+                    //           labelText: "Enter Quantity",
+                    //           // errorText: errorText,
+                    //           border: OutlineInputBorder(),
+                    //         ),
+                    //         // onChanged: _validateQuantityInput,
+                    //         validator: (value) => _validateQuantity(value!),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // Expanded(
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(8.0),
+                    //     child: Container(
+                    //       decoration: BoxDecoration(
+                    //           // color: AppColors.colorAccent,
+                    //           border: Border.all(color: AppColors.colorAccent),
+                    //           borderRadius: BorderRadius.circular(30)),
+                    //       child: IconButton(
+                    //         // highlightColor: AppColors.colorAccent,
+                    //         color: AppColors.colorAccent,
+                    //         onPressed: () {
+                    //           _addToCartItems();
+                    //           print(myCart.length);
+                    //         },
+                    //         icon: Container(
+                    //           decoration: BoxDecoration(
+                    //             color: AppColors
+                    //                 .colorAccent, // Change to your desired color
+                    //             shape: BoxShape
+                    //                 .circle, // Optional: make it circular
+                    //           ),
+                    //           padding: const EdgeInsets.all(
+                    //               8.0), // Adjust padding as needed
+                    //           child: Icon(Icons.add,
+                    //               color: Colors
+                    //                   .white), // Adjust icon color for contrast
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
               ],
@@ -486,7 +722,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.colorPrimaryDark),
-              onPressed: _isMinOrderValid() ? _showSelectedVids : null,
+              onPressed: _isMinOrderMet() ? _addToCartItems : null,
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -530,5 +766,130 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
       //   }
       // }
     });
+  }
+
+  bool _canSelectLastAttribute() {
+    for (var propertyName in groupedAttributes.keys) {
+      if (propertyName == groupedAttributes.keys.last) continue;
+      if (selectedAttributes[propertyName] == null) return false;
+    }
+    return true;
+  }
+
+  void _updateQuantity(String vid, bool increase) {
+    if (_canSelectLastAttribute()) {
+      // Create a map of current selected attributes
+      Map<String, ProductAttributes> currentAttributes = {};
+      selectedAttributes.forEach((key, value) {
+        if (value != null) {
+          currentAttributes[key] = value;
+        }
+      });
+
+      // Add the last attribute based on the vid
+      final lastPropertyName = groupedAttributes.keys.last;
+      final lastAttribute = groupedAttributes[lastPropertyName]!
+          .firstWhere((attr) => attr.Vid == vid);
+      currentAttributes[lastPropertyName] = lastAttribute;
+
+      // Generate combination key from current attributes
+      String combinationKey =
+          currentAttributes.values.map((attr) => attr.Vid).join('_');
+
+      setState(() {
+        // Get current quantity from combinationQuantities
+        int currentValue = combinationQuantities[combinationKey] ?? 0;
+
+        // Update quantity
+        if (increase) {
+          currentValue++;
+        } else if (currentValue > 0) {
+          currentValue--;
+        }
+
+        // Update the quantity in combinationQuantities
+        combinationQuantities[combinationKey] = currentValue;
+
+        // Find existing combination index
+        int existingIndex = selectedCombinations.indexWhere((combo) =>
+            _compareCombinations(combo.attributes, currentAttributes));
+
+        if (currentValue > 0) {
+          // Create new combination with current attributes
+          AttributeCombination newCombo = AttributeCombination(
+            attributes: Map.from(currentAttributes),
+            quantity: currentValue,
+          );
+
+          // Update or add the combination
+          if (existingIndex != -1) {
+            selectedCombinations[existingIndex] = newCombo;
+          } else {
+            selectedCombinations.add(newCombo);
+          }
+        } else {
+          // Remove only this specific combination if quantity is 0
+          if (existingIndex != -1) {
+            selectedCombinations.removeAt(existingIndex);
+          }
+          combinationQuantities.remove(combinationKey);
+        }
+      });
+    }
+  }
+
+  String _getCombinationKey() {
+    return selectedAttributes.values
+        .where((attr) => attr != null)
+        .map((attr) => attr!.Vid)
+        .join('_');
+  }
+
+  bool _isMinOrderMet() {
+    return totalQuantity >= int.parse(widget.myPriceRange[0].minOr);
+  }
+
+  String _getCombinationKeyFromAttributes(
+      Map<String, ProductAttributes> attrs) {
+    return attrs.values
+        .where((attr) => attr != null)
+        .map((attr) => attr!.Vid)
+        .join('_');
+  }
+
+  // Add a method to check if a combination already exists
+  bool _combinationExists(String combinationKey) {
+    return selectedCombinations.any((combo) =>
+        _getCombinationKeyFromAttributes(combo.attributes) == combinationKey);
+  }
+
+  // Optional: Add sorting to keep the combinations list organized
+  void _sortCombinations() {
+    selectedCombinations.sort((a, b) {
+      // Sort by first attribute, then second attribute
+      var aAttrs = a.attributes.values.toList();
+      var bAttrs = b.attributes.values.toList();
+
+      for (int i = 0; i < aAttrs.length; i++) {
+        int compare =
+            aAttrs[i].OriginalValue.compareTo(bAttrs[i].OriginalValue);
+        if (compare != 0) return compare;
+      }
+      return 0;
+    });
+  }
+
+  // Add this helper method to compare combinations
+  bool _compareCombinations(Map<String, ProductAttributes> combo1,
+      Map<String, ProductAttributes> combo2) {
+    if (combo1.length != combo2.length) return false;
+
+    for (var key in combo1.keys) {
+      if (!combo2.containsKey(key) || combo1[key]!.Vid != combo2[key]!.Vid) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

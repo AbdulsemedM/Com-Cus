@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:commercepal/core/cart-core/cart_widget.dart';
+import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/features/alibaba_new/provider_attributes_widget.dart';
 import 'package:commercepal/features/alibaba_new/provider_config_model.dart';
 // import 'package:commercepal/features/alibaba_new/the_new.dart';
@@ -9,6 +10,7 @@ import 'package:commercepal/features/alibaba_product_view/image_slider.dart';
 import 'package:commercepal/features/alibaba_product_view/minOrder_price.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // class Prices {
@@ -63,7 +65,26 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
               )
             : Column(
                 children: [
-                  ImageSlider(imageUrls: mainPics),
+                  ImageSlider(
+                    imageUrls: mainPics,
+                    attributes: myProdAttr,
+                    onShowAllImages: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductAttributesWidget(
+                            myProdAttr: myProdAttr,
+                            myPriceRange: myPriceRange,
+                            myConfig: myConfigs,
+                            productName: prodName,
+                            productId: widget.productId,
+                            imageUrl: mainPics[0],
+                            currentCountry: currentCountryForm,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 18, vertical: 10),
@@ -87,25 +108,70 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  SizedBox(
-                      height:
-                          // myProdAttr.length < 4
-                          //     ? 160
-                          //     : myProdAttr.length >= 4 && myProdAttr.length < 10
-                          //         ? 300
-                          //         :
-                          500,
-                      child: ProductAttributesWidget(
-                        myProdAttr: myProdAttr,
-                        myPriceRange: myPriceRange,
-                        myConfig: myConfigs,
-                        productName: prodName,
-                        productId: widget.productId,
-                        imageUrl: mainPics[0],
-                        currentCountry: currentCountryForm,
-                      )),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
+                    child: Text(
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      "Estimated delivery date: ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 10)))}",
+                    ),
+                  ),
+
+                  SizedBox(height: 16),
+                  // SizedBox(
+                  //     height:
+                  //         // myProdAttr.length < 4
+                  //         //     ? 160
+                  //         //     : myProdAttr.length >= 4 && myProdAttr.length < 10
+                  //         //         ? 300
+                  //         //         :
+                  //         500,
+                  //     child: ProductAttributesWidget(
+                  //       myProdAttr: myProdAttr,
+                  //       myPriceRange: myPriceRange,
+                  //       myConfig: myConfigs,
+                  //       productName: prodName,
+                  //       productId: widget.productId,
+                  //       imageUrl: mainPics[0],
+                  //       currentCountry: currentCountryForm,
+                  //     )),
                 ],
               ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+        child: Container(
+          // Set height to null to fit the child dynamically
+          height: null,
+          child: Column(
+            mainAxisSize:
+                MainAxisSize.min, // Make the column's size fit its children
+            children: [
+              loading
+                  ? Center(
+                      child: Container(),
+                    )
+                  : AppButtonWidget(
+                      text: "Add to cart",
+                      onClick: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductAttributesWidget(
+                              myProdAttr: myProdAttr,
+                              myPriceRange: myPriceRange,
+                              myConfig: myConfigs,
+                              productName: prodName,
+                              productId: widget.productId,
+                              imageUrl: mainPics[0],
+                              currentCountry: currentCountryForm,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ],
+          ),
+        ),
       ),
     );
   }

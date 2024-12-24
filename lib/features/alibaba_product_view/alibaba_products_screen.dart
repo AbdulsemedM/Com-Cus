@@ -87,7 +87,10 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
               )
             : Column(
                 children: [
-                  ImageSlider(imageUrls: mainPics),
+                  ImageSlider(
+                    imageUrls: mainPics,
+                    onShowAllImages: () {},
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12.0, vertical: 10),
