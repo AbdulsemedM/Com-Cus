@@ -96,7 +96,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
             if (state is ChangePasswordStateSuccess) {
               displaySnack(ctx, state.msg);
-              Navigator.popAndPushNamed(context, LoginPage.routeName);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LoginPage(fromCart: true)));
+              // Navigator.popAndPushNamed(context, LoginPage.routeName);
             }
           },
           builder: (ctx, state) {

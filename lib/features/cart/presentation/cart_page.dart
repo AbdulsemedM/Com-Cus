@@ -41,7 +41,9 @@ class _CartPageState extends State<CartPage> {
   Future<void> checkToken() async {
     String valid = await fetchUser1(context: context);
     if (valid == "logout") {
-      Navigator.pushNamed(context, LoginPage.routeName);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => LoginPage(fromCart: true)));
+      // Navigator.pushNamed(context, LoginPage.routeName);
     }
   }
 
@@ -88,7 +90,11 @@ class _CartPageState extends State<CartPage> {
           ));
         }
         if (state is CartCoreStateLoginUser) {
-          Navigator.pushNamed(ctx, LoginPage.routeName);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LoginPage(fromCart: true)));
+          // Navigator.pushNamed(ctx, LoginPage.routeName);
         }
 
         if (state is CartCoreStateCheckOutUser) {
@@ -156,13 +162,20 @@ class _CartPageState extends State<CartPage> {
                     if (!isCurrencyConsistent) {
                       displaySnack(
                           context, "All items must have the same currency.");
-                      return; // Exit if currencies are not the same
+                      return;
                     }
 
                     String valid = await fetchUser1(context: context);
                     if (valid == "logout") {
                       displaySnack(context, "Login to your account.");
-                      Navigator.pushNamed(ctx, LoginPage.routeName);
+                      print(
+                          "CartPage: Navigating to login with from_cart=true");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginPage(fromCart: true)));
+                      // Navigator.pushNamed(ctx, LoginPage.routeName,
+                      //     arguments: const LoginPage(fromCart: true));
                     }
                     ctx.read<CartCoreCubit>().isUserLoggedIn();
                   },

@@ -157,8 +157,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                                         Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginPage()));
+                                                builder: (context) => LoginPage(
+                                                    fromCart: false)));
                                       }
                                     }
                                   },

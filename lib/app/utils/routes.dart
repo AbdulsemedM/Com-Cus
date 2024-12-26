@@ -40,7 +40,7 @@ final Map<String, WidgetBuilder> routes = {
   SubCategoriesPage.routeName: (context) => const SubCategoriesPage(),
   ProductsPage.routeName: (context) => const ProductsPage(),
   SelectedProductPage.routeName: (context) => const SelectedProductPage(),
-  LoginPage.routeName: (context) => const LoginPage(),
+  // LoginPage.routeName: (context) => const LoginPage(fromCart: true),
   CheckOutPage.routeName: (context) => const CheckOutPage(),
   PaymentPage.routeName: (context) => const PaymentPage(),
   SahayPayPage.routeName: (context) => const SahayPayPage(),
@@ -70,7 +70,7 @@ final Map<String, WidgetBuilder> routes = {
 
 void redirectUserToLogin() {
   Navigator.of(navigationKey.currentContext!).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => const LoginPage()),
+      MaterialPageRoute(builder: (context) => const LoginPage(fromCart: true)),
       (route) => false);
 }
 

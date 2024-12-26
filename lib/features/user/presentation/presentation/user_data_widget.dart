@@ -278,7 +278,10 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
-                Navigator.pushNamed(context, LoginPage.routeName);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(fromCart: false)));
               } else {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => CommecepalCoins()));
@@ -292,7 +295,11 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             language: dropdownValue,
             onClick: () async {
               if (valid == "logout") {
-                Navigator.pushNamed(context, LoginPage.routeName);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(fromCart: false)));
+                // Navigator.pushNamed(context, LoginPage.routeName);
               } else {
                 Navigator.push(
                     context,
@@ -313,7 +320,11 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
-                Navigator.pushNamed(context, LoginPage.routeName);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(fromCart: false)));
+                // Navigator.pushNamed(context, LoginPage.routeName);
               } else {
                 Navigator.push(
                     context,
@@ -329,7 +340,11 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
-                Navigator.pushNamed(context, LoginPage.routeName);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(fromCart: false)));
+                // Navigator.pushNamed(context, LoginPage.routeName);
               } else {
                 Navigator.push(
                     context,
@@ -345,7 +360,11 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
-                Navigator.pushNamed(context, LoginPage.routeName);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(fromCart: false)));
+                // Navigator.pushNamed(context, LoginPage.routeName);
               } else {
                 Navigator.pushNamed(context, UserOrdersPage.routeName);
               }
@@ -358,7 +377,11 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
-                Navigator.pushNamed(context, LoginPage.routeName);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(fromCart: false)));
+                // Navigator.pushNamed(context, LoginPage.routeName);
               } else {
                 Navigator.pushNamed(context, AddressesPage.routeName);
               }
@@ -371,7 +394,11 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             language: dropdownValue,
             onClick: () {
               if (valid == "logout") {
-                Navigator.pushNamed(context, LoginPage.routeName);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(fromCart: false)));
+                // Navigator.pushNamed(context, LoginPage.routeName);
               } else {
                 Navigator.pushNamed(context, ChangePasswordPage.routeName)
                     .then((value) {

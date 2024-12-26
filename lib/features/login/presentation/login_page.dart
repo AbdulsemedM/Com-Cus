@@ -35,8 +35,9 @@ import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login";
+  final bool fromCart;
 
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key, required this.fromCart}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -69,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
     //   });
     // });
     // _googleSignIn.signInSilently();
+    print("initState _fromCart: ${widget.fromCart}");
     fetchHints();
     _handleSignOut();
     logOutFromFacebook();
@@ -251,8 +253,14 @@ class _LoginPageState extends State<LoginPage> {
             }
 
             if (state is LoginStateSuccess) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, DashboardPage.routeName, (route) => false);
+              if (widget.fromCart) {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, DashboardPage.routeName, (route) => false,
+                    arguments: {"redirect_to": "cart"});
+              } else {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, DashboardPage.routeName, (route) => false);
+              }
             }
 
             if (state is LoginStateSetPin) {

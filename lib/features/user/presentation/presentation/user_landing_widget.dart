@@ -49,7 +49,11 @@ class UserLandingWidget extends StatelessWidget {
             padding: const EdgeInsets.all(18.0),
             child: AppButtonWidget(
               onClick: () async {
-                await Navigator.pushNamed(context, LoginPage.routeName);
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(fromCart: false)));
+                // await Navigator.pushNamed(context, LoginPage.routeName);
                 if (!context.mounted) return;
                 context.read<UserCubit>().getUser();
               },
