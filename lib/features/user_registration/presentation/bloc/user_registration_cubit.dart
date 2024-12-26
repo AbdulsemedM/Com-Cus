@@ -1,4 +1,4 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:commercepal/features/user_registration/presentation/bloc/user_registration_state.dart';
@@ -15,8 +15,14 @@ class UserRegistrationCubit extends Cubit<UserRegistrationState> {
   UserRegistrationCubit(this.userRegistrationRepo, this.phoneNumberUtils)
       : super(const UserRegistrationState.init());
 
-  void createAccount(String? fName, String? sName, String? email,
-      String? phoneNumber, String? countryName, String? city) async {
+  void createAccount(
+      String? fName,
+      String? sName,
+      String? email,
+      String? phoneNumber,
+      String? countryName,
+      String? city,
+      String? countryCode) async {
     try {
       emit(const UserRegistrationState.loading());
       // validate country
@@ -37,13 +43,14 @@ class UserRegistrationCubit extends Cubit<UserRegistrationState> {
 
       // validate phone number
       final isValid =
-          await phoneNumberUtils.validateMobileApi(phoneNumber!, "ET");
+          await phoneNumberUtils.validateMobileApi(phoneNumber!, countryCode!);
       if (!isValid) {
         throw 'Invalid phone number format';
       }
 
       // make request
-      final isoPhone = await phoneNumberUtils.passPhoneToIso(phoneNumber, "ET");
+      final isoPhone =
+          await phoneNumberUtils.passPhoneToIso(phoneNumber, countryCode);
       await userRegistrationRepo.registerUser(
           fName!, sName!, isoPhone!, countryName, city, email);
 

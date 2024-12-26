@@ -1,7 +1,6 @@
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/capitalizer.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
-import 'package:commercepal/core/cities-core/presentation/select_city_widget.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
@@ -10,8 +9,6 @@ import 'package:commercepal/features/user_registration/presentation/bloc/user_re
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../core/cities-core/presentation/select_country_widget.dart';
 import '../../../core/widgets/input_decorations.dart';
 import '../../set_password/presentation/user_set_password_page.dart';
 
@@ -27,12 +24,12 @@ class UserRegistrationPage extends StatefulWidget {
 class _UserRegistrationPageState extends State<UserRegistrationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String? _countryName;
+  // String? _countryName;
   String? _fName;
   String? _sName;
   String? _email;
   String? _phoneNumber;
-  String? _city;
+  // String? _city;
   var loading = false;
   Country? _selectedCountry;
 
@@ -134,36 +131,40 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                     const SizedBox(
                       height: 14,
                     ),
-                    SelectCountryWidget(
-                      selectedCountry: (countryName) {
-                        _countryName = countryName;
-                        setState(() {});
-                      },
-                    ),
+                    // SelectCountryWidget(
+                    //   selectedCountry: (countryName) {
+                    //     _countryName = countryName;
+                    //     setState(() {});
+                    //   },
+                    // ),
                     const SizedBox(
                       height: 12,
                     ),
-                    SelectCityWidget(
-                      selectedCity: (cityId, countryId) {
-                        _city = "$cityId";
+                    // SelectCityWidget(
+                    //   selectedCity: (cityId, countryId) {
+                    //     _city = "$cityId";
 
-                        setState(() {});
-                      },
-                    ),
+                    //     setState(() {});
+                    //   },
+                    // ),
                     const SizedBox(
                       height: 20,
                     ),
                     AppButtonWidget(
                         isLoading: state is UserRegistrationStateLoading,
-                        onClick: () {
+                        onClick: () async {
                           if (_formKey.currentState?.validate() == true) {
+                            final completePhoneNumber =
+                                '${_selectedCountry?.phoneCode}$_phoneNumber';
+
                             ctx.read<UserRegistrationCubit>().createAccount(
                                 _fName,
                                 _sName,
                                 _email,
-                                _phoneNumber,
-                                _countryName,
-                                _city);
+                                completePhoneNumber,
+                                _selectedCountry?.name,
+                                "city",
+                                _selectedCountry?.countryCode);
                           }
                         })
                   ],

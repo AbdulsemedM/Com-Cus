@@ -201,12 +201,38 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                   children: [
                     loading
                         ? const Text("Loading...")
-                        : Text(
-                            OSumm,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(fontSize: 20.sp),
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  OSumm,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(fontSize: 20.sp),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  "Quantity",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(fontSize: 15.sp),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  "Price",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(fontSize: 15.sp),
+                                ),
+                              ),
+                            ],
                           ),
                     const SizedBox(
                       height: 10,

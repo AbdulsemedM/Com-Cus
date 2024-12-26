@@ -124,9 +124,13 @@ class _PaymentPageState extends State<PaymentPage> {
                                 height: 18,
                               ),
                               Container(
-                                height: e.items!.length > 3
-                                    ? MediaQuery.of(context).size.height * 0.25
-                                    : MediaQuery.of(context).size.height * 0.12,
+                                height: e.items!.length >= 9
+                                    ? MediaQuery.of(context).size.height * 0.52
+                                    : e.items!.length > 3
+                                        ? MediaQuery.of(context).size.height *
+                                            0.25
+                                        : MediaQuery.of(context).size.height *
+                                            0.12,
                                 child: GridView.builder(
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(

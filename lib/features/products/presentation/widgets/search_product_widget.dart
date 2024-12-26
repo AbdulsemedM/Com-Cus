@@ -76,13 +76,15 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
                       children: [
                         Column(
                           children: [
-                            Icon(Icons.image,
-                                size: 50, color: Colors.grey[700]),
+                            IconButton(
+                                onPressed: () => _pickImage(),
+                                icon: Icon(Icons.image,
+                                    size: 50, color: Colors.grey[700])),
                             SizedBox(height: 10),
                             TextButton(
                               onPressed:
                                   _pickImage, // Call _pickImage when button is pressed
-                              child: Text(
+                              child: const Text(
                                 'Upload a file',
                                 style:
                                     TextStyle(color: Colors.blue, fontSize: 16),
@@ -92,13 +94,15 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
                         ),
                         Column(
                           children: [
-                            Icon(Icons.camera,
-                                size: 50, color: Colors.grey[700]),
+                            IconButton(
+                                onPressed: () => _takeImage(),
+                                icon: Icon(Icons.camera,
+                                    size: 50, color: Colors.grey[700])),
                             SizedBox(height: 10),
                             TextButton(
                               onPressed:
                                   _takeImage, // Call _pickImage when button is pressed
-                              child: Text(
+                              child: const Text(
                                 'Take a pic',
                                 style:
                                     TextStyle(color: Colors.blue, fontSize: 16),

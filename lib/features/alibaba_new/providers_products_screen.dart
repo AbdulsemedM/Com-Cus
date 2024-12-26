@@ -112,7 +112,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 18),
                     child: Text(
                       style: Theme.of(context).textTheme.bodyLarge,
-                      "Estimated delivery date: ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 10)))}",
+                      "Estimated delivery date: ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 10)))} - ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 20)))}",
                     ),
                   ),
 
@@ -151,7 +151,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                       child: Container(),
                     )
                   : AppButtonWidget(
-                      text: "Add to cart",
+                      text: "Start Order",
                       onClick: () {
                         Navigator.push(
                           context,
