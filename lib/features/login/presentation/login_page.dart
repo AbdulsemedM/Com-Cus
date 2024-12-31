@@ -1,23 +1,23 @@
 import 'dart:async';
-import 'dart:convert';
+// import 'dart:convert';
 import 'dart:io';
 
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/assets.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
-import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
+// import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:commercepal/features/forgot_password/forgot_password.dart';
 import 'package:commercepal/features/login/data/social_media_login.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_cubit.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_state.dart';
 import 'package:commercepal/features/login/provide_phoneNumber_dialog.dart/provide_phoneNumber.dart';
-import 'package:commercepal/features/reset_password/presentation/reset_pass_page.dart';
+// import 'package:commercepal/features/reset_password/presentation/reset_pass_page.dart';
 import 'package:commercepal/features/set_password/presentation/user_set_password_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
-import 'package:commercepal/features/translation/translation_widget.dart';
+// import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/user_registration_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,7 +31,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../app/utils/app_colors.dart';
 import '../../../core/widgets/input_decorations.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login";
@@ -268,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
                   arguments: {"phone": state.phoneNumber, "code": _pass});
             }
             if (state is LoginStateprovidePhone) {
-              var result = showDialog(
+              showDialog(
                   context: context,
                   builder: (context) {
                     return ProvidePhoneNumberDialog(

@@ -13,6 +13,7 @@ class CartItem {
   final String? productId;
   String? subProductId;
   final int? merchantId;
+  final String? createdAt;
 
   CartItem(
       {this.id,
@@ -24,7 +25,9 @@ class CartItem {
       this.quantity,
       this.productId,
       this.subProductId,
-      this.merchantId});
+      this.merchantId,
+      String? createdAt})
+      : this.createdAt = createdAt ?? DateTime.now().toIso8601String();
 
   CartItem copyWith(
       {@PrimaryKey(autoGenerate: true) final int? id,
@@ -36,7 +39,8 @@ class CartItem {
       int? quantity,
       final dynamic productId,
       dynamic subProductId,
-      int? merchantId}) {
+      int? merchantId,
+      final dynamic createdAt}) {
     return CartItem(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -47,6 +51,7 @@ class CartItem {
         quantity: quantity ?? this.quantity,
         productId: productId ?? this.productId,
         subProductId: subProductId ?? this.subProductId,
-        merchantId: merchantId ?? this.merchantId);
+        merchantId: merchantId ?? this.merchantId,
+        createdAt: createdAt ?? this.createdAt);
   }
 }

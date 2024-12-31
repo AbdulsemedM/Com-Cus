@@ -109,5 +109,7 @@
     </array>
   </dict>
 </array>
+  <key>NSDocumentsDirectoryUsageDescription</key>
+  <string>Application needs access to documents directory</string>
 </dict>
 </plist>

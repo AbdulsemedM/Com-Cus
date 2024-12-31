@@ -1,13 +1,13 @@
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:commercepal/app/app.dart';
+// import 'package:commercepal/app/app.dart';
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/customer_loan/data/dto/financial_mark_ups_dto.dart';
-import 'package:commercepal/core/data/prefs_data.dart';
-import 'package:commercepal/core/data/prefs_data_impl.dart';
+// import 'package:commercepal/core/data/prefs_data.dart';
+// import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/cash_payment/presentation/cash_payment_page.dart';
 import 'package:commercepal/features/cbe_birr/cbe_birr.dart';
 import 'package:commercepal/features/commercepal_coins_checkout/commercepal_coins_checkout.dart';
@@ -26,13 +26,14 @@ import 'package:commercepal/features/sahay_payment/presentation/sahay_pay_page.d
 import 'package:commercepal/features/tele_birr/tele_birr.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
+import 'package:commercepal/features/waafi_payment/waafi_payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app/utils/assets.dart';
 import '../../customer_loan/presentation/customer_loan_page.dart';
 import 'loan_payment_period_bs.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
 class PaymentPage extends StatefulWidget {
   static const routeName = "/payment_page";
@@ -312,8 +313,25 @@ class _PaymentPageState extends State<PaymentPage> {
                   "payment_instruction": e.paymentInstruction
                 },
               )));
+    } else if (e.name!.toLowerCase().contains("evc plus") ||
+        e.name!.toLowerCase().contains("zaad") ||
+        e.name!.toLowerCase().contains("sahal") ||
+        e.name!.toLowerCase().contains("waafi djibouti") ||
+        e.name!.toLowerCase().contains("waafi international") == true) {
+      print("Waafi Payment");
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const WaafiPaymentPage(),
+              settings: RouteSettings(
+                arguments: {
+                  "cash_type": e.paymentType,
+                  "cash_type_name": e.name,
+                  "payment_instruction": e.paymentInstruction
+                },
+              )));
     } else {
-      // print("it is e-birr");
+      print("it is e-birr");
       // print(e.itemVariants![1].name);
       Navigator.pushNamed(context, CashPaymentPage.routeName, arguments: {
         "cash_type": e.paymentType,

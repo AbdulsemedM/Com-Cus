@@ -6,6 +6,7 @@ import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_state.dart';
+import 'package:commercepal/core/cart-core/dao/cart_dao.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/core/translator/translator.dart';
@@ -48,6 +49,47 @@ class _CartPageState extends State<CartPage> {
   }
 
   void fetchHints() async {
+    context.read<CartCoreCubit>().getAllItem();
+
+    // Listen to state changes to check and filter cart items
+    final cartState = context.read<CartCoreCubit>().state;
+    cartState.maybeWhen(
+      cartItems: (items) async {
+        print('Checking Cart Items:');
+        final now = DateTime.now();
+        final sixHoursAgo = now.subtract(const Duration(hours: 6));
+        try {
+          for (var item in items) {
+            final createdAt = DateTime.parse(item.createdAt!);
+            if (createdAt.isBefore(sixHoursAgo)) {
+              // Remove item if it's older than 6 hours
+              context.read<CartCoreCubit>().deleteItem(item);
+              print('Removed expired item: ${item.name}');
+            } else {
+              print('Valid item: ${item.name}, Created: ${item.createdAt}');
+            }
+          }
+        } catch (e) {
+          final cartDao = getIt<CartDao>();
+          await cartDao.nuke();
+        }
+      },
+      orElse: () => print('No items available or loading'),
+    );
+
+    // Listen to state changes to print cart items
+    final cartState2 = context.read<CartCoreCubit>().state;
+    cartState2.maybeWhen(
+      cartItems: (items) {
+        print('Fetched Cart Items:');
+        for (var item in items) {
+          print(
+              'Item: ${item.name}, Quantity: ${item.quantity}, Price: ${item.createdAt}');
+        }
+      },
+      orElse: () => print('No items available or loading'),
+    );
+
     setState(() {
       loading = true;
     });
@@ -106,6 +148,8 @@ class _CartPageState extends State<CartPage> {
           orElse: () => const SizedBox(),
           error: (error) => HomeErrorWidget(error: error),
           cartItems: (cartItems) {
+            print("cartItems");
+            print(cartItems[0].createdAt);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

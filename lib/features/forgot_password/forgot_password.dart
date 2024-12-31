@@ -4,6 +4,8 @@ import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/features/forgot_password/verify_otp.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:country_picker/country_picker.dart';
+import 'package:phone_number/phone_number.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -18,6 +20,21 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   String? emailAddress;
   var loading = false;
   String message = '';
+  bool isPhoneMode = true;
+  Country selectedCountry = Country(
+    phoneCode: "251",
+    countryCode: "ET",
+    e164Sc: 251,
+    geographic: true,
+    level: 1,
+    name: "Ethiopia",
+    example: "912345678",
+    displayName: "Ethiopia (ET) [+251]",
+    displayNameNoCountryCode: "Ethiopia (ET)",
+    e164Key: "251-ET-0",
+  );
+  // Using PhoneNumberUtils.instance instead of instantiating abstract class
+
   @override
   Widget build(BuildContext context) {
     var sHeight = MediaQuery.of(context).size.height * 1;
@@ -40,47 +57,164 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SegmentedButton<bool>(
+                    segments: const [
+                      ButtonSegment(value: true, label: Text('Phone')),
+                      ButtonSegment(value: false, label: Text('Email')),
+                    ],
+                    selected: {isPhoneMode},
+                    onSelectionChanged: (Set<bool> newSelection) {
+                      setState(() {
+                        isPhoneMode = newSelection.first;
+                        emailAddress = null;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 4),
                       child: Text(
-                        "Email",
-                        style: TextStyle(color: Colors.black),
+                        isPhoneMode ? "Phone Number" : "Email Address",
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value?.isEmpty == true) {
-                          return 'Email is required';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          emailAddress = value;
-                        });
-                      },
-                      // title: "Password",
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                        enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        errorBorder: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        focusedErrorBorder: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        hintText: "Enter your email or phone number",
+                    if (isPhoneMode)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              // Country Selector
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    showCountryPicker(
+                                      context: context,
+                                      showPhoneCode: true,
+                                      favorite: ['ET'],
+                                      countryListTheme: CountryListThemeData(
+                                        borderRadius: BorderRadius.circular(8),
+                                        inputDecoration: InputDecoration(
+                                          hintText: 'Search country',
+                                          filled: true,
+                                          fillColor: Colors.grey[100],
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                      ),
+                                      onSelect: (Country country) {
+                                        setState(() {
+                                          selectedCountry = country;
+                                        });
+                                      },
+                                    );
+                                  },
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "${selectedCountry.flagEmoji} +${selectedCountry.phoneCode}",
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      const Icon(Icons.arrow_drop_down,
+                                          color: Colors.black87),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              // Phone Input Field
+                              Expanded(
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value?.isEmpty == true) {
+                                      return 'Phone number is required';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      emailAddress =
+                                          "+${selectedCountry.phoneCode}$value";
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.grey[100],
+                                    enabledBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    errorBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    focusedBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    focusedErrorBorder:
+                                        const OutlineInputBorder(
+                                            borderSide: BorderSide.none),
+                                    hintText: "Enter phone number",
+                                  ),
+                                  keyboardType: TextInputType.phone,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    else
+                      TextFormField(
+                        validator: (value) {
+                          if (value?.isEmpty == true) {
+                            return 'Email is required';
+                          }
+                          final emailRegExp =
+                              RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                          if (!emailRegExp.hasMatch(value!)) {
+                            return 'Enter a valid email address';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            emailAddress = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
+                          errorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
+                          focusedErrorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
+                          hintText: "Enter your email address",
+                        ),
+                        keyboardType: TextInputType.emailAddress,
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -94,21 +228,59 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                           AppColors.colorPrimaryDark),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
-                                      var regExp1 = RegExp(r'^0\d{9}$');
-                                      var regExp2 = RegExp(r'^\+251\d{9}$');
-                                      if (regExp1.hasMatch(emailAddress!)) {
-                                        emailAddress = emailAddress!
-                                            .replaceFirst(RegExp('^0'), '251');
-                                        print(emailAddress);
-                                      } else if (regExp2
-                                          .hasMatch(emailAddress!)) {
-                                        emailAddress = emailAddress!
-                                            .replaceFirst(RegExp(r'^\+'), '');
-                                        print(emailAddress);
+                                      if (isPhoneMode) {
+                                        final phoneNumber = emailAddress!
+                                            .substring(selectedCountry
+                                                    .phoneCode.length +
+                                                1);
+                                        try {
+                                          // final  PhoneNumberUtils phoneNumberUtils;
+                                          final isValid =
+                                              await PhoneNumberUtil().validate(
+                                                  selectedCountry.phoneCode +
+                                                      phoneNumber,
+                                                  regionCode: selectedCountry
+                                                      .countryCode);
+                                          // final isValid = await phoneNumberUtils
+                                          //     .validateMobileApi(
+                                          //   selectedCountry.phoneCode +
+                                          //       phoneNumber,
+                                          //   selectedCountry.countryCode,
+                                          // );
+                                          print(selectedCountry.phoneCode +
+                                              phoneNumber);
+                                          if (!isValid) {
+                                            displaySnack(context,
+                                                'Invalid phone number format');
+                                            return;
+                                          } else {
+                                            bool done = await sendEmail(
+                                                phoneNumber:
+                                                    selectedCountry.phoneCode +
+                                                        phoneNumber);
+                                            if (done) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          VerifyOTP(
+                                                            userName:
+                                                                emailAddress!,
+                                                          )));
+                                            } else {
+                                              displaySnack(context, message);
+                                            }
+                                          }
+                                        } catch (e) {
+                                          print(e.toString());
+                                          displaySnack(context,
+                                              'Error validating phone number');
+                                          return;
+                                        }
                                       }
+
                                       bool done = await sendEmail();
                                       if (done) {
-                                        // ignore: use_build_context_synchronously
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -120,7 +292,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                       }
                                     }
                                   },
-                                  child: Text("Submit")),
+                                  child: Text("Submit",
+                                      style: TextStyle(color: Colors.white))),
                         ),
                       ],
                     )
@@ -134,13 +307,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
   }
 
-  Future<bool> sendEmail({int retryCount = 0}) async {
+  Future<bool> sendEmail({String? phoneNumber, int retryCount = 0}) async {
     try {
       setState(() {
         loading = true;
       });
       Map<String, dynamic> payload = {
-        "user": emailAddress.toString(),
+        "user": phoneNumber ?? emailAddress.toString(),
       };
       print(payload);
 

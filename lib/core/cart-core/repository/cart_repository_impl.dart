@@ -14,19 +14,23 @@ class CartRepositoryImpl implements CartRepository {
 
   @override
   Future addToCart(CartItem cartItem) async {
+    // print("cartIteminaddtocart");
+    // print(cartItem.createdAt);
     try {
       final exist =
           await cartDao.getCartItemBySubProductId(cartItem.subProductId!);
       var pros = await cartDao.getAllItems();
       for (var i in pros) {
         print("it exists");
-        print(i.price);
+        // print(i.price);
+        // print(i.createdAt);
       }
       if (exist == null) {
         await cartDao.insert(cartItem);
         var pros = await cartDao.getAllItems();
         for (var i in pros) {
           // print(i.subProductId);
+          print(i.createdAt);
         }
       } else {
         print("it doesn't exists");

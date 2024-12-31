@@ -1,4 +1,5 @@
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/app/utils/clear_cache.dart';
 import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/translator/translator.dart';
@@ -417,6 +418,41 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             },
           ),
           const Divider(),
+          UserMenuItem(
+            icon: Icons.cleaning_services_outlined,
+            title: "Clear Cache",
+            language: dropdownValue,
+            onClick: () async {
+              bool clear = await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: const Text("Clear Cache"),
+                        content: const Text(
+                            "Are you sure you want to clear the cache? This action cannot be undone."),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text("Cancel")),
+                          TextButton(
+                              onPressed: () {
+                                // CacheUtil.clearAllCache();
+                                Navigator.pop(context, true);
+                              },
+                              child: const Text("Clear")),
+                        ],
+                      ));
+              if (clear) {
+                try {
+                  // Show loading indicator
+                  await clearAllData(context);
+                  // Show success message
+                } catch (e) {
+                  // Show error message
+                }
+              }
+            },
+          ),
+          const Divider(),
 
           BlocProvider(
             create: (context) => getIt<UserCubit>(),
@@ -767,5 +803,45 @@ class _UserDataWidgetState extends State<UserDataWidget> {
         );
       },
     );
+  }
+
+  Future<void> clearAllData(BuildContext context) async {
+    try {
+      // Show loading dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
+
+      // Clear all storage
+      await StorageClearer.clearAllStorage();
+
+      // Close loading dialog
+      Navigator.of(context).pop();
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('All data cleared successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      // Close loading dialog
+      Navigator.of(context).pop();
+
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error clearing data: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

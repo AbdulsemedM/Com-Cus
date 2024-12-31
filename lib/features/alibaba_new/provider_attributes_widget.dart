@@ -153,9 +153,10 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
         image: widget.imageUrl.toString(),
         productId: widget.productId.toString(),
         quantity: combination.quantity,
+        createdAt: DateTime.now().toIso8601String(),
       ));
       print("myCart");
-      print(myCart.length);
+      print(myCart[0].createdAt);
       // });
     }
     _addToCart();
