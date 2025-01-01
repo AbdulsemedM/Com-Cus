@@ -8,6 +8,7 @@ import 'package:commercepal/features/alibaba_new/provider_config_model.dart';
 import 'package:commercepal/features/alibaba_product_view/alibaba_products_screen.dart';
 import 'package:commercepal/features/alibaba_product_view/image_slider.dart';
 import 'package:commercepal/features/alibaba_product_view/minOrder_price.dart';
+import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -38,6 +39,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
   }
 
   String currentCountryForm = "";
+  bool addedToCart = false;
   var loading = false;
   List<String> mainPics = [];
   String prodName = "";
@@ -150,25 +152,71 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                   ? Center(
                       child: Container(),
                     )
-                  : AppButtonWidget(
-                      text: "Start Order",
-                      onClick: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductAttributesWidget(
-                              myProdAttr: myProdAttr,
-                              myPriceRange: myPriceRange,
-                              myConfig: myConfigs,
-                              productName: prodName,
-                              productId: widget.productId,
-                              imageUrl: mainPics[0],
-                              currentCountry: currentCountryForm,
+                  : (addedToCart
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 3.0),
+                                child: AppButtonWidget(
+                                  text: "Continue Shopping",
+                                  onClick: () {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        DashboardPage.routeName,
+                                        (route) => false);
+                                  },
+                                ),
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 3.0),
+                                child: AppButtonWidget(
+                                  text: "Checkout",
+                                  onClick: () {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        DashboardPage.routeName,
+                                        (route) => false,
+                                        arguments: {"redirect_to": "cart"});
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : AppButtonWidget(
+                          text: "Start Order",
+                          onClick: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductAttributesWidget(
+                                  myProdAttr: myProdAttr,
+                                  myPriceRange: myPriceRange,
+                                  myConfig: myConfigs,
+                                  productName: prodName,
+                                  productId: widget.productId,
+                                  imageUrl: mainPics[0],
+                                  currentCountry: currentCountryForm,
+                                ),
+                              ),
+                            ).then((value) {
+                              if (value == true) {
+                                setState(() {
+                                  addedToCart = true;
+                                  print("added to cart");
+                                  print("loading");
+                                  print(loading);
+                                });
+                              }
+                            });
+                          },
+                        )),
             ],
           ),
         ),

@@ -243,7 +243,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     combinationQuantities.clear();
     myCart.clear();
     selectedCombinations.clear();
-    Navigator.pop(context);
+    Navigator.pop(context, true);
     // Collect the selected Vids and display them
     // if (myKey.currentState!.validate()) {
     // final selectedVids = selectedAttributes.values
