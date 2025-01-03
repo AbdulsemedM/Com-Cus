@@ -1,4 +1,5 @@
 import 'package:commercepal/app/utils/app_colors.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 
 class MinOrderPricePage extends StatefulWidget {
@@ -35,23 +36,42 @@ class _MinOrderPricePageState extends State<MinOrderPricePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      '${widget.currentCountryForm == "ETB" ? "ETB" : "\$"}  ${priceItem.price}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
+                    FutureBuilder(
+                      future: TranslationService.translate(
+                          '${widget.currentCountryForm == "ETB" ? "ETB" : "\$"}  ${priceItem.price}'),
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data ??
+                              '${widget.currentCountryForm == "ETB" ? "ETB" : "\$"}  ${priceItem.price}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
+                        );
+                      },
                     ),
-                    Text(
-                      index == 0
+                    FutureBuilder(
+                      future: TranslationService.translate(index == 0
                           ? 'Min Order: ${priceItem.minOr} pieces'
                           : index != 0 && priceItem.maxOr != null
                               ? '${priceItem.minOr} - ${priceItem.maxOr} pieces'
                               : index == widget.price.length - 1
                                   ? '> ${priceItem.minOr} pieces'
-                                  : "",
-                      style: TextStyle(color: Colors.white, fontSize: 8),
+                                  : ""),
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data ??
+                              (index == 0
+                                  ? 'Min Order: ${priceItem.minOr} pieces'
+                                  : index != 0 && priceItem.maxOr != null
+                                      ? '${priceItem.minOr} - ${priceItem.maxOr} pieces'
+                                      : index == widget.price.length - 1
+                                          ? '> ${priceItem.minOr} pieces'
+                                          : ""),
+                          style: TextStyle(color: Colors.white, fontSize: 8),
+                        );
+                      },
                     ),
                   ],
                 ),

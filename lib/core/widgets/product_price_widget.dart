@@ -62,12 +62,12 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
       loading = true;
     });
 
-    totalPrice = Translations.translatedText(
-        widget.title ?? 'Total: ', GlobalStrings.getGlobalString());
-    subTitle = Translations.translatedText(
-        widget.subTitle ?? '', GlobalStrings.getGlobalString());
-    butText = Translations.translatedText(
-        widget.buttonText ?? "Checkout", GlobalStrings.getGlobalString());
+    totalPrice = TranslationService.translate(
+        widget.title ?? 'Total: ');
+    subTitle = TranslationService.translate(
+        widget.subTitle ?? '');
+    butText = TranslationService.translate(
+        widget.buttonText ?? "Checkout");
 
     // Use await to get the actual string value from the futures
     tPrice = await totalPrice;

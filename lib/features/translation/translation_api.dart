@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:translator/translator.dart';
 
 class TranslationService {
-  static final _apiKey = 'AIzaSyAporxDZGXGxQPXtY2zucYPikKGyqSiNeA';
+  static final _apiKey = 'AIzaSyCeFDrPZZTx00ooDAXeDr3P1HqU1Vsntes';
   static final language = GlobalStrings.getGlobalString();
   static Future<String> translate(String message) async {
     if (language == "en") {

@@ -9,6 +9,7 @@ import 'package:commercepal/features/alibaba_product_view/alibaba_products_scree
 import 'package:commercepal/features/alibaba_product_view/image_slider.dart';
 import 'package:commercepal/features/alibaba_product_view/minOrder_price.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -52,10 +53,19 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Place your order",
-          style: Theme.of(context).textTheme.displaySmall,
+        title: FutureBuilder(
+          future: TranslationService.translate("Place your order"),
+          builder: (context, snapshot) {
+            return Text(
+              snapshot.data ?? "Place your order",
+              style: Theme.of(context).textTheme.displaySmall,
+            );
+          },
         ),
+        // title: Text(
+        //   "Place your order",
+        //   style: Theme.of(context).textTheme.displaySmall,
+        // ),
         actions: const [
           CartWidget(),
         ],
@@ -93,10 +103,15 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                     child: Row(
                       children: [
                         Flexible(
-                          child: Text(
-                            prodName,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                            textAlign: TextAlign.center,
+                          child: FutureBuilder(
+                            future: TranslationService.translate(prodName),
+                            builder: (context, snapshot) {
+                              return Text(
+                                snapshot.data ?? prodName,
+                                style: Theme.of(context).textTheme.bodyLarge,
+                                textAlign: TextAlign.center,
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -112,9 +127,16 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                   SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18),
-                    child: Text(
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      "Estimated delivery date: ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 10)))} - ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 20)))}",
+                    child: FutureBuilder(
+                      future: TranslationService.translate(
+                          "Estimated delivery date: ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 10)))} - ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 20)))}"),
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data ??
+                              "Estimated delivery date: ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 10)))} - ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 20)))}",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        );
+                      },
                     ),
                   ),
 

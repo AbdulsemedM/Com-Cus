@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,8 +41,7 @@ class CatCategoryItemWidget extends StatelessWidget {
         ),
         Expanded(
           child: FutureBuilder<String>(
-            future: Translations.translatedText(
-                title, GlobalStrings.getGlobalString()),
+            future: TranslationService.translate(title),
             //  translatedText("Log Out", 'en', dropdownValue),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {

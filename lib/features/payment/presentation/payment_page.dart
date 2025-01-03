@@ -25,6 +25,7 @@ import 'package:commercepal/features/rays_microfinance/rays_microfinance.dart';
 import 'package:commercepal/features/sahay_payment/presentation/sahay_pay_page.dart';
 import 'package:commercepal/features/tele_birr/tele_birr.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/waafi_payment/waafi_payment_page.dart';
 import 'package:flutter/material.dart';
@@ -64,8 +65,7 @@ class _PaymentPageState extends State<PaymentPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: FutureBuilder<String>(
-          future: Translations.translatedText(
-              'Payment modes', GlobalStrings.getGlobalString()),
+          future: TranslationService.translate('Payment modes'),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading..."); // Loading indicator while translating
@@ -362,7 +362,12 @@ Future<ItemVariant?> showVariantsDialog(
       double dialogHeight =
           (rowCount * 100.0) + 100.0; // Height per row + padding
       return AlertDialog(
-        title: Text("Select a Variant"),
+        title: FutureBuilder<String>(
+          future: TranslationService.translate("Select a Variant"),
+          builder: (context, snapshot) {
+            return Text(snapshot.data ?? "Select a Variant");
+          },
+        ),
         content: SizedBox(
           width: double.maxFinite,
           height: dialogHeight,
@@ -409,7 +414,12 @@ Future<ItemVariant?> showVariantsDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context), // Return null
-            child: Text("Cancel"),
+            child: FutureBuilder<String>(
+              future: TranslationService.translate("Cancel"),
+              builder: (context, snapshot) {
+                return Text(snapshot.data ?? "Cancel");
+              },
+            ),
           ),
         ],
       );

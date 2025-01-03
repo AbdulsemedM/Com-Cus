@@ -15,6 +15,7 @@ import 'package:commercepal/features/check_out/presentation/check_out_page.dart'
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/login/presentation/login_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -93,10 +94,8 @@ class _CartPageState extends State<CartPage> {
     setState(() {
       loading = true;
     });
-    Shopping = Translations.translatedText(
-        "Shopping Cart", GlobalStrings.getGlobalString());
-    items =
-        Translations.translatedText("Item", GlobalStrings.getGlobalString());
+    Shopping = TranslationService.translate("Shopping Cart");
+    items = TranslationService.translate("Item");
 
     // Use await to get the actual string value from the futures
     sCart = await Shopping;

@@ -1,4 +1,5 @@
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,8 +22,7 @@ AppBar buildCommerceAppBar(BuildContext context,
             ),
           if (title != null)
             FutureBuilder<String>(
-              future: Translations.translatedText(
-                  title!, GlobalStrings.getGlobalString()),
+              future: TranslationService.translate(title),
               //  translatedText("Log Out", 'en', dropdownValue),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
@@ -44,8 +44,7 @@ AppBar buildCommerceAppBar(BuildContext context,
             ),
           if (subTitle != null)
             FutureBuilder<String>(
-              future: Translations.translatedText(
-                  subTitle!, GlobalStrings.getGlobalString()),
+              future: TranslationService.translate(subTitle),
               //  translatedText("Log Out", 'en', dropdownValue),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {

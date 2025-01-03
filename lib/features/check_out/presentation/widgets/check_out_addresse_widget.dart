@@ -8,6 +8,7 @@ import 'package:commercepal/features/addresses/presentation/edit_address_page.da
 import 'package:commercepal/features/addresses/presentation/search_places.dart';
 import 'package:commercepal/features/check_out/data/models/address.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,27 +57,17 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       loading = true;
     });
 
-    AddAddr = Translations.translatedText(
-        "Add address", GlobalStrings.getGlobalString());
-    Edit = Translations.translatedText("Edit", GlobalStrings.getGlobalString());
-    Country = Translations.translatedText(
-        "Country: ", GlobalStrings.getGlobalString());
-    City =
-        Translations.translatedText("City: ", GlobalStrings.getGlobalString());
-    SubCounty = Translations.translatedText(
-        "Sub-county: ", GlobalStrings.getGlobalString());
-    ShippBill = Translations.translatedText(
-        "Shipping and Billing", GlobalStrings.getGlobalString());
-    FillAdd = Translations.translatedText(
-        "Fill Address", GlobalStrings.getGlobalString());
-    HowDo = Translations.translatedText("How do you want to fill the address?",
-        GlobalStrings.getGlobalString());
-    Automatic = Translations.translatedText(
-        "From Map", GlobalStrings.getGlobalString());
-    Manual = Translations.translatedText(
-        "Manually", GlobalStrings.getGlobalString());
-    Cancel =
-        Translations.translatedText("Cancel", GlobalStrings.getGlobalString());
+    AddAddr = TranslationService.translate("Add address");
+    Edit = TranslationService.translate("Edit");
+    Country = TranslationService.translate("Country: ");
+    City = TranslationService.translate("City: ");
+    SubCounty = TranslationService.translate("Sub-county: ");
+    ShippBill = TranslationService.translate("Shipping and Billing");
+    FillAdd = TranslationService.translate("Fill Address");
+    HowDo = TranslationService.translate("How do you want to fill the address?");
+    Automatic = TranslationService.translate("From Map");
+    Manual = TranslationService.translate("Manually");
+    Cancel = TranslationService.translate("Cancel");
 
     // Use await to get the actual string value from the futures
     AAdd = await AddAddr;

@@ -1,7 +1,9 @@
 import 'package:commercepal/core/cart-core/cart_widget.dart';
 import 'package:commercepal/features/merchants/merchants_page.dart';
 import 'package:commercepal/features/products/presentation/products_page.dart';
+import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
+import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

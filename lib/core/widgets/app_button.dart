@@ -1,4 +1,5 @@
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 
@@ -76,9 +77,14 @@ class _AppButtonWidgetState extends State<AppButtonWidget> {
               )
             : loading
                 ? CircularProgressIndicator()
-                : Text(
-                    cHint,
-                    style: TextStyle(color: Colors.white),
+                : FutureBuilder(
+                    future: TranslationService.translate(cHint),
+                    builder: (context, snapshot) {
+                      return Text(
+                        snapshot.data ?? cHint,
+                        style: TextStyle(color: Colors.white),
+                      );
+                    },
                   ),
       ),
     );

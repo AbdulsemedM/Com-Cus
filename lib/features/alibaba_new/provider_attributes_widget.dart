@@ -5,6 +5,7 @@ import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/features/alibaba_new/provider_config_model.dart';
 import 'package:commercepal/features/alibaba_product_view/alibaba_products_screen.dart';
 import 'package:commercepal/features/alibaba_product_view/minOrder_price.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,9 +85,10 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
   void _validateQuantityInput(String value) {
     final minOrder = widget.myPriceRange[0].minOr;
     final quantity = int.tryParse(value);
-    setState(() {
+    setState(() async {
       if (quantity == null || quantity < double.parse(minOrder)) {
-        errorText = "Quantity must be at least $minOrder";
+        errorText = await TranslationService.translate(
+            "Quantity must be at least $minOrder");
       } else {
         errorText = null;
       }
@@ -163,12 +165,12 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     // }
   }
 
-  String? _validateQuantity(String value) {
+  Future<String?> _validateQuantity(String value) async {
     // final minOrder = widget.myPriceRange[0].minOr;
     // final quantity = int.tryParse(value);
 
     if (int.parse(value) < 1) {
-      return ("Quantity must be at least 1");
+      return await TranslationService.translate("Quantity must be at least 1");
     } else {
       return null;
     }
@@ -339,12 +341,18 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
           if (!_canSelectLastAttribute())
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                "Please select options above first",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontStyle: FontStyle.italic,
-                ),
+              child: FutureBuilder(
+                future: TranslationService.translate(
+                    "Please select options above first"),
+                builder: (context, snapshot) {
+                  return Text(
+                    snapshot.data ?? "Please select options above first",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  );
+                },
               ),
             ),
           ListView.builder(
@@ -433,10 +441,29 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                             : null,
                       ),
                       SizedBox(
-                        width: 40,
-                        child: Text(
-                          quantity.toString(),
+                        width: 50,
+                        child: TextField(
                           textAlign: TextAlign.center,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(horizontal: 4),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          enabled: canSelect,
+                          controller:
+                              TextEditingController(text: quantity.toString()),
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              int newQuantity = int.parse(value);
+                              _updateQuantityDirectly(
+                                  attribute.Vid, newQuantity);
+                            }
+                          },
                           style: TextStyle(
                             color: canSelect ? Colors.black : Colors.grey,
                           ),
@@ -465,12 +492,18 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Selected Combinations:",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  FutureBuilder(
+                    future:
+                        TranslationService.translate("Selected Combinations:"),
+                    builder: (context, snapshot) {
+                      return Text(
+                        snapshot.data ?? "Selected Combinations:",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(height: 8),
                   ...selectedCombinations.map((combo) {
@@ -480,9 +513,16 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              "Quantity: ${combo.quantity}",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            FutureBuilder(
+                              future: TranslationService.translate(
+                                  "Quantity: ${combo.quantity}"),
+                              builder: (context, snapshot) {
+                                return Text(
+                                  snapshot.data ??
+                                      "Quantity: ${combo.quantity}",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                );
+                              },
                             ),
                             IconButton(
                               icon: Icon(Icons.delete),
@@ -502,12 +542,19 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                   }).toList(),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
-                      "Total Quantity: $totalQuantity (Min. Order: ${widget.myPriceRange[0].minOr})",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: _isMinOrderMet() ? Colors.green : Colors.red,
-                      ),
+                    child: FutureBuilder(
+                      future: TranslationService.translate(
+                          "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})"),
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data ??
+                              "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: _isMinOrderMet() ? Colors.green : Colors.red,
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -598,7 +645,15 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Variations"),
+        title: FutureBuilder(
+          future: TranslationService.translate("Variations"),
+          builder: (context, snapshot) {
+            return Text(
+              snapshot.data ?? "Variations",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            );
+          },
+        ),
       ),
       body: ListView(
         children: [
@@ -620,8 +675,14 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                     color: Colors.amber[300],
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child:
-                          Text("Min. Order: ${widget.myPriceRange[0].minOr}"),
+                      child: FutureBuilder(
+                        future: TranslationService.translate(
+                            "Minimum Order: ${widget.myPriceRange[0].minOr}"),
+                        builder: (context, snapshot) {
+                          return Text(snapshot.data ??
+                              "Minimum Order: ${widget.myPriceRange[0].minOr}");
+                        },
+                      ),
                     )),
                 Row(
                   children: [
@@ -692,9 +753,16 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Selected Attributes:",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  FutureBuilder(
+                    future:
+                        TranslationService.translate("Selected Attributes:"),
+                    builder: (context, snapshot) {
+                      return Text(
+                        snapshot.data ?? "Selected Attributes:",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      );
+                    },
                   ),
                   const SizedBox(height: 8),
                   ...myCart.map((entry) {
@@ -707,7 +775,14 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                       title: Text(
                         "${attribute.vid}",
                       ),
-                      subtitle: Text("Quantity: ${entry.quantity}"),
+                      subtitle: FutureBuilder(
+                        future: TranslationService.translate(
+                            "Quantity: ${entry.quantity}"),
+                        builder: (context, snapshot) {
+                          return Text(
+                              snapshot.data ?? "Quantity: ${entry.quantity}");
+                        },
+                      ),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () => _removeAttribute(entry),
@@ -724,7 +799,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.colorPrimaryDark),
               onPressed: _isMinOrderMet() ? _addToCartItems : null,
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
@@ -732,9 +807,14 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                     color: AppColors.bg1,
                   ),
                   SizedBox(width: 8),
-                  Text(
-                    "Add to Cart",
-                    style: TextStyle(color: AppColors.bg1),
+                  FutureBuilder(
+                    future: TranslationService.translate("Add to Cart"),
+                    builder: (context, snapshot) {
+                      return Text(
+                        snapshot.data ?? "Add to Cart",
+                        style: TextStyle(color: AppColors.bg1),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -892,5 +972,49 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     }
 
     return true;
+  }
+
+  void _updateQuantityDirectly(String vid, int newQuantity) {
+    if (_canSelectLastAttribute()) {
+      Map<String, ProductAttributes> currentAttributes = {};
+      selectedAttributes.forEach((key, value) {
+        if (value != null) {
+          currentAttributes[key] = value;
+        }
+      });
+
+      final lastPropertyName = groupedAttributes.keys.last;
+      final lastAttribute = groupedAttributes[lastPropertyName]!
+          .firstWhere((attr) => attr.Vid == vid);
+      currentAttributes[lastPropertyName] = lastAttribute;
+
+      String combinationKey =
+          currentAttributes.values.map((attr) => attr.Vid).join('_');
+
+      setState(() {
+        combinationQuantities[combinationKey] = newQuantity;
+
+        int existingIndex = selectedCombinations.indexWhere((combo) =>
+            _compareCombinations(combo.attributes, currentAttributes));
+
+        if (newQuantity > 0) {
+          AttributeCombination newCombo = AttributeCombination(
+            attributes: Map.from(currentAttributes),
+            quantity: newQuantity,
+          );
+
+          if (existingIndex != -1) {
+            selectedCombinations[existingIndex] = newCombo;
+          } else {
+            selectedCombinations.add(newCombo);
+          }
+        } else {
+          if (existingIndex != -1) {
+            selectedCombinations.removeAt(existingIndex);
+          }
+          combinationQuantities.remove(combinationKey);
+        }
+      });
+    }
   }
 }

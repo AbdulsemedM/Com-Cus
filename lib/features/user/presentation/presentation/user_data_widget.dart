@@ -426,19 +426,40 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               bool clear = await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                        title: const Text("Clear Cache"),
-                        content: const Text(
-                            "Are you sure you want to clear the cache? This action cannot be undone."),
+                        title: FutureBuilder<String>(
+                          future: TranslationService.translate("Clear Cache"),
+                          builder: (context, snapshot) {
+                            return Text(snapshot.data ?? "Clear Cache");
+                          },
+                        ),
+                        content: FutureBuilder<String>(
+                          future: TranslationService.translate(
+                              "Are you sure you want to clear the cache? This action cannot be undone."),
+                          builder: (context, snapshot) {
+                            return Text(snapshot.data ??
+                                "Are you sure you want to clear the cache? This action cannot be undone.");
+                          },
+                        ),
                         actions: [
                           TextButton(
                               onPressed: () => Navigator.pop(context, false),
-                              child: const Text("Cancel")),
+                              child: FutureBuilder<String>(
+                                future: TranslationService.translate("Cancel"),
+                                builder: (context, snapshot) {
+                                  return Text(snapshot.data ?? "Cancel");
+                                },
+                              )),
                           TextButton(
                               onPressed: () {
                                 // CacheUtil.clearAllCache();
                                 Navigator.pop(context, true);
                               },
-                              child: const Text("Clear")),
+                              child: FutureBuilder<String>(
+                                future: TranslationService.translate("Clear"),
+                                builder: (context, snapshot) {
+                                  return Text(snapshot.data ?? "Clear");
+                                },
+                              )),
                         ],
                       ));
               if (clear) {
@@ -489,15 +510,15 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               });
             },
           ),
-          // const Divider(),
-          // UserMenuItem(
-          //   icon: FontAwesomeIcons.language,
-          //   title: "Change Language",
-          //   language: dropdownValue,
-          //   onClick: () {
-          //     buildLanguageDialog(context);
-          //   },
-          // ),
+          const Divider(),
+          UserMenuItem(
+            icon: FontAwesomeIcons.language,
+            title: "Change Language",
+            language: dropdownValue,
+            onClick: () {
+              buildLanguageDialog(context);
+            },
+          ),
           // Padding(
           //   padding: const EdgeInsets.symmetric(horizontal: 10),
           //   child: Row(
@@ -826,8 +847,13 @@ class _UserDataWidgetState extends State<UserDataWidget> {
 
       // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('All data cleared successfully'),
+        SnackBar(
+          content: FutureBuilder(
+            future: TranslationService.translate('All data cleared successfully'),
+            builder: (context, snapshot) {
+              return Text(snapshot.data ?? 'All data cleared successfully');
+            },
+          ),
           backgroundColor: Colors.green,
         ),
       );

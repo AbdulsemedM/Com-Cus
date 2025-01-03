@@ -11,6 +11,7 @@ import 'package:commercepal/features/check_out/presentation/bloc/check_out_state
 import 'package:commercepal/features/check_out/presentation/widgets/check_out_addresse_widget.dart';
 import 'package:commercepal/features/payment/presentation/payment_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,8 +44,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
       loading = true;
     });
 
-    items = Translations.translatedText(
-        "Check out", GlobalStrings.getGlobalString());
+    items = TranslationService.translate("Check out");
 
     // Use await to get the actual string value from the futures
     it = await items;
@@ -102,14 +102,10 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
       loading = true;
     });
 
-    OrderSumm = Translations.translatedText(
-        "Order Summary", GlobalStrings.getGlobalString());
-    ShipFee = Translations.translatedText(
-        "Shipping Fee", GlobalStrings.getGlobalString());
-    OrderTot = Translations.translatedText(
-        "Order Total", GlobalStrings.getGlobalString());
-    ShipBill = Translations.translatedText(
-        "Continue", GlobalStrings.getGlobalString());
+    OrderSumm = TranslationService.translate("Order Summary");
+    ShipFee = TranslationService.translate("Shipping Fee");
+    OrderTot = TranslationService.translate("Order Total");
+    ShipBill = TranslationService.translate("Continue");
 
     // Use await to get the actual string value from the futures
     OSumm = await OrderSumm;
@@ -215,21 +211,31 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                                 ),
                               ),
                               Expanded(
-                                child: Text(
-                                  "Quantity",
+                                child: FutureBuilder(
+                                  future: TranslationService.translate("Quantity"),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data ?? "Quantity",
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleLarge
                                       ?.copyWith(fontSize: 15.sp),
-                                ),
+                                  );
+                                },
                               ),
+                            ),
                               Expanded(
-                                child: Text(
-                                  "Price",
+                                child: FutureBuilder(
+                                  future: TranslationService.translate("Price"),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data ?? "Price",
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleLarge
                                       ?.copyWith(fontSize: 15.sp),
+                                    );
+                                  },
                                 ),
                               ),
                             ],

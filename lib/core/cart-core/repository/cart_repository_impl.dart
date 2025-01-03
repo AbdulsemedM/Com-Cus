@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:commercepal/core/cart-core/dao/cart_dao.dart';
 import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/core/cart-core/repository/cart_repository.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
@@ -68,7 +69,7 @@ class CartRepositoryImpl implements CartRepository {
     try {
       final items = await cartDao.getAllItems();
       if (items.isEmpty) {
-        throw ('No items found');
+        throw TranslationService.translate('No items found');
       } else {
         // cartDao.nuke();
         return items;

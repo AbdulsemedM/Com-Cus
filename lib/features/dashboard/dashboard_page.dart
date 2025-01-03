@@ -5,6 +5,7 @@ import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/features/cart/presentation/cart_page.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_state.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
+import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user/user_page.dart';
 import 'package:flutter/material.dart';
@@ -72,14 +73,11 @@ class _DashboardPageState extends State<DashboardPage> {
       loading = true;
     });
 
-    physicalAddressHintFuture =
-        Translations.translatedText("Home", GlobalStrings.getGlobalString());
-    subcityHint = Translations.translatedText(
-        "Category", GlobalStrings.getGlobalString());
-    addAddHint =
-        Translations.translatedText("Cart", GlobalStrings.getGlobalString());
-    userHint = Translations.translatedText(
-        "Settings", GlobalStrings.getGlobalString());
+    physicalAddressHintFuture = TranslationService.translate("Home");
+    subcityHint = TranslationService.translate("Category");
+    addAddHint = TranslationService.translate("Cart");
+    Translations.translatedText("Cart", GlobalStrings.getGlobalString());
+    userHint = TranslationService.translate("Settings");
 
     // Use await to get the actual string value from the futures
     pHint = await physicalAddressHintFuture;

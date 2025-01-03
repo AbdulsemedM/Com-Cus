@@ -60,22 +60,16 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
       loading = true;
     });
 
-    physicalAddressHintFuture = Translations.translatedText(
-        "Commercepal", GlobalStrings.getGlobalString());
-    subcityHint = Translations.translatedText(
-        "Originals", GlobalStrings.getGlobalString());
-    addAddHint =
-        Translations.translatedText("Flash", GlobalStrings.getGlobalString());
-    saleHint =
-        Translations.translatedText("Sale", GlobalStrings.getGlobalString());
-    topHint =
-        Translations.translatedText("Top", GlobalStrings.getGlobalString());
-    dealHint =
-        Translations.translatedText("Deals", GlobalStrings.getGlobalString());
-    specialHint =
-        Translations.translatedText("Special", GlobalStrings.getGlobalString());
-    orderHint =
-        Translations.translatedText("Order", GlobalStrings.getGlobalString());
+    physicalAddressHintFuture = TranslationService.translate(
+        "Commercepal");
+    subcityHint = TranslationService.translate(
+        "Originals");
+    addAddHint = TranslationService.translate("Flash");
+    saleHint = TranslationService.translate("Sale");
+    topHint = TranslationService.translate("Top");
+    dealHint = TranslationService.translate("Deals");
+    specialHint = TranslationService.translate("Special");
+    orderHint = TranslationService.translate("Order");
 
     // Use await to get the actual string value from the futures
     pHint = await physicalAddressHintFuture;
