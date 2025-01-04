@@ -60,11 +60,12 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
     AddAddr = TranslationService.translate("Add address");
     Edit = TranslationService.translate("Edit");
     Country = TranslationService.translate("Country: ");
-    City = TranslationService.translate("City: ");
+    City = TranslationService.translate("Address: ");
     SubCounty = TranslationService.translate("Sub-county: ");
     ShippBill = TranslationService.translate("Shipping and Billing");
     FillAdd = TranslationService.translate("Fill Address");
-    HowDo = TranslationService.translate("How do you want to fill the address?");
+    HowDo =
+        TranslationService.translate("How do you want to fill the address?");
     Automatic = TranslationService.translate("From Map");
     Manual = TranslationService.translate("Manually");
     Cancel = TranslationService.translate("Cancel");
@@ -357,7 +358,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                                           color: AppColors
                                                               .secondaryTextColor)),
                                               TextSpan(
-                                                  text: "${address.physicalAddress}",
+                                                  text:
+                                                      "${address.physicalAddress}",
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleSmall
@@ -366,25 +368,25 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                             const SizedBox(
                                               height: 4,
                                             ),
-                                            RichText(
-                                                text: TextSpan(children: [
-                                              TextSpan(
-                                                  text: loading
-                                                      ? "Loading..."
-                                                      : SC,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleSmall
-                                                      ?.copyWith(
-                                                          color: AppColors
-                                                              .secondaryTextColor)),
-                                              TextSpan(
-                                                  text: "${address.subCounty}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleSmall
-                                                      ?.copyWith())
-                                            ]))
+                                            // RichText(
+                                            //     text: TextSpan(children: [
+                                            //   TextSpan(
+                                            //       text: loading
+                                            //           ? "Loading..."
+                                            //           : SC,
+                                            //       style: Theme.of(context)
+                                            //           .textTheme
+                                            //           .titleSmall
+                                            //           ?.copyWith(
+                                            //               color: AppColors
+                                            //                   .secondaryTextColor)),
+                                            //   TextSpan(
+                                            //       text: "${address.subCounty}",
+                                            //       style: Theme.of(context)
+                                            //           .textTheme
+                                            //           .titleSmall
+                                            //           ?.copyWith())
+                                            // ]))
                                           ],
                                         ),
                                         trailing: InkWell(
@@ -512,7 +514,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       }
 
       if (placemarks.isNotEmpty) {
-       // Placemark place = placemarks[0];
+        // Placemark place = placemarks[0];
         Placemark place =
             (placemarks.length > 3) ? placemarks[3] : placemarks[0];
 

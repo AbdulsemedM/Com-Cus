@@ -66,10 +66,13 @@ class CartRepositoryImpl implements CartRepository {
 
   @override
   Future<List<CartItem>> getCartItems() async {
+    // Await the translation result
+    final message = await TranslationService.translate('No items found');
+
     try {
       final items = await cartDao.getAllItems();
       if (items.isEmpty) {
-        throw TranslationService.translate('No items found');
+        throw message;
       } else {
         // cartDao.nuke();
         return items;

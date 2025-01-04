@@ -1,7 +1,10 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
+import 'package:commercepal/core/data/prefs_data.dart';
+import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/core/session/domain/session_repo.dart';
 import 'package:injectable/injectable.dart';
 
@@ -109,9 +112,10 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       if (_orderRef == null) return;
       // only do this check if user is customer
       if (_selectedAddress == null && !_isUserBusiness) return;
+      final PrefsData pData = getIt<PrefsData>();
+      await pData.writeData(PrefsKeys.deliveryFee.name, "0");
       _deliveryFee = 0;
-      // await checkOutRepo.getDeliveryFee(
-      //     _orderRef!, _selectedAddress?.id?.toInt());
+      checkOutRepo.getDeliveryFee(_orderRef!, _selectedAddress?.id?.toInt());
       // print("the new error");
       emit(
           CheckOutState.shippingFee("${_cartItems[0].currency} $_deliveryFee"));

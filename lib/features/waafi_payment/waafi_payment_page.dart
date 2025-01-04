@@ -11,7 +11,7 @@ import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
-import 'package:country_picker/country_picker.dart';
+// import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 // import 'package:phone_number/phone_number.dart';
@@ -25,7 +25,7 @@ class WaafiPaymentPage extends StatefulWidget {
 
 class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
   List<String> _instructions = [];
-  Country? _selectedCountry;
+  // Country? _selectedCountry;
   // String? _cashType;
   String? _cashTypeName;
   String? currency;
@@ -160,8 +160,8 @@ class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
                               validator: (v) {
                                 if (v?.isEmpty == true) {
                                   return "Phone number is required";
-                                } else if (v!.length < 7) {
-                                  return "Phone number must be at least 7 digits";
+                                } else if (v!.length != 7) {
+                                  return "Phone number must be 7 digits";
                                 }
                                 return null;
                               },
@@ -274,11 +274,12 @@ class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
                                       //     return;
                                       //   }
                                       // }
-
+                                      print(_prefixNumber!.replaceAll('+', '') +
+                                          pNumber!);
                                       bool done = await sendData(
-                                          phoneNumber:
-                                              _selectedCountry!.phoneCode +
-                                                  pNumber!);
+                                          phoneNumber: _prefixNumber!
+                                                  .replaceAll('+', '') +
+                                              pNumber!);
                                       if (done) {
                                         showDialog(
                                             context: context,
@@ -350,19 +351,20 @@ class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
       setState(() {
         loading = true;
       });
+      // print("phone number is $phoneNumber");
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       // print(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
-        bool isit = await hasUserSwitchedToBusiness();
+        // bool isit = await hasUserSwitchedToBusiness();
         final orderRef = await prefsData.readData("order_ref");
         // print(orderRef);
         Map<String, dynamic> payload = {
           "ServiceCode": "CHECKOUT",
           "PaymentType": "WAAFIPAY",
           "PaymentMode": "MOBILE_MONEY",
-          "UserType": isit ? "C" : "B",
+          "UserType": "C",
           "OrderRef": orderRef,
           // "Currency": currency ?? "USD",
           "Currency": "USD",
@@ -394,16 +396,18 @@ class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
           // Handle the case when statusCode is '000'
         } else {
           // Retry logic
-          if (retryCount < 5) {
+          if (retryCount < 1) {
             // Retry after num + 1 seconds
-            await Future.delayed(Duration(seconds: retryCount++));
+            // await Future.delayed(Duration(seconds: retryCount++));
             // Call the function again with an increased retryCount
-            await sendData(retryCount: retryCount + 1);
+            await sendData(
+                phoneNumber: phoneNumber, retryCount: retryCount + 1);
           } else {
             // Retry limit reached, handle accordingly
             setState(() {
               loading = false;
             });
+            displaySnack(context, data['statusMessage']);
             return false;
           }
         }
