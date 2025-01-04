@@ -357,7 +357,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                                           color: AppColors
                                                               .secondaryTextColor)),
                                               TextSpan(
-                                                  text: "${address.city}",
+                                                  text: "${address.physicalAddress}",
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleSmall

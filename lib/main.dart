@@ -1,6 +1,6 @@
 import 'dart:io';
 
-// import 'package:commercepal/app/utils/country_manager/country_manager.dart';
+import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:commercepal/app/app.dart';
@@ -46,8 +46,12 @@ void main() async {
   }
   String lang = await getStoredLang();
   GlobalStrings.setGlobalString(lang);
-  // final countryManager = CountryManager();
-  // await countryManager.fetchAndStoreCountry();
+  final String? currentCountry = prefs.getString("currency");
+
+  if (currentCountry == null) {
+    final countryManager = CountryManager();
+    await countryManager.fetchAndStoreCountry();
+  }
 
   Bloc.observer = AppBlocObserver();
 

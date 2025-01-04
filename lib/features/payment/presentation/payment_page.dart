@@ -325,6 +325,7 @@ class _PaymentPageState extends State<PaymentPage> {
               builder: (context) => const WaafiPaymentPage(),
               settings: RouteSettings(
                 arguments: {
+                  "currency": currency,
                   "cash_type": e.paymentType,
                   "cash_type_name": e.name,
                   "payment_instruction": e.paymentInstruction

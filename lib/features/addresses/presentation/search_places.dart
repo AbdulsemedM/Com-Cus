@@ -198,6 +198,8 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
         String subLocality = place.subLocality ?? '';
         String locality = place.locality ?? '';
         String country = place.country ?? '';
+        print(locality);
+        print(street);
         try {
           setState(() {
             loading = true;
@@ -206,8 +208,8 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
             "regionId": subLocality.isNotEmpty ? subLocality : locality,
             "city": cities
                 .firstWhere((e) => e.cityName == locality,
-                    orElse: () => CityData(
-                        cityId: 1, cityName: "Addis Ababa", countryId: 1))
+                    orElse: () =>
+                        CityData(cityId: 1, cityName: "", countryId: 1))
                 .cityId,
             "country": country,
             "physicalAddress": pAddress != ''
