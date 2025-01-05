@@ -43,7 +43,6 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
   final AddressSelectedChoices _addSelected = AddressSelectedChoices.notSelcted;
   void initState() {
     super.initState();
-    // getLocation();
     fetchHints();
     fetchCity();
   }
@@ -124,9 +123,11 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       child: BlocListener<CheckOutCubit, CheckOutState>(
         listener: (context, state) {
           if (state is CheckOutStateError) {
-            getLocation().then((value) {
-              context.read<CheckOutCubit>().fetchAddresses();
-            });
+            if (!done1) {
+              getLocation().then((value) {
+                context.read<CheckOutCubit>().fetchAddresses();
+              });
+            }
           }
         },
         child: BlocBuilder<CheckOutCubit, CheckOutState>(
@@ -255,40 +256,15 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                           padding: EdgeInsets.all(20),
                           child: HomeLoadingWidget(),
                         ),
-                    error: (error) {
-                      // getLocation().then((value) =>
-                      //     ctx.read<CheckOutCubit>().fetchAddresses());
-                      // ctx.read<CheckOutCubit>().fetchAddresses();
-                      return Container();
-                    },
+                    error: (error) => Container(),
                     addresses: (adds) {
-                      // context.read<CheckOutCubit>().fetchAddresses();
-                      // if (adds.isEmpty) {
-                      //   // getLocation();
-                      // }
-                      if (adds.isNotEmpty) {
-                        // Check if the list of addresses is not empty
-                        // Check if none of the addresses are selected
-                        // adds[0].selected = false;
-                        // AddressSelectedChoices.notSelcted;
-
-                        if (!adds.any((address) => address.selected == true)) {
-                          if (loading == false) {
-                            _markSelectedAddress(ctx, adds.last, adds, true);
-                            // ctx
-                            //     .read<CheckOutCubit>()
-                            //     .setSelectedAddress(adds.last);
-                          }
-                          // widget.onAddressClicked.call(adds[0]);
-                          // adds[0].selected = true;
-                          // ctx.read<CheckOutCubit>().setSelectedAddress(adds[0]);
-                          // print("newherewego");
-                          // Set the first address as selected
-                          // Dispatch the updated list of addresses to the CheckOutCubit
-                        } else if (adds.last.selected && !done) {
-                          // done = true;
-                          widget.onAddressClicked.call(adds.last);
-                        }
+                      if (adds.isNotEmpty &&
+                          !adds.any((address) => address.selected == true) &&
+                          !loading) {
+                        _markSelectedAddress(ctx, adds.last, adds, true);
+                      } else if (adds.last.selected && !done) {
+                        done = true;
+                        widget.onAddressClicked.call(adds.last);
                       }
                       return Column(
                         children: adds

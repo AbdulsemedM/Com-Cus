@@ -24,8 +24,14 @@ class CashPaymentRepoImpl implements CashPaymentRepo {
       final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
 
       final payLoad = {
-        "PaymentType": _getCashType(cashType),
-        "PaymentMode": _getCashType(cashType),
+        "PaymentType": cashType == "COOPAY_EBIRR"
+            ? "COOPAY_EBIRR"
+            : cashType == "KAAFI_EBIRR"
+                ? "KAAFI_EBIRR"
+                : _getCashType(cashType),
+        "PaymentMode": cashType == "COOPAY_EBIRR" || cashType == "KAAFI_EBIRR"
+            ? "MOBILE_MONEY"
+            : _getCashType(cashType),
         "UserType": isUserBusiness ? "B" : "C",
         "PhoneNumber": phoneNumber,
         "OrderRef": orderRef,
@@ -49,8 +55,8 @@ class CashPaymentRepoImpl implements CashPaymentRepo {
     switch (type) {
       case 'HELLO_CASH':
         return 'HELLO-CASH';
-      case 'EBIRR':
-        return 'E-BIRR';
+      case 'COOPAY_EBIRR':
+        return 'COOPAY_EBIRR';
       default:
         return 'AGENT-CASH';
     }

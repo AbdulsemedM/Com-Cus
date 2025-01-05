@@ -30,7 +30,8 @@ class LoginCubit extends Cubit<LoginState> {
         emailOrPhone =
             (await phoneNumberUtils.passPhoneToIso(emailOrPhone, "ET"))!;
       }
-
+      print("emailOrPhone");
+      print(emailOrPhone);
       final authResponse = await loginRepository.login(emailOrPhone, pass);
       print("hereistheauth");
       print(authResponse.isPhoneProvided);

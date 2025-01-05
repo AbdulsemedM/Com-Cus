@@ -36,7 +36,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     await getOrderRef();
     // if user is business, calculate delivery fee without address
     if (!_isUserBusiness) {
-      fetchAddresses();
+      await fetchAddresses();
     } else {
       calculateDeliveryFee();
     }
@@ -74,7 +74,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     }
   }
 
-  void fetchAddresses() async {
+  Future<void> fetchAddresses() async {
     try {
       emit(const CheckOutState.loading());
       final addresses = await checkOutRepo.fetchAddresses();
@@ -112,11 +112,16 @@ class CheckOutCubit extends Cubit<CheckOutState> {
       if (_orderRef == null) return;
       // only do this check if user is customer
       if (_selectedAddress == null && !_isUserBusiness) return;
+
+      emit(const CheckOutState.loading()); // Add loading state while fetching
+
       final PrefsData pData = getIt<PrefsData>();
       await pData.writeData(PrefsKeys.deliveryFee.name, "0");
+
+      // Wait for the delivery fee response
       _deliveryFee = 0;
       checkOutRepo.getDeliveryFee(_orderRef!, _selectedAddress?.id?.toInt());
-      // print("the new error");
+
       emit(
           CheckOutState.shippingFee("${_cartItems[0].currency} $_deliveryFee"));
       // recalculate total

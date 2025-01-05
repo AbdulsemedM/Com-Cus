@@ -25,8 +25,43 @@ class CheckOutRepoImpl implements CheckOutRepo {
   CheckOutRepoImpl(
       this.apiProvider, this.cartDao, this.pData, this.sessionRepo);
 
+  // @override
+  // Future<List<Address>> fetchAddresses() async {
+  //   try {
+  //     final response = await apiProvider.get(EndPoints.addresses.url);
+  //     final addressesResponse = jsonDecode(response);
+  //     if (addressesResponse['statusCode'] == '000') {
+  //       final aObject = AddressesDto.fromJson(addressesResponse);
+  //       if (aObject.data?.isEmpty == true) {
+  //         throw "No addresses found. Click 'Add address' to add one";
+  //       }
+  //       return aObject.data!.map((e) => e.toAddress()).toList();
+  //     } else {
+  //       throw addressesResponse['statusDescription'];
+  //     }
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
   @override
   Future<List<Address>> fetchAddresses() async {
+    // Add caching with short TTL
+    final cacheKey = 'addresses_cache';
+    final cachedData = await pData.readData(cacheKey);
+    if (cachedData != null) {
+      try {
+        final cached = jsonDecode(cachedData);
+        if (cached['timestamp'] >
+            DateTime.now().millisecondsSinceEpoch - 300000) {
+          // 5 min cache
+          final cachedAddresses = (cached['addresses'] as List)
+              .map((e) => Address.fromJson(e as Map<String, dynamic>))
+              .toList();
+          return cachedAddresses;
+        }
+      } catch (_) {}
+    }
+
     try {
       final response = await apiProvider.get(EndPoints.addresses.url);
       final addressesResponse = jsonDecode(response);
@@ -35,7 +70,17 @@ class CheckOutRepoImpl implements CheckOutRepo {
         if (aObject.data?.isEmpty == true) {
           throw "No addresses found. Click 'Add address' to add one";
         }
-        return aObject.data!.map((e) => e.toAddress()).toList();
+
+        // Cache the result
+        final addresses = aObject.data!.map((e) => e.toAddress()).toList();
+        await pData.writeData(
+            cacheKey,
+            jsonEncode({
+              'timestamp': DateTime.now().millisecondsSinceEpoch,
+              'addresses': addresses.map((e) => e.toAddressItem()).toList(),
+            }));
+
+        return addresses;
       } else {
         throw addressesResponse['statusDescription'];
       }
@@ -159,7 +204,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
       // print("The total delivery fee is here");
       // // final dResponse = jsonDecode(response);
       // print("The changed total delivery fee is here");
-      // print(response);
+      print(response);
       if (response['statusCode'] == '000') {
         if (response['totalDeliveryFee'] == null) {
 // =======
@@ -182,5 +227,68 @@ class CheckOutRepoImpl implements CheckOutRepo {
     } catch (e) {
       rethrow;
     }
+  }
+}
+
+class CachedAddress {
+  final num? id;
+  final String? physicalAddress;
+  final String? country;
+  final String? city;
+  final String? subCity;
+  final num? regionId;
+  final bool isSelected;
+  final String? description;
+  final num? addressId;
+  final num? cityId;
+  final String? latitude;
+  final String? longitude;
+  CachedAddress({
+    this.id,
+    this.physicalAddress,
+    this.country,
+    this.city,
+    this.subCity,
+    this.regionId,
+    this.isSelected = false,
+    this.description,
+    this.addressId,
+    this.cityId,
+    this.latitude,
+    this.longitude,
+  });
+  // Add fromJson constructor
+  factory CachedAddress.fromJson(Map<String, dynamic> json) {
+    return CachedAddress(
+      id: json['id'],
+      physicalAddress: json['physicalAddress'],
+      country: json['country'],
+      city: json['city'],
+      subCity: json['subCity'],
+      regionId: json['regionId'],
+      isSelected: json['isSelected'] ?? false,
+      description: json['description'],
+      addressId: json['addressId'],
+      cityId: json['cityId'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+    );
+  }
+  // Add toJson method
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'physicalAddress': physicalAddress,
+      'country': country,
+      'city': city,
+      'subCity': subCity,
+      'regionId': regionId,
+      'isSelected': isSelected,
+      'description': description,
+      'addressId': addressId,
+      'cityId': cityId,
+      'latitude': latitude,
+      'longitude': longitude,
+    };
   }
 }

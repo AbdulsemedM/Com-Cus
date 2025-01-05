@@ -182,6 +182,7 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
                           onClick: () {
                             if (_formKey.currentState?.validate() == true) {
                               FocusManager.instance.primaryFocus?.unfocus();
+                              // print(_cashType);
                               ctx
                                   .read<CashPaymentCubit>()
                                   .submitCashPayment(_phoneNumber!, _cashType!);

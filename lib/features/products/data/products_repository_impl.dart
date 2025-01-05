@@ -329,7 +329,7 @@ class ProductsRepositoryImpl implements ProductRepository {
           "api.commercepal.com:2096",
           "/prime/api/v1/data/products",
           {
-            'page': "1",
+            'page': size == null ? "1" : "2",
             'size': size != null ? size.toString() : '30',
             "query": search,
           },

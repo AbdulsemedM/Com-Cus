@@ -30,4 +30,16 @@ class Address {
       longitude: "",
       addressId: addressId,
       id: id);
+
+  factory Address.fromJson(Map<String, dynamic> json) => Address(
+        json['id'],
+        json['name'],
+        json['country'],
+        json['city'],
+        json['subCounty'],
+        json['cityId'],
+        json['selected'],
+        json['physicalAddress'],
+        json['addressId'],
+      );
 }

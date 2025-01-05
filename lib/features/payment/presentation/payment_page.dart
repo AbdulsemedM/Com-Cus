@@ -332,8 +332,10 @@ class _PaymentPageState extends State<PaymentPage> {
                 },
               )));
     } else {
-      print("it is e-birr");
-      // print(e.itemVariants![1].name);
+      // print("it is e-birr");
+      // print(e.paymentType);
+      // print(e.name);
+      // print(e.paymentInstruction);
       Navigator.pushNamed(context, CashPaymentPage.routeName, arguments: {
         "cash_type": e.paymentType,
         "cash_type_name": e.name,
