@@ -111,38 +111,61 @@ class _EdahabState extends State<Edahab> {
                               child: Text("Enter your phone number below")),
                         ],
                       ),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                            filled: true,
-                            fillColor: AppColors.greyColor,
-                            focusedBorder: InputBorder.none,
-                            focusedErrorBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none),
-                        keyboardType: TextInputType.phone,
-                        onChanged: (value) {
-                          setState(() {
-                            pNumber = value;
-                          });
-                        },
-                        validator: (value) {
-                          print(value);
-                          // Define your regular expressions
-                          var regExp1 = RegExp(r'^65\d{7}$');
-                          var regExp2 = RegExp(r'^\66\d{7}$');
-                          var regExp3 = RegExp(r'^\62\d{7}$');
-                          var regExp4 = RegExp(r'^\76\d{7}$');
-
-                          // Check if the entered value matches either expression
-                          if (!(regExp1.hasMatch(value!) ||
-                              regExp3.hasMatch(value) ||
-                              regExp4.hasMatch(value) ||
-                              regExp2.hasMatch(value))) {
-                            return 'Enter a valid mobile number';
-                          }
-
-                          // Validation passed
-                          return null;
-                        },
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 48,
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.horizontal(
+                                  left: Radius.circular(4)),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "+25265",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: TextFormField(
+                              keyboardType: TextInputType.phone,
+                              validator: (v) {
+                                if (v?.isEmpty == true) {
+                                  return "Phone number is required";
+                                } else if (v!.length != 7) {
+                                  return "Phone number must be 7 digits";
+                                }
+                                return null;
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              onChanged: (value) {
+                                setState(() {
+                                  pNumber = value;
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                hintText: "1234567",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.horizontal(
+                                      right: Radius.circular(4)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.horizontal(
+                                      right: Radius.circular(4)),
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: sHeight * 0.04,
@@ -159,17 +182,17 @@ class _EdahabState extends State<Edahab> {
                                     setState(() {
                                       loading = true;
                                     });
-                                    var regExp1 = RegExp(r'^0\d{9}$');
-                                    var regExp2 = RegExp(r'^\+');
-                                    if (regExp1.hasMatch(pNumber!)) {
-                                      pNumber = pNumber!
-                                          .replaceFirst(RegExp('^0'), '251');
-                                      // print(pNumber);
-                                    } else if (regExp2.hasMatch(pNumber!)) {
-                                      pNumber = pNumber!
-                                          .replaceFirst(RegExp(r'^\+'), '');
-                                      // print(pNumber);
-                                    }
+                                    // var regExp1 = RegExp(r'^0\d{9}$');
+                                    // var regExp2 = RegExp(r'^\+');
+                                    // if (regExp1.hasMatch(pNumber!)) {
+                                    //   pNumber = pNumber!
+                                    //       .replaceFirst(RegExp('^0'), '251');
+                                    //   // print(pNumber);
+                                    // } else if (regExp2.hasMatch(pNumber!)) {
+                                    //   pNumber = pNumber!
+                                    //       .replaceFirst(RegExp(r'^\+'), '');
+                                    //   // print(pNumber);
+                                    // }
                                     // final prefsData = getIt<PrefsData>();
                                     // final isUserLoggedIn = await prefsData
                                     //     .contains(PrefsKeys.userToken.name);
@@ -218,7 +241,7 @@ class _EdahabState extends State<Edahab> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      // print(isUserLoggedIn);
+      print(pNumber);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         bool isit = await hasUserSwitchedToBusiness();
@@ -228,12 +251,13 @@ class _EdahabState extends State<Edahab> {
           "ServiceCode": "CHECKOUT",
           "PaymentType": "EDAHAB",
           "PaymentMode": "EDAHAB",
-          "UserType": isit ? "C" : "B",
+          "UserType": "C",
           "OrderRef": orderRef,
           "Currency": "ETB",
-          "PhoneNumber": pNumber
+          "PhoneNumber": "65$pNumber"
         };
-        // print(payload);
+        print("payload");
+        print(payload);
 
         final response = await http.post(
           Uri.https(
@@ -245,7 +269,8 @@ class _EdahabState extends State<Edahab> {
         );
 
         var data = jsonDecode(response.body);
-        // print(data);
+        print("data");
+        print(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -22,7 +22,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   final List<CartItem> _cartItems = [];
   String? _orderRef;
   Address? _selectedAddress;
-  num? _deliveryFee;
+  num? _deliveryFee = 0;
 
   // make true to avoid fetching addresses before isBusiness state is emitted
   bool _isUserBusiness = true;
@@ -78,6 +78,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
     try {
       emit(const CheckOutState.loading());
       final addresses = await checkOutRepo.fetchAddresses();
+      calculateDeliveryFee();
       emit(CheckOutState.addresses(addresses));
     } catch (e) {
       emit(CheckOutState.error(e.toString()));
@@ -97,6 +98,7 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   Future<void> getOrderRef() async {
     try {
       _orderRef = await checkOutRepo.generateOrderRef();
+      calculateDeliveryFee();
     } catch (e) {
       emit(CheckOutState.error(e.toString()));
     }
@@ -134,6 +136,8 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   void validateCheckOut() {
     try {
       // check if address is selected if user is not business
+      print("the selected address");
+      print(_selectedAddress?.name);
       if (_selectedAddress == null && !_isUserBusiness) {
         throw 'Select one shipping address to continue';
       }

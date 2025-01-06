@@ -108,7 +108,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                     showCountryPicker(
                                       context: context,
                                       showPhoneCode: true,
-                                      favorite: ['ET'],
+                                      favorite: ['ET', "SO", "KE"],
                                       countryListTheme: CountryListThemeData(
                                         borderRadius: BorderRadius.circular(8),
                                         inputDecoration: InputDecoration(
@@ -265,7 +265,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                                       builder: (context) =>
                                                           VerifyOTP(
                                                             userName:
-                                                                emailAddress!,
+                                                                selectedCountry
+                                                                        .phoneCode +
+                                                                    phoneNumber,
                                                           )));
                                             } else {
                                               displaySnack(context, message);
@@ -277,18 +279,19 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                               'Error validating phone number');
                                           return;
                                         }
-                                      }
-
-                                      bool done = await sendEmail();
-                                      if (done) {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => VerifyOTP(
-                                                      userName: emailAddress!,
-                                                    )));
                                       } else {
-                                        displaySnack(context, message);
+                                        bool done = await sendEmail();
+                                        if (done) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      VerifyOTP(
+                                                        userName: emailAddress!,
+                                                      )));
+                                        } else {
+                                          displaySnack(context, message);
+                                        }
                                       }
                                     }
                                   },
@@ -341,7 +344,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           // Retry after num + 1 seconds
           await Future.delayed(Duration(seconds: retryCount++));
           // Call the function again with an increased retryCount
-          await sendEmail(retryCount: retryCount + 1);
+          await sendEmail(phoneNumber: phoneNumber, retryCount: retryCount + 1);
         } else {
           // Retry limit reached, handle accordingly
           setState(() {

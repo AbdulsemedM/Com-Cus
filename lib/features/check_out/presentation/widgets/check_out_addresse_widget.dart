@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
-import 'package:commercepal/features/addresses/presentation/bloc/address_cubit.dart';
+// import 'package:commercepal/features/addresses/presentation/bloc/address_cubit.dart';
 import 'package:commercepal/features/addresses/presentation/edit_address_page.dart';
 import 'package:commercepal/features/addresses/presentation/search_places.dart';
 import 'package:commercepal/features/check_out/data/models/address.dart';
@@ -30,8 +30,10 @@ enum AddressSelectedChoices { selected, notSelcted }
 
 class CheckOutAddressesWidget extends StatefulWidget {
   final Function onAddressClicked;
+  final Function reloadPage;
 
-  const CheckOutAddressesWidget({Key? key, required this.onAddressClicked})
+  const CheckOutAddressesWidget(
+      {Key? key, required this.onAddressClicked, required this.reloadPage})
       : super(key: key);
 
   @override
@@ -121,11 +123,17 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
     return BlocProvider(
       create: (context) => getIt<CheckOutCubit>()..fetchAddresses(),
       child: BlocListener<CheckOutCubit, CheckOutState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is CheckOutStateError) {
             if (!done1) {
-              getLocation().then((value) {
-                context.read<CheckOutCubit>().fetchAddresses();
+              await getLocation().then((value) {
+                widget.reloadPage();
+                // context.read<CheckOutCubit>().getHomePageData();
+                // context.read<CheckOutCubit>().fetchAddresses();
+                setState(() {
+                  done1 = true;
+                  // done = false;
+                });
               });
             }
           }
@@ -173,11 +181,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                           Navigator.pop(context);
                                           Navigator.pushNamed(context,
                                                   SearchPlacesScreen.routeName)
-                                              .then((value) => {
-                                                    ctx
-                                                        .read<CheckOutCubit>()
-                                                        .fetchAddresses()
-                                                  });
+                                              .then((value) =>
+                                                  widget.reloadPage());
                                         },
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor:
@@ -198,11 +203,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                                           Navigator.pop(context);
                                           Navigator.pushNamed(context,
                                                   AddAddressPage.routeName)
-                                              .then((value) => {
-                                                    ctx
-                                                        .read<CheckOutCubit>()
-                                                        .fetchAddresses()
-                                                  });
+                                              .then((value) =>
+                                                  widget.reloadPage());
                                         },
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor:
@@ -415,10 +417,14 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
           .read<CheckOutCubit>()
           .markAddressAsSelected(address.id!.toInt(), adds);
       ctx.read<CheckOutCubit>().setSelectedAddress(address);
+      // ctx.read<CheckOutCubit>().fetchAddresses();
+      // ctx.read<CheckOutCubit>().getHomePageData();
     } else {
       Address last = adds.last;
       ctx.read<CheckOutCubit>().markAddressAsSelected(last.id!.toInt(), adds);
       ctx.read<CheckOutCubit>().setSelectedAddress(address);
+      // ctx.read<CheckOutCubit>().fetchAddresses();
+      // ctx.read<CheckOutCubit>().getHomePageData();
     }
     widget.onAddressClicked.call(address);
     setState(() {
@@ -440,7 +446,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
           Position position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high,
           );
-
+          print("position");
+          print(position);
           setState(() {
             done1 = true;
             latitude = position.latitude;

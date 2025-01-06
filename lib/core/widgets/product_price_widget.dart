@@ -62,12 +62,9 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
       loading = true;
     });
 
-    totalPrice = TranslationService.translate(
-        widget.title ?? 'Total: ');
-    subTitle = TranslationService.translate(
-        widget.subTitle ?? '');
-    butText = TranslationService.translate(
-        widget.buttonText ?? "Checkout");
+    totalPrice = TranslationService.translate(widget.title ?? 'Total: ');
+    subTitle = TranslationService.translate(widget.subTitle ?? '');
+    butText = TranslationService.translate(widget.buttonText ?? "Checkout");
 
     // Use await to get the actual string value from the futures
     tPrice = await totalPrice;
@@ -96,7 +93,7 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
       width: double.infinity,
       child: Column(
         children: [
-          if (widget.displayVoucher) _buildVoucherField(),
+          // if (widget.displayVoucher) _buildVoucherField(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
             child: Row(

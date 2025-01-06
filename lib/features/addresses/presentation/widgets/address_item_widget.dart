@@ -31,20 +31,20 @@ class AddressItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "${address.city}",
+            "${address.physicalAddress}",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(),
           ),
           const SizedBox(
             height: 5,
           ),
+          // Text(
+          //   "${address.subCity}",
+          // ),
+          // const SizedBox(
+          //   height: 5,
+          // ),
           Text(
-            "${address.subCity}",
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            "${address.physicalAddress}",
+            "${address.country}",
           ),
           const Divider(),
           Row(

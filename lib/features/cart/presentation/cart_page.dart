@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:commercepal/app/data/network/api_provider.dart';
+import 'package:commercepal/app/data/network/end_points.dart';
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/app/utils/string_utils.dart';
+import 'package:commercepal/core/addresses-core/data/dto/addresses_dto.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_state.dart';
 import 'package:commercepal/core/cart-core/dao/cart_dao.dart';
@@ -12,14 +15,19 @@ import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/core/translator/translator.dart';
 import 'package:commercepal/features/cart/presentation/widgets/cart_item_widget.dart';
 import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
+import 'package:commercepal/features/check_out/presentation/widgets/check_out_addresse_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/login/presentation/login_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/widgets/product_price_widget.dart';
@@ -37,6 +45,7 @@ class _CartPageState extends State<CartPage> {
     super.initState();
     // checkToken();
     fetchHints();
+    fetchAddresses();
     // fetchUser1();
   }
 
@@ -51,7 +60,7 @@ class _CartPageState extends State<CartPage> {
 
   void fetchHints() async {
     context.read<CartCoreCubit>().getAllItem();
-
+    // await fetchAddresses();
     // Listen to state changes to check and filter cart items
     final cartState = context.read<CartCoreCubit>().state;
     cartState.maybeWhen(
@@ -106,6 +115,45 @@ class _CartPageState extends State<CartPage> {
     setState(() {
       loading = false;
     });
+  }
+
+  Future<void> fetchAddresses() async {
+    try {
+      setState(() {
+        loading = true;
+      });
+      final prefsData = getIt<PrefsData>();
+      // final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      final token = await prefsData.readData(PrefsKeys.userToken.name);
+      final addresses = await http.get(
+          Uri.https("api.commercepal.com:2096",
+              "/prime/api/v1/customer/get-delivery-address"),
+          headers: <String, String>{
+            "Authorization": "Bearer $token",
+            "Content-type": "application/json; charset=utf-8"
+          });
+      print("fetchAddresses");
+      print(addresses.body);
+      final addressesResponse = jsonDecode(addresses.body);
+      if (addressesResponse['statusCode'] == '000') {
+        final aObject = AddressesDto.fromJson(addressesResponse);
+        print("addressesResponse");
+        print(aObject.data);
+        if (aObject.data?.isEmpty == true) {
+          getLocation();
+          return;
+        }
+        setState(() {
+          loading = false;
+        });
+        return;
+      }
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+      return;
+    }
   }
 
   var Shopping;
@@ -207,6 +255,11 @@ class _CartPageState extends State<CartPage> {
                           context, "All items must have the same currency.");
                       return;
                     }
+                    if (loading) {
+                      displaySnack(context,
+                          "Please wait until we get your delivery location");
+                      return;
+                    }
 
                     String valid = await fetchUser1(context: context);
                     if (valid == "logout") {
@@ -300,4 +353,154 @@ class _CartPageState extends State<CartPage> {
   //     // Handle other exceptions
   //   }
   // }
+
+  Future<void> getLocation() async {
+    //used to fetch and send address twice
+    try {
+      setState(() {
+        loading = true;
+      });
+      // print("here we go");
+      var status = await Permission.location.request();
+      print(status.isPermanentlyDenied);
+      if (status.isGranted) {
+        Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+        print("position");
+        print(position);
+        setState(() {
+          final latitude = position.latitude;
+          final longitude = position.longitude;
+          // print(latitude);
+          // print(longitude);
+          if (latitude != null && longitude != null) {
+            getAddressFromLatLng(latitude.toString(), longitude.toString());
+          } else {
+            displaySnack(
+                context, "Please add your address by pressing \"Add Address\"");
+            setState(() {
+              loading = false;
+            });
+          }
+        });
+        // print(latitude);
+        // print(longitude);
+      } else {
+        displaySnack(
+            context, "Please add your address by pressing \"Add Address\"");
+        setState(() {
+          loading = false;
+        });
+      }
+    } catch (e) {
+      displaySnack(
+          context, "Please add your address by pressing \"Add Address\"");
+      setState(() {
+        loading = false;
+      });
+      print('Error getting location: $e');
+    }
+  }
+
+  Future<String> getAddressFromLatLng(String latitude, String longitude) async {
+    double lat = double.parse(latitude);
+    double lng = double.parse(longitude);
+
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+      // print(placemarks);
+      // print("object");
+      for (Placemark placemark in placemarks) {
+        String street = placemark.street ??
+            ""; // Access the "Street" property and handle null values
+        print("Street: $street");
+      }
+
+      if (placemarks.isNotEmpty) {
+        // Placemark place = placemarks[0];
+        Placemark place =
+            (placemarks.length > 3) ? placemarks[3] : placemarks[0];
+
+        // Extract street information
+        String street = place.street ?? '';
+        String subLocality = place.administrativeArea ?? '';
+        String locality = place.locality ?? '';
+        String subLocal = place.subLocality ?? '';
+        String country = place.country ?? '';
+        // print(
+        //     "Street: $street, SubLocality: $subLocality, Locality: $locality, SubLocal: $subLocal, Country: $country");
+        try {
+          setState(() {
+            loading = true;
+          });
+          // context.read<AddressCubit>().addAddress(
+          //     '1',
+          //     street.isNotEmpty ? street : subLocal!,
+          //     1,
+          //     1,
+          //     country,
+          //     latitude,
+          //     longitude);
+          Map<String, dynamic> payload = {
+            "regionId": 1,
+            "city": "1",
+            "country": country,
+            "physicalAddress": street.isNotEmpty ? street : subLocal,
+            "latitude": latitude,
+            "longitude": longitude
+          };
+          // print(payload);
+          final prefsData = getIt<PrefsData>();
+          final isUserLoggedIn =
+              await prefsData.contains(PrefsKeys.userToken.name);
+          if (isUserLoggedIn) {
+            final token = await prefsData.readData(PrefsKeys.userToken.name);
+            final response = await http.post(
+              Uri.https(
+                "api.commercepal.com:2096",
+                "/prime/api/v1/customer/add-delivery-address",
+              ),
+              body: jsonEncode(payload),
+              headers: <String, String>{"Authorization": "Bearer $token"},
+            );
+
+            var data = jsonDecode(response.body);
+            // print(data);
+
+            if (data['statusCode'] == '000') {
+              setState(() {
+                loading = false;
+              });
+              // setState(() {});
+              // context.read<CheckOutCubit>().fetchAddresses();
+
+              // Handle the case when statusCode is '000'
+            } else {
+              return "No street address found";
+            }
+          }
+        } catch (e) {
+          print(e.toString());
+          setState(() {
+            loading = false;
+          });
+          return "No street address found";
+          // Handle other exceptions
+        }
+        // Concatenate the street information
+        String address = "$street, $subLocality, $locality, $country";
+
+        // Remove leading commas and spaces
+        address = address.replaceAll(RegExp(r'^[,\s]+'), '');
+
+        return address.isNotEmpty ? address : "No street address found";
+      } else {
+        return "No street address found";
+      }
+    } catch (e) {
+      print("Error getting address: $e");
+      return "No street address found";
+    }
+  }
 }

@@ -20,6 +20,7 @@ import 'package:commercepal/features/translation/translation_api.dart';
 // import 'package:commercepal/features/translation/translation_widget.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/user_registration_page.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,21 @@ class _LoginPageState extends State<LoginPage> {
   String deviceId = 'Unknown';
 
   var loading = false;
+
+  // Add this variable to track the login mode
+  bool isPhoneMode = true;
+  Country selectedCountry = Country(
+    phoneCode: "251",
+    countryCode: "ET",
+    e164Sc: 251,
+    geographic: true,
+    level: 1,
+    name: "Ethiopia",
+    example: "912345678",
+    displayName: "Ethiopia (ET) [+251]",
+    displayNameNoCountryCode: "Ethiopia (ET)",
+    e164Key: "251-ET-0",
+  );
 
   @override
   void initState() {
@@ -283,7 +299,8 @@ class _LoginPageState extends State<LoginPage> {
           },
           builder: (ctx, state) {
             return SafeArea(
-              child: Container(
+              child: SingleChildScrollView(
+                  child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Form(
@@ -303,20 +320,128 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 20,
                       ),
-                      TextFormField(
+                      // Add segmented button for phone/email selection
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SegmentedButton<bool>(
+                              segments: const [
+                                ButtonSegment(
+                                    value: true, label: Text('Phone')),
+                                ButtonSegment(
+                                    value: false, label: Text('Email')),
+                              ],
+                              selected: {isPhoneMode},
+                              onSelectionChanged: (Set<bool> newSelection) {
+                                setState(() {
+                                  isPhoneMode = newSelection.first;
+                                  _emailOrPhone = null;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Replace the existing TextFormField with conditional rendering
+                      if (isPhoneMode)
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey[100],
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: TextButton(
+                                onPressed: () {
+                                  showCountryPicker(
+                                    context: context,
+                                    showPhoneCode: true,
+                                    favorite: ['ET', "SO", "KE"],
+                                    countryListTheme: CountryListThemeData(
+                                      borderRadius: BorderRadius.circular(8),
+                                      inputDecoration: InputDecoration(
+                                        hintText: 'Search country',
+                                        filled: true,
+                                        fillColor: Colors.grey[100],
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                    onSelect: (Country country) {
+                                      setState(() {
+                                        selectedCountry = country;
+                                      });
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      "${selectedCountry.flagEmoji} +${selectedCountry.phoneCode}",
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    const Icon(Icons.arrow_drop_down,
+                                        color: Colors.black87),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: TextFormField(
+                                validator: (v) {
+                                  if (v?.isEmpty == true) {
+                                    return "Phone number is required";
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    _emailOrPhone = value;
+                                  });
+                                },
+                                decoration:
+                                    buildInputDecoration("Enter phone number"),
+                                keyboardType: TextInputType.phone,
+                              ),
+                            ),
+                          ],
+                        )
+                      else
+                        TextFormField(
                           validator: (v) {
                             if (v?.isEmpty == true) {
-                              return "Email or phone number is required";
+                              return "Email is required";
+                            }
+                            final emailRegExp =
+                                RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                            if (!emailRegExp.hasMatch(v!)) {
+                              return 'Enter a valid email address';
                             }
                             return null;
                           },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           onChanged: (value) {
                             setState(() {
                               _emailOrPhone = value;
                             });
                           },
-                          decoration: buildInputDecoration(cHint)),
+                          decoration:
+                              buildInputDecoration("Enter email address"),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+
                       const SizedBox(
                         height: 16,
                       ),
@@ -428,9 +553,16 @@ class _LoginPageState extends State<LoginPage> {
                             if (_formKey.currentState!.validate()) {
                               FocusScope.of(context).unfocus();
 
-                              ctx
-                                  .read<LoginCubit>()
-                                  .loginUser(_emailOrPhone!, _pass!);
+                              ctx.read<LoginCubit>().loginUser(
+                                  isPhoneMode
+                                      ? selectedCountry.phoneCode +
+                                          _emailOrPhone!
+                                      : _emailOrPhone!,
+                                  _pass!);
+                              // print("loginUser");
+                              // print(isPhoneMode
+                              //     ? selectedCountry.phoneCode + _emailOrPhone!
+                              //     : _emailOrPhone!);
                             }
                           }),
                       Padding(
@@ -558,7 +690,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-              ),
+              )),
             );
           },
         ),

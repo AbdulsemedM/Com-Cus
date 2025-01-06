@@ -152,6 +152,7 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
                                           .replaceFirst(RegExp(r'^\+'), '');
                                       // print(pNumber);
                                     }
+                                    print("validate");
                                     // final prefsData = getIt<PrefsData>();
                                     // final isUserLoggedIn = await prefsData
                                     //     .contains(PrefsKeys.userToken.name);
@@ -199,7 +200,6 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      // print(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         bool isit = await hasUserSwitchedToBusiness();
@@ -209,11 +209,10 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
           "ServiceCode": "CHECKOUT",
           "PaymentType": "CBE-BIRR",
           "PaymentMode": "CBE-BIRR",
-          "UserType": isit ? "C" : "B",
+          "UserType": "C",
           "OrderRef": orderRef,
           "Currency": "ETB"
         };
-        // print(payload);
 
         final response = await http.post(
           Uri.https(
@@ -225,7 +224,8 @@ class _CBEBirrPaymentState extends State<CBEBirrPayment> {
         );
 
         var data = jsonDecode(response.body);
-        // print(data);
+        print("data");
+        print(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();

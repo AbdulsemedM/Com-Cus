@@ -46,21 +46,21 @@ class CheckOutRepoImpl implements CheckOutRepo {
   @override
   Future<List<Address>> fetchAddresses() async {
     // Add caching with short TTL
-    final cacheKey = 'addresses_cache';
-    final cachedData = await pData.readData(cacheKey);
-    if (cachedData != null) {
-      try {
-        final cached = jsonDecode(cachedData);
-        if (cached['timestamp'] >
-            DateTime.now().millisecondsSinceEpoch - 300000) {
-          // 5 min cache
-          final cachedAddresses = (cached['addresses'] as List)
-              .map((e) => Address.fromJson(e as Map<String, dynamic>))
-              .toList();
-          return cachedAddresses;
-        }
-      } catch (_) {}
-    }
+    // final cacheKey = 'addresses_cache';
+    // final cachedData = await pData.readData(cacheKey);
+    // if (cachedData != null) {
+    //   try {
+    //     final cached = jsonDecode(cachedData);
+    //     if (cached['timestamp'] >
+    //         DateTime.now().millisecondsSinceEpoch - 300000) {
+    //       // 5 min cache
+    //       final cachedAddresses = (cached['addresses'] as List)
+    //           .map((e) => Address.fromJson(e as Map<String, dynamic>))
+    //           .toList();
+    //       return cachedAddresses;
+    //     }
+    //   } catch (_) {}
+    // }
 
     try {
       final response = await apiProvider.get(EndPoints.addresses.url);
@@ -73,12 +73,12 @@ class CheckOutRepoImpl implements CheckOutRepo {
 
         // Cache the result
         final addresses = aObject.data!.map((e) => e.toAddress()).toList();
-        await pData.writeData(
-            cacheKey,
-            jsonEncode({
-              'timestamp': DateTime.now().millisecondsSinceEpoch,
-              'addresses': addresses.map((e) => e.toAddressItem()).toList(),
-            }));
+        // await pData.writeData(
+        //     cacheKey,
+        //     jsonEncode({
+        //       'timestamp': DateTime.now().millisecondsSinceEpoch,
+        //       'addresses': addresses.map((e) => e.toAddressItem()).toList(),
+        //     }));
 
         return addresses;
       } else {
@@ -194,11 +194,27 @@ class CheckOutRepoImpl implements CheckOutRepo {
           },
         true => {"orderRef": orderRef}
       };
-      final response = await apiProvider.post(
-          payLoad,
-          isUserBusiness
-              ? EndPoints.businessDeliveryFee.url
-              : EndPoints.deliveryFee.url);
+      // print("payLoad");
+      // print(payLoad);
+      final prefsData = getIt<PrefsData>();
+      // final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      final token = await prefsData.readData(PrefsKeys.userToken.name);
+      final assign = await http.post(
+          Uri.https("api.commercepal.com:2096",
+              "/prime/api/v1/customer/order/assign-delivery-address"),
+          body: jsonEncode(payLoad),
+          headers: <String, String>{
+            "Authorization": "Bearer $token",
+            "Content-type": "application/json; charset=utf-8"
+          });
+      print("assign");
+      print(assign.body);
+      var response = jsonDecode(assign.body);
+      // final response = await apiProvider.post(
+      //     payLoad,
+      //     isUserBusiness
+      //         ? EndPoints.businessDeliveryFee.url
+      //         : EndPoints.deliveryFee.url);
 // <<<<<<< New-Providers
       // print(response['totalDeliveryFee']);
       // print("The total delivery fee is here");
@@ -222,7 +238,9 @@ class CheckOutRepoImpl implements CheckOutRepo {
             response['totalDeliveryFee'].toString());
         return response['totalDeliveryFee'];
       } else {
-        throw response['statusDescription'];
+        // getDeliveryFee(orderRef, addressId);
+        return 0;
+        // throw response['statusDescription'];
       }
     } catch (e) {
       rethrow;

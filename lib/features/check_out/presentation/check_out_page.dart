@@ -130,6 +130,16 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   String SBill = '';
   var loading = false;
 
+  void reloadPage() {
+    // Reset the state
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => const CheckOutPage(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -212,28 +222,29 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                               ),
                               Expanded(
                                 child: FutureBuilder(
-                                  future: TranslationService.translate("Quantity"),
+                                  future:
+                                      TranslationService.translate("Quantity"),
                                   builder: (context, snapshot) {
                                     return Text(
                                       snapshot.data ?? "Quantity",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge
-                                      ?.copyWith(fontSize: 15.sp),
-                                  );
-                                },
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(fontSize: 15.sp),
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
                               Expanded(
                                 child: FutureBuilder(
                                   future: TranslationService.translate("Price"),
                                   builder: (context, snapshot) {
                                     return Text(
                                       snapshot.data ?? "Price",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge
-                                      ?.copyWith(fontSize: 15.sp),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(fontSize: 15.sp),
                                     );
                                   },
                                 ),
@@ -347,6 +358,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                       ),
                     if (!_isUserBusiness)
                       CheckOutAddressesWidget(
+                        reloadPage: reloadPage,
                         onAddressClicked: (Address address) {
                           ctx.read<CheckOutCubit>().setSelectedAddress(address);
                           // setState(() {});

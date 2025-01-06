@@ -1,9 +1,14 @@
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:commercepal/app/data/network/api_provider.dart';
+import 'package:commercepal/app/data/network/end_points.dart';
+import 'package:commercepal/core/addresses-core/data/dto/addresses_dto.dart';
 import 'package:commercepal/core/cart-core/dao/cart_dao.dart';
 import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/core/cart-core/repository/cart_repository.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
+import 'package:dio/dio.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
@@ -67,6 +72,7 @@ class CartRepositoryImpl implements CartRepository {
   @override
   Future<List<CartItem>> getCartItems() async {
     // Await the translation result
+    // await fetchAddresses();
     final message = await TranslationService.translate('No items found');
 
     try {
@@ -87,6 +93,26 @@ class CartRepositoryImpl implements CartRepository {
     }
   }
 
+  // Future<void> fetchAddresses() async {
+  //   try {
+  //     final dio = Dio();
+  //     final apiProvider = ApiProvider(dio);
+
+  //     final response = await apiProvider.get(EndPoints.addresses.url);
+  //     final addressesResponse = jsonDecode(response);
+  //     if (addressesResponse['statusCode'] == '000') {
+  //       final aObject = AddressesDto.fromJson(addressesResponse);
+  //       print("addressesResponse");
+  //       print(aObject.data);
+  //       if (aObject.data?.isEmpty == true) {
+  //         return;
+  //       }
+  //       return;
+  //     }
+  //   } catch (e) {
+  //     return;
+  //   }
+  // }
   // void clearCart() async {
   //   try {
   //     await cartDao.nuke();

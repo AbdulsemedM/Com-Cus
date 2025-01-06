@@ -131,7 +131,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
         loading = true;
       });
       Map<String, dynamic> payload = {
-        "user": widget.userName.toString(),
+        "user":  widget.userName.toString(),
         "code": myOTP.toString(),
       };
       print(payload);
