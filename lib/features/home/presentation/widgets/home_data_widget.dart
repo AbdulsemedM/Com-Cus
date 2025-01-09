@@ -60,10 +60,8 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
       loading = true;
     });
 
-    physicalAddressHintFuture = TranslationService.translate(
-        "Commercepal");
-    subcityHint = TranslationService.translate(
-        "Originals");
+    physicalAddressHintFuture = TranslationService.translate("Commercepal");
+    subcityHint = TranslationService.translate("Originals");
     addAddHint = TranslationService.translate("Flash");
     saleHint = TranslationService.translate("Sale");
     topHint = TranslationService.translate("Top");
@@ -180,9 +178,56 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
         : const SizedBox();
   }
 
+  Widget _buildAboveItems() {
+    final underPrice = widget.schema.schemaSections
+        ?.where((element) => element.key == 'above_1000');
+    return underPrice?.isNotEmpty == true
+        ? SliverGrid.count(
+            crossAxisCount: 2,
+            childAspectRatio: 0.8,
+            children: List.generate(
+                underPrice?.first.items?.length ?? 0,
+                (index) => GestureDetector(
+                    onTap: () {},
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProvidersProductsScreen(
+                              productId: underPrice!.first.items![index].prodId
+                                  .toString(),
+                              // provider: "Shein",
+                            ),
+                          ),
+                        );
+                        // Navigator.pushNamed(
+                        //     context, SelectedProductPage.routeName, arguments: {
+                        //   "p_id":
+                        //       underPrice?.first.items?[index].prodId.toString()
+                        // });
+                      },
+                      child: UnderItemWidget(
+                          item: underPrice?.first.items?[index]),
+                    ))),
+          )
+        : const SizedBox();
+  }
+
   Widget _buildUnder() {
     final underPrice = widget.schema.schemaSections
         ?.where((element) => element.key == 'under_1000');
+    return underPrice?.isNotEmpty == true
+        ? TitleWidget(
+            title: underPrice?.first.displayName ?? "",
+            optionTitle: "See All",
+          )
+        : const SizedBox();
+  }
+
+  Widget _buildAbove() {
+    final underPrice = widget.schema.schemaSections
+        ?.where((element) => element.key == 'above_1000');
     return underPrice?.isNotEmpty == true
         ? TitleWidget(
             title: underPrice?.first.displayName ?? "",
