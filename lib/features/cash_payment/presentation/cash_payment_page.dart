@@ -10,6 +10,7 @@ import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:country_picker/country_picker.dart';
 
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/input_decorations.dart';
@@ -32,6 +33,19 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
   bool _validatePayment = false;
   List<String> _instructions = [];
   List<String> _paymentInstructionsT = [];
+
+  Country selectedCountry = Country(
+    phoneCode: "251",
+    countryCode: "ET",
+    e164Sc: 0,
+    geographic: true,
+    level: 1,
+    name: "Ethiopia",
+    example: "912345678",
+    displayName: "Ethiopia (ET) [+251]",
+    displayNameNoCountryCode: "Ethiopia (ET)",
+    e164Key: "",
+  );
 
   @override
   void didChangeDependencies() {
@@ -155,23 +169,125 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
                     ),
                     loading
                         ? const Text('Loading...')
-                        : TextFormField(
-                            keyboardType: TextInputType.phone,
-                            enabled: !_validatePayment,
-                            validator: (v) {
-                              if (v?.isEmpty == true) {
-                                return "Phone number is required";
-                              }
-                              return null;
-                            },
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            onChanged: (value) {
-                              setState(() {
-                                _phoneNumber = value;
-                              });
-                            },
-                            decoration: buildInputDecoration(pHint),
+                        :
+                        // Column(
+                        //     children: [
+                        //       TextFormField(
+                        //         keyboardType: TextInputType.phone,
+                        //         enabled: !_validatePayment,
+                        //         validator: (v) {
+                        //           if (v?.isEmpty == true) {
+                        //             return "Phone number is required";
+                        //           }
+                        //           return null;
+                        //         },
+                        //         autovalidateMode:
+                        //             AutovalidateMode.onUserInteraction,
+                        //         onChanged: (value) {
+                        //           setState(() {
+                        //             _phoneNumber =
+                        //                 "+${selectedCountry.phoneCode}$value";
+                        //           });
+                        //         },
+                        //         decoration:
+                        //             buildInputDecoration(pHint).copyWith(
+                        //           prefixIcon: Container(
+                        //             padding: const EdgeInsets.all(8.0),
+                        //             child: InkWell(
+                        //               onTap: () {
+                        //                 showCountryPicker(
+                        //                   context: context,
+                        //                   showPhoneCode: true,
+                        //                   onSelect: (Country country) {
+                        //                     setState(() {
+                        //                       selectedCountry = country;
+                        //                     });
+                        //                   },
+                        //                 );
+                        //               },
+                        //               child: Text(
+                        //                 "+ ${selectedCountry.phoneCode}",
+                        //                 style: const TextStyle(
+                        //                   fontSize: 16,
+                        //                   fontWeight: FontWeight.bold,
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    showCountryPicker(
+                                      context: context,
+                                      showPhoneCode: true,
+                                      favorite: ['ET', "SO", "KE"],
+                                      countryListTheme: CountryListThemeData(
+                                        borderRadius: BorderRadius.circular(8),
+                                        inputDecoration: InputDecoration(
+                                          hintText: 'Search country',
+                                          filled: true,
+                                          fillColor: Colors.grey[100],
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                      ),
+                                      onSelect: (Country country) {
+                                        setState(() {
+                                          selectedCountry = country;
+                                        });
+                                      },
+                                    );
+                                  },
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "${selectedCountry.flagEmoji} +${selectedCountry.phoneCode}",
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      const Icon(Icons.arrow_drop_down,
+                                          color: Colors.black87),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: TextFormField(
+                                  validator: (v) {
+                                    if (v?.isEmpty == true) {
+                                      return "Phone number is required";
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _phoneNumber =
+                                          "+${selectedCountry.phoneCode}$value";
+                                    });
+                                  },
+                                  decoration: buildInputDecoration(
+                                      "Enter phone number"),
+                                  keyboardType: TextInputType.phone,
+                                ),
+                              ),
+                            ],
                           ),
                     const SizedBox(
                       height: 20,
