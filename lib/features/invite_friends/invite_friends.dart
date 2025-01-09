@@ -27,11 +27,15 @@ class _InviteFriendsState extends State<InviteFriends> {
   Set<String> registeredPhoneNumbers = {};
   Set<String> alreadyInvitedNumbers = {};
   bool loading = false; // Add this
+  static const int _pageSize = 50;
+  int _currentPage = 0;
+  bool _hasMoreContacts = true;
+  bool _isLoadingMore = false;
 
   @override
   void initState() {
     super.initState();
-    _getContacts();
+    _getContactsPage();
     getUrl();
   }
 
@@ -55,15 +59,31 @@ class _InviteFriendsState extends State<InviteFriends> {
     }
   }
 
-  Future<void> _getContacts() async {
+  Future<void> _getContactsPage() async {
+    if (!_hasMoreContacts || _isLoadingMore) return;
+
     setState(() {
-      loading = true;
+      if (_currentPage == 0) loading = true;
+      _isLoadingMore = true;
     });
 
     try {
       PermissionStatus permissionStatus = await Permission.contacts.status;
       if (permissionStatus.isGranted) {
-        Iterable<Contact> contacts = await ContactsService.getContacts();
+        // Get paginated contacts
+        Iterable<Contact> contacts = await ContactsService.getContacts(
+          query: "",
+          withThumbnails: false,
+          photoHighResolution: false,
+          orderByGivenName: true,
+          // offset and limit are not valid parameters for getContacts()
+        );
+
+        if (contacts.isEmpty) {
+          _hasMoreContacts = false;
+          return;
+        }
+
         List<Contact> contactsWithPhones = contacts
             .where((contact) => contact.phones!.isNotEmpty)
             .where((contact) {
@@ -80,17 +100,18 @@ class _InviteFriendsState extends State<InviteFriends> {
           }).toList();
           return contact;
         }).toList();
+
         setState(() {
-          _contacts = contactsWithPhones;
+          _contacts.addAll(contactsWithPhones);
+          _currentPage++;
         });
-        _checkRegisteredUsers(contactsWithPhones);
+
+        await _checkRegisteredUsers(contactsWithPhones);
       } else if (permissionStatus.isDenied ||
           permissionStatus.isPermanentlyDenied) {
         permissionStatus = await Permission.contacts.request();
         if (permissionStatus.isGranted) {
-          _getContacts();
-        } else {
-          print('Contacts permission is denied.');
+          _getContactsPage();
         }
       }
     } catch (e) {
@@ -98,6 +119,7 @@ class _InviteFriendsState extends State<InviteFriends> {
     } finally {
       setState(() {
         loading = false;
+        _isLoadingMore = false;
       });
     }
   }
@@ -232,7 +254,7 @@ class _InviteFriendsState extends State<InviteFriends> {
             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17)),
       ),
       body: loading
-          ? Center(child: CircularProgressIndicator()) // Show loading indicator
+          ? Center(child: CircularProgressIndicator())
           : Column(
               children: [
                 Padding(
@@ -321,103 +343,106 @@ class _InviteFriendsState extends State<InviteFriends> {
                       ),
                     ),
                   ),
-                loading
-                    ? Expanded(
-                        child: Center(child: CircularProgressIndicator()),
-                      )
-                    : _contactsInfo.isEmpty
-                        ? Expanded(
-                            child: Center(
-                                child:
-                                    Text("There are no contacts to display.")),
-                          )
-                        : Expanded(
-                            child: ListView(
-                              children: _contactsInfo.map((contactInfo) {
-                                // Ensure all required fields are present
-                                if (contactInfo.name.isNotEmpty &&
-                                    contactInfo.phoneNumber.isNotEmpty &&
-                                    contactInfo.registrationStatus != null) {
-                                  return ListTile(
-                                    // leading: CircleAvatar(
-                                    //   radius: 30,
-                                    //   backgroundColor:
-                                    //       AppColors.colorPrimaryDark,
-                                    //   child: Text(
-                                    //     _getInitials(contactInfo.name)
-                                    //         .toUpperCase(),
-                                    //     style: const TextStyle(
-                                    //         color: Colors.white),
-                                    //   ),
-                                    // ),
-                                    title: Text(
-                                      contactInfo.name,
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                    subtitle: Text(contactInfo.phoneNumber),
-                                    trailing: contactInfo.registrationStatus ==
-                                            ContactStatus.registered
-                                        ? const Text('Already Registered')
-                                        : contactInfo.registrationStatus ==
-                                                ContactStatus.invited
-                                            ? const Text('Already Invited')
-                                            : SizedBox(
-                                                height: 30,
-                                                width: 95,
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor: AppColors
-                                                        .colorPrimaryDark,
-                                                  ),
-                                                  onPressed: () {
-                                                    _sendInvite(
-                                                        contactInfo.phoneNumber,
-                                                        contactInfo.name);
-                                                  },
-                                                  child: const Text(
-                                                    'Invite',
-                                                    style: TextStyle(
-                                                        color:
-                                                            AppColors.bgColor),
-                                                  ),
-                                                ),
-                                              ),
-                                  );
-                                } else {
-                                  // Handle the case where required fields are missing
-                                  return ListTile(
-                                    leading: CircleAvatar(
-                                      radius: 30,
-                                      backgroundColor:
-                                          AppColors.colorPrimaryDark,
-                                      child: const Icon(Icons.error,
-                                          color: Colors.white),
-                                    ),
-                                    title: const Text('Unknown Contact'),
-                                    subtitle: const Text('Missing information'),
-                                    trailing: SizedBox(
-                                      height: 30,
-                                      width: 90,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              AppColors.colorPrimaryDark,
+                Expanded(
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification scrollInfo) {
+                      if (scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                        _getContactsPage();
+                      }
+                      return true;
+                    },
+                    child: ListView(
+                      children: [
+                        ..._contactsInfo.map((contactInfo) {
+                          // Ensure all required fields are present
+                          if (contactInfo.name.isNotEmpty &&
+                              contactInfo.phoneNumber.isNotEmpty &&
+                              contactInfo.registrationStatus != null) {
+                            return ListTile(
+                              // leading: CircleAvatar(
+                              //   radius: 30,
+                              //   backgroundColor:
+                              //       AppColors.colorPrimaryDark,
+                              //   child: Text(
+                              //     _getInitials(contactInfo.name)
+                              //         .toUpperCase(),
+                              //     style: const TextStyle(
+                              //         color: Colors.white),
+                              //   ),
+                              // ),
+                              title: Text(
+                                contactInfo.name,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              subtitle: Text(contactInfo.phoneNumber),
+                              trailing: contactInfo.registrationStatus ==
+                                      ContactStatus.registered
+                                  ? const Text('Already Registered')
+                                  : contactInfo.registrationStatus ==
+                                          ContactStatus.invited
+                                      ? const Text('Already Invited')
+                                      : SizedBox(
+                                          height: 30,
+                                          width: 95,
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  AppColors.colorPrimaryDark,
+                                            ),
+                                            onPressed: () {
+                                              _sendInvite(
+                                                  contactInfo.phoneNumber,
+                                                  contactInfo.name);
+                                            },
+                                            child: const Text(
+                                              'Invite',
+                                              style: TextStyle(
+                                                  color: AppColors.bgColor),
+                                            ),
+                                          ),
                                         ),
-                                        onPressed:
-                                            null, // Disable button if information is missing
-                                        child: const Text(
-                                          'Invite',
-                                          style: TextStyle(
-                                              color: AppColors.bgColor),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                              }).toList(),
+                            );
+                          } else {
+                            // Handle the case where required fields are missing
+                            return ListTile(
+                              leading: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: AppColors.colorPrimaryDark,
+                                child: const Icon(Icons.error,
+                                    color: Colors.white),
+                              ),
+                              title: const Text('Unknown Contact'),
+                              subtitle: const Text('Missing information'),
+                              trailing: SizedBox(
+                                height: 30,
+                                width: 90,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.colorPrimaryDark,
+                                  ),
+                                  onPressed:
+                                      null, // Disable button if information is missing
+                                  child: const Text(
+                                    'Invite',
+                                    style: TextStyle(color: AppColors.bgColor),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        }).toList(),
+                        if (_isLoadingMore)
+                          Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(),
                             ),
-                          )
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
     );
