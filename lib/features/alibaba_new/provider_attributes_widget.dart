@@ -1,6 +1,7 @@
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
+import 'package:commercepal/core/cart-core/cart_widget.dart';
 import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/features/alibaba_new/provider_config_model.dart';
 import 'package:commercepal/features/alibaba_product_view/alibaba_products_screen.dart';
@@ -540,23 +541,23 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                       ),
                     );
                   }).toList(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: FutureBuilder(
-                      future: TranslationService.translate(
-                          "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})"),
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ??
-                              "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: _isMinOrderMet() ? Colors.green : Colors.red,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  //   child: FutureBuilder(
+                  //     future: TranslationService.translate(
+                  //         "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})"),
+                  //     builder: (context, snapshot) {
+                  //       return Text(
+                  //         snapshot.data ??
+                  //             "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})",
+                  //         style: TextStyle(
+                  //           fontWeight: FontWeight.bold,
+                  //           color: _isMinOrderMet() ? Colors.green : Colors.red,
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -654,9 +655,38 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
             );
           },
         ),
+        actions: const [
+          CartWidget(),
+        ],
       ),
       body: ListView(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: FutureBuilder(
+              future: TranslationService.translate(
+                  "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})"),
+              builder: (context, snapshot) {
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: _isMinOrderMet()
+                        ? Colors.green.withOpacity(0.1)
+                        : Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    snapshot.data ??
+                        "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: _isMinOrderMet() ? Colors.green : Colors.red,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -792,35 +822,34 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                 ],
               ),
             ),
-
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.colorPrimaryDark),
-              onPressed: _isMinOrderMet() ? _addToCartItems : null,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.shopping_cart,
-                    color: AppColors.bg1,
-                  ),
-                  SizedBox(width: 8),
-                  FutureBuilder(
-                    future: TranslationService.translate("Add to Cart"),
-                    builder: (context, snapshot) {
-                      return Text(
-                        snapshot.data ?? "Add to Cart",
-                        style: TextStyle(color: AppColors.bg1),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
         ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.colorPrimaryDark),
+          onPressed: _isMinOrderMet() ? _addToCartItems : null,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.shopping_cart,
+                color: AppColors.bg1,
+              ),
+              SizedBox(width: 8),
+              FutureBuilder(
+                future: TranslationService.translate("Add to Cart"),
+                builder: (context, snapshot) {
+                  return Text(
+                    snapshot.data ?? "Add to Cart",
+                    style: TextStyle(color: AppColors.bg1),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
