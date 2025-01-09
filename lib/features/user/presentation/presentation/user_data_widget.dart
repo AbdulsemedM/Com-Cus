@@ -2,6 +2,7 @@ import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/clear_cache.dart';
 import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/core/cart-core/dao/cart_dao.dart';
 import 'package:commercepal/core/translator/translator.dart';
 import 'package:commercepal/features/addresses/presentation/addresses_page.dart';
 import 'package:commercepal/features/change_password/presentation/change_password_page.dart';
@@ -82,6 +83,8 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   Future<void> _saveSelectedCurrency(String currency) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("currency", currency);
+    final cartDao = getIt<CartDao>();
+    await cartDao.nuke();
   }
 
   Future<void> checkToken() async {
@@ -629,7 +632,14 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text("ETB"),
+                title: GestureDetector(
+                  onTap: () {
+                    _saveSelectedCurrency("ETB");
+                    _selectedCurrency = "ETB";
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("ETB"),
+                ),
                 leading: Radio<String>(
                   value: "ETB",
                   groupValue: _selectedCurrency,
@@ -645,7 +655,14 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 ),
               ),
               ListTile(
-                title: const Text("USD"),
+                title: GestureDetector(
+                  onTap: () {
+                    _saveSelectedCurrency("USD");
+                    _selectedCurrency = "USD";
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("USD"),
+                ),
                 leading: Radio<String>(
                   value: "USD",
                   groupValue: _selectedCurrency,
@@ -849,7 +866,8 @@ class _UserDataWidgetState extends State<UserDataWidget> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: FutureBuilder(
-            future: TranslationService.translate('All data cleared successfully'),
+            future:
+                TranslationService.translate('All data cleared successfully'),
             builder: (context, snapshot) {
               return Text(snapshot.data ?? 'All data cleared successfully');
             },
