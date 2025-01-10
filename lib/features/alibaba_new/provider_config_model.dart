@@ -3,12 +3,14 @@ class ProviderConfigModel {
   final List<String> vid;
   final String? name;
   final double originalPrice;
+  final double? baseMarkup;
 
   ProviderConfigModel({
     required this.id,
     required this.vid,
     this.name,
     required this.originalPrice,
+    this.baseMarkup,
   });
 
   // Factory constructor to create an instance from JSON
@@ -31,6 +33,7 @@ class ProviderConfigModel {
       id: json['Id'] as String,
       vid: vidList,
       originalPrice: (selectedPrice['price'] as num).toDouble(),
+      baseMarkup: (selectedPrice['baseMarkup'] as num).toDouble(),
     );
   }
 }

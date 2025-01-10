@@ -1046,4 +1046,23 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
       });
     }
   }
+
+  double calculateTotalPrice(
+      double itemPrice, double baseMarkup, int quantity) {
+    double totalPrice = 0; // Initialize total price to 0
+
+    for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
+      if (itemIndex == 1) {
+        totalPrice +=
+            itemPrice + baseMarkup; // For the first item, price + full markup
+      } else {
+        // For subsequent items, price + half markup (rounded to 2 decimal places)
+        double halfMarkup = baseMarkup / 2;
+        totalPrice += itemPrice + halfMarkup;
+      }
+    }
+
+    // Round to 2 decimal places
+    return totalPrice;
+  }
 }
