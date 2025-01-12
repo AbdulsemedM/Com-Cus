@@ -9,10 +9,9 @@ import 'migration.dart';
 abstract class DatabaseNodule {
   @preResolve
   @lazySingleton
-  Future<AppDatabase> get database async =>
-      await $FloorAppDatabase.databaseBuilder("commercepal")
-          .addMigrations([migration1to2])
-          .build();
+  Future<AppDatabase> get database async => await $FloorAppDatabase
+      .databaseBuilder("commercepal")
+      .addMigrations([migration1to2, migration2To3]).build();
 
   @injectable
   CartDao getCartDao(AppDatabase appDatabase) {

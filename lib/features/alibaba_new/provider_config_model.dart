@@ -23,7 +23,9 @@ class ProviderConfigModel {
       (price) => price['currencyCode'] == country,
       orElse: () => {'price': json['Price']['OriginalPrice']},
     );
-
+    // print("selectedPrice");
+    // print(selectedPrice['baseMarkup']);
+    // print(selectedPrice['price']);
     // Extract all 'Vid' values from the 'Configurators' array
     final configurators = json['Configurators'] as List<dynamic>;
     final vidList =
@@ -32,7 +34,7 @@ class ProviderConfigModel {
     return ProviderConfigModel(
       id: json['Id'] as String,
       vid: vidList,
-      originalPrice: (selectedPrice['price'] as num).toDouble(),
+      originalPrice: (selectedPrice['originalPrice'] as num).toDouble(),
       baseMarkup: (selectedPrice['baseMarkup'] as num).toDouble(),
     );
   }

@@ -49,6 +49,24 @@ class _CartPageState extends State<CartPage> {
     // fetchUser1();
   }
 
+  double calculateTotalPrice(
+      double itemPrice, double baseMarkup, int quantity) {
+    double totalPrice = 0; // Initialize total price to 0
+    for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
+      if (itemIndex == 1) {
+        totalPrice +=
+            itemPrice + baseMarkup; // For the first item, price + full markup
+      } else {
+        // For subsequent items, price + half markup (rounded to 2 decimal places)
+        double halfMarkup = baseMarkup / 2;
+        totalPrice += itemPrice + halfMarkup;
+      }
+    }
+
+    // Round to 2 decimal places
+    return double.parse((totalPrice).toStringAsFixed(2));
+  }
+
   Future<void> checkToken() async {
     String valid = await fetchUser1(context: context);
     if (valid == "logout") {
@@ -195,8 +213,9 @@ class _CartPageState extends State<CartPage> {
           orElse: () => const SizedBox(),
           error: (error) => HomeErrorWidget(error: error),
           cartItems: (cartItems) {
-            print("cartItems");
-            print(cartItems[0].createdAt);
+            // print("cartItems");
+            // print(cartItems[0].createdAt);
+            // print(cartItems[0].baseMarkup);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -238,8 +257,16 @@ class _CartPageState extends State<CartPage> {
                   items: cartItems,
                   subTitle:
                       "Delivery Charges: ${cartItems.first.currency ?? "ETB"} 0",
+                  // totalPrice: cartItems
+                  //     .map((e) => e.quantity! * double.parse(e.price!))
+                  //     .fold(
+                  //         0.0,
+                  //         (previousValue, element) =>
+                  //             previousValue + element.toDouble())
+                  //     .formatCurrency(cartItems.first.currency),
                   totalPrice: cartItems
-                      .map((e) => e.quantity! * double.parse(e.price!))
+                      .map((e) => calculateTotalPrice(double.parse(e.price!),
+                          double.parse(e.baseMarkup!), e.quantity!))
                       .fold(
                           0.0,
                           (previousValue, element) =>

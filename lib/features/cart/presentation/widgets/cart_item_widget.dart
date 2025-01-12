@@ -32,11 +32,30 @@ class _CartItemWidgetState extends State<CartItemWidget> {
   @override
   void initState() {
     super.initState();
-    // prints(widget.cartItem);
+    print("widget.cartItem.baseMarkup");
+    print(widget.cartItem.baseMarkup);
     _deleteCartItem();
     setState(() {
       _quantity = widget.cartItem.quantity ?? 1;
     });
+  }
+
+  double calculateTotalPrice(
+      double itemPrice, double baseMarkup, int quantity) {
+    double totalPrice = 0; // Initialize total price to 0
+    for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
+      if (itemIndex == 1) {
+        totalPrice +=
+            itemPrice + baseMarkup; // For the first item, price + full markup
+      } else {
+        // For subsequent items, price + half markup (rounded to 2 decimal places)
+        double halfMarkup = baseMarkup / 2;
+        totalPrice += itemPrice + halfMarkup;
+      }
+    }
+
+    // Round to 2 decimal places
+    return double.parse((totalPrice).toStringAsFixed(2));
   }
 
   @override
@@ -168,7 +187,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 Row(
                   children: [
                     Text(
-                      '${widget.cartItem.currency} ${widget.cartItem.price} X ${widget.cartItem.quantity}',
+                      // '${widget.cartItem.currency} ${widget.cartItem.price} X ${widget.cartItem.quantity}',
+                      'Price: ${widget.cartItem.currency} ${double.parse(widget.cartItem.price!) + double.parse(widget.cartItem.baseMarkup!)}',
                       // widget.cartItem.price
                       //     .formatCurrency(widget.cartItem.currency),
                       style: Theme.of(context)
@@ -177,6 +197,13 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                           ?.copyWith(color: Colors.black, fontSize: 14),
                     ),
                     const Spacer(),
+                    Text(
+                      'Quantity: ${widget.cartItem.quantity}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Colors.black, fontSize: 14),
+                    ),
                     if (widget.cartItem.description != "provider")
                       Container(
                           height: 40,
@@ -285,7 +312,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    "${widget.cartItem.currency} ${NumberFormat('#,##0.00').format(_quantity * double.parse(widget.cartItem.price!))}",
+                    "Total: ${widget.cartItem.currency} ${NumberFormat('#,##0.00').format(calculateTotalPrice(double.parse(widget.cartItem.price!), double.parse(widget.cartItem.baseMarkup!), _quantity))}",
                     style: TextStyle(color: Colors.black, fontSize: 18.sp),
                   ),
                 ),

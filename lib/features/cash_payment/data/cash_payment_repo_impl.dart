@@ -3,6 +3,7 @@ import 'package:commercepal/app/data/network/end_points.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/features/cash_payment/domain/cash_payment_repo.dart';
 import 'package:injectable/injectable.dart';
+import 'dart:convert';
 
 import '../../../core/cart-core/dao/cart_dao.dart';
 import '../../../core/session/domain/session_repo.dart';
@@ -43,6 +44,9 @@ class CashPaymentRepoImpl implements CashPaymentRepo {
       await cartDao.nuke();
       if (cashType == "HELLO_CASH") {
         return response['TransRef'];
+      } else if (_getCashType(cashType) == "AGENT-CASH") {
+        final jsonString = jsonEncode(response);
+        return jsonString;
       } else {
         return "Order placed successfully";
       }

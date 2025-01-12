@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
@@ -140,10 +142,170 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
             }
 
             if (state is CashPaymentStateSuccess) {
-              displaySnack(context, state.message);
+              if (_cashType == "CASH") {
+                final message = JsonDecoder().convert(state.message);
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.check_circle,
+                          color: Colors.green,
+                          size: 60,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "Order Placed Successfully!",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green[700],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          "Please go to your nearest agent and use this info. to complete your payment",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+                              _buildDetailRow(
+                                "Validation Code",
+                                message['ValidationCode'],
+                                Icons.confirmation_number,
+                              ),
+                              const Divider(height: 20),
+                              _buildDetailRow(
+                                "TransRef",
+                                message['TransRef'],
+                                Icons.receipt_long,
+                              ),
+                              const Divider(height: 20),
+                              _buildDetailRow(
+                                "OrderRef",
+                                message['OrderRef'],
+                                Icons.shopping_cart,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.colorPrimary,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              DashboardPage.routeName,
+                              (Route<dynamic> route) => false,
+                            );
+                          },
+                          child: const Text(
+                            "Done",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                );
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.check_circle_outline,
+                          color: Colors.green,
+                          size: 70,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "Success!",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green[700],
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Text(
+                          state.message,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[800],
+                            height: 1.3,
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.colorPrimary,
+                            minimumSize: const Size(double.infinity, 45),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            elevation: 2,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              DashboardPage.routeName,
+                              (Route<dynamic> route) => false,
+                            );
+                          },
+                          child: const Text(
+                            "Done",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    contentPadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+                  ),
+                );
+                // displaySnack(context, state.message);
 
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  DashboardPage.routeName, (Route<dynamic> route) => false);
+                // Navigator.of(context).pushNamedAndRemoveUntil(
+                //     DashboardPage.routeName, (Route<dynamic> route) => false);
+              }
             }
 
             if (state is CashPaymentStateValidateCode) {
@@ -384,6 +546,40 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
                 style: TextStyle(color: AppColors.colorPrimaryDark),
               )),
         )
+      ],
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value, IconData icon) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 20,
+          color: Colors.grey[600],
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
+                ),
+              ),
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

@@ -16,6 +16,7 @@ import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 // import 'package:geocoding/geocoding.dart';
 // import 'package:geolocator/geolocator.dart';
 // import 'package:permission_handler/permission_handler.dart';
@@ -91,6 +92,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   String? _shippingFee;
   bool _isUserBusiness = true;
   String currency = "";
+  double totalCartPrice = 0;
   void initState() {
     super.initState();
     // getLocation();
@@ -142,6 +144,9 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      totalCartPrice = 0;
+    });
     return BlocProvider(
       create: (context) => getIt<CheckOutCubit>()..getHomePageData(),
       child: BlocConsumer<CheckOutCubit, CheckOutState>(
@@ -277,9 +282,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                                         child: Text("x${cartItem.quantity}")),
                                     Expanded(
                                       child: Text(
-                                          ((double.parse(cartItem.price!) *
-                                                  (cartItem.quantity ?? 1))
-                                              .toString())),
+                                          "${cartItem.currency} ${calculateTotalPrice(double.parse(cartItem.price!), double.parse(cartItem.baseMarkup!), cartItem.quantity!)}"),
                                     )
                                   ],
                                 ),
@@ -342,9 +345,10 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                                     .titleMedium
                                     ?.copyWith()),
                         Text(
-                          _total != null
-                              ? "${_total!.startsWith('null ') ? _total = _total!.replaceFirst("null ", "ETB ") : _total}"
-                              : '...',
+                          "${currency} ${NumberFormat('#,##0.00').format(totalCartPrice)}",
+                          // _total != null
+                          //     ? "${_total!.startsWith('null ') ? _total = _total!.replaceFirst("null ", "ETB ") : _total}"
+                          //     : '...',
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
@@ -399,9 +403,10 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                               height: 4,
                             ),
                             Text(
-                                _total != null
-                                    ? "${_total!.startsWith('null ') ? _total = _total!.replaceFirst("null ", "ETB ") : _total}"
-                                    : "",
+                                // _total != null
+                                //     ? "${_total!.startsWith('null ') ? _total = _total!.replaceFirst("null ", "ETB ") : _total}"
+                                //     : "",
+                                "${currency} ${NumberFormat('#,##0.00').format(totalCartPrice)}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .displayMedium
@@ -456,6 +461,25 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
     );
   }
 
+  double calculateTotalPrice(
+      double itemPrice, double baseMarkup, int quantity) {
+    double totalPrice = 0; // Initialize total price to 0
+    for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
+      if (itemIndex == 1) {
+        totalPrice +=
+            itemPrice + baseMarkup; // For the first item, price + full markup
+      } else {
+        // For subsequent items, price + half markup (rounded to 2 decimal places)
+        double halfMarkup = baseMarkup / 2;
+        totalPrice += itemPrice + halfMarkup;
+      }
+    }
+    totalCartPrice += double.parse((totalPrice).toStringAsFixed(2));
+    print("totalCartPrice");
+    print(totalCartPrice);
+    // Round to 2 decimal places
+    return double.parse((totalPrice).toStringAsFixed(2));
+  }
   // Future<void> getLocation() async {
   //   try {
   //     setState(() {

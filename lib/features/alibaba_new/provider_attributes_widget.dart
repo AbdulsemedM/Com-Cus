@@ -148,6 +148,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
       // Add to cart
       // setState(() {
       myCart.add(CartItem(
+        baseMarkup: matchingConfig?.baseMarkup.toString(),
         currency: widget.currentCountry == "ETB" ? "ETB" : "\$",
         description: "provider",
         subProductId: matchingConfig?.id ?? "0",
@@ -160,7 +161,13 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
       ));
       print("myCart");
       print(myCart[0].createdAt);
-      // });
+      print(myCart[0].merchantId);
+      print("myCart");
+      print(myCart[0].price);
+      print(calculateTotalPrice(
+          double.parse(matchingConfig?.originalPrice.toString() ?? "0"),
+          matchingConfig?.baseMarkup ?? 0,
+          combination.quantity));
     }
     _addToCart();
     // }
@@ -1063,6 +1070,6 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     }
 
     // Round to 2 decimal places
-    return totalPrice;
+    return double.parse((totalPrice).toStringAsFixed(2));
   }
 }

@@ -322,6 +322,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
           }
           for (var config in productInfoList) {
             myConfigs.add(ProviderConfigModel(
+                baseMarkup: config.baseMarkup,
                 id: config.id,
                 vid: config.vid,
                 originalPrice: config.originalPrice));

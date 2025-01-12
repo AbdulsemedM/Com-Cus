@@ -135,9 +135,12 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
           const SizedBox(
             height: 10,
           ),
-          _buildUnder()
+          _buildUnder(),
         ])),
-        _buildUnderItems()
+        _buildUnderItems(),
+        _buildAbove(),
+        _buildAboveItems(),
+        // _buildAboveItems(),
       ],
     );
   }
@@ -220,7 +223,7 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
     return underPrice?.isNotEmpty == true
         ? TitleWidget(
             title: underPrice?.first.displayName ?? "",
-            optionTitle: "See All",
+            // optionTitle: "See All",
           )
         : const SizedBox();
   }
@@ -229,9 +232,14 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
     final underPrice = widget.schema.schemaSections
         ?.where((element) => element.key == 'above_1000');
     return underPrice?.isNotEmpty == true
-        ? TitleWidget(
-            title: underPrice?.first.displayName ?? "",
-            optionTitle: "See All",
+        ? SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: TitleWidget(
+                title: underPrice?.first.displayName ?? "",
+                // optionTitle: "See All",
+              ),
+            ),
           )
         : const SizedBox();
   }

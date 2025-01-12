@@ -4,6 +4,7 @@ import 'package:commercepal/core/widgets/commercepal_app_bar.dart';
 import 'package:commercepal/features/dashboard/widgets/home_error_widget.dart';
 import 'package:commercepal/features/dashboard/widgets/home_loading_widget.dart';
 import 'package:commercepal/features/order_tracking/presentation/order_tracking_page.dart';
+import 'package:commercepal/features/orders/presentation/order_screen.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_orders/data/models/user_orders_dto.dart';
@@ -80,14 +81,22 @@ class _UserOrdersPageState extends State<UserOrdersPage> {
                     final order = orders[index];
                     return InkWell(
                       onTap: () {
-                        Navigator.pushNamed(
+                        Navigator.push(
                           context,
-                          OrderTrackingPage.routeName,
-                          arguments: {
-                            "order_id": orders[index].orderId,
-                            "order_ref": orders[index].orderRef,
-                          },
+                          MaterialPageRoute(
+                            builder: (context) => OrderScreen(
+                              orderRef: orders[index].orderRef!,
+                            ),
+                          ),
                         );
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   OrderTrackingPage.routeName,
+                        //   arguments: {
+                        //     "order_id": orders[index].orderId,
+                        //     "order_ref": orders[index].orderRef,
+                        //   },
+                        // );
                       },
                       child: UserOrderItemWidget(order: order),
                     );
