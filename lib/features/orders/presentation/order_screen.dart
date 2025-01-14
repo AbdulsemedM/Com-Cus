@@ -4,6 +4,7 @@ import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/features/orders/models/order_timeline_model.dart';
 import 'package:commercepal/features/orders/models/orders_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -19,10 +20,12 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   bool loading = false;
   List<OrdersModel> myOrders = [];
+  List<OrderTimelineModel> myOrderTimeline = [];
   @override
   void initState() {
     super.initState();
     fetchActionLogs();
+    fetchTimeline();
   }
 
   @override
@@ -49,6 +52,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  buildTimeline(),
                   const SizedBox(height: 20),
                   ListView.builder(
                     shrinkWrap: true,
@@ -194,6 +198,134 @@ class _OrderScreenState extends State<OrderScreen> {
     } catch (e) {
       print(e.toString());
       rethrow;
+    }
+  }
+
+  Future<void> fetchTimeline() async {
+    try {
+      setState(() {
+        loading = true;
+      });
+      final prefsData = getIt<PrefsData>();
+      final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      print(isUserLoggedIn);
+      if (isUserLoggedIn) {
+        final token = await prefsData.readData(PrefsKeys.userToken.name);
+        final response = await http.get(
+          Uri.https(
+            "api.commercepal.com",
+            "/prime/api/v1/customer/order/timeline",
+            {
+              "orderRef": widget.orderRef,
+            },
+          ),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            "Authorization": "Bearer $token",
+          },
+        );
+        print('hererererer');
+        var datas = jsonDecode(response.body);
+        print(datas);
+        if (datas['statusCode'] == '000') {
+          for (var i in datas['responseData']) {
+            myOrderTimeline.add(OrderTimelineModel.fromMap(i));
+
+            // if (myOrders.isEmpty) {
+            //   throw 'No special orders found';
+          }
+          print("MyOrderTimeline");
+          print(myOrderTimeline.length);
+        } else {
+          throw datas['statusDescription'] ?? 'Error fetching markups';
+        }
+      }
+
+      setState(() {
+        loading = false;
+      });
+    } catch (e) {
+      print(e.toString());
+      rethrow;
+    }
+  }
+
+  Widget buildTimeline() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.red, width: 2),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: myOrderTimeline.map((stage) {
+            final isActive =
+                stage.status == "Pending"; // Adjust logic as needed
+            return Row(
+              children: [
+                Column(
+                  children: [
+                    Icon(
+                      getIconForStage(stage.stage),
+                      color: !isActive ? Colors.green : Colors.grey,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      getShortNameForStage(stage.stage),
+                      style: TextStyle(
+                        color: !isActive ? Colors.green : Colors.grey,
+                        fontWeight:
+                            isActive ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 20), // Add spacing between stages
+              ],
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  IconData getIconForStage(String? stage) {
+    switch (stage) {
+      case "Ordered":
+        return Icons.shopping_cart;
+      case "Payment Confirmed":
+        return Icons.credit_card;
+      case "Processing":
+        return Icons.build;
+      case "Shipped":
+        return Icons.local_shipping;
+      case "Out for Delivery":
+        return Icons.directions_bike;
+      case "Delivered":
+        return Icons.check_circle;
+      default:
+        return Icons.help_outline;
+    }
+  }
+
+  String getShortNameForStage(String? stage) {
+    switch (stage) {
+      case "Ordered":
+        return "Ordered";
+      case "Payment Confirmed":
+        return "Paid";
+      case "Processing":
+        return "Processing";
+      case "Shipped":
+        return "Shipped";
+      case "Out for Delivery":
+        return "Out for Delivery";
+      case "Delivered":
+        return "Delivered";
+      default:
+        return "Unknown";
     }
   }
 }
