@@ -254,15 +254,19 @@ class _OrderScreenState extends State<OrderScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.red, width: 2),
+        border: Border.all(color: AppColors.colorPrimary, width: 2),
         borderRadius: BorderRadius.circular(8),
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: myOrderTimeline.map((stage) {
-            final isActive =
-                stage.status == "Pending"; // Adjust logic as needed
+          children: myOrderTimeline
+              // Filter out Unknown stages
+              .where((stage) => stage.stage != "Unknown Stage")
+              .map((stage) {
+            print("stage");
+            print(stage.stage);
+            final isActive = stage.status == "Pending";
             return Row(
               children: [
                 Column(
@@ -305,6 +309,8 @@ class _OrderScreenState extends State<OrderScreen> {
         return Icons.directions_bike;
       case "Delivered":
         return Icons.check_circle;
+      case "Canceled/Returned":
+        return Icons.cancel;
       default:
         return Icons.help_outline;
     }
@@ -324,6 +330,8 @@ class _OrderScreenState extends State<OrderScreen> {
         return "Out for Delivery";
       case "Delivered":
         return "Delivered";
+      case "Canceled/Returned":
+        return "Returned";
       default:
         return "Unknown";
     }
