@@ -187,6 +187,10 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
               success: (msg) {
                 Navigator.pushNamed(context, PaymentPage.routeName, arguments: {
                   'currency': currency,
+                }).then((value) {
+                  setState(() {
+                    totalCartPrice = 0;
+                  });
                 });
               },
               isUserBusiness: (isUserBusiness) {
