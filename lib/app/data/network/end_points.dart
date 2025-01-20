@@ -57,6 +57,8 @@ extension Url on EndPoints {
   static String baseUrlCustomer2 =
 // <<<<<<< New-Providers
       'https://pay.commercepal.com/prime/api/v1/customer';
+  static String baseUrlCustomer3 =
+      'https://api.commercepal.com:2096/prime/api/v1/app';
 // =======
 //       'https://payment.commercepal.com/prime/api/v1/customer';
 // >>>>>>> main
@@ -79,7 +81,7 @@ extension Url on EndPoints {
       case EndPoints.subCategories:
         return '$baseUrl/get-sub-categories';
       case EndPoints.products:
-        return "$baseUrl3/get-list-products";
+        return "$baseUrlCustomer3/get-products";
       case EndPoints.productsDetails:
         return "$baseUrl/get-products";
       case EndPoints.searchProduct:
