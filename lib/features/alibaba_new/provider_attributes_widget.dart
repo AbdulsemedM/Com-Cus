@@ -60,6 +60,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
   List<CartItem> myCart = [];
   List<AttributeCombination> selectedCombinations = [];
   Map<String, int> combinationQuantities = {};
+  late TextEditingController simpleQuantityController;
 
   int get totalQuantity =>
       selectedCombinations.fold(0, (sum, combo) => sum + combo.quantity);
@@ -67,18 +68,26 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
   @override
   void initState() {
     super.initState();
+    simpleQuantityController = TextEditingController(text: "0");
     groupedAttributes = _groupAttributesByPropertyName(widget.myProdAttr);
     selectedAttributes = {
       for (var group in groupedAttributes.keys) group: null,
     };
-    quantityControllers = {
-      for (var attr in groupedAttributes[groupedAttributes.keys.last]!)
-        attr.Vid: TextEditingController(text: "0")
-    };
+
+    // Only initialize quantityControllers if there are attributes
+    if (groupedAttributes.isNotEmpty) {
+      quantityControllers = {
+        for (var attr in groupedAttributes[groupedAttributes.keys.last]!)
+          attr.Vid: TextEditingController(text: "0")
+      };
+    } else {
+      quantityControllers = {}; // Initialize empty map if no attributes
+    }
   }
 
   @override
   void dispose() {
+    simpleQuantityController.dispose();
     quantityControllers.values.forEach((controller) => controller.dispose());
     super.dispose();
   }
@@ -142,7 +151,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
       // print(applicablePrice.price);
 
       // Calculate total price for this combination
-      final double unitPrice = double.parse(applicablePrice.price);
+      final double unitPrice = double.parse(applicablePrice.originalPrice);
       final double totalPrice = unitPrice * combination.quantity;
 
       // Add to cart
@@ -173,12 +182,12 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     // }
   }
 
-  Future<String?> _validateQuantity(String value) async {
+  String? _validateQuantity(String value) {
     // final minOrder = widget.myPriceRange[0].minOr;
     // final quantity = int.tryParse(value);
 
     if (int.parse(value) < 1) {
-      return await TranslationService.translate("Quantity must be at least 1");
+      return ("Quantity must be at least 1");
     } else {
       return null;
     }
@@ -651,6 +660,122 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // Check if attributes are empty
+    if (widget.myProdAttr.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: FutureBuilder(
+            future: TranslationService.translate("Order Quantity"),
+            builder: (context, snapshot) {
+              return Text(
+                snapshot.data ?? "Order Quantity",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              );
+            },
+          ),
+          actions: const [
+            CartWidget(),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Form(
+                key: myKey,
+                child: TextFormField(
+                  controller: simpleQuantityController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: InputDecoration(
+                    labelText: "Enter Quantity",
+                    border: OutlineInputBorder(),
+                    helperText:
+                        "Minimum Order: ${widget.myPriceRange[0].minOr}",
+                  ),
+                  validator: (value) => _validateQuantity(value!),
+                ),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.colorPrimaryDark,
+                  minimumSize: Size(double.infinity, 48),
+                ),
+                onPressed: () {
+                  if (myKey.currentState!.validate()) {
+                    int quantity = int.parse(simpleQuantityController.text);
+                    if (quantity >= int.parse(widget.myPriceRange[0].minOr)) {
+                      // Find applicable price range with proper error handling
+                      Prices applicablePrice;
+                      try {
+                        applicablePrice = widget.myPriceRange.firstWhere(
+                          (price) {
+                            final int minQuantity = int.parse(price.minOr);
+                            final int? maxQuantity = price.maxOr != null
+                                ? int.parse(price.maxOr!)
+                                : null;
+                            return quantity >= minQuantity &&
+                                (maxQuantity == null ||
+                                    quantity <= maxQuantity);
+                          },
+                          orElse: () => widget.myPriceRange[
+                              0], // Default to first price range if no match
+                        );
+                      } catch (e) {
+                        // Fallback to first price range if any error occurs
+                        applicablePrice = widget.myPriceRange[0];
+                      }
+
+                      // Create cart item
+                      myCart.add(CartItem(
+                        baseMarkup: applicablePrice.baseMarkup.toString(),
+                        currency: widget.currentCountry == "ETB" ? "ETB" : "\$",
+                        description: "provider",
+                        subProductId: "0",
+                        name: widget.productName.toString(),
+                        price: applicablePrice.originalPrice.toString(),
+                        image: widget.imageUrl.toString(),
+                        productId: widget.productId.toString(),
+                        quantity: quantity,
+                        createdAt: DateTime.now().toIso8601String(),
+                      ));
+
+                      // // Add to cart
+                      _addToCart();
+                      // displaySnack(
+                      //     context, "Product added to cart successfully");
+                      // Navigator.pop(context, true);
+                    } else {
+                      displaySnack(context, "Minimum order quantity not met");
+                    }
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.shopping_cart, color: AppColors.bg1),
+                    SizedBox(width: 8),
+                    FutureBuilder(
+                      future: TranslationService.translate("Add to Cart"),
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data ?? "Add to Cart",
+                          style: TextStyle(color: AppColors.bg1),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // Return original widget if attributes are not empty
     return Scaffold(
       appBar: AppBar(
         title: FutureBuilder(

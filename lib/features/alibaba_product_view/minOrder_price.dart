@@ -38,11 +38,11 @@ class _MinOrderPricePageState extends State<MinOrderPricePage> {
                   children: [
                     FutureBuilder(
                       future: TranslationService.translate(
-                          '${widget.currentCountryForm == "ETB" ? "ETB" : "\$"}  ${priceItem.price}'),
+                          '${widget.currentCountryForm == "ETB" ? "ETB" : "\$"}  ${priceItem.originalPrice}'),
                       builder: (context, snapshot) {
                         return Text(
                           snapshot.data ??
-                              '${widget.currentCountryForm == "ETB" ? "ETB" : "\$"}  ${priceItem.price}',
+                              '${widget.currentCountryForm == "ETB" ? "ETB" : "\$"}  ${priceItem.originalPrice}',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -85,9 +85,14 @@ class _MinOrderPricePageState extends State<MinOrderPricePage> {
 }
 
 class Prices {
-  final String price;
+  final double baseMarkup;
+  final String originalPrice;
   final String minOr;
   final String? maxOr;
 
-  Prices({required this.price, required this.minOr, this.maxOr});
+  Prices(
+      {required this.baseMarkup,
+      required this.originalPrice,
+      required this.minOr,
+      this.maxOr});
 }

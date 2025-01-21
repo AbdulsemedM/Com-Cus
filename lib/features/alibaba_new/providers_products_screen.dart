@@ -283,13 +283,25 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                   currentCountry)
               : [
                   Prices(
-                    price: (data['Price']['prices'] as List)
+                    originalPrice: (data['Price']['prices'] as List)
                         .firstWhere((p) =>
-                            p['currencyCode'] == (currentCountry))['price']
+                            p['currencyCode'] ==
+                            (currentCountry))['originalPrice']
                         .toString(),
+                    baseMarkup: ((data['Price']['prices'] as List).firstWhere(
+                                (p) => p['currencyCode'] == (currentCountry))['baseMarkup']
+                            is int)
+                        ? ((data['Price']['prices'] as List).firstWhere((p) =>
+                                p['currencyCode'] ==
+                                (currentCountry))['baseMarkup'] as int)
+                            .toDouble()
+                        : (data['Price']['prices'] as List).firstWhere((p) =>
+                            p['currencyCode'] == (currentCountry))['baseMarkup'],
                     minOr: "1",
                   )
                 ];
+          print("my price range");
+          print(myPriceRange.length);
           for (var attr in data['Attributes']) {
             if (attr['IsConfigurator'] == true) {
               // print(attr['OriginalPropertyName']);
@@ -337,10 +349,10 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
         // Retry limit reached, handle accordingly
       }
     } catch (e) {
+      print("Error: ${e.toString()}");
       setState(() {
         loading = true;
       });
-      print(e.toString());
 
       // Handle other exceptions
     }
@@ -359,17 +371,28 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       var priceData = prices.firstWhere((p) => p['currencyCode'] == (country))
           as Map<String, dynamic>;
 
-      var price = priceData['price'].toString();
+      // Convert to string to handle both int and double values
+      var price = priceData['originalPrice'].toString();
+      // Ensure baseMarkup is handled as double
+      var baseMarkup = (priceData['baseMarkup'] is int)
+          ? (priceData['baseMarkup'] as int).toDouble()
+          : priceData['baseMarkup'] as double;
 
       String? maxQuantity;
       if (i == quantityRanges.length - 1) {
         maxQuantity = null;
       } else {
-        maxQuantity = (quantityRanges[i + 1]['MinQuantity'] - 1).toString();
+        // Convert to int first, then subtract, then convert to string
+        maxQuantity =
+            (int.parse(quantityRanges[i + 1]['MinQuantity'].toString()) - 1)
+                .toString();
       }
 
-      pricesList
-          .add(Prices(price: price, minOr: minQuantity, maxOr: maxQuantity));
+      pricesList.add(Prices(
+          originalPrice: price,
+          minOr: minQuantity,
+          maxOr: maxQuantity,
+          baseMarkup: baseMarkup));
     }
     return pricesList;
   }

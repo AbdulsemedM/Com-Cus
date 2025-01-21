@@ -310,7 +310,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
         } else {
           selectedItems.add({
             'id': myListItem.isNotEmpty ? myListItem[0].id : "",
-            'price': priceRange[0].price,
+            'price': priceRange[0].originalPrice,
             'count': priceRange[0].minOr, // Add count for each product
           });
         }
@@ -323,7 +323,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
 // Attempt to parse `priceRange[0].price` and `priceRange[0].minOr` after trimming whitespace.
       try {
         // Sanitize and parse the price and min order values
-        double price = double.parse(sanitizeInput(priceRange[0].price.trim()));
+        double price = double.parse(sanitizeInput(priceRange[0].originalPrice.trim()));
         double minOrder =
             double.parse(sanitizeInput(priceRange[0].minOr.trim()));
 
@@ -389,10 +389,11 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
                   currentCountry)
               : [
                   Prices(
-                    price: (data['Price']['prices'] as List)
+                    originalPrice: (data['Price']['prices'] as List)
                         .firstWhere((p) =>
                             p['currencyCode'] == (currentCountry))['price']
                         .toString(),
+                    baseMarkup: 0,
                     minOr: "1",
                   )
                 ];
@@ -474,7 +475,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
       }
 
       pricesList
-          .add(Prices(price: price, minOr: minQuantity, maxOr: maxQuantity));
+          .add(Prices(originalPrice: price, minOr: minQuantity, maxOr: maxQuantity, baseMarkup: 0));
     }
     return pricesList;
   }

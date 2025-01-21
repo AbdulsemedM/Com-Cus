@@ -148,7 +148,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
           final attribute = entry.value;
           if (attribute == null) return null;
           final quantity = attributeQuantities[attribute.Vid] ?? 0;
-          final unitPrice = double.parse(widget.myPriceRange[0].price);
+          final unitPrice = double.parse(widget.myPriceRange[0].originalPrice);
           final totalPrice = quantity * unitPrice;
 
           return CartItem(
