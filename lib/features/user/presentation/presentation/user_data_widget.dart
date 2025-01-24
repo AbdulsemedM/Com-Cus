@@ -14,6 +14,7 @@ import 'package:commercepal/features/install_referral/referrer.dart';
 import 'package:commercepal/features/invite_friends/invite_friends.dart';
 import 'package:commercepal/features/login/presentation/login_page.dart';
 import 'package:commercepal/features/my_special_orders/my_special_orders.dart';
+import 'package:commercepal/features/refund_policy/refund_policy_screen.dart';
 import 'package:commercepal/features/splash/splash_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
@@ -497,6 +498,19 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 );
               },
             ),
+          ),
+          const Divider(),
+
+          UserMenuItem(
+            icon: Icons.edit_document,
+            title: "Refund Policy",
+            language: dropdownValue,
+            onClick: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const RefundPolicyScreen()));
+            },
           ),
           const Divider(),
           UserMenuItem(

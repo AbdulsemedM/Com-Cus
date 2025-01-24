@@ -3,7 +3,7 @@ description: An ecommerce site
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.3.0+112
+version: 1.3.0+113
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -92,6 +92,7 @@ dependencies:
   draggable_home: ^1.0.5
   modal_bottom_sheet: ^3.0.0
   country_picker: ^2.0.20
+  flutter_pdfview: ^1.3.2
 
 dependency_overrides:
   rxdart: ^0.27.0
@@ -114,6 +115,7 @@ flutter:
     - assets/icons/
     - assets/svgs/
     - assets/images/
+    - assets/pdf/
 
   fonts:
     - family: Sora
