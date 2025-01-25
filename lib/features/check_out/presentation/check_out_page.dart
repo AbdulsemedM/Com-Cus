@@ -468,19 +468,31 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   double calculateTotalPrice(
       double itemPrice, double baseMarkup, int quantity) {
     double totalPrice = 0; // Initialize total price to 0
+
     for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
       if (itemIndex == 1) {
         totalPrice +=
             itemPrice + baseMarkup; // For the first item, price + full markup
-      } else {
+      } else if (itemIndex == 2) {
         // For subsequent items, price + half markup (rounded to 2 decimal places)
-        double halfMarkup = baseMarkup / 2;
+        double halfMarkup = baseMarkup * 0.2;
+        totalPrice += itemPrice + halfMarkup;
+      } else if (itemIndex == 3) {
+        double halfMarkup = baseMarkup * 0.35;
+        totalPrice += itemPrice + halfMarkup;
+      } else if (itemIndex == 4) {
+        double halfMarkup = baseMarkup * 0.4;
+        totalPrice += itemPrice + halfMarkup;
+      } else if (itemIndex == 5) {
+        double halfMarkup = baseMarkup * 0.45;
+        totalPrice += itemPrice + halfMarkup;
+      } else if (itemIndex >= 6) {
+        double halfMarkup = baseMarkup * 0.5;
         totalPrice += itemPrice + halfMarkup;
       }
     }
-    totalCartPrice += double.parse((totalPrice).toStringAsFixed(2));
-    print("totalCartPrice");
-    print(totalCartPrice);
+    print("totalPrice: $totalPrice");
+    totalCartPrice += totalPrice;
     // Round to 2 decimal places
     return double.parse((totalPrice).toStringAsFixed(2));
   }

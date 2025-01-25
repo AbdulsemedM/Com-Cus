@@ -40,20 +40,43 @@ class _CartItemWidgetState extends State<CartItemWidget> {
     });
   }
 
+  double percentageDifference(double num1, double num2) {
+    if (num1 == 0 && num2 == 0) {
+      return 0; // If both numbers are zero, there is no percentage difference
+    }
+    double percentage = ((num2 - num1).abs() / ((num1 + num2) / 2)) * 100;
+    return double.parse(
+        percentage.toStringAsFixed(2)); // Limit to 2 decimal points
+  }
+
   double calculateTotalPrice(
       double itemPrice, double baseMarkup, int quantity) {
     double totalPrice = 0; // Initialize total price to 0
+
     for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
       if (itemIndex == 1) {
         totalPrice +=
             itemPrice + baseMarkup; // For the first item, price + full markup
-      } else {
+      } else if (itemIndex == 2) {
         // For subsequent items, price + half markup (rounded to 2 decimal places)
-        double halfMarkup = baseMarkup / 2;
+        double halfMarkup = baseMarkup * 0.2;
         totalPrice += itemPrice + halfMarkup;
+      } else if (itemIndex == 3) {
+        double halfMarkup = baseMarkup * 0.35;
+        totalPrice += itemPrice + halfMarkup;
+      } else if (itemIndex == 4) {
+        double halfMarkup = baseMarkup * 0.4;
+        totalPrice += itemPrice + halfMarkup;
+      } else if (itemIndex == 5) {
+        double halfMarkup = baseMarkup * 0.45;
+        totalPrice += itemPrice + halfMarkup;
+      } else if (itemIndex >= 6) {
+        double halfMarkup = baseMarkup * 0.5;
+        totalPrice += itemPrice + halfMarkup;
+        print("totalPrice: $totalPrice");
       }
     }
-
+    print("totalPrice: $totalPrice");
     // Round to 2 decimal places
     return double.parse((totalPrice).toStringAsFixed(2));
   }
@@ -314,6 +337,39 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   child: Text(
                     "Total: ${widget.cartItem.currency} ${NumberFormat('#,##0.00').format(calculateTotalPrice(double.parse(widget.cartItem.price!), double.parse(widget.cartItem.baseMarkup!), _quantity))}",
                     style: TextStyle(color: Colors.black, fontSize: 18.sp),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.green.shade200,
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.local_offer,
+                        size: 16,
+                        color: Colors.green.shade700,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        "${percentageDifference((_quantity) * (double.parse(widget.cartItem.price!) + double.parse(widget.cartItem.baseMarkup!)), calculateTotalPrice(double.parse(widget.cartItem.price!), double.parse(widget.cartItem.baseMarkup!), _quantity))}% OFF",
+                        style: TextStyle(
+                          color: Colors.green.shade700,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
