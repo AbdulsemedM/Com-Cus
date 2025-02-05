@@ -104,6 +104,9 @@
     <key>CFBundleURLName</key>
     <string>com.commercepal</string> <!-- Your bundle identifier -->
     <key>CFBundleURLSchemes</key>
+     <array>
+        <string>com.googleusercontent.apps.842396421818-vic25tc3ps0s8e5oirdglaj99chhe5li</string>
+      </array>
     <array>
       <string>CommercePal</string> <!-- Your app's name or any unique identifier -->
     </array>

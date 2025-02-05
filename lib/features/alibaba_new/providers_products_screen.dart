@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/core/cart-core/cart_widget.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/features/alibaba_new/provider_attributes_widget.dart';
@@ -125,21 +126,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18),
-                    child: FutureBuilder(
-                      future: TranslationService.translate(
-                          "Estimated delivery date: ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 10)))} - ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 20)))}"),
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ??
-                              "Estimated delivery date: ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 10)))} - ${DateFormat('MMM dd, yyyy').format(DateTime.now().add(const Duration(days: 20)))}",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        );
-                      },
-                    ),
-                  ),
-
+                  _buildDeliveryEstimate(context),
                   SizedBox(height: 16),
                   // SizedBox(
                   //     height:
@@ -395,5 +382,172 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
           baseMarkup: baseMarkup));
     }
     return pricesList;
+  }
+
+  Widget _buildDeliveryEstimate(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.local_shipping_outlined,
+                color: AppColors.colorPrimaryDark,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              FutureBuilder(
+                future: TranslationService.translate("Delivery Options"),
+                builder: (context, snapshot) {
+                  return Text(
+                    snapshot.data ?? "Delivery Options",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  );
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Same Town Delivery
+          _buildDeliveryOption(
+            context,
+            icon: Icons.directions_run,
+            title: "Express City Delivery",
+            duration:
+                "${DateFormat('MMM dd').format(DateTime.now().add(const Duration(days: 2)))} - ${DateFormat('MMM dd').format(DateTime.now().add(const Duration(days: 3)))}",
+            subtitle: "For deliveries within same city (e.g., Addis to Addis)",
+            color: Colors.green,
+          ),
+
+          const Divider(height: 24),
+
+          // Local Delivery
+          _buildDeliveryOption(
+            context,
+            icon: Icons.local_shipping,
+            title: "Local Delivery",
+            duration:
+                "${DateFormat('MMM dd').format(DateTime.now().add(const Duration(days: 7)))} - ${DateFormat('MMM dd').format(DateTime.now().add(const Duration(days: 10)))}",
+            subtitle: "For deliveries within Ethiopia",
+            color: AppColors.colorPrimaryDark,
+          ),
+
+          const Divider(height: 24),
+
+          // International Delivery
+          _buildDeliveryOption(
+            context,
+            icon: Icons.flight,
+            title: "International Shipping",
+            duration:
+                "${DateFormat('MMM dd').format(DateTime.now().add(const Duration(days: 20)))} - ${DateFormat('MMM dd').format(DateTime.now().add(const Duration(days: 35)))}",
+            subtitle: "For international deliveries",
+            color: Colors.blue,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDeliveryOption(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String duration,
+    required String subtitle,
+    required Color color,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: color,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FutureBuilder(
+                future: TranslationService.translate(title),
+                builder: (context, snapshot) {
+                  return Text(
+                    snapshot.data ?? title,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  );
+                },
+              ),
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.calendar_today,
+                      size: 14,
+                      color: color,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      duration,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: color,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 4),
+              FutureBuilder(
+                future: TranslationService.translate(subtitle),
+                builder: (context, snapshot) {
+                  return Text(
+                    snapshot.data ?? subtitle,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
