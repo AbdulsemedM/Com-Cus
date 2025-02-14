@@ -4,6 +4,7 @@ import 'package:commercepal/app/utils/assets.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
 import 'package:commercepal/features/cart/presentation/cart_page.dart';
 import 'package:commercepal/features/dashboard/bloc/dashboard_state.dart';
+import 'package:commercepal/features/push_notification/push_notification.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
@@ -57,6 +58,8 @@ class _DashboardPageState extends State<DashboardPage> {
     fetchHints();
     fetchLatestVersion();
   }
+
+
 
   var physicalAddressHintFuture;
   var subcityHint;

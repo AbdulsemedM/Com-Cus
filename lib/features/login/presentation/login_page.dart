@@ -13,6 +13,7 @@ import 'package:commercepal/features/login/data/social_media_login.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_cubit.dart';
 import 'package:commercepal/features/login/presentation/bloc/login_state.dart';
 import 'package:commercepal/features/login/provide_phoneNumber_dialog.dart/provide_phoneNumber.dart';
+import 'package:commercepal/features/push_notification/push_notification.dart';
 // import 'package:commercepal/features/reset_password/presentation/reset_pass_page.dart';
 import 'package:commercepal/features/set_password/presentation/user_set_password_page.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
@@ -80,6 +81,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    initializePushNotification();
+
     // _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
     //   setState(() {
     //     _currentUser = account;
@@ -90,6 +93,17 @@ class _LoginPageState extends State<LoginPage> {
     fetchHints();
     _handleSignOut();
     logOutFromFacebook();
+  }
+    initializePushNotification() async {
+    PushNotificationService pushNotificationService = PushNotificationService();
+    String? token =
+        await pushNotificationService.generateDeviceRecognitionToken();
+    pushNotificationService.startListeningForNewNotifications(context);
+    // const storage = FlutterSecureStorage();
+    // storage.read(key: 'fcmToken').then((value) {
+    print('FCM Token from dashboard: $token');
+    // BlocProvider.of<DashboardBloc>(context).add(SendFcmTokenEvent(token!));
+    // });
   }
 
   Future<void> signInWithFacebook() async {

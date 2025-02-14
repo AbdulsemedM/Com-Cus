@@ -63,7 +63,7 @@ dependencies:
   google_translate: ^0.0.3
   webview_flutter: ^2.0.12
   screenshot: ^3.0.0
-  gallery_saver: ^2.0.1
+  gallery_saver: ^2.3.2
   image: ^3.0.1
   onesignal_flutter: ^3.5.1
   upgrader: ^11.2.0
@@ -76,7 +76,7 @@ dependencies:
   app_links: ^6.1.1
   android_play_install_referrer: ^0.4.0
   rate_in_stars: ^0.0.3
-  install_referrer: ^1.2.1
+  # install_referrer: ^1.2.1
   share_plus: ^7.2.0
   uni_links2: ^0.6.0+2
   google_sign_in: ^5.1.1

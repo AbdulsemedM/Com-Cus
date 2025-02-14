@@ -143,6 +143,8 @@ class CheckOutRepoImpl implements CheckOutRepo {
       // print(request);
       final prefsData = getIt<PrefsData>();
       // final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      print("request");
+      print(request);
       final token = await prefsData.readData(PrefsKeys.userToken.name);
       final checkout = await http.post(
           Uri.https(

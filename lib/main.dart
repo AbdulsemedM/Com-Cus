@@ -12,8 +12,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'services/firebase_messaging_service.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling a background message: ${message.messageId}");
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter is initialized
@@ -25,6 +34,11 @@ void main() async {
   bool accepted =
       await OneSignal.shared.promptUserForPushNotificationPermission();
   print("Accepted Permission: $accepted");
+  await Permission.notification.isDenied.then((isDenied) {
+    if (isDenied) {
+      Permission.notification.request();
+    }
+  });
 
   await configureInjection(Environment.prod);
 
@@ -54,6 +68,18 @@ void main() async {
   }
 
   Bloc.observer = AppBlocObserver();
+
+  await Firebase.initializeApp();
+
+  // Set background message handler
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // Initialize messaging service
+  final messagingService = await FirebaseMessaging.instance;
+  await messagingService.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
 
   runApp(const App());
 }

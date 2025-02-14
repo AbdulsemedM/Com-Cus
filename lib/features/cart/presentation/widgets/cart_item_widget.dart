@@ -40,13 +40,15 @@ class _CartItemWidgetState extends State<CartItemWidget> {
     });
   }
 
-  double percentageDifference(double num1, double num2) {
-    if (num1 == 0 && num2 == 0) {
-      return 0; // If both numbers are zero, there is no percentage difference
-    }
-    double percentage = ((num2 - num1).abs() / ((num1 + num2) / 2)) * 100;
-    return double.parse(
-        percentage.toStringAsFixed(2)); // Limit to 2 decimal points
+  double percentageDifference(double originalPrice, double discountedPrice) {
+    if (originalPrice <= 0) return 0; // Handle invalid original price
+
+    // Calculate the percentage discount
+    double difference = originalPrice - discountedPrice;
+    double percentage = (difference / originalPrice) * 100;
+
+    // Return absolute value rounded to 2 decimal places
+    return double.parse(percentage.abs().toStringAsFixed(2));
   }
 
   double calculateTotalPrice(
@@ -60,19 +62,19 @@ class _CartItemWidgetState extends State<CartItemWidget> {
       } else if (itemIndex == 2) {
         // For subsequent items, price + half markup (rounded to 2 decimal places)
         double halfMarkup = baseMarkup * 0.2;
-        totalPrice += itemPrice + halfMarkup;
+        totalPrice += itemPrice + baseMarkup - halfMarkup;
       } else if (itemIndex == 3) {
         double halfMarkup = baseMarkup * 0.35;
-        totalPrice += itemPrice + halfMarkup;
+        totalPrice += itemPrice + baseMarkup - halfMarkup;
       } else if (itemIndex == 4) {
         double halfMarkup = baseMarkup * 0.4;
-        totalPrice += itemPrice + halfMarkup;
+        totalPrice += itemPrice + baseMarkup - halfMarkup;
       } else if (itemIndex == 5) {
         double halfMarkup = baseMarkup * 0.45;
-        totalPrice += itemPrice + halfMarkup;
+        totalPrice += itemPrice + baseMarkup - halfMarkup;
       } else if (itemIndex >= 6) {
         double halfMarkup = baseMarkup * 0.5;
-        totalPrice += itemPrice + halfMarkup;
+        totalPrice += itemPrice + baseMarkup - halfMarkup;
         print("totalPrice: $totalPrice");
       }
     }
