@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/cart-core/bloc/cart_core_cubit.dart';
@@ -458,34 +460,39 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                             : null,
                       ),
                       SizedBox(
-                        width: 50,
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 4),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
+                          width: 50,
+                          child: GestureDetector(
+                            onTap: () {
+                              FocusScope.of(context).unfocus();
+                            },
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 4),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              enabled: canSelect,
+                              controller: TextEditingController(
+                                  text: quantity.toString()),
+                              onChanged: (value) {
+                                if (value.isNotEmpty) {
+                                  int newQuantity = int.parse(value);
+                                  _updateQuantityDirectly(
+                                      attribute.Vid, newQuantity);
+                                }
+                              },
+                              style: TextStyle(
+                                color: canSelect ? Colors.black : Colors.grey,
+                              ),
                             ),
-                          ),
-                          enabled: canSelect,
-                          controller:
-                              TextEditingController(text: quantity.toString()),
-                          onChanged: (value) {
-                            if (value.isNotEmpty) {
-                              int newQuantity = int.parse(value);
-                              _updateQuantityDirectly(
-                                  attribute.Vid, newQuantity);
-                            }
-                          },
-                          style: TextStyle(
-                            color: canSelect ? Colors.black : Colors.grey,
-                          ),
-                        ),
-                      ),
+                          )),
                       IconButton(
                         icon: Icon(
                           Icons.add_circle_outline,
@@ -954,35 +961,65 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                 ],
               ),
             ),
+          if (!isAndroid())
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.colorPrimaryDark),
+                onPressed: _isMinOrderMet() ? _addToCartItems : null,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.shopping_cart,
+                      color: AppColors.bg1,
+                    ),
+                    SizedBox(width: 8),
+                    FutureBuilder(
+                      future: TranslationService.translate("Add to Cart"),
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data ?? "Add to Cart",
+                          style: TextStyle(color: AppColors.bg1),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.colorPrimaryDark),
-          onPressed: _isMinOrderMet() ? _addToCartItems : null,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.shopping_cart,
-                color: AppColors.bg1,
+      bottomNavigationBar: isAndroid()
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.colorPrimaryDark),
+                onPressed: _isMinOrderMet() ? _addToCartItems : null,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.shopping_cart,
+                      color: AppColors.bg1,
+                    ),
+                    SizedBox(width: 8),
+                    FutureBuilder(
+                      future: TranslationService.translate("Add to Cart"),
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data ?? "Add to Cart",
+                          style: TextStyle(color: AppColors.bg1),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(width: 8),
-              FutureBuilder(
-                future: TranslationService.translate("Add to Cart"),
-                builder: (context, snapshot) {
-                  return Text(
-                    snapshot.data ?? "Add to Cart",
-                    style: TextStyle(color: AppColors.bg1),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+            )
+          : null,
     );
   }
 
@@ -993,6 +1030,10 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
 
     // Calculate height
     return baseHeight + (text.length * heightPerChar);
+  }
+
+  bool isAndroid() {
+    return Platform.isAndroid;
   }
 
   void _removeAttribute(CartItem item) {
