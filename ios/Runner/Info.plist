@@ -52,15 +52,15 @@
   <key>NSAppleMusicUsageDescription</key>
   <string>We need access to Apple Music data to provide personalized music recommendations based on your listening history.</string>
   <key>NSCameraUsageDescription</key>
-  <string>CommercePal needs permission to access your photos</string>
+  <string>This app needs camera access to scan QR codes</string>
   <key>NSContactsUsageDescription</key>
   <string>We need access to your contacts to invite your friends.</string>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
   <string>We need your location to provide you with location-based services and enhance your user experience.</string>
   <key>NSLocationWhenInUseUsageDescription</key>
-  <string>We need your location to provide you with location-based services and enhance your user experience.</string>
+  <string>This app needs access to location when open to get user's current location for delivery.</string>
   <key>NSPhotoLibraryUsageDescription</key>
-  <string>CommercePal needs permission to access your photos</string>
+  <string>This app needs photos access to get QR code from photo library</string>
   <key>NSPrivacyAccessedAPICategoryFileTimestamp</key>
   <string>CommercePal accesses file timestamps to track file modification times for enhanced file management functionality.</string>
   <key>NSPrivacyAccessedAPICategoryUserDefaults</key>
@@ -73,6 +73,7 @@
   <true/>
   <key>UIBackgroundModes</key>
   <array>
+    <string>fetch</string>
     <string>remote-notification</string>
   </array>
   <key>UILaunchStoryboardName</key>
@@ -114,5 +115,7 @@
 </array>
   <key>NSDocumentsDirectoryUsageDescription</key>
   <string>Application needs access to documents directory</string>
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>This app needs access to location when in the background for delivery tracking.</string>
 </dict>
 </plist>
