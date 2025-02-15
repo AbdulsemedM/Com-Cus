@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'services/firebase_messaging_service.dart';
+// import 'services/firebase_messaging_service.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -70,16 +70,17 @@ void main() async {
   Bloc.observer = AppBlocObserver();
 
   await Firebase.initializeApp();
-
-  // Set background message handler
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  // Initialize messaging service
-  final messagingService = await FirebaseMessaging.instance;
-  await messagingService.requestPermission(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+  if (Platform.isAndroid) {
+    // Set background message handler
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // Initialize messaging service
+    final messagingService = await FirebaseMessaging.instance;
+    await messagingService.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
 
   runApp(const App());
 }
