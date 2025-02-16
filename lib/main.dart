@@ -71,7 +71,6 @@ void main() async {
 
   await Firebase.initializeApp();
   if (Platform.isAndroid) {
-    // Set background message handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // Initialize messaging service
     final messagingService = await FirebaseMessaging.instance;
