@@ -69,7 +69,6 @@ void main() async {
 
   Bloc.observer = AppBlocObserver();
 
-  await Firebase.initializeApp();
   if (Platform.isAndroid) {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // Initialize messaging service
