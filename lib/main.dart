@@ -25,6 +25,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
+  Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter is initialized
   Upgrader.clearSavedSettings();
 
