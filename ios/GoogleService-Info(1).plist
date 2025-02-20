@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>842396421818-ak3ugpi44r8c0ckorr1dvlm4a8623fh5.apps.googleusercontent.com</string>
+	<string>842396421818-vic25tc3ps0s8e5oirdglaj99chhe5li.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.842396421818-ak3ugpi44r8c0ckorr1dvlm4a8623fh5</string>
+	<string>com.googleusercontent.apps.842396421818-vic25tc3ps0s8e5oirdglaj99chhe5li</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>842396421818-2l6rpl7nebrbrcro3ouefqrqhap966du.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,11 +15,11 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.commercepal</string>
+	<string>com.commercepal.commercepal</string>
 	<key>PROJECT_ID</key>
 	<string>my-commercepal-signin</string>
 	<key>STORAGE_BUCKET</key>
-	<string>my-commercepal-signin.firebasestorage.app</string>
+	<string>my-commercepal-signin.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:842396421818:ios:a7639e0ad80d32104dfc83</string>
+	<string>1:842396421818:ios:65f56f59e6cd0aba4dfc83</string>
 </dict>
 </plist>
