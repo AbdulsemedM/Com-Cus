@@ -25,7 +25,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-  Firebase.initializeApp();
+  // Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter is initialized
   Upgrader.clearSavedSettings();
 
@@ -80,6 +80,10 @@ void main() async {
       sound: true,
     );
   }
-
+   try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    print('Failed to initialize Firebase: $e');
+  }
   runApp(const App());
 }

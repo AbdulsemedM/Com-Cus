@@ -23,6 +23,8 @@ import 'package:commercepal/features/translation/translations.dart';
 import 'package:commercepal/features/user_registration/presentation/user_registration_page.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -94,16 +96,37 @@ class _LoginPageState extends State<LoginPage> {
     _handleSignOut();
     logOutFromFacebook();
   }
-    initializePushNotification() async {
-    PushNotificationService pushNotificationService = PushNotificationService();
-    String? token =
-        await pushNotificationService.generateDeviceRecognitionToken();
-    pushNotificationService.startListeningForNewNotifications(context);
-    // const storage = FlutterSecureStorage();
-    // storage.read(key: 'fcmToken').then((value) {
-    print('FCM Token from dashboard: $token');
-    // BlocProvider.of<DashboardBloc>(context).add(SendFcmTokenEvent(token!));
-    // });
+
+  initializePushNotification() async {
+    print("initializePushNotification");
+    if (Platform.isAndroid) {
+      PushNotificationService pushNotificationService =
+          PushNotificationService();
+      String? token =
+          await pushNotificationService.generateDeviceRecognitionToken();
+      pushNotificationService.startListeningForNewNotifications(context);
+      // const storage = FlutterSecureStorage();
+      // storage.read(key: 'fcmToken').then((value) {
+      print('FCM Token from dashboard: $token');
+      // BlocProvider.of<DashboardBloc>(context).add(SendFcmTokenEvent(token!));
+      // });
+    } else {
+      // Firebase.initializeApp();
+      await NotificationManager().requestPermissions();
+      String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+      if (apnsToken != null) {
+        print("APNS Token: $apnsToken");
+      } else {
+        print("APNS token not available.");
+      }
+      // Proceed to get FCM token
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      print("FCM Token: $fcmToken");
+      // FirebaseMessaging.instance.requestPermission();
+      // FirebaseMessaging _firebaseMessage = FirebaseMessaging.instance;
+      // String? deviceToken = await _firebaseMessage.getToken();
+      // print("deviceToken from dashboard: $deviceToken");
+    }
   }
 
   Future<void> signInWithFacebook() async {
@@ -709,6 +732,17 @@ class _LoginPageState extends State<LoginPage> {
           },
         ),
       ),
+    );
+  }
+}
+
+class NotificationManager {
+  Future<void> requestPermissions() async {
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+      provisional: false,
     );
   }
 }
