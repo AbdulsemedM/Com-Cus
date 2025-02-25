@@ -72,12 +72,12 @@ void main() async {
   if (Platform.isAndroid) {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // Initialize messaging service
-    final messagingService = await FirebaseMessaging.instance;
-    await messagingService.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    // final messagingService = await FirebaseMessaging.instance;
+    // await messagingService.requestPermission(
+    //   alert: true,
+    //   badge: true,
+    //   sound: true,
+    // );
   }
 
   runApp(const App());

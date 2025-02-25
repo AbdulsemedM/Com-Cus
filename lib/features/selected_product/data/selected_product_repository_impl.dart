@@ -27,7 +27,6 @@ class SelectedProductPageRepositoryImpl implements SelectedProductRepo {
           : EndPoints.productsDetails.url);
       if (response['statusCode'] == "000") {
         print(response);
-
         final productObj = SelectedProductDto.fromJson(response);
         print("selected product is featched");
         print(productObj.details!.first);

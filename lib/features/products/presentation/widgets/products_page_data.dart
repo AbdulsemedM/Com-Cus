@@ -169,6 +169,9 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                     products.length + 1, // Add 1 for the button
                     (index) {
                       if (index < products.length) {
+                        // for (var product in products) {
+                        //   print(product.provider);
+                        // }
                         // Display ProductItemWidget if index is within products list
                         return ProductItemWidget(
                           product: products[index],
@@ -229,8 +232,6 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
       },
     );
   }
-
- 
 
   void scrollListener() {
     if (scrollController.position.pixels ==

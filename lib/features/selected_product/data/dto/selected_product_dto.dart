@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/features/products/domain/product.dart';
@@ -118,7 +119,7 @@ class SelectedProductDetails {
     num? maxOrder,
     String? mobileThumbnail,
     String? productDescription,
-    num? isDiscounted,
+    dynamic isDiscounted,
     num? discountValue,
     String? discountDescription,
   }) {
@@ -253,9 +254,9 @@ class SelectedProductDetails {
     _mobileThumbnail = json['mobileThumbnail'];
     _productDescription = json['ProductDescription'];
     _isDiscounted = json['IsDiscounted'];
+    print("5");
     _discountValue = json['DiscountValue'];
     _discountDescription = json['discountDescription'];
-    print("5");
   }
 
   String? _specialInstruction;
@@ -297,7 +298,7 @@ class SelectedProductDetails {
   num? _maxOrder;
   String? _mobileThumbnail;
   String? _productDescription;
-  num? _isDiscounted;
+  dynamic _isDiscounted;
   num? _discountValue;
   String? _discountDescription;
   List<String> prodDescriptions = [];
@@ -351,7 +352,7 @@ class SelectedProductDetails {
     num? maxOrder,
     String? mobileThumbnail,
     String? productDescription,
-    num? isDiscounted,
+    dynamic isDiscounted,
     num? discountValue,
     String? discountDescription,
   }) =>
@@ -485,7 +486,7 @@ class SelectedProductDetails {
 
   String? get productDescription => _productDescription;
 
-  num? get isDiscounted => _isDiscounted;
+  dynamic get isDiscounted => _isDiscounted;
 
   num? get discountValue => _discountValue;
 
@@ -548,6 +549,8 @@ class SelectedProductDetails {
   }
 
   CartItem toCartItem() => CartItem(
+      baseMarkup: "0",
+      createdAt: DateTime.now().toString(),
       productId: productId.toString(),
       name: productName,
       description: descriptionBasedProduct,
@@ -892,7 +895,7 @@ class SubProducts {
     dynamic subProductId,
     String? discountType,
     String? mobileThumbnail,
-    num? isDiscounted,
+    dynamic isDiscounted,
     num? discountValue,
     String? discountDescription,
   }) {
@@ -959,7 +962,7 @@ class SubProducts {
   dynamic _subProductId;
   String? _discountType;
   String? _mobileThumbnail;
-  num? _isDiscounted;
+  dynamic _isDiscounted;
   num? _discountValue;
   String? _discountDescription;
 
@@ -978,7 +981,7 @@ class SubProducts {
     String? subProductId,
     String? discountType,
     String? mobileThumbnail,
-    num? isDiscounted,
+    dynamic isDiscounted,
     num? discountValue,
     String? discountDescription,
   }) =>
@@ -1030,7 +1033,7 @@ class SubProducts {
 
   String? get mobileThumbnail => _mobileThumbnail;
 
-  num? get isDiscounted => _isDiscounted;
+  dynamic get isDiscounted => _isDiscounted;
 
   num? get discountValue => _discountValue;
 

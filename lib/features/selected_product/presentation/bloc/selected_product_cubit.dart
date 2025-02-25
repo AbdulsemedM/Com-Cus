@@ -23,6 +23,7 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
     try {
       emit(const SelectedProductState.loading());
       final response = await selectedProductRepo.getProductDetails(productId);
+      print("here is the error");
 
       _selectedProductDetails = response;
 
@@ -51,12 +52,13 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
       _setProductImage();
       _setSimilarProducts();
       _setProductFeatures();
-      print("here is the error");
       _setProductPriceBasedOnSubProd();
       _setDeliveryTime();
 
       emit(SelectedProductState.product(_selectedProductDetails!));
     } catch (e) {
+      // print("here is the error");
+      print(e.toString());
       emit(SelectedProductState.error(e.toString()));
     }
   }
