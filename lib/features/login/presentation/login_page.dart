@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 // import 'dart:convert';
 import 'dart:io';
 
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/app/utils/assets.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
+import 'package:commercepal/core/data/prefs_data.dart';
+import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
 // import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
@@ -35,6 +38,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../app/utils/app_colors.dart';
 import '../../../core/widgets/input_decorations.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:http/http.dart' as http;
 // import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
@@ -62,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
   String? _emailOrPhone;
   String? _pass;
   String deviceId = 'Unknown';
+  String deviceToken = "";
 
   var loading = false;
 
@@ -97,6 +102,34 @@ class _LoginPageState extends State<LoginPage> {
     logOutFromFacebook();
   }
 
+  void sendDeviceToken() async {
+    try {
+      final prefsData = getIt<PrefsData>();
+      final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
+      print(isUserLoggedIn);
+      if (isUserLoggedIn) {
+        final token = await prefsData.readData(PrefsKeys.userToken.name);
+        final response = await http.post(
+          Uri.https(
+            "api.commercepal.com:2096",
+            "/prime/api/v1/device-tokens/register",
+          ),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode({"deviceToken": deviceToken}),
+        );
+        var datas = jsonDecode(response.body);
+        print('hererererer');
+        print(datas);
+        // if (datas['statusCode'] == "000") {}
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   initializePushNotification() async {
     print("initializePushNotification");
     if (Platform.isAndroid) {
@@ -108,6 +141,7 @@ class _LoginPageState extends State<LoginPage> {
       // const storage = FlutterSecureStorage();
       // storage.read(key: 'fcmToken').then((value) {
       print('FCM Token from dashboard: $token');
+      deviceToken = token ?? "";
       // BlocProvider.of<DashboardBloc>(context).add(SendFcmTokenEvent(token!));
       // });
     } else {
@@ -122,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
       // Proceed to get FCM token
       String? fcmToken = await FirebaseMessaging.instance.getToken();
       print("FCM Token: $fcmToken");
+      deviceToken = fcmToken ?? "";
       // FirebaseMessaging.instance.requestPermission();
       // FirebaseMessaging _firebaseMessage = FirebaseMessaging.instance;
       // String? deviceToken = await _firebaseMessage.getToken();
@@ -307,20 +342,32 @@ class _LoginPageState extends State<LoginPage> {
 
             if (state is LoginStateSuccess) {
               if (widget.fromCart) {
+                if (deviceToken != "") {
+                  sendDeviceToken();
+                }
                 Navigator.pushNamedAndRemoveUntil(
                     context, DashboardPage.routeName, (route) => false,
                     arguments: {"redirect_to": "cart"});
               } else {
+                if (deviceToken != "") {
+                  sendDeviceToken();
+                }
                 Navigator.pushNamedAndRemoveUntil(
                     context, DashboardPage.routeName, (route) => false);
               }
             }
 
             if (state is LoginStateSetPin) {
+              if (deviceToken != "") {
+                sendDeviceToken();
+              }
               Navigator.pushNamed(context, UserSetPasswordPage.routeName,
                   arguments: {"phone": state.phoneNumber, "code": _pass});
             }
             if (state is LoginStateprovidePhone) {
+              if (deviceToken != "") {
+                sendDeviceToken();
+              }
               showDialog(
                   context: context,
                   builder: (context) {
