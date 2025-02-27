@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
           body: jsonEncode({"deviceToken": deviceToken}),
         );
         var datas = jsonDecode(response.body);
-        print('hererererer');
+        print('hererererer is the token');
         print(datas);
         // if (datas['statusCode'] == "000") {}
       }
