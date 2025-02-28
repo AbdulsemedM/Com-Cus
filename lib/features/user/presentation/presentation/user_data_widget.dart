@@ -278,6 +278,23 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             height: 20,
           ),
           UserMenuItem(
+            icon: Icons.list_alt_outlined,
+            title: "My Orders",
+            language: dropdownValue,
+            onClick: () {
+              if (valid == "logout") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage(fromCart: false)));
+                // Navigator.pushNamed(context, LoginPage.routeName);
+              } else {
+                Navigator.pushNamed(context, UserOrdersPage.routeName);
+              }
+            },
+          ),
+          const Divider(),
+          UserMenuItem(
             icon: Icons.attach_money_outlined,
             title: "Commecepal Coins",
             language: dropdownValue,
@@ -359,23 +376,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
             },
           ),
           const Divider(),
-          UserMenuItem(
-            icon: Icons.list_alt_outlined,
-            title: "My Orders",
-            language: dropdownValue,
-            onClick: () {
-              if (valid == "logout") {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginPage(fromCart: false)));
-                // Navigator.pushNamed(context, LoginPage.routeName);
-              } else {
-                Navigator.pushNamed(context, UserOrdersPage.routeName);
-              }
-            },
-          ),
-          const Divider(),
+
           UserMenuItem(
             icon: Icons.maps_home_work_outlined,
             title: "Addresses",
