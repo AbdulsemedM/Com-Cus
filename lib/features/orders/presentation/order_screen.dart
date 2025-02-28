@@ -69,7 +69,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             SizedBox(
                               width: 100,
                               child: Text(
-                                order.actionTimestamp,
+                                order.actionTimestamp ?? '',
                                 style: TextStyle(
                                   color: Colors.grey[600],
                                   fontSize: 13,
@@ -117,7 +117,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      order.actionDescription,
+                                      order.actionDescription ?? '',
                                       style: TextStyle(
                                         fontWeight: isLast
                                             ? FontWeight.bold

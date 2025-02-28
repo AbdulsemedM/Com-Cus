@@ -2,17 +2,18 @@
 import 'dart:convert';
 
 class OrdersModel {
-  int id;
-  String orderRef;
-  String actionDescription;
-  String actionTimestamp;
-  String details;
+  int? id;
+  String? orderRef;
+  String? actionDescription;
+  String? actionTimestamp;
+  String? details;
+
   OrdersModel({
-    required this.id,
-    required this.orderRef,
-    required this.actionDescription,
-    required this.actionTimestamp,
-    required this.details,
+    this.id,
+    this.orderRef,
+    this.actionDescription,
+    this.actionTimestamp,
+    this.details,
   });
 
   OrdersModel copyWith({
@@ -43,11 +44,11 @@ class OrdersModel {
 
   factory OrdersModel.fromMap(Map<String, dynamic> map) {
     return OrdersModel(
-      id: map['id'] as int,
-      orderRef: map['orderRef'] as String,
-      actionDescription: map['actionDescription'] as String,
-      actionTimestamp: map['actionTimestamp'] as String,
-      details: map['details'] as String,
+      id: map['id']?.toInt(),
+      orderRef: map['orderRef']?.toString(),
+      actionDescription: map['actionDescription']?.toString(),
+      actionTimestamp: map['actionTimestamp']?.toString(),
+      details: map['details']?.toString(),
     );
   }
 
