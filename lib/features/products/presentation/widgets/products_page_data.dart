@@ -58,9 +58,9 @@ class ProductsStatePage extends StatefulWidget {
 
 class _ProductsStatePageState extends State<ProductsStatePage> {
   final scrollController = ScrollController();
-  TextEditingController minPirce = TextEditingController();
-  TextEditingController maxPirce = TextEditingController();
-  final GlobalKey<FormState> myForm = GlobalKey<FormState>();
+  bool isLoadingMore = false;
+  int offset = 50; // Initial offset
+
   @override
   void initState() {
     super.initState();
@@ -166,7 +166,7 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                   crossAxisCount: 2,
                   childAspectRatio: 0.76,
                   children: List.generate(
-                    products.length + 1, // Add 1 for the button
+                    products.length + (isLoadingMore ? 1 : 0),
                     (index) {
                       if (index < products.length) {
                         // for (var product in products) {
@@ -202,28 +202,17 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                             }
                           },
                         );
-                      } else if (widget.subCatId == null) {
-                        // Display ElevatedButton as the last item
-                        return Center(
+                      } else if (isLoadingMore) {
+                        return const Center(
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: AppButtonWidget(
-                              onClick: () {
-                                String prompt = widget.val ?? "";
-                                print(widget.val);
-                                context
-                                    .read<ProductCubit>()
-                                    .searchProduct(prompt, 50);
-                              },
-                              text: "Load More",
-                            ),
+                            padding: EdgeInsets.all(8.0),
+                            child: CircularProgressIndicator(),
                           ),
                         );
-                      } else {
-                        return Container();
                       }
+                      return null;
                     },
-                  ),
+                  ).whereType<Widget>().toList(),
                 ),
               ),
             ],
@@ -234,9 +223,22 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
   }
 
   void scrollListener() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      print("Scroll Listener Called");
+    if (widget.val != null &&
+        scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent &&
+        !isLoadingMore) {
+      setState(() {
+        isLoadingMore = true;
+      });
+
+      context
+          .read<ProductCubit>()
+          .searchProduct(widget.val!, 150, isLoadMore: true);
+
+      setState(() {
+        offset += 50;
+        isLoadingMore = false;
+      });
     }
   }
 

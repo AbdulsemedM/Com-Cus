@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:commercepal/features/products/domain/product.dart';
 import 'package:commercepal/features/products/presentation/cubit/product_state.dart';
 import 'package:injectable/injectable.dart';
 
@@ -38,7 +39,7 @@ class ProductCubit extends Cubit<ProductState> {
   }
 
   // TODO: cancel request with new search query
-  void searchProduct(String req, num? size) async {
+  void searchProduct(String req, num? size, {bool isLoadMore = false}) async {
     if (req.isEmpty || req.length < 2) {
       emit(const ProductState.error("Enter product name to search"));
       return;
@@ -47,8 +48,17 @@ class ProductCubit extends Cubit<ProductState> {
 
     deBouncer.run(() async {
       try {
-        final products = await productRepository.searchProduct(req, size);
-        emit(ProductState.products(products));
+        if (isLoadMore) {
+          final newProd = await productRepository.searchProduct(req, size);
+          final currentProducts = state.maybeWhen(
+            products: (existing) => existing,
+            orElse: () => <Product>[],
+          );
+          emit(ProductState.products([...currentProducts, ...newProd]));
+        } else {
+          final products = await productRepository.searchProduct(req, size);
+          emit(ProductState.products(products));
+        }
       } catch (e) {
         emit(ProductState.error(e.toString()));
       }

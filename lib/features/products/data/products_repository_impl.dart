@@ -330,7 +330,7 @@ class ProductsRepositoryImpl implements ProductRepository {
           "/prime/api/v1/data/products",
           {
             'page': size == null ? "1" : "2",
-            'size': size != null ? size.toString() : '30',
+            'size': size != null ? size.toString() : '100',
             "query": search,
           },
         ),
