@@ -59,7 +59,7 @@ class ProductsStatePage extends StatefulWidget {
 class _ProductsStatePageState extends State<ProductsStatePage> {
   final scrollController = ScrollController();
   bool isLoadingMore = false;
-  int offset = 50; // Initial offset
+  int offset = 50;
 
   @override
   void initState() {
