@@ -71,8 +71,6 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductCubit, ProductState>(
       builder: (context, state) {
-        // print("ohmystate");
-        // print(state);
         return state.maybeWhen(
           orElse: () => const SizedBox(),
           error: (String error) => ProductNotFound(error: error),
