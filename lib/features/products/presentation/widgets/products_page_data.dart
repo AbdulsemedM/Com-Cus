@@ -170,7 +170,6 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                         // for (var product in products) {
                         //   print(product.provider);
                         // }
-                        // Display ProductItemWidget if index is within products list
                         return ProductItemWidget(
                           product: products[index],
                           onItemClick: (Product prod) {
