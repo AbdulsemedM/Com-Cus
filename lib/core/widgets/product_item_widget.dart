@@ -66,23 +66,59 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
-                      ),
-                      child: CachedNetworkImage(
-                        fit: BoxFit.fill,
-                        height: 170,
-                        width: 160,
-                        placeholder: (_, __) => Container(
-                          color: AppColors.bg1,
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.fill,
+                            height: 170,
+                            width: 160,
+                            placeholder: (_, __) => Container(
+                              color: AppColors.bg1,
+                            ),
+                            errorWidget: (_, __, ___) => Container(
+                              color: Colors.grey,
+                            ),
+                            imageUrl: widget.product.image ?? "",
+                          ),
                         ),
-                        errorWidget: (_, __, ___) => Container(
-                          color: Colors.grey,
-                        ),
-                        imageUrl: widget.product.image ?? "",
-                      ),
+                        if (widget.product.minOrder != null)
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.shopping_basket_outlined,
+                                    size: 12,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(width: 2),
+                                  Text(
+                                    'Min Order: ${widget.product.minOrder}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                   // const SizedBox(

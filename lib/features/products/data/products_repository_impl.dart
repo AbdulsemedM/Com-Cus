@@ -129,9 +129,7 @@ class ProductsRepositoryImpl implements ProductRepository {
         final String currentCountry = prefs.getString("currency") ?? "ETB";
         if (products["statusCode"] == "000") {
           final prodObjs = ProductsDto.fromJson(products, currentCountry);
-          print("hrreeerr");
-          // print(jsonDecode(products));
-          print("hrreeerr");
+
           if (prodObjs.details?.isEmpty == true) {
             throw 'No products found';
           }
@@ -140,7 +138,9 @@ class ProductsRepositoryImpl implements ProductRepository {
           //     .map((e) => e.toProduct())
           //     .toList()[0]
           //     .currency);
-
+          print("hrreeerr");
+          // print(jsonDecode(products));
+          print("hrreeerr");
           return prodObjs.details!
               .where((element) => element.productId != null)
               .map((e) => e.toProduct())
@@ -152,6 +152,7 @@ class ProductsRepositoryImpl implements ProductRepository {
           throw products['statusMessage'];
         }
       } catch (e) {
+        print(e.toString());
         rethrow;
       }
     }

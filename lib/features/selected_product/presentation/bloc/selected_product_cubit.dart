@@ -83,6 +83,7 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
                 // null,
                 // _selectedProductDetails?.quantity,
                 // null,
+                null,
                 null))
             .toList();
       }

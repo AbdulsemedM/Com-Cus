@@ -642,6 +642,7 @@ class ProductDetails {
       // offerPrice,
       // _quantity,
       // _merchantId,
+      minOrder.toString(),
       provider);
 }
 

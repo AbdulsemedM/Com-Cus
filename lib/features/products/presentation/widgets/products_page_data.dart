@@ -59,12 +59,49 @@ class ProductsStatePage extends StatefulWidget {
 class _ProductsStatePageState extends State<ProductsStatePage> {
   final scrollController = ScrollController();
   bool isLoadingMore = false;
-  int offset = 50;
+  int currentPage = 1;
 
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(scrollListener);
+    scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      if (widget.val != null) {
+        setState(() {
+          isLoadingMore = true;
+        });
+
+        // Load more products
+        if (widget.subCatId == null) {
+          // For search results
+          String prompt = widget.val ?? "";
+          context.read<ProductCubit>().searchProduct(prompt, 150);
+        } else {
+          // For category products
+          context.read<ProductCubit>().fetchProducts(
+                widget.subCatId,
+                widget.queryParams,
+                true,
+              );
+        }
+
+        setState(() {
+          isLoadingMore = false;
+          currentPage++;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    scrollController.removeListener(_scrollListener);
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -77,86 +114,6 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
           loading: () => const HomeLoadingWidget(),
           products: (List<Product> products) => Column(
             children: [
-              // Form(
-              //   key: myForm,
-              //   child: Row(
-              //     children: [
-              //       Expanded(
-              //         child: Padding(
-              //           padding: const EdgeInsets.all(16),
-              //           child: TextFormField(
-              //             onChanged: (value) {
-              //               setState(() {});
-              //             },
-              //             keyboardType: TextInputType.number,
-              //             validator: (value) {
-              //               if (value!.isEmpty || value == null) {
-              //                 return 'Min Price is required.';
-              //               } else {
-              //                 return null;
-              //               }
-              //             },
-              //             controller: minPirce,
-              //             decoration: AppDecorations.getAppInputDecoration(
-              //                 lableText: "Min Price",
-              //                 hintText: "in ETB",
-              //                 myBorder: true),
-              //           ),
-              //         ),
-              //       ),
-              //       Expanded(
-              //         child: Padding(
-              //           padding: const EdgeInsets.all(16),
-              //           child: TextFormField(
-              //             onChanged: (value) {
-              //               setState(() {});
-              //             },
-              //             keyboardType: TextInputType.number,
-              //             validator: (value) {
-              //               if (value!.isEmpty || value == null) {
-              //                 return 'Max Price is required.';
-              //               } else {
-              //                 return null;
-              //               }
-              //             },
-              //             controller: maxPirce,
-              //             decoration: AppDecorations.getAppInputDecoration(
-              //                 lableText: "Max price",
-              //                 hintText: "in ETB",
-              //                 myBorder: true),
-              //           ),
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              //         child: SizedBox(
-              //           height: MediaQuery.of(context).size.height * 0.05,
-              //           child: ElevatedButton(
-              //             style: ElevatedButton.styleFrom(
-              //                 backgroundColor: AppColors.colorPrimaryDark),
-              //             onPressed: () {
-              //               if (myForm.currentState!.validate()) {}
-              //               Map<String, String> orderValues = {
-              //                 "subCategoryId": widget.subCatId.toString(),
-              //                 'minPrice': "10",
-              //                 'maxPrice': "20000",
-              //               };
-              //               context.read<ProductCubit>().fetchProducts(
-              //                   widget.subCatId, orderValues, true);
-              //             },
-              //             child: Text("Filter"),
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // SizedBox(
-              //   child: Padding(
-              //     padding: const EdgeInsets.symmetric(vertical: 8.0),
-              //     child:
-              //   ),
-              // ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.85,
                 child: GridView.count(
@@ -167,9 +124,6 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                     products.length + (isLoadingMore ? 1 : 0),
                     (index) {
                       if (index < products.length) {
-                        // for (var product in products) {
-                        //   print(product.provider);
-                        // }
                         return ProductItemWidget(
                           product: products[index],
                           onItemClick: (Product prod) {
@@ -199,7 +153,8 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                             }
                           },
                         );
-                      } else if (isLoadingMore) {
+                      } else {
+                        // Show loading indicator at the bottom
                         return const Center(
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
@@ -207,9 +162,8 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                           ),
                         );
                       }
-                      return null;
                     },
-                  ).whereType<Widget>().toList(),
+                  ),
                 ),
               ),
             ],
@@ -217,31 +171,5 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
         );
       },
     );
-  }
-
-  void scrollListener() {
-    if (widget.val != null &&
-        scrollController.position.pixels ==
-            scrollController.position.maxScrollExtent &&
-        !isLoadingMore) {
-      setState(() {
-        isLoadingMore = true;
-      });
-
-      context
-          .read<ProductCubit>()
-          .searchProduct(widget.val!, 150, isLoadMore: true);
-
-      setState(() {
-        offset += 50;
-        isLoadingMore = false;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
   }
 }

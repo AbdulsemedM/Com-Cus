@@ -16,6 +16,7 @@ class Product {
   // final dynamic _offerPrice;
   // final num? _quantity;
   // final num? _merchantId;
+  final dynamic _minOrder;
   final String? _provider;
 
   Product(
@@ -32,6 +33,7 @@ class Product {
       // this._offerPrice,
       // this._quantity,
       // this._merchantId,
+      this._minOrder,
       this._provider);
 
   String? get id => _id;
@@ -49,6 +51,8 @@ class Product {
   String? get name => _name;
 
   String? get image => _image;
+
+  dynamic get minOrder => _minOrder;
 
   // dynamic get isDiscounted => _isDiscounted;
 
