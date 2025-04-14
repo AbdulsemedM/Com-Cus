@@ -8,6 +8,7 @@ import 'package:commercepal/features/orders/models/order_timeline_model.dart';
 import 'package:commercepal/features/orders/models/orders_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shimmer/shimmer.dart';
 
 class OrderScreen extends StatefulWidget {
   final String orderRef;
@@ -18,7 +19,7 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  bool loading = false;
+  bool loading = true;
   List<OrdersModel> myOrders = [];
   List<OrderTimelineModel> myOrderTimeline = [];
   @override
@@ -39,7 +40,7 @@ class _OrderScreenState extends State<OrderScreen> {
         elevation: 0,
       ),
       body: loading
-          ? const Center(child: CircularProgressIndicator())
+          ? buildShimmer()
           : SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -52,100 +53,103 @@ class _OrderScreenState extends State<OrderScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  buildTimeline(),
-                  const SizedBox(height: 20),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: myOrders.length,
-                    itemBuilder: (context, index) {
-                      final order = myOrders[index];
-                      final isLast = index == 0;
-                      final isFirst = index == myOrders.length - 1;
-
-                      return IntrinsicHeight(
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              child: Text(
-                                order.actionTimestamp ?? '',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  width: 20,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: isLast
-                                        ? AppColors.colorPrimary
-                                        : Colors.grey[300],
-                                    border: Border.all(
-                                      color: isLast
-                                          ? AppColors.colorPrimary
-                                          : Colors.grey[300]!,
-                                      width: 3,
-                                    ),
-                                  ),
-                                ),
-                                if (!isFirst)
-                                  Container(
-                                    width: 2,
-                                    height: 50,
-                                    color: Colors.grey[300],
-                                  ),
-                              ],
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.all(16),
-                                margin: const EdgeInsets.only(bottom: 8),
-                                decoration: BoxDecoration(
-                                  color: isLast
-                                      ? Colors.blue.withOpacity(0.1)
-                                      : Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      order.actionDescription ?? '',
-                                      style: TextStyle(
-                                        fontWeight: isLast
-                                            ? FontWeight.bold
-                                            : FontWeight.normal,
-                                        color: isLast
-                                            ? AppColors.colorPrimary
-                                            : Colors.black87,
-                                      ),
-                                    ),
-                                    // if (order.actionDescription != null) ...[
-                                    //   const SizedBox(height: 4),
-                                    //   Text(
-                                    //     order.actionDescription!,
-                                    //     style: TextStyle(
-                                    //       color: Colors.grey[600],
-                                    //       fontSize: 13,
-                                    //     ),
-                                    //   ),
-                                    // ],
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: buildTimeline(),
                   ),
+                  const SizedBox(height: 20),
+                  // ListView.builder(
+                  //   shrinkWrap: true,
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   itemCount: myOrders.length,
+                  //   itemBuilder: (context, index) {
+                  //     final order = myOrders[index];
+                  //     final isLast = index == 0;
+                  //     final isFirst = index == myOrders.length - 1;
+
+                  //     return IntrinsicHeight(
+                  //       child: Row(
+                  //         children: [
+                  //           SizedBox(
+                  //             width: 100,
+                  //             child: Text(
+                  //               order.actionTimestamp ?? '',
+                  //               style: TextStyle(
+                  //                 color: Colors.grey[600],
+                  //                 fontSize: 13,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //           Column(
+                  //             children: [
+                  //               Container(
+                  //                 width: 20,
+                  //                 height: 20,
+                  //                 decoration: BoxDecoration(
+                  //                   shape: BoxShape.circle,
+                  //                   color: isLast
+                  //                       ? AppColors.colorPrimary
+                  //                       : Colors.grey[300],
+                  //                   border: Border.all(
+                  //                     color: isLast
+                  //                         ? AppColors.colorPrimary
+                  //                         : Colors.grey[300]!,
+                  //                     width: 3,
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //               if (!isFirst)
+                  //                 Container(
+                  //                   width: 2,
+                  //                   height: 50,
+                  //                   color: Colors.grey[300],
+                  //                 ),
+                  //             ],
+                  //           ),
+                  //           const SizedBox(width: 12),
+                  //           Expanded(
+                  //             child: Container(
+                  //               padding: const EdgeInsets.all(16),
+                  //               margin: const EdgeInsets.only(bottom: 8),
+                  //               decoration: BoxDecoration(
+                  //                 color: isLast
+                  //                     ? Colors.blue.withOpacity(0.1)
+                  //                     : Colors.grey[100],
+                  //                 borderRadius: BorderRadius.circular(8),
+                  //               ),
+                  //               child: Column(
+                  //                 crossAxisAlignment: CrossAxisAlignment.start,
+                  //                 children: [
+                  //                   Text(
+                  //                     order.actionDescription ?? '',
+                  //                     style: TextStyle(
+                  //                       fontWeight: isLast
+                  //                           ? FontWeight.bold
+                  //                           : FontWeight.normal,
+                  //                       color: isLast
+                  //                           ? AppColors.colorPrimary
+                  //                           : Colors.black87,
+                  //                     ),
+                  //                   ),
+                  //                   // if (order.actionDescription != null) ...[
+                  //                   //   const SizedBox(height: 4),
+                  //                   //   Text(
+                  //                   //     order.actionDescription!,
+                  //                   //     style: TextStyle(
+                  //                   //       color: Colors.grey[600],
+                  //                   //       fontSize: 13,
+                  //                   //     ),
+                  //                   //   ),
+                  //                   // ],
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
             ),
@@ -206,6 +210,7 @@ class _OrderScreenState extends State<OrderScreen> {
       setState(() {
         loading = true;
       });
+
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       print(isUserLoggedIn);
@@ -241,57 +246,92 @@ class _OrderScreenState extends State<OrderScreen> {
         }
       }
 
+      // Fetch timeline data here
+      // Example data
+      // myOrderTimeline = [
+      //   OrderTimelineModel(
+      //       stage: "Ordered",
+      //       status: "Completed",
+      //       timestamp: "4/10/2025, 9:39:15 AM"),
+      //   OrderTimelineModel(
+      //       stage: "Payment Confirmed",
+      //       status: "Completed",
+      //       timestamp: "4/10/2025, 9:39:27 AM"),
+      //   OrderTimelineModel(
+      //       stage: "Processing",
+      //       status: "Completed",
+      //       timestamp: "4/11/2025, 3:45:33 PM"),
+      //   OrderTimelineModel(
+      //       stage: "Shipped",
+      //       status: "Completed",
+      //       timestamp: "4/11/2025, 3:45:58 PM"),
+      //   OrderTimelineModel(
+      //       stage: "Out for Delivery",
+      //       status: "Pending",
+      //       timestamp: "Not completed yet"),
+      //   OrderTimelineModel(
+      //       stage: "Delivered",
+      //       status: "Pending",
+      //       timestamp: "Not completed yet"),
+      // ];
+
       setState(() {
         loading = false;
       });
     } catch (e) {
       print(e.toString());
-      rethrow;
+      setState(() {
+        loading = false;
+      });
     }
   }
 
+  Widget buildShimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: ListView.builder(
+        itemCount: 6,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: CircleAvatar(backgroundColor: Colors.white),
+            title: Container(height: 10, color: Colors.white),
+            subtitle: Container(height: 10, color: Colors.white),
+          );
+        },
+      ),
+    );
+  }
+
   Widget buildTimeline() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.colorPrimary, width: 2),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: myOrderTimeline
-              // Filter out Unknown stages
-              .where((stage) => stage.stage != "Unknown Stage")
-              .map((stage) {
-            print("stage");
-            print(stage.stage);
-            final isActive = stage.status == "Pending";
-            return Row(
-              children: [
-                Column(
-                  children: [
-                    Icon(
-                      getIconForStage(stage.stage),
-                      color: !isActive ? Colors.green : Colors.grey,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      getShortNameForStage(stage.stage),
-                      style: TextStyle(
-                        color: !isActive ? Colors.green : Colors.grey,
-                        fontWeight:
-                            isActive ? FontWeight.bold : FontWeight.normal,
-                      ),
-                    ),
-                  ],
+    return ListView.builder(
+      itemCount: myOrderTimeline.length,
+      itemBuilder: (context, index) {
+        final stage = myOrderTimeline[index];
+        final isCompleted = stage.status == "Completed";
+
+        return (stage.stage == "Returned" && stage.status == "Pending") ||
+                (stage.stage == "Canceled" && stage.status == "Pending")
+            ? Container()
+            : ListTile(
+                leading: Icon(
+                  isCompleted
+                      ? Icons.check_circle
+                      : getIconForStage(stage.stage),
+                  color: isCompleted ? Colors.green : Colors.grey,
                 ),
-                const SizedBox(width: 20), // Add spacing between stages
-              ],
-            );
-          }).toList(),
-        ),
-      ),
+                title: Text(
+                  stage.stage!,
+                  style: TextStyle(
+                    color: isCompleted ? Colors.green : Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(stage.timestamp != "N/A"
+                    ? stage.timestamp!
+                    : "Not completed yet"),
+              );
+      },
     );
   }
 
