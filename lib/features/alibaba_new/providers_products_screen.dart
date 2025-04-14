@@ -5,11 +5,14 @@ import 'package:commercepal/core/cart-core/cart_widget.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/features/alibaba_new/provider_attributes_widget.dart';
 import 'package:commercepal/features/alibaba_new/provider_config_model.dart';
+import 'package:commercepal/features/alibaba_new/recommended_products_widget.dart';
 // import 'package:commercepal/features/alibaba_new/the_new.dart';
 import 'package:commercepal/features/alibaba_product_view/alibaba_products_screen.dart';
 import 'package:commercepal/features/alibaba_product_view/image_slider.dart';
 import 'package:commercepal/features/alibaba_product_view/minOrder_price.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
+import 'package:commercepal/features/products/data/dto/products_dto.dart';
+import 'package:commercepal/features/products/domain/product.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -42,6 +45,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
 
   String currentCountryForm = "";
   bool addedToCart = false;
+  List<Product> recommendedProd = [];
   var loading = false;
   List<String> mainPics = [];
   String prodName = "";
@@ -128,6 +132,12 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                   SizedBox(height: 16),
                   _buildDeliveryEstimate(context),
                   SizedBox(height: 16),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: ProductGridWidget(
+                      products: recommendedProd,
+                    ),
+                  ),
                   // SizedBox(
                   //     height:
                   //         // myProdAttr.length < 4
@@ -326,6 +336,16 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                 vid: config.vid,
                 originalPrice: config.originalPrice));
           }
+          final prod = data['RecommendedItems'];
+          final prodObjs = ProductsDto.fromJson(prod, currentCountry);
+          if (prodObjs.details?.isEmpty == true) {
+            throw 'No products found';
+          }
+          print("hrreeerr");
+          recommendedProd = prodObjs.details!
+              .where((element) => element.productId != null)
+              .map((e) => e.toProduct())
+              .toList();
           loading = false;
         });
         // Handle the case when statusCode is '000'
