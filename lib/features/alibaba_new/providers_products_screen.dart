@@ -477,8 +477,8 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
             context,
             icon: Icons.flight,
             title: "International Shipping",
-            duration:
-                "${DateFormat('MMM dd').format(DateTime.now().add(const Duration(days: 20)))} - ${DateFormat('MMM dd').format(DateTime.now().add(const Duration(days: 35)))}",
+            duration: DateFormat('MMM dd')
+                .format(DateTime.now().add(const Duration(days: 20))),
             subtitle: "For international deliveries",
             color: Colors.blue,
           ),
