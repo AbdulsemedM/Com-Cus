@@ -17,6 +17,7 @@ import 'package:commercepal/features/edahab/edahab.dart';
 import 'package:commercepal/features/epg/epg_payment.dart';
 import 'package:commercepal/features/hijra_bank_loan/hijra_bank.dart';
 import 'package:commercepal/features/ipya/ipay.dart';
+import 'package:commercepal/features/m_pessa/m_pessa.dart';
 import 'package:commercepal/features/otp_payments/presentation/otp_payment_page.dart';
 import 'package:commercepal/features/payment/data/dto/payment_modes_dto.dart';
 import 'package:commercepal/features/payment/presentation/bloc/payment_cubit.dart';
@@ -249,7 +250,8 @@ class _PaymentPageState extends State<PaymentPage> {
         EPGPayment.routeName,
       );
     } else if (e.name!.toLowerCase().contains("m-pesa") == true) {
-      displaySnack(context, "Coming soon");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const M_Pessa()));
     } else if (e.name!.toLowerCase().contains("mastercard") == true) {
       displaySnack(context, "Coming soon");
     } else if (e.name!.toLowerCase().contains("visa card") == true) {
