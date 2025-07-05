@@ -240,6 +240,12 @@ class Items {
         _currency = mainPrice['currencyCode'];
         print("// For Ethiopia, find price with isMainCurrency = true)");
         print(_currency);
+      } else if (country == "AE") {
+        var mainPrice = prices.firstWhere(
+          (price) => price['currencyCode'] == "AED",
+          orElse: () => prices.first,
+        );
+        _unitPrice = mainPrice['price'].toString();
       } else {
         // For other countries, find price with isMainCurrency = false
         var foreignPrice = prices.firstWhere(

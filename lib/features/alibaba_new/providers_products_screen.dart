@@ -11,6 +11,7 @@ import 'package:commercepal/features/alibaba_product_view/alibaba_products_scree
 import 'package:commercepal/features/alibaba_product_view/image_slider.dart';
 import 'package:commercepal/features/alibaba_product_view/minOrder_price.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
+import 'package:commercepal/features/install_referral/deep_link_service.dart';
 import 'package:commercepal/features/products/data/dto/products_dto.dart';
 import 'package:commercepal/features/products/domain/product.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
@@ -28,6 +29,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // }
 
 class ProvidersProductsScreen extends StatefulWidget {
+  static const String routeName = '/product';
   final String productId;
   const ProvidersProductsScreen({super.key, required this.productId});
 
@@ -41,6 +43,8 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
   void initState() {
     super.initState();
     fetchProductItem();
+    // Initialize deep link handling
+    DeepLinkService.initUniLinks(context);
   }
 
   String currentCountryForm = "";
@@ -71,8 +75,12 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
         //   "Place your order",
         //   style: Theme.of(context).textTheme.displaySmall,
         // ),
-        actions: const [
-          CartWidget(),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: () => DeepLinkService.shareProduct(widget.productId),
+          ),
+          const CartWidget(),
         ],
       ),
       body: SingleChildScrollView(

@@ -150,6 +150,16 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                                   ?.toString()
                                   .contains(RegExp(r'^[0-9]+$')));
                               print("it's true it's product");
+                              print(prod.provider);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProvidersProductsScreen(
+                                    productId: prod.id!,
+                                    // provider: prod.provider!,
+                                  ),
+                                ),
+                              );
                             }
                           },
                         );

@@ -231,6 +231,12 @@ class ProductDetails {
           );
           _unitPrice = mainPrice['price'];
           _currency = mainPrice['currencyCode'];
+        } else if (country == "AE") {
+          var mainPrice = prices.firstWhere(
+            (price) => price['currencyCode'] == "AED",
+            orElse: () => prices.first,
+          );
+          _unitPrice = mainPrice['price'];
         } else {
           // For other countries, find price with isMainCurrency = false
           var foreignPrice = prices.firstWhere(

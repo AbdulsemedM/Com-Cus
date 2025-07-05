@@ -96,7 +96,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `image` TEXT, `description` TEXT, `currency` TEXT, `price` TEXT, `quantity` INTEGER, `productId` TEXT, `subProductId` TEXT, `merchantId` INTEGER, `baseMarkup` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `CartItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `image` TEXT, `description` TEXT, `currency` TEXT, `price` TEXT, `quantity` INTEGER, `productId` TEXT, `subProductId` TEXT, `merchantId` INTEGER, `createdAt` TEXT, `baseMarkup` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -129,7 +129,7 @@ class _$CartDao extends CartDao {
                   'productId': item.productId,
                   'subProductId': item.subProductId,
                   'merchantId': item.merchantId,
-                  // 'createdAt': item.createdAt,
+                  'createdAt': item.createdAt,
                   'baseMarkup': item.baseMarkup
                 },
             changeListener);
@@ -146,19 +146,18 @@ class _$CartDao extends CartDao {
   Stream<List<CartItem>> listenToItemUpdates() {
     return _queryAdapter.queryListStream('SELECT * FROM CartItem',
         mapper: (Map<String, Object?> row) => CartItem(
-              id: row['id'] as int?,
-              name: row['name'] as String?,
-              image: row['image'] as String?,
-              description: row['description'] as String?,
-              currency: row['currency'] as String?,
-              price: row['price'] as String?,
-              quantity: row['quantity'] as int?,
-              productId: row['productId'] as String?,
-              subProductId: row['subProductId'] as String?,
-              merchantId: row['merchantId'] as int?,
-              baseMarkup: row['baseMarkup'] as String?,
-              // createdAt: row['createdAt'] as String?
-            ),
+            id: row['id'] as int?,
+            name: row['name'] as String?,
+            image: row['image'] as String?,
+            description: row['description'] as String?,
+            currency: row['currency'] as String?,
+            price: row['price'] as String?,
+            quantity: row['quantity'] as int?,
+            productId: row['productId'] as String?,
+            subProductId: row['subProductId'] as String?,
+            merchantId: row['merchantId'] as int?,
+            baseMarkup: row['baseMarkup'] as String?,
+            createdAt: row['createdAt'] as String?),
         queryableName: 'CartItem',
         isView: false);
   }
@@ -167,38 +166,36 @@ class _$CartDao extends CartDao {
   Future<List<CartItem>> getAllItems() async {
     return _queryAdapter.queryList('SELECT * FROM CartItem',
         mapper: (Map<String, Object?> row) => CartItem(
-              id: row['id'] as int?,
-              name: row['name'] as String?,
-              image: row['image'] as String?,
-              description: row['description'] as String?,
-              currency: row['currency'] as String?,
-              price: row['price'] as String?,
-              quantity: row['quantity'] as int?,
-              productId: row['productId'] as String?,
-              subProductId: row['subProductId'] as String?,
-              merchantId: row['merchantId'] as int?,
-              baseMarkup: row['baseMarkup'] as String?,
-              // createdAt: row['createdAt'] as String?
-            ));
+            id: row['id'] as int?,
+            name: row['name'] as String?,
+            image: row['image'] as String?,
+            description: row['description'] as String?,
+            currency: row['currency'] as String?,
+            price: row['price'] as String?,
+            quantity: row['quantity'] as int?,
+            productId: row['productId'] as String?,
+            subProductId: row['subProductId'] as String?,
+            merchantId: row['merchantId'] as int?,
+            baseMarkup: row['baseMarkup'] as String?,
+            createdAt: row['createdAt'] as String?));
   }
 
   @override
   Future<CartItem?> getCartItem(int productId) async {
     return _queryAdapter.query('SELECT * FROM CartItem WHERE productId = ?1',
         mapper: (Map<String, Object?> row) => CartItem(
-              id: row['id'] as int?,
-              name: row['name'] as String?,
-              image: row['image'] as String?,
-              description: row['description'] as String?,
-              currency: row['currency'] as String?,
-              price: row['price'] as String?,
-              quantity: row['quantity'] as int?,
-              productId: row['productId'] as String?,
-              subProductId: row['subProductId'] as String?,
-              merchantId: row['merchantId'] as int?,
-              baseMarkup: row['baseMarkup'] as String?,
-              // createdAt: row['createdAt'] as String?
-            ),
+            id: row['id'] as int?,
+            name: row['name'] as String?,
+            image: row['image'] as String?,
+            description: row['description'] as String?,
+            currency: row['currency'] as String?,
+            price: row['price'] as String?,
+            quantity: row['quantity'] as int?,
+            productId: row['productId'] as String?,
+            subProductId: row['subProductId'] as String?,
+            merchantId: row['merchantId'] as int?,
+            baseMarkup: row['baseMarkup'] as String?,
+            createdAt: row['createdAt'] as String?),
         arguments: [productId]);
   }
 
@@ -206,19 +203,18 @@ class _$CartDao extends CartDao {
   Future<CartItem?> getCartItemBySubProductId(String subProductId) async {
     return _queryAdapter.query('SELECT * FROM CartItem WHERE subProductId = ?1',
         mapper: (Map<String, Object?> row) => CartItem(
-              id: row['id'] as int?,
-              name: row['name'] as String?,
-              image: row['image'] as String?,
-              description: row['description'] as String?,
-              currency: row['currency'] as String?,
-              price: row['price'] as String?,
-              quantity: row['quantity'] as int?,
-              productId: row['productId'] as String?,
-              subProductId: row['subProductId'] as String?,
-              merchantId: row['merchantId'] as int?,
-              baseMarkup: row['baseMarkup'] as String?,
-              //  createdAt: row['createdAt'] as String?
-            ),
+            id: row['id'] as int?,
+            name: row['name'] as String?,
+            image: row['image'] as String?,
+            description: row['description'] as String?,
+            currency: row['currency'] as String?,
+            price: row['price'] as String?,
+            quantity: row['quantity'] as int?,
+            productId: row['productId'] as String?,
+            subProductId: row['subProductId'] as String?,
+            merchantId: row['merchantId'] as int?,
+            baseMarkup: row['baseMarkup'] as String?,
+            createdAt: row['createdAt'] as String?),
         arguments: [subProductId]);
   }
 

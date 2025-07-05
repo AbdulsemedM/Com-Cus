@@ -120,7 +120,7 @@ class _M_PessaState extends State<M_Pessa> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "M-Pessa",
+          "M-Pesa",
           style: TextStyle(fontSize: sWidth * 0.05),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:commercepal/features/addresses/presentation/addresses_page.dart';
 import 'package:commercepal/features/addresses/presentation/search_places.dart';
+import 'package:commercepal/features/alibaba_new/providers_products_screen.dart';
 import 'package:commercepal/features/cash_payment/presentation/cash_payment_page.dart';
 import 'package:commercepal/features/cbe_birr/cbe_birr.dart';
 import 'package:commercepal/features/change_password/presentation/change_password_page.dart';
@@ -66,6 +67,11 @@ final Map<String, WidgetBuilder> routes = {
   CBEBirrPayment.routeName: (context) => const CBEBirrPayment(),
   RaysMicrofinance.routeName: (context) => const RaysMicrofinance(),
   // HijraBankLoan.routeName: (context) => const HijraBankLoan(),
+  ProvidersProductsScreen.routeName: (context) {
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    return ProvidersProductsScreen(productId: args?['productId'] ?? '');
+  },
 };
 
 void redirectUserToLogin() {

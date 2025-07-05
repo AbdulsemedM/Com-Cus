@@ -76,6 +76,8 @@ class _UserDataWidgetState extends State<UserDataWidget> {
     final String currentCountry = prefs.getString("currency") ?? "";
     if (currentCountry == "ETB") {
       _selectedCurrency = "ETB";
+    } else if (currentCountry == "AE") {
+      _selectedCurrency = "AED";
     } else {
       _selectedCurrency = "USD";
     }
@@ -680,6 +682,29 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 ),
                 leading: Radio<String>(
                   value: "USD",
+                  groupValue: _selectedCurrency,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedCurrency = value;
+                        _saveSelectedCurrency(value);
+                      });
+                      Navigator.of(context).pop(); // Close the dialog
+                    }
+                  },
+                ),
+              ),
+              ListTile(
+                title: GestureDetector(
+                  onTap: () {
+                    _saveSelectedCurrency("AED");
+                    _selectedCurrency = "AED";
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("AED"),
+                ),
+                leading: Radio<String>(
+                  value: "AED",
                   groupValue: _selectedCurrency,
                   onChanged: (value) {
                     if (value != null) {

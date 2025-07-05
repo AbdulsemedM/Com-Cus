@@ -18,7 +18,11 @@ class CountryManager {
     final prefs = await SharedPreferences.getInstance();
     _country = prefs.getString(_countryKey) ?? _defaultCountry;
     // Set currency based on country
-    final currency = _country == 'ET' ? 'ETB' : 'USD';
+    final currency = _country == 'ET'
+        ? 'ETB'
+        : _country == "AE"
+            ? "AED"
+            : 'USD';
     await prefs.setString(_currencyKey, currency);
     print(
         "Loaded country from preferences: $_country with currency: $currency");
@@ -53,7 +57,11 @@ class CountryManager {
       await prefs.setString(_countryKey, country);
 
       // Set currency based on country
-      final currency = country == 'ET' ? 'ETB' : 'USD';
+      final currency = country == 'ET'
+          ? 'ETB'
+          : country == "AE"
+              ? "AED"
+              : 'USD';
       await prefs.setString(_currencyKey, currency);
       print("Stored currency: $currency");
     } catch (e) {

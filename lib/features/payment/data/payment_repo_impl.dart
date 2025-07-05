@@ -37,7 +37,7 @@ class PaymentRepoImpl implements PaymentRepo {
       // SharedPreferences prefs = await SharedPreferences.getInstance();
       // final String currentCountry = prefs.getString("currency") ?? "";
       final response = await apiProvider.get(
-          "${EndPoints.paymentModes.url}&currency=${currency!.trim() == "\$" ? "USD" : currency == "ETB" ? "ETB" : ""}");
+          "${EndPoints.paymentModes.url}&currency=${currency!.trim() == "\$" ? "USD" : currency == "ETB" ? "ETB" : currency == "AED" ? "AED" : ""}");
       print("${EndPoints.paymentModes.url}?currency=$currency");
       if (response['statusCode'] == '000') {
 // <<<<<<< New-Providers
