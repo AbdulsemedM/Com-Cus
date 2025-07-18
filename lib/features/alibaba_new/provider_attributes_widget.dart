@@ -751,9 +751,6 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
 
                       // // Add to cart
                       _addToCart();
-                      // displaySnack(
-                      //     context, "Product added to cart successfully");
-                      // Navigator.pop(context, true);
                     } else {
                       displaySnack(context, "Minimum order quantity not met");
                     }
@@ -783,243 +780,134 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     }
 
     // Return original widget if attributes are not empty
-    return Scaffold(
-      appBar: AppBar(
-        title: FutureBuilder(
-          future: TranslationService.translate("Variations"),
-          builder: (context, snapshot) {
-            return Text(
-              snapshot.data ?? "Variations",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            );
-          },
-        ),
-        actions: const [
-          CartWidget(),
-        ],
-      ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: FutureBuilder(
-              future: TranslationService.translate(
-                  "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})"),
-              builder: (context, snapshot) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: _isMinOrderMet()
-                        ? Colors.green.withOpacity(0.1)
-                        : Colors.red.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: FutureBuilder(
+            future: TranslationService.translate(
+                "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})"),
+            builder: (context, snapshot) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: _isMinOrderMet()
+                      ? Colors.green.withOpacity(0.1)
+                      : Colors.red.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  snapshot.data ??
+                      "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: _isMinOrderMet() ? Colors.green : Colors.red,
                   ),
-                  child: Text(
-                    snapshot.data ??
-                        "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: _isMinOrderMet() ? Colors.green : Colors.red,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: groupedAttributes.keys.length,
-            itemBuilder: (context, index) {
-              final propertyName = groupedAttributes.keys.elementAt(index);
-              final items = groupedAttributes[propertyName]!;
-              return _buildAttributeGrid(propertyName, items);
+                ),
+              );
             },
           ),
-          SizedBox(height: 10),
-          if (_areAllGroupsSelected())
-            Column(
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: groupedAttributes.keys.length,
+          itemBuilder: (context, index) {
+            final propertyName = groupedAttributes.keys.elementAt(index);
+            final items = groupedAttributes[propertyName]!;
+            return _buildAttributeGrid(propertyName, items);
+          },
+        ),
+        SizedBox(height: 10),
+        if (_areAllGroupsSelected())
+          Column(
+            children: [
+              Container(
+                  color: Colors.amber[300],
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FutureBuilder(
+                      future: TranslationService.translate(
+                          "Minimum Order: ${widget.myPriceRange[0].minOr}"),
+                      builder: (context, snapshot) {
+                        return Text(snapshot.data ??
+                            "Minimum Order: ${widget.myPriceRange[0].minOr}");
+                      },
+                    ),
+                  )),
+            ],
+          ),
+        if (myCart.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                    color: Colors.amber[300],
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FutureBuilder(
-                        future: TranslationService.translate(
-                            "Minimum Order: ${widget.myPriceRange[0].minOr}"),
-                        builder: (context, snapshot) {
-                          return Text(snapshot.data ??
-                              "Minimum Order: ${widget.myPriceRange[0].minOr}");
-                        },
-                      ),
-                    )),
-                Row(
-                  children: [
-                    // Expanded(
-                    //   flex: 2,
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.all(16.0),
-                    //     child: Form(
-                    //       key: myKey,
-                    //       child: TextFormField(
-                    //         controller: quantityControllers[
-                    //             selectedAttributes.values.first?.Vid ?? ''],
-                    //         keyboardType: TextInputType.number,
-                    //         inputFormatters: [
-                    //           FilteringTextInputFormatter.digitsOnly,
-                    //         ],
-                    //         decoration: const InputDecoration(
-                    //           labelText: "Enter Quantity",
-                    //           // errorText: errorText,
-                    //           border: OutlineInputBorder(),
-                    //         ),
-                    //         // onChanged: _validateQuantityInput,
-                    //         validator: (value) => _validateQuantity(value!),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // Expanded(
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.all(8.0),
-                    //     child: Container(
-                    //       decoration: BoxDecoration(
-                    //           // color: AppColors.colorAccent,
-                    //           border: Border.all(color: AppColors.colorAccent),
-                    //           borderRadius: BorderRadius.circular(30)),
-                    //       child: IconButton(
-                    //         // highlightColor: AppColors.colorAccent,
-                    //         color: AppColors.colorAccent,
-                    //         onPressed: () {
-                    //           _addToCartItems();
-                    //           print(myCart.length);
-                    //         },
-                    //         icon: Container(
-                    //           decoration: BoxDecoration(
-                    //             color: AppColors
-                    //                 .colorAccent, // Change to your desired color
-                    //             shape: BoxShape
-                    //                 .circle, // Optional: make it circular
-                    //           ),
-                    //           padding: const EdgeInsets.all(
-                    //               8.0), // Adjust padding as needed
-                    //           child: Icon(Icons.add,
-                    //               color: Colors
-                    //                   .white), // Adjust icon color for contrast
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // )
-                  ],
+                FutureBuilder(
+                  future: TranslationService.translate("Selected Attributes:"),
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? "Selected Attributes:",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    );
+                  },
+                ),
+                const SizedBox(height: 8),
+                ...myCart.map((entry) {
+                  final attribute = widget.myConfig
+                      .firstWhere((attr) => attr.id == entry.subProductId);
+
+                  return ListTile(
+                    title: Text(
+                      "${attribute.vid}",
+                    ),
+                    subtitle: FutureBuilder(
+                      future: TranslationService.translate(
+                          "Quantity: ${entry.quantity}"),
+                      builder: (context, snapshot) {
+                        return Text(
+                            snapshot.data ?? "Quantity: ${entry.quantity}");
+                      },
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => _removeAttribute(entry),
+                    ),
+                  );
+                }).toList(),
+              ],
+            ),
+          ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.colorPrimaryDark),
+            onPressed: _isMinOrderMet() ? _addToCartItems : null,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.shopping_cart,
+                  color: AppColors.bg1,
+                ),
+                SizedBox(width: 8),
+                FutureBuilder(
+                  future: TranslationService.translate("Add to Cart"),
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? "Add to Cart",
+                      style: TextStyle(color: AppColors.bg1),
+                    );
+                  },
                 ),
               ],
             ),
-          // Display Selected Attributes and Quantities
-          if (myCart.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FutureBuilder(
-                    future:
-                        TranslationService.translate("Selected Attributes:"),
-                    builder: (context, snapshot) {
-                      return Text(
-                        snapshot.data ?? "Selected Attributes:",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 8),
-                  ...myCart.map((entry) {
-                    // Find the attribute using Vid
-                    final attribute = widget.myConfig
-                        // .expand((group) => group)
-                        .firstWhere((attr) => attr.id == entry.subProductId);
-
-                    return ListTile(
-                      title: Text(
-                        "${attribute.vid}",
-                      ),
-                      subtitle: FutureBuilder(
-                        future: TranslationService.translate(
-                            "Quantity: ${entry.quantity}"),
-                        builder: (context, snapshot) {
-                          return Text(
-                              snapshot.data ?? "Quantity: ${entry.quantity}");
-                        },
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => _removeAttribute(entry),
-                      ),
-                    );
-                  }).toList(),
-                ],
-              ),
-            ),
-          if (!isAndroid())
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.colorPrimaryDark),
-                onPressed: _isMinOrderMet() ? _addToCartItems : null,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.shopping_cart,
-                      color: AppColors.bg1,
-                    ),
-                    SizedBox(width: 8),
-                    FutureBuilder(
-                      future: TranslationService.translate("Add to Cart"),
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ?? "Add to Cart",
-                          style: TextStyle(color: AppColors.bg1),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-        ],
-      ),
-      bottomNavigationBar: isAndroid()
-          ? Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.colorPrimaryDark),
-                onPressed: _isMinOrderMet() ? _addToCartItems : null,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.shopping_cart,
-                      color: AppColors.bg1,
-                    ),
-                    SizedBox(width: 8),
-                    FutureBuilder(
-                      future: TranslationService.translate("Add to Cart"),
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ?? "Add to Cart",
-                          style: TextStyle(color: AppColors.bg1),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : null,
+          ),
+        ),
+      ],
     );
   }
 

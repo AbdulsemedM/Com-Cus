@@ -83,12 +83,14 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
           const CartWidget(),
         ],
       ),
-      body: SingleChildScrollView(
-        child: loading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Column(
+      body: loading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   ImageSlider(
                     imageUrls: mainPics,
@@ -121,7 +123,12 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                             builder: (context, snapshot) {
                               return Text(
                                 snapshot.data ?? prodName,
-                                style: Theme.of(context).textTheme.bodyLarge,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12),
                                 textAlign: TextAlign.center,
                               );
                             },
@@ -137,117 +144,118 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                       price: myPriceRange,
                     ),
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: 10),
+                  LayoutBuilder(builder: (context, constraints) {
+                    return Container(
+                      constraints: BoxConstraints(
+                        minHeight: myProdAttr.length < 4
+                            ? MediaQuery.of(context).size.height * 0.6
+                            : myProdAttr.length >= 4 && myProdAttr.length < 10
+                                ? MediaQuery.of(context).size.height * 0.7
+                                : MediaQuery.of(context).size.height * 0.7,
+                      ),
+                      child: ProductAttributesWidget(
+                        myProdAttr: myProdAttr,
+                        myPriceRange: myPriceRange,
+                        myConfig: myConfigs,
+                        productName: prodName,
+                        productId: widget.productId,
+                        imageUrl: mainPics[0],
+                        currentCountry: currentCountryForm,
+                      ),
+                    );
+                  }),
                   _buildDeliveryEstimate(context),
-                  SizedBox(height: 16),
+                  SizedBox(height: 10),
                   Container(
                     height: MediaQuery.of(context).size.height * 0.7,
-                    child: ProductGridWidget(
-                      products: recommendedProd,
-                    ),
-                  ),
-                  // SizedBox(
-                  //     height:
-                  //         // myProdAttr.length < 4
-                  //         //     ? 160
-                  //         //     : myProdAttr.length >= 4 && myProdAttr.length < 10
-                  //         //         ? 300
-                  //         //         :
-                  //         500,
-                  //     child: ProductAttributesWidget(
-                  //       myProdAttr: myProdAttr,
-                  //       myPriceRange: myPriceRange,
-                  //       myConfig: myConfigs,
-                  //       productName: prodName,
-                  //       productId: widget.productId,
-                  //       imageUrl: mainPics[0],
-                  //       currentCountry: currentCountryForm,
-                  //     )),
+                    child: ProductGridWidget(products: recommendedProd),
+                  )
                 ],
               ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-        child: Container(
-          // Set height to null to fit the child dynamically
-          height: null,
-          child: Column(
-            mainAxisSize:
-                MainAxisSize.min, // Make the column's size fit its children
-            children: [
-              loading
-                  ? Center(
-                      child: Container(),
-                    )
-                  : (addedToCart
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 3.0),
-                                child: AppButtonWidget(
-                                  text: "Continue Shopping",
-                                  onClick: () {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        DashboardPage.routeName,
-                                        (route) => false);
-                                  },
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 3.0),
-                                child: AppButtonWidget(
-                                  text: "Checkout",
-                                  onClick: () {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        DashboardPage.routeName,
-                                        (route) => false,
-                                        arguments: {"redirect_to": "cart"});
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      : AppButtonWidget(
-                          text: "Start Order",
-                          onClick: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductAttributesWidget(
-                                  myProdAttr: myProdAttr,
-                                  myPriceRange: myPriceRange,
-                                  myConfig: myConfigs,
-                                  productName: prodName,
-                                  productId: widget.productId,
-                                  imageUrl: mainPics[0],
-                                  currentCountry: currentCountryForm,
-                                ),
-                              ),
-                            ).then((value) {
-                              if (value == true) {
-                                setState(() {
-                                  addedToCart = true;
-                                  print("added to cart");
-                                  print("loading");
-                                  print(loading);
-                                });
-                              }
-                            });
-                          },
-                        )),
-            ],
-          ),
-        ),
-      ),
+            ),
+      // bottomNavigationBar: Padding(
+      //   padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+      //   child: Container(
+      //     // Set height to null to fit the child dynamically
+      //     height: null,
+      //     child: Column(
+      //       mainAxisSize:
+      //           MainAxisSize.min, // Make the column's size fit its children
+      //       children: [
+      //         loading
+      //             ? Center(
+      //                 child: Container(),
+      //               )
+      //             : (addedToCart
+      //                 ? Row(
+      //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //                     children: [
+      //                       Expanded(
+      //                         flex: 3,
+      //                         child: Padding(
+      //                           padding: const EdgeInsets.only(right: 3.0),
+      //                           child: AppButtonWidget(
+      //                             text: "Continue Shopping",
+      //                             onClick: () {
+      //                               Navigator.pushNamedAndRemoveUntil(
+      //                                   context,
+      //                                   DashboardPage.routeName,
+      //                                   (route) => false);
+      //                             },
+      //                           ),
+      //                         ),
+      //                       ),
+      //                       Expanded(
+      //                         flex: 2,
+      //                         child: Padding(
+      //                           padding: const EdgeInsets.only(left: 3.0),
+      //                           child: AppButtonWidget(
+      //                             text: "Checkout",
+      //                             onClick: () {
+      //                               Navigator.pushNamedAndRemoveUntil(
+      //                                   context,
+      //                                   DashboardPage.routeName,
+      //                                   (route) => false,
+      //                                   arguments: {"redirect_to": "cart"});
+      //                             },
+      //                           ),
+      //                         ),
+      //                       ),
+      //                     ],
+      //                   )
+      //                 : AppButtonWidget(
+      //                     text: "Start Order",
+      //                     onClick: () {
+      //                       Navigator.push(
+      //                         context,
+      //                         MaterialPageRoute(
+      //                           builder: (context) => ProductAttributesWidget(
+      //                             myProdAttr: myProdAttr,
+      //                             myPriceRange: myPriceRange,
+      //                             myConfig: myConfigs,
+      //                             productName: prodName,
+      //                             productId: widget.productId,
+      //                             imageUrl: mainPics[0],
+      //                             currentCountry: currentCountryForm,
+      //                           ),
+      //                         ),
+      //                       ).then((value) {
+      //                         if (value == true) {
+      //                           setState(() {
+      //                             addedToCart = true;
+      //                             print("added to cart");
+      //                             print("loading");
+      //                             print(loading);
+      //                           });
+      //                         }
+      //                       });
+      //                     },
+      //                   )),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 

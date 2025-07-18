@@ -37,7 +37,7 @@ class _ImageSliderState extends State<ImageSlider> {
             options: CarouselOptions(
               autoPlay: selectedImage ==
                   null, // Only autoplay when no image is selected
-              aspectRatio: 1.2,
+              aspectRatio: 2.5,
               enlargeCenterPage: true,
             ),
             items: displayImages.map((url) {
