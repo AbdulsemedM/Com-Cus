@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/core/cart-core/cart_widget.dart';
@@ -17,6 +18,7 @@ import 'package:commercepal/features/products/domain/product.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -88,9 +90,10 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
               child: CircularProgressIndicator(),
             )
           : SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ImageSlider(
                     imageUrls: mainPics,
@@ -117,7 +120,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                         horizontal: 18, vertical: 10),
                     child: Row(
                       children: [
-                        Flexible(
+                        Expanded(
                           child: FutureBuilder(
                             future: TranslationService.translate(prodName),
                             builder: (context, snapshot) {
@@ -129,7 +132,8 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                                     ?.copyWith(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12),
-                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
                               );
                             },
                           ),
@@ -144,33 +148,28 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                       price: myPriceRange,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  LayoutBuilder(builder: (context, constraints) {
-                    return Container(
-                      constraints: BoxConstraints(
-                        minHeight: myProdAttr.length < 4
-                            ? MediaQuery.of(context).size.height * 0.6
-                            : myProdAttr.length >= 4 && myProdAttr.length < 10
-                                ? MediaQuery.of(context).size.height * 0.7
-                                : MediaQuery.of(context).size.height * 0.7,
-                      ),
-                      child: ProductAttributesWidget(
-                        myProdAttr: myProdAttr,
-                        myPriceRange: myPriceRange,
-                        myConfig: myConfigs,
-                        productName: prodName,
-                        productId: widget.productId,
-                        imageUrl: mainPics[0],
-                        currentCountry: currentCountryForm,
-                      ),
-                    );
-                  }),
-                  _buildDeliveryEstimate(context),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.7,
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.6,
+                    ),
+                    child: ProductAttributesWidget(
+                      myProdAttr: myProdAttr,
+                      myPriceRange: myPriceRange,
+                      myConfig: myConfigs,
+                      productName: prodName,
+                      productId: widget.productId,
+                      imageUrl: mainPics[0],
+                      currentCountry: currentCountryForm,
+
+                    ),
+                  ),
+                  _buildDeliveryEstimate(context),
+                  const SizedBox(height: 10),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
                     child: ProductGridWidget(products: recommendedProd),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -259,6 +258,13 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
     );
   }
 
+  Future<http.Client> createInsecureHttpClient() async {
+    final ioc = HttpClient()
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+    return IOClient(ioc);
+  }
+
   Future<void> fetchProductItem() async {
     try {
       setState(() {
@@ -269,10 +275,11 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       // final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       // if (isUserLoggedIn) {
       //   final token = await prefsData.readData(PrefsKeys.userToken.name);
-      final response = await http.get(
+      final httpClient = await createInsecureHttpClient();
+      final response = await httpClient.get(
         Uri.https(
-          "api.commercepal.com:2096",
-          "/prime/api/v1/data/products/${widget.productId}",
+          "196.188.172.179:2096",
+          "/prime/api/v1/data/products/temp/${widget.productId}",
         ),
         headers: <String, String>{},
       );
@@ -287,34 +294,31 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
           }
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           final String currentCountry = prefs.getString("currency") ?? "ETB";
+          final String currentCountryCode = prefs.getString("country") ?? "ET";
+          print(currentCountryCode);
+          print(currentCountry);
           currentCountryForm = currentCountry;
           prodName = data['OriginalTitle'];
-          // print("the price range is here");
+          print("the price range is here");
           myPriceRange = data["QuantityRanges"] != null
               ? parseQuantityRanges(
                   List<Map<String, dynamic>>.from(data["QuantityRanges"]),
                   currentCountry)
               : [
                   Prices(
-                    originalPrice: (data['Price']['prices'] as List)
-                        .firstWhere((p) =>
-                            p['currencyCode'] ==
-                            (currentCountry))['originalPrice']
+                    originalPrice: ((data['Price']['prices'] as List)
+                            .firstWhere((p) =>
+                                p['countryCode'] ==
+                                currentCountryCode)['prices'] as List)
+                        .firstWhere(
+                            (t) => t['currencyCode'] == currentCountry)['price']
                         .toString(),
-                    baseMarkup: ((data['Price']['prices'] as List).firstWhere(
-                                (p) => p['currencyCode'] == (currentCountry))['baseMarkup']
-                            is int)
-                        ? ((data['Price']['prices'] as List).firstWhere((p) =>
-                                p['currencyCode'] ==
-                                (currentCountry))['baseMarkup'] as int)
-                            .toDouble()
-                        : (data['Price']['prices'] as List).firstWhere((p) =>
-                            p['currencyCode'] == (currentCountry))['baseMarkup'],
+                    baseMarkup: 0,
                     minOr: "1",
                   )
                 ];
           print("my price range");
-          print(myPriceRange.length);
+          print(myPriceRange[0].originalPrice);
           for (var attr in data['Attributes']) {
             if (attr['IsConfigurator'] == true) {
               // print(attr['OriginalPropertyName']);
@@ -339,7 +343,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
 // Convert the Set to a List (if needed)
           uniquePropertyNamesList = uniquePropertyNames.toList();
           final productInfoList = parseProviderConfigModelList(
-              data['ConfiguredItems'], currentCountry);
+              data['ConfiguredItems'], currentCountry, currentCountryCode);
           print(productInfoList.length);
           for (var item in productInfoList) {
             print(item.vid);
@@ -350,10 +354,13 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                 baseMarkup: config.baseMarkup,
                 id: config.id,
                 vid: config.vid,
+                tieredPrices: config.tieredPrices,
+                additionalItemPrice: config.additionalItemPrice,
                 originalPrice: config.originalPrice));
           }
           final prod = data['RecommendedItems'];
-          final prodObjs = ProductsDto.fromJson(prod, currentCountry);
+          final prodObjs =
+              ProductsDto.fromJson(prod, currentCountry, currentCountryCode);
           if (prodObjs.details?.isEmpty == true) {
             throw 'No products found';
           }

@@ -4,7 +4,7 @@ import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:commercepal/features/products/domain/product.dart';
 
 ProductsDto productsDtoFromJson(String str) =>
-    ProductsDto.fromJson(json.decode(str), null);
+    ProductsDto.fromJson(json.decode(str), null, null);
 
 String productsDtoToJson(ProductsDto data) => json.encode(data.toJson());
 
@@ -20,7 +20,8 @@ class ProductsDto {
     _statusMessage = statusMessage;
     _statusCode = statusCode;
   }
-  void parseProducts(Map<String, dynamic> json, String? country) {
+  void parseProducts(
+      Map<String, dynamic> json, String? currency, String? country) {
     // Initialize details
     _details = [];
 
@@ -29,17 +30,17 @@ class ProductsDto {
         json['responseData']['products'] != null) {
       // Case 1: products exist under responseData
       json['responseData']['products'].forEach((v) {
-        _details?.add(ProductDetails.fromJson(v, country));
+        _details?.add(ProductDetails.fromJson(v, currency, country));
       });
     } else if (json['details'] != null) {
       // Case 2: products exist directly under details
       json['details'].forEach((v) {
-        _details?.add(ProductDetails.fromJson(v, country));
+        _details?.add(ProductDetails.fromJson(v, currency, country));
       });
     } else if (json['products'] != null) {
       // Case 3: products exist directly under products key
       json['products'].forEach((v) {
-        _details?.add(ProductDetails.fromJson(v, country));
+        _details?.add(ProductDetails.fromJson(v, currency, country));
       });
     } else {
       // Case 4: No products found
@@ -50,12 +51,12 @@ class ProductsDto {
     // print("Parsed products count: ${_details?.length}");
   }
 
-  ProductsDto.fromJson(dynamic json, String? country) {
+  ProductsDto.fromJson(dynamic json, String? currency, String? country) {
     _statusDescription = json['statusDescription'];
 
     // print("counting");
     try {
-      parseProducts(json, country);
+      parseProducts(json, currency, country);
     } catch (e) {
       print("Error parsing products: $e");
     }
@@ -117,7 +118,7 @@ class ProductsDto {
 }
 
 ProductDetails detailsFromJson(String str) =>
-    ProductDetails.fromJson(json.decode(str), str);
+    ProductDetails.fromJson(json.decode(str), str, str);
 
 String detailsToJson(ProductDetails data) => json.encode(data.toJson());
 
@@ -214,37 +215,217 @@ class ProductDetails {
     _merchantId = merchantId;
   }
 
-  ProductDetails.fromJson(dynamic json, String? country) {
+  ProductDetails.fromJson(dynamic json, String? currency, String? country) {
     // countryManager.loadCountryFromPreferences();
-    print("the search is here");
+    print("the new country based search is here");
     print(json['Provider']);
+    print(currency);
     print(country);
     String pid = json['ProductId'].toString();
     try {
       if (json['prices'] != null && json['prices'] is List) {
         var prices = json['prices'] as List;
-        if (country == 'ETB') {
+        if (country == 'ET') {
           // For Ethiopia, find price with isMainCurrency = true
           var mainPrice = prices.firstWhere(
-            (price) => price['currencyCode'] == "ETB",
+            (price) => price['countryCode'] == "ET",
             orElse: () => prices.first,
           );
-          _unitPrice = mainPrice['price'];
-          _currency = mainPrice['currencyCode'];
+          mainPrice = mainPrice['prices'];
+          if (currency == "ETB") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "ETB",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "USD") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "USD",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "KES") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "KES",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "KES") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "KES",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          }
         } else if (country == "AE") {
+          
+          // For Arab emirates, find price with isMainCurrency = true
           var mainPrice = prices.firstWhere(
-            (price) => price['currencyCode'] == "AED",
+            (price) => price['countryCode'] == "AE",
             orElse: () => prices.first,
           );
-          _unitPrice = mainPrice['price'];
+          mainPrice = mainPrice['prices'];
+          if (currency == "ETB") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "ETB",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "USD") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "USD",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "KES") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "KES",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "SOS") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "SOS",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          }
+         
+        }  else if (country == "KE") {
+          
+          // For Kenya, find price with isMainCurrency = true
+          var mainPrice = prices.firstWhere(
+            (price) => price['countryCode'] == "KE",
+            orElse: () => prices.first,
+          );
+          mainPrice = mainPrice['prices'];
+          if (currency == "ETB") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "ETB",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "USD") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "USD",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "KES") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "KES",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "SOS") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "SOS",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          }
+         
+        } else if (country == "SO") {
+          print("did we got here");
+          // For Somalia, find price with isMainCurrency = true
+          var mainPrice = prices.firstWhere(
+            (price) => price['countryCode'] == "SO",
+            orElse: () => prices.first,
+          );
+          mainPrice = mainPrice['prices'];
+          if (currency == "ETB") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "ETB",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "USD") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "USD",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          }else if (currency == "AED") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "AED",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          }
+           else if (currency == "KES") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "KES",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "SOS") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "SOS",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          }
+         
         } else {
-          // For other countries, find price with isMainCurrency = false
-          var foreignPrice = prices.firstWhere(
-            (price) => price['currencyCode'] == "USD",
+         var mainPrice = prices.firstWhere(
+            (price) => price['countryCode'] == "XX",
             orElse: () => prices.first,
           );
-          _unitPrice = foreignPrice['price'];
-          _currency = foreignPrice['currencyCode'];
+          mainPrice = mainPrice['prices'];
+          if (currency == "ETB") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "ETB",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "USD") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "USD",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "AED") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "AED",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          }
+           else if (currency == "KES") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "KES",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          } else if (currency == "SOS") {
+            var fin = mainPrice.firstWhere(
+              (price) => price['currencyCode'] == "SOS",
+              orElse: () => mainPrice.first,
+            );
+            _unitPrice = fin['price'];
+            _currency = fin['currencyCode'];
+          }
         }
       } else {
         // Fallback to old price format

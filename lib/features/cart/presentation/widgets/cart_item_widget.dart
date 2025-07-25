@@ -51,31 +51,39 @@ class _CartItemWidgetState extends State<CartItemWidget> {
     return double.parse(percentage.abs().toStringAsFixed(2));
   }
 
+  List<double> parseTieredPrices(String priceString) {
+    // Remove the square brackets and split by comma
+    String cleanString = priceString.replaceAll('[', '').replaceAll(']', '');
+    List<String> priceStrings =
+        cleanString.split(',').map((e) => e.trim()).toList();
+
+    // Convert each string to double
+    return priceStrings.map((e) => double.parse(e)).toList();
+  }
+
   double calculateTotalPrice(
-      double itemPrice, double baseMarkup, int quantity) {
+      double itemPrice, String baseMarkup, int quantity) {
     double totalPrice = 0; // Initialize total price to 0
+    List<dynamic> tieredPrices = parseTieredPrices(baseMarkup);
+    // for (var price in tieredPrices) {
+    //   print(price);
+    // }
 
     for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
       if (itemIndex == 1) {
         totalPrice +=
-            itemPrice + baseMarkup; // For the first item, price + full markup
+            tieredPrices[0]; // For the first item, price + full markup
       } else if (itemIndex == 2) {
         // For subsequent items, price + half markup (rounded to 2 decimal places)
-        double halfMarkup = baseMarkup * 0.2;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[1];
       } else if (itemIndex == 3) {
-        double halfMarkup = baseMarkup * 0.35;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[2];
       } else if (itemIndex == 4) {
-        double halfMarkup = baseMarkup * 0.4;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[3];
       } else if (itemIndex == 5) {
-        double halfMarkup = baseMarkup * 0.45;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[4];
       } else if (itemIndex >= 6) {
-        double halfMarkup = baseMarkup * 0.5;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
-        print("totalPrice: $totalPrice");
+        totalPrice += tieredPrices[5];
       }
     }
     print("totalPrice: $totalPrice");
@@ -213,7 +221,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   children: [
                     Text(
                       // '${widget.cartItem.currency} ${widget.cartItem.price} X ${widget.cartItem.quantity}',
-                      'Price: ${widget.cartItem.currency} ${double.parse(widget.cartItem.price!) + double.parse(widget.cartItem.baseMarkup!)}',
+                      'Price: ${widget.cartItem.currency} ${double.parse(widget.cartItem.price!)}',
                       // widget.cartItem.price
                       //     .formatCurrency(widget.cartItem.currency),
                       style: Theme.of(context)
@@ -337,7 +345,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    "Total: ${widget.cartItem.currency} ${NumberFormat('#,##0.00').format(calculateTotalPrice(double.parse(widget.cartItem.price!), double.parse(widget.cartItem.baseMarkup!), _quantity))}",
+                    "Total: ${widget.cartItem.currency} ${NumberFormat('#,##0.00').format(calculateTotalPrice(double.parse(widget.cartItem.price!), (widget.cartItem.baseMarkup!), _quantity))}",
                     style: TextStyle(color: Colors.black, fontSize: 18.sp),
                   ),
                 ),
@@ -364,7 +372,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                       ),
                       SizedBox(width: 4),
                       Text(
-                        "${percentageDifference((_quantity) * (double.parse(widget.cartItem.price!) + double.parse(widget.cartItem.baseMarkup!)), calculateTotalPrice(double.parse(widget.cartItem.price!), double.parse(widget.cartItem.baseMarkup!), _quantity))}% OFF",
+                        "${percentageDifference((_quantity) * (double.parse(widget.cartItem.price!)), calculateTotalPrice(double.parse(widget.cartItem.price!), (widget.cartItem.baseMarkup!), _quantity))}% OFF",
                         style: TextStyle(
                           color: Colors.green.shade700,
                           fontWeight: FontWeight.bold,

@@ -286,7 +286,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                                         child: Text("x${cartItem.quantity}")),
                                     Expanded(
                                       child: Text(
-                                          "${cartItem.currency} ${calculateTotalPrice(double.parse(cartItem.price!), double.parse(cartItem.baseMarkup!), cartItem.quantity!)}"),
+                                          "${cartItem.currency} ${calculateTotalPrice(double.parse(cartItem.price!), (cartItem.baseMarkup!), cartItem.quantity!)}"),
                                     )
                                   ],
                                 ),
@@ -465,30 +465,39 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
     );
   }
 
+  List<double> parseTieredPrices(String priceString) {
+    // Remove the square brackets and split by comma
+    String cleanString = priceString.replaceAll('[', '').replaceAll(']', '');
+    List<String> priceStrings =
+        cleanString.split(',').map((e) => e.trim()).toList();
+
+    // Convert each string to double
+    return priceStrings.map((e) => double.parse(e)).toList();
+  }
+
   double calculateTotalPrice(
-      double itemPrice, double baseMarkup, int quantity) {
+      double itemPrice, String baseMarkup, int quantity) {
     double totalPrice = 0; // Initialize total price to 0
+    List<dynamic> tieredPrices = parseTieredPrices(baseMarkup);
+    // for (var price in tieredPrices) {
+    //   print(price);
+    // }
 
     for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
       if (itemIndex == 1) {
         totalPrice +=
-            itemPrice + baseMarkup; // For the first item, price + full markup
+            tieredPrices[0]; // For the first item, price + full markup
       } else if (itemIndex == 2) {
         // For subsequent items, price + half markup (rounded to 2 decimal places)
-        double halfMarkup = baseMarkup * 0.2;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[1];
       } else if (itemIndex == 3) {
-        double halfMarkup = baseMarkup * 0.35;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[2];
       } else if (itemIndex == 4) {
-        double halfMarkup = baseMarkup * 0.4;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[3];
       } else if (itemIndex == 5) {
-        double halfMarkup = baseMarkup * 0.45;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[4];
       } else if (itemIndex >= 6) {
-        double halfMarkup = baseMarkup * 0.5;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[5];
       }
     }
     print("totalPrice: $totalPrice");
@@ -496,6 +505,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
     // Round to 2 decimal places
     return double.parse((totalPrice).toStringAsFixed(2));
   }
+
   // Future<void> getLocation() async {
   //   try {
   //     setState(() {

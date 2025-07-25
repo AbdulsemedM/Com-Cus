@@ -107,6 +107,16 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     });
   }
 
+  List<double> parseTieredPrices(String priceString) {
+    // Remove the square brackets and split by comma
+    String cleanString = priceString.replaceAll('[', '').replaceAll(']', '');
+    List<String> priceStrings =
+        cleanString.split(',').map((e) => e.trim()).toList();
+
+    // Convert each string to double
+    return priceStrings.map((e) => double.parse(e)).toList();
+  }
+
   void _addToCartItems() {
     // if (myKey.currentState!.validate()) {
     // Validate minimum order requirement
@@ -125,6 +135,11 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
 
       ProviderConfigModel? matchingConfig;
       if (widget.myConfig.isNotEmpty) {
+        // print("the widget.myConfig");
+        // for (var config in widget.myConfig) {
+        //   print(config.tieredPrices);
+        // }
+        // print(widget.myConfig.first.tieredPrices);
         try {
           matchingConfig = widget.myConfig.firstWhere((config) {
             return combinationVids.every((vid) => config.vid.contains(vid));
@@ -135,8 +150,8 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
           continue;
         }
       }
-      print("matchingConfig");
-      print(matchingConfig?.originalPrice);
+      // print("matchingConfig");
+      // print(matchingConfig?.tieredPrices);
       // Find applicable price range for this combination's quantity
       final Prices applicablePrice = widget.myPriceRange.firstWhere(
         (price) {
@@ -155,12 +170,25 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
       // Calculate total price for this combination
       final double unitPrice = double.parse(applicablePrice.originalPrice);
       final double totalPrice = unitPrice * combination.quantity;
-
+      var c = matchingConfig?.tieredPrices;
+      // print("the c");
+      // print(c);
+      c?.add(matchingConfig?.additionalItemPrice);
       // Add to cart
       // setState(() {
       myCart.add(CartItem(
-        baseMarkup: matchingConfig?.baseMarkup.toString(),
-        currency: widget.currentCountry == "ETB" ? "ETB" : "\$",
+        baseMarkup: c.toString(),
+        currency: widget.currentCountry == "ETB"
+            ? "ETB"
+            : widget.currentCountry == "USD"
+                ? "\$"
+                : widget.currentCountry == "KES"
+                    ? "KES"
+                    : widget.currentCountry == "AED"
+                        ? "AED"
+                        : widget.currentCountry == "SOS"
+                            ? "SOS"
+                            : "\$",
         description: "provider",
         subProductId: matchingConfig?.id ?? "0",
         name: widget.productName.toString(),
@@ -177,7 +205,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
       print(myCart[0].price);
       print(calculateTotalPrice(
           double.parse(matchingConfig?.originalPrice.toString() ?? "0"),
-          matchingConfig?.baseMarkup ?? 0,
+          c.toString(),
           combination.quantity));
     }
     _addToCart();
@@ -780,134 +808,142 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     }
 
     // Return original widget if attributes are not empty
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: FutureBuilder(
-            future: TranslationService.translate(
-                "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})"),
-            builder: (context, snapshot) {
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: _isMinOrderMet()
-                      ? Colors.green.withOpacity(0.1)
-                      : Colors.red.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  snapshot.data ??
-                      "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: _isMinOrderMet() ? Colors.green : Colors.red,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: groupedAttributes.keys.length,
-          itemBuilder: (context, index) {
-            final propertyName = groupedAttributes.keys.elementAt(index);
-            final items = groupedAttributes[propertyName]!;
-            return _buildAttributeGrid(propertyName, items);
-          },
-        ),
-        SizedBox(height: 10),
-        if (_areAllGroupsSelected())
-          Column(
-            children: [
-              Container(
-                  color: Colors.amber[300],
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FutureBuilder(
-                      future: TranslationService.translate(
-                          "Minimum Order: ${widget.myPriceRange[0].minOr}"),
-                      builder: (context, snapshot) {
-                        return Text(snapshot.data ??
-                            "Minimum Order: ${widget.myPriceRange[0].minOr}");
-                      },
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.8,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: FutureBuilder(
+                future: TranslationService.translate(
+                    "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})"),
+                builder: (context, snapshot) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: _isMinOrderMet()
+                          ? Colors.green.withOpacity(0.1)
+                          : Colors.red.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  )),
-            ],
-          ),
-        if (myCart.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FutureBuilder(
-                  future: TranslationService.translate("Selected Attributes:"),
-                  builder: (context, snapshot) {
-                    return Text(
-                      snapshot.data ?? "Selected Attributes:",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    );
-                  },
-                ),
-                const SizedBox(height: 8),
-                ...myCart.map((entry) {
-                  final attribute = widget.myConfig
-                      .firstWhere((attr) => attr.id == entry.subProductId);
-
-                  return ListTile(
-                    title: Text(
-                      "${attribute.vid}",
-                    ),
-                    subtitle: FutureBuilder(
-                      future: TranslationService.translate(
-                          "Quantity: ${entry.quantity}"),
-                      builder: (context, snapshot) {
-                        return Text(
-                            snapshot.data ?? "Quantity: ${entry.quantity}");
-                      },
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => _removeAttribute(entry),
+                    child: Text(
+                      snapshot.data ??
+                          "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: _isMinOrderMet() ? Colors.green : Colors.red,
+                      ),
                     ),
                   );
-                }).toList(),
-              ],
+                },
+              ),
             ),
-          ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.colorPrimaryDark),
-            onPressed: _isMinOrderMet() ? _addToCartItems : null,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.shopping_cart,
-                  color: AppColors.bg1,
-                ),
-                SizedBox(width: 8),
-                FutureBuilder(
-                  future: TranslationService.translate("Add to Cart"),
-                  builder: (context, snapshot) {
-                    return Text(
-                      snapshot.data ?? "Add to Cart",
-                      style: TextStyle(color: AppColors.bg1),
-                    );
-                  },
-                ),
-              ],
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: groupedAttributes.keys.length,
+              itemBuilder: (context, index) {
+                final propertyName = groupedAttributes.keys.elementAt(index);
+                final items = groupedAttributes[propertyName]!;
+                return _buildAttributeGrid(propertyName, items);
+              },
             ),
-          ),
+            SizedBox(height: 10),
+            if (_areAllGroupsSelected())
+              Column(
+                children: [
+                  Container(
+                      color: Colors.amber[300],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FutureBuilder(
+                          future: TranslationService.translate(
+                              "Minimum Order: ${widget.myPriceRange[0].minOr}"),
+                          builder: (context, snapshot) {
+                            return Text(snapshot.data ??
+                                "Minimum Order: ${widget.myPriceRange[0].minOr}");
+                          },
+                        ),
+                      )),
+                ],
+              ),
+            if (myCart.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FutureBuilder(
+                      future:
+                          TranslationService.translate("Selected Attributes:"),
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data ?? "Selected Attributes:",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    ...myCart.map((entry) {
+                      final attribute = widget.myConfig
+                          .firstWhere((attr) => attr.id == entry.subProductId);
+
+                      return ListTile(
+                        title: Text(
+                          "${attribute.vid}",
+                        ),
+                        subtitle: FutureBuilder(
+                          future: TranslationService.translate(
+                              "Quantity: ${entry.quantity}"),
+                          builder: (context, snapshot) {
+                            return Text(
+                                snapshot.data ?? "Quantity: ${entry.quantity}");
+                          },
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () => _removeAttribute(entry),
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.colorPrimaryDark),
+                onPressed: _isMinOrderMet() ? _addToCartItems : null,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.shopping_cart,
+                      color: AppColors.bg1,
+                    ),
+                    SizedBox(width: 8),
+                    FutureBuilder(
+                      future: TranslationService.translate("Add to Cart"),
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data ?? "Add to Cart",
+                          style: TextStyle(color: AppColors.bg1),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -1109,29 +1145,28 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
   }
 
   double calculateTotalPrice(
-      double itemPrice, double baseMarkup, int quantity) {
+      double itemPrice, String baseMarkup, int quantity) {
     double totalPrice = 0; // Initialize total price to 0
+    List<dynamic> tieredPrices = parseTieredPrices(baseMarkup);
+    // for (var price in tieredPrices) {
+    //   print(price);
+    // }
 
     for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
       if (itemIndex == 1) {
         totalPrice +=
-            itemPrice + baseMarkup; // For the first item, price + full markup
+            tieredPrices[0]; // For the first item, price + full markup
       } else if (itemIndex == 2) {
         // For subsequent items, price + half markup (rounded to 2 decimal places)
-        double halfMarkup = baseMarkup * 0.2;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[1];
       } else if (itemIndex == 3) {
-        double halfMarkup = baseMarkup * 0.35;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[2];
       } else if (itemIndex == 4) {
-        double halfMarkup = baseMarkup * 0.4;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[3];
       } else if (itemIndex == 5) {
-        double halfMarkup = baseMarkup * 0.45;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[4];
       } else if (itemIndex >= 6) {
-        double halfMarkup = baseMarkup * 0.5;
-        totalPrice += itemPrice + baseMarkup - halfMarkup;
+        totalPrice += tieredPrices[5];
       }
     }
     print("totalPrice: $totalPrice");

@@ -11,6 +11,8 @@ import 'package:commercepal/features/products/data/dto/Products_dto.dart';
 import 'package:commercepal/features/products/domain/product.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'package:http/io_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/session/domain/session_repo.dart';
@@ -67,7 +69,10 @@ class ProductsRepositoryImpl implements ProductRepository {
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
             final String currentCountry = prefs.getString("currency") ?? "ETB";
-            final prodObjs = ProductsDto.fromJson(myProducts, currentCountry);
+            final String currentCountryCode =
+                prefs.getString("country") ?? "ET";
+            final prodObjs = ProductsDto.fromJson(
+                myProducts, currentCountry, currentCountryCode);
             print("yesss");
             if (prodObjs.details?.isEmpty == true) {
               throw 'No products found';
@@ -128,7 +133,9 @@ class ProductsRepositoryImpl implements ProductRepository {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         final String currentCountry = prefs.getString("currency") ?? "ETB";
         if (products["statusCode"] == "000") {
-          final prodObjs = ProductsDto.fromJson(products, currentCountry);
+          final String currentCountryCode = prefs.getString("country") ?? "ET";
+          final prodObjs = ProductsDto.fromJson(
+              products, currentCountry, currentCountryCode);
 
           if (prodObjs.details?.isEmpty == true) {
             throw 'No products found';
@@ -192,7 +199,9 @@ class ProductsRepositoryImpl implements ProductRepository {
           // final String currentCountry = countryManager.country;
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           final String currentCountry = prefs.getString("currency") ?? "ETB";
-          final prodObjs = ProductsDto.fromJson(products, currentCountry);
+          final String currentCountryCode = prefs.getString("country") ?? "ET";
+          final prodObjs = ProductsDto.fromJson(
+              products, currentCountry, currentCountryCode);
           if (prodObjs.details?.isEmpty == true) {
             throw 'No products found by that image URL';
           }
@@ -244,7 +253,9 @@ class ProductsRepositoryImpl implements ProductRepository {
           // final String currentCountry = countryManager.country;
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           final String currentCountry = prefs.getString("currency") ?? "ETB";
-          final prodObjs = ProductsDto.fromJson(products, currentCountry);
+          final String currentCountryCode = prefs.getString("country") ?? "ET";
+          final prodObjs = ProductsDto.fromJson(
+              products, currentCountry, currentCountryCode);
           if (prodObjs.details?.isEmpty == true) {
             throw 'No products found by that image';
           }
@@ -314,21 +325,26 @@ class ProductsRepositoryImpl implements ProductRepository {
     // Add other fields
   }
 
+  Future<http.Client> createInsecureHttpClient() async {
+    final ioc = HttpClient()
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+    return IOClient(ioc);
+  }
+
   @override
   Future<List<Product>> searchProduct(String? search, num? size) async {
+    final client = await createInsecureHttpClient();
     try {
       final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
       print(size);
       // final products = await apiProvider.get(
       //     "${isUserBusiness ? EndPoints.businessSearchProducts.url : EndPoints.searchProduct.url}?reqName=$search");
-      final response =
-          // isUserBusiness
-          //     ? await EndPoints.businessSearchProducts.url
-          //     :
-          await http.get(
+      print("searching the new api");
+      final response = await client.get(
         Uri.https(
-          "api.commercepal.com:2096",
-          "/prime/api/v1/data/products",
+          "196.188.172.179:2096",
+          "/prime/api/v1/data/products/temp",
           {
             'page': size == null ? "1" : "2",
             'size': size != null ? size.toString() : '100',
@@ -340,6 +356,7 @@ class ProductsRepositoryImpl implements ProductRepository {
           // 'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+      print(response.request?.url);
 
       // final countryManager = CountryManager();
       // await countryManager.loadCountryFromPreferences();
@@ -352,8 +369,10 @@ class ProductsRepositoryImpl implements ProductRepository {
         // await countryManager.loadCountryFromPreferences();
         // final String currentCountry = countryManager.country;
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        final String currentCountry = prefs.getString("currency") ?? "ETB";
-        final prodObjs = ProductsDto.fromJson(products, currentCountry);
+        final String currentCountry = prefs.getString("currency") ?? "USD";
+        final String currentCountryCode = prefs.getString("country") ?? "XX";
+        final prodObjs =
+            ProductsDto.fromJson(products, currentCountry, currentCountryCode);
         if (prodObjs.details?.isEmpty == true) {
           throw 'No products found by that name';
         }

@@ -58,12 +58,13 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   String valid = 'login';
   String? _selectedCurrency;
   final countryManager = CountryManager();
-
+  String _selectedCountry = "US";
   @override
   void initState() {
     super.initState();
     checkToken();
     _loadSelectedCurrency();
+    _loadSelectedCountry();
     setState(() {
       dropdownValue = list.first;
     });
@@ -73,19 +74,47 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   Future<void> _loadSelectedCurrency() async {
     // await countryManager.loadCountryFromPreferences();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String currentCountry = prefs.getString("currency") ?? "";
-    if (currentCountry == "ETB") {
+    final String currency = prefs.getString("currency") ?? "";
+    if (currency == "ETB") {
       _selectedCurrency = "ETB";
-    } else if (currentCountry == "AE") {
+    } else if (currency == "AED") {
       _selectedCurrency = "AED";
+    } else if (currency == "KES") {
+      _selectedCurrency = "KES";
+    } else if (currency == "SOS") {
+      _selectedCurrency = "SOS";
     } else {
       _selectedCurrency = "USD";
+    }
+  }
+
+  Future<void> _loadSelectedCountry() async {
+    // await countryManager.loadCountryFromPreferences();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String country = prefs.getString("country") ?? "";
+    if (country == "ET") {
+      _selectedCountry = "ET";
+    } else if (country == "AE") {
+      _selectedCountry = "AE";
+    } else if (country == "KE") {
+      _selectedCountry = "KE";
+    } else if (country == "SO") {
+      _selectedCountry = "SO";
+    } else {
+      _selectedCountry = "US";
     }
   }
 
   Future<void> _saveSelectedCurrency(String currency) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("currency", currency);
+    final cartDao = getIt<CartDao>();
+    await cartDao.nuke();
+  }
+
+  Future<void> _saveSelectedCountry(String country) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("country", country);
     final cartDao = getIt<CartDao>();
     await cartDao.nuke();
   }
@@ -426,6 +455,15 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           ),
           const Divider(),
           UserMenuItem(
+            icon: Icons.public,
+            title: "Change Country",
+            language: dropdownValue,
+            onClick: () {
+              _buildCountryDialog(context);
+            },
+          ),
+          const Divider(),
+          UserMenuItem(
             icon: Icons.cleaning_services_outlined,
             title: "Clear Cache",
             language: dropdownValue,
@@ -711,6 +749,160 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                       setState(() {
                         _selectedCurrency = value;
                         _saveSelectedCurrency(value);
+                      });
+                      Navigator.of(context).pop(); // Close the dialog
+                    }
+                  },
+                ),
+              ),
+              ListTile(
+                title: GestureDetector(
+                  onTap: () {
+                    _saveSelectedCurrency("KES");
+                    _selectedCurrency = "KES";
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("KES"),
+                ),
+                leading: Radio<String>(
+                  value: "KES",
+                  groupValue: _selectedCurrency,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedCurrency = value;
+                        _saveSelectedCurrency(value);
+                      });
+                      Navigator.of(context).pop(); // Close the dialog
+                    }
+                  },
+                ),
+              ),
+              ListTile(
+                title: GestureDetector(
+                  onTap: () {
+                    _saveSelectedCurrency("SOS");
+                    _selectedCurrency = "SOS";
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("SOS"),
+                ),
+                leading: Radio<String>(
+                  value: "SOS",
+                  groupValue: _selectedCurrency,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedCurrency = value;
+                        _saveSelectedCurrency(value);
+                      });
+                      Navigator.of(context).pop(); // Close the dialog
+                    }
+                  },
+                ),
+              ),    
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _buildCountryDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Change Country"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: GestureDetector(
+                  onTap: () {
+                    _saveSelectedCountry("ET");
+                    _selectedCountry = "ET";
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("ET"),
+                ),
+                leading: Radio<String>(
+                  value: "ET",
+                  groupValue: _selectedCountry,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedCountry = value;
+                        _saveSelectedCountry(value);
+                      });
+                      Navigator.of(context).pop(); // Close the dialog
+                    }
+                  },
+                ),
+              ),
+              ListTile(
+                title: GestureDetector(
+                  onTap: () {
+                    _saveSelectedCountry("AE");
+                    _selectedCountry = "AE";
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("AE"),
+                ),
+                leading: Radio<String>(
+                  value: "AE",
+                  groupValue: _selectedCountry,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedCountry = value;
+                        _saveSelectedCountry(value);
+                      });
+                      Navigator.of(context).pop(); // Close the dialog
+                    }
+                  },
+                ),
+              ),
+              ListTile(
+                title: GestureDetector(
+                  onTap: () {
+                    _saveSelectedCountry("KE");
+                    _selectedCountry = "KE";
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("KE"),
+                ),
+                leading: Radio<String>(
+                  value: "KE",
+                  groupValue: _selectedCountry,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedCountry = value;
+                        _saveSelectedCountry(value);
+                      });
+                      Navigator.of(context).pop(); // Close the dialog
+                    }
+                  },
+                ),
+              ),
+              ListTile(
+                title: GestureDetector(
+                  onTap: () {
+                    _saveSelectedCountry("SO");
+                    _selectedCountry = "SO";
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("SO"),
+                ),
+                leading: Radio<String>(
+                  value: "SO",
+                  groupValue: _selectedCountry,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedCountry = value;
+                        _saveSelectedCountry(value);
                       });
                       Navigator.of(context).pop(); // Close the dialog
                     }

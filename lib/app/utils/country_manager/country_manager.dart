@@ -22,7 +22,11 @@ class CountryManager {
         ? 'ETB'
         : _country == "AE"
             ? "AED"
-            : 'USD';
+            : _country == "KE"
+                ? "KES"
+                : _country == "SO"
+                    ? "SOS"
+                    : 'USD';
     await prefs.setString(_currencyKey, currency);
     print(
         "Loaded country from preferences: $_country with currency: $currency");
