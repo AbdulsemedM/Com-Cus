@@ -22,7 +22,9 @@ class UserRegistrationCubit extends Cubit<UserRegistrationState> {
       String? phoneNumber,
       String? countryName,
       String? city,
-      String? countryCode) async {
+      String? password,
+      String? countryCode,
+      String? confirmPassword) async {
     try {
       emit(const UserRegistrationState.loading());
       // validate country
@@ -42,20 +44,21 @@ class UserRegistrationCubit extends Cubit<UserRegistrationState> {
       }
 
       // validate phone number
-      final isValid =
-          await phoneNumberUtils.validateMobileApi(phoneNumber!, countryCode!);
-      if (!isValid) {
-        throw 'Invalid phone number format';
-      }
+      final isValid = await phoneNumberUtils.validateMobileApi(
+          countryCode! + phoneNumber!, countryCode);
+      // if (!isValid) {
+      //   throw 'Invalid phone number format';
+      // }
 
       // make request
-      final isoPhone =
-          await phoneNumberUtils.passPhoneToIso(phoneNumber, countryCode);
-      await userRegistrationRepo.registerUser(
-          fName!, sName!, isoPhone!, countryName, city, email);
-
+      final isoPhone = await phoneNumberUtils.passPhoneToIso(
+          countryCode! + phoneNumber!, countryCode);
+      await userRegistrationRepo.registerUser(fName!, sName!, phoneNumber,
+          countryName, city, email, countryCode, password, confirmPassword);
+      // print("the iso phone is here");
+      // print(isoPhone);
       // return success with parsed phone number
-      emit(UserRegistrationState.success(isoPhone));
+      emit(UserRegistrationState.success(countryName + phoneNumber));
     } catch (e) {
       emit(UserRegistrationState.error(e.toString()));
     }

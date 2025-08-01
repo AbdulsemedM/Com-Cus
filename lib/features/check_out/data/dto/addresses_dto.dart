@@ -51,11 +51,8 @@ class AddressesDto {
       );
 
   String? get statusDescription => _statusDescription;
-
   List<Data>? get data => _data;
-
   String? get statusMessage => _statusMessage;
-
   String? get statusCode => _statusCode;
 
   Map<String, dynamic> toJson() {
@@ -70,23 +67,65 @@ class AddressesDto {
   }
 }
 
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
+class Country {
+  final String? countryCode;
+  final String? name;
+  final String? phoneCode;
+  final num? id;
+  final num? status;
+  final String? createdDate;
+  final String? updatedAt;
+  final bool? deliveryAllowed;
 
-String dataToJson(Data data) => json.encode(data.toJson());
+  Country({
+    this.countryCode,
+    this.name,
+    this.phoneCode,
+    this.id,
+    this.status,
+    this.createdDate,
+    this.updatedAt,
+    this.deliveryAllowed,
+  });
+
+  factory Country.fromJson(Map<String, dynamic> json) => Country(
+        countryCode: json['countryCode'] as String?,
+        name: json['name'] as String?,
+        phoneCode: json['phoneCode'] as String?,
+        id: json['id'] as num?,
+        status: json['status'] as num?,
+        createdDate: json['createdDate'] as String?,
+        updatedAt: json['updatedAt'] as String?,
+        deliveryAllowed: json['deliveryAllowed'] as bool?,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'countryCode': countryCode,
+        'name': name,
+        'phoneCode': phoneCode,
+        'id': id,
+        'status': status,
+        'createdDate': createdDate,
+        'updatedAt': updatedAt,
+        'deliveryAllowed': deliveryAllowed,
+      };
+}
 
 class Data {
   Data({
-    String? country,
+    dynamic mapReferenceCity,
+    Country? country,
     String? subCity,
     num? regionId,
     String? city,
     String? latitude,
     String? physicalAddress,
     num? id,
-    num? cityId,
+    dynamic cityId,
     String? longitude,
     num? addressId,
   }) {
+    _mapReferenceCity = mapReferenceCity;
     _country = country;
     _subCity = subCity;
     _regionId = regionId;
@@ -100,7 +139,9 @@ class Data {
   }
 
   Data.fromJson(dynamic json) {
-    _country = json['country'];
+    _mapReferenceCity = json['mapReferenceCity'];
+    _country =
+        json['country'] != null ? Country.fromJson(json['country']) : null;
     _subCity = json['subCity'];
     _regionId = json['regionId'];
     _city = json['city'];
@@ -112,30 +153,33 @@ class Data {
     _addressId = json['addressId'];
   }
 
-  String? _country;
+  dynamic _mapReferenceCity;
+  Country? _country;
   String? _subCity;
   num? _regionId;
   String? _city;
   String? _latitude;
   String? _physicalAddress;
   num? _id;
-  num? _cityId;
+  dynamic _cityId;
   String? _longitude;
   num? _addressId;
 
   Data copyWith({
-    String? country,
+    dynamic mapReferenceCity,
+    Country? country,
     String? subCity,
     num? regionId,
     String? city,
     String? latitude,
     String? physicalAddress,
     num? id,
-    num? cityId,
+    dynamic cityId,
     String? longitude,
     num? addressId,
   }) =>
       Data(
+        mapReferenceCity: mapReferenceCity ?? _mapReferenceCity,
         country: country ?? _country,
         subCity: subCity ?? _subCity,
         regionId: regionId ?? _regionId,
@@ -148,29 +192,24 @@ class Data {
         addressId: addressId ?? _addressId,
       );
 
-  String? get country => _country;
-
+  dynamic get mapReferenceCity => _mapReferenceCity;
+  Country? get country => _country;
   String? get subCity => _subCity;
-
   num? get regionId => _regionId;
-
   String? get city => _city;
-
   String? get latitude => _latitude;
-
   String? get physicalAddress => _physicalAddress;
-
   num? get id => _id;
-
-  num? get cityId => _cityId;
-
+  dynamic get cityId => _cityId;
   String? get longitude => _longitude;
-
   num? get addressId => _addressId;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['country'] = _country;
+    map['mapReferenceCity'] = _mapReferenceCity;
+    if (_country != null) {
+      map['country'] = _country?.toJson();
+    }
     map['subCity'] = _subCity;
     map['regionId'] = _regionId;
     map['city'] = _city;
@@ -183,6 +222,15 @@ class Data {
     return map;
   }
 
-  Address toAddress() => Address(id, physicalAddress, country, city, subCity,
-      regionId, false, physicalAddress, addressId);
+  Address toAddress() => Address(
+        id,
+        physicalAddress,
+        country?.name,
+        city,
+        subCity,
+        regionId,
+        false,
+        physicalAddress,
+        addressId,
+      );
 }

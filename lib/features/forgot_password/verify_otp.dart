@@ -7,6 +7,8 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:http/http.dart' as http;
 
+import '../login/presentation/login_page.dart';
+
 class VerifyOTP extends StatefulWidget {
   final String userName;
   const VerifyOTP({Key? key, required this.userName}) : super(key: key);
@@ -19,6 +21,15 @@ class _VerifyOTPState extends State<VerifyOTP> {
   var loading = false;
   String? myOTP;
   String? jwttoken;
+  final TextEditingController _passwordController = TextEditingController();
+  bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var sHeight = MediaQuery.of(context).size.height * 1;
@@ -49,7 +60,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                   child: Text(
-                "Please enter the OTP sent to you",
+                "Please enter the OTP sent to you and your new password",
               )),
             ),
             Padding(
@@ -69,6 +80,44 @@ class _VerifyOTPState extends State<VerifyOTP> {
               ),
             ),
             SizedBox(
+              height: MediaQuery.of(context).size.height * 0.03,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              child: TextFormField(
+                controller: _passwordController,
+                obscureText: _obscurePassword,
+                decoration: InputDecoration(
+                  labelText: 'New Password',
+                  hintText: 'Enter your new password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a password';
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            SizedBox(
               height: MediaQuery.of(context).size.height * 0.04,
             ),
             !loading && myOTP != null
@@ -76,17 +125,17 @@ class _VerifyOTPState extends State<VerifyOTP> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.colorPrimaryDark),
                     onPressed: () async {
-                      if (myOTP!.isNotEmpty) {
+                      if (myOTP!.isNotEmpty &&
+                          _passwordController.text.isNotEmpty) {
                         bool done = await sendOTP();
                         if (done) {
                           // ignore: use_build_context_synchronously
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ResetPassword(
-                                        jwttoken: jwttoken!,
-                                        email: widget.userName,
-                                      )));
+                                  builder: (context) =>
+                                      const LoginPage(fromCart: false)),
+                              (Route<dynamic> route) => false);
                         } else {
                           // ignore: use_build_context_synchronously
                           showDialog(
@@ -102,13 +151,21 @@ class _VerifyOTPState extends State<VerifyOTP> {
                                       Navigator.of(context)
                                           .pop(true); // User confirms deletion
                                     },
-                                    child: const Text('Yes'),
+                                    child: const Text('OK'),
                                   ),
                                 ],
                               );
                             },
                           );
                         }
+                      } else {
+                        // Show validation message
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please enter both OTP and password'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                       }
                     },
                     child: const Text(
@@ -131,17 +188,19 @@ class _VerifyOTPState extends State<VerifyOTP> {
         loading = true;
       });
       Map<String, dynamic> payload = {
-        "user":  widget.userName.toString(),
-        "code": myOTP.toString(),
+        "emailOrPhone": widget.userName.toString(),
+        "token": myOTP.toString(),
+        "newPassword": _passwordController.text.trim()
       };
       print(payload);
 
       final response = await http.post(
         Uri.https(
-          "api.commercepal.com:2096",
-          "/prime/api/v1/confirm-code",
+          "api.commercepal.com",
+          "/api/v2/auth/password-reset/confirm",
         ),
         body: jsonEncode(payload),
+        headers: <String, String>{'Content-Type': 'application/json'},
         // headers: <String, String>{"Authorization": "Bearer $token"},
       );
 
@@ -150,7 +209,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
 
       if (data['statusCode'] == '000') {
         setState(() {
-          jwttoken = data['jwttoken'];
+          // jwttoken = data['jwttoken'];
           loading = false;
         });
         return true;

@@ -19,7 +19,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       emit(const PaymentState.loading());
       final data = await paymentRepo.fetchPaymentModes(currency);
       if (currency == "ETB") {
-        await _attachFinancialInsts(data);
+        // await _attachFinancialInsts(data);
       }
       emit(PaymentState.paymentMethods(data));
     } catch (e) {

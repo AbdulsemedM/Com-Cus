@@ -87,7 +87,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.facebook.android:facebook-login:[8,9)'
+    // implementation 'com.facebook.android:facebook-login:[8,9)'
     // implementation 'com.android.installreferrer:installreferrer:2.2'
     implementation platform('com.google.firebase:firebase-bom:32.7.2')
     implementation 'com.google.firebase:firebase-analytics'

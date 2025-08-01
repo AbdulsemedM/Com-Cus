@@ -7,6 +7,7 @@ import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/addresses/presentation/edit_address_page.dart';
 import 'package:commercepal/features/addresses/presentation/search_places.dart';
 import 'package:commercepal/features/check_out/data/models/address.dart';
+import 'package:commercepal/features/new_add_address/presentation/screen/new_add_address_screen.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
@@ -156,89 +157,94 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
                           ),
                     InkWell(
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: loading
-                                  ? const Text("Loading...")
-                                  : Text(FAdd),
-                              content: Column(
-                                mainAxisSize: MainAxisSize
-                                    .min, // Set the mainAxisSize to min
-                                children: [
-                                  loading
-                                      ? const Text("Loading...")
-                                      : Text(HDO),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        height: sHeight * 0.02,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          Navigator.pushNamed(context,
-                                                  SearchPlacesScreen.routeName)
-                                              .then((value) =>
-                                                  widget.reloadPage());
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                AppColors.colorPrimaryDark),
-                                        child: loading
-                                            ? const Text("Loading...")
-                                            : Text(
-                                                Aut,
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                      ),
-                                      SizedBox(
-                                        height: sHeight * 0.02,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          Navigator.pushNamed(context,
-                                                  AddAddressPage.routeName)
-                                              .then((value) =>
-                                                  widget.reloadPage());
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                AppColors.colorPrimaryDark),
-                                        child: loading
-                                            ? const Text("Loading...")
-                                            : Text(
-                                                Man,
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(false); // User does not confirm
-                                  },
-                                  child: loading
-                                      ? const Text("Loading...")
-                                      : Text(
-                                          Can,
-                                          style: const TextStyle(
-                                              color: Colors.red),
-                                        ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const NewAddAddressScreen()));
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return AlertDialog(
+                        //       title: loading
+                        //           ? const Text("Loading...")
+                        //           : Text(FAdd),
+                        //       content: Column(
+                        //         mainAxisSize: MainAxisSize
+                        //             .min, // Set the mainAxisSize to min
+                        //         children: [
+                        //           loading
+                        //               ? const Text("Loading...")
+                        //               : Text(HDO),
+                        //           Column(
+                        //             mainAxisAlignment: MainAxisAlignment.center,
+                        //             children: [
+                        //               SizedBox(
+                        //                 height: sHeight * 0.02,
+                        //               ),
+                        //               ElevatedButton(
+                        //                 onPressed: () {
+                        //                   Navigator.pop(context);
+                        //                   Navigator.pushNamed(context,
+                        //                           SearchPlacesScreen.routeName)
+                        //                       .then((value) =>
+                        //                           widget.reloadPage());
+                        //                 },
+                        //                 style: ElevatedButton.styleFrom(
+                        //                     backgroundColor:
+                        //                         AppColors.colorPrimaryDark),
+                        //                 child: loading
+                        //                     ? const Text("Loading...")
+                        //                     : Text(
+                        //                         Aut,
+                        //                         style: const TextStyle(
+                        //                             color: Colors.white),
+                        //                       ),
+                        //               ),
+                        //               SizedBox(
+                        //                 height: sHeight * 0.02,
+                        //               ),
+                        //               ElevatedButton(
+                        //                 onPressed: () {
+                        //                   Navigator.pop(context);
+                        //                   Navigator.pushNamed(context,
+                        //                           AddAddressPage.routeName)
+                        //                       .then((value) =>
+                        //                           widget.reloadPage());
+                        //                 },
+                        //                 style: ElevatedButton.styleFrom(
+                        //                     backgroundColor:
+                        //                         AppColors.colorPrimaryDark),
+                        //                 child: loading
+                        //                     ? const Text("Loading...")
+                        //                     : Text(
+                        //                         Man,
+                        //                         style: const TextStyle(
+                        //                             color: Colors.white),
+                        //                       ),
+                        //               ),
+                        //             ],
+                        //           )
+                        //         ],
+                        //       ),
+                        //       actions: <Widget>[
+                        //         TextButton(
+                        //           onPressed: () {
+                        //             Navigator.of(context)
+                        //                 .pop(false); // User does not confirm
+                        //           },
+                        //           child: loading
+                        //               ? const Text("Loading...")
+                        //               : Text(
+                        //                   Can,
+                        //                   style: const TextStyle(
+                        //                       color: Colors.red),
+                        //                 ),
+                        //         ),
+                        //       ],
+                        //     );
+                        //   },
+                        // );
                       },
                       child: loading
                           ? const Text("Loading...")

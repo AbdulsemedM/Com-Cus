@@ -72,6 +72,7 @@ class LoginRepositoryImpl implements LoginRepository {
           await prefsData.writeData(PrefsKeys.auth.name, response);
 
           // get user details
+          print("here goes the login");
           final userResponse = await apiProvider.get(EndPoints.userDetails.url);
           if (userResponse['statusCode'] == '000') {
             final uObj = UserModel.fromJson(userResponse);
@@ -82,12 +83,12 @@ class LoginRepositoryImpl implements LoginRepository {
           } else {
             // clear token in case user is not found
             await prefsData.nuke();
-            throw userResponse['statusDescription'];
+            throw userResponse['statusMessage'];
           }
 
           return AuthModel.fromJson(decodedResponse);
         } else {
-          throw decodedResponse['statusDescription'];
+          throw decodedResponse['statusMessage'];
         }
       }
     } catch (e) {

@@ -316,16 +316,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         loading = true;
       });
       Map<String, dynamic> payload = {
-        "user": phoneNumber ?? emailAddress.toString(),
+        "emailOrPhone": phoneNumber ?? emailAddress.toString(),
       };
       print(payload);
 
       final response = await http.post(
         Uri.https(
-          "api.commercepal.com:2096",
-          "/prime/api/v1/password-type-reset",
+          "api.commercepal.com",
+          "/api/v2/auth/password-reset/request",
         ),
         body: jsonEncode(payload),
+        headers: <String, String>{'Content-Type': 'application/json'},
         // headers: <String, String>{"Authorization": "Bearer $token"},
       );
 

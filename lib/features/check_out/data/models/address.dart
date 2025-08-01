@@ -31,15 +31,18 @@ class Address {
       addressId: addressId,
       id: id);
 
-  factory Address.fromJson(Map<String, dynamic> json) => Address(
-        json['id'],
-        json['name'],
-        json['country'],
-        json['city'],
-        json['subCounty'],
-        json['cityId'],
-        json['selected'],
-        json['physicalAddress'],
-        json['addressId'],
-      );
+  factory Address.fromJson(Map<String, dynamic> json) {
+    final country = json['country'] as Map<String, dynamic>?;
+    return Address(
+      json['id'],
+      json['physicalAddress'],
+      country?['name'],
+      json['city'],
+      json['subCity'],
+      json['regionId'],
+      json['selected'] ?? false,
+      json['physicalAddress'],
+      json['addressId'],
+    );
+  }
 }

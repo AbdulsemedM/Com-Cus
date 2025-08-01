@@ -67,6 +67,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
       final addressesResponse = jsonDecode(response);
       if (addressesResponse['statusCode'] == '000') {
         final aObject = AddressesDto.fromJson(addressesResponse);
+        print("addressesResponse");
         if (aObject.data?.isEmpty == true) {
           throw "No addresses found. Click 'Add address' to add one";
         }
@@ -85,6 +86,8 @@ class CheckOutRepoImpl implements CheckOutRepo {
         throw addressesResponse['statusDescription'];
       }
     } catch (e) {
+      print("error in fetchAddresses");
+      print(e.toString());
       rethrow;
     }
   }
@@ -180,6 +183,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
         throw response['statusDescription'];
       }
     } catch (e) {
+      print("error in generateOrderRef");
       // print(e.toString());
       rethrow;
     }
@@ -247,6 +251,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
         // throw response['statusDescription'];
       }
     } catch (e) {
+      print("error in getDeliveryFee");
       rethrow;
     }
   }

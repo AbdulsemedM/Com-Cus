@@ -95,6 +95,7 @@ class ProductsRepositoryImpl implements ProductRepository {
       }
     } else {
       try {
+        print("this is the query params");
         String? queryString;
         queryParams?.forEach((key, value) {
           // check if there is a value
@@ -124,8 +125,9 @@ class ProductsRepositoryImpl implements ProductRepository {
         //     'Content-Type': 'application/json; charset=UTF-8',
         //   },
         // );
+        
 
-        print("products");
+        print("this is the products");
         print(products);
         // var products = jsonDecode(response.body);
         // await countryManager.loadCountryFromPreferences();

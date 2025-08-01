@@ -14,10 +14,10 @@ class AuthModel {
     this.isPhoneValidated,
     this.isEmailProvided,
     this.isEmailValidated,
-    num? changePin,
+    dynamic changePin,
     String? refreshToken,
     String? phoneNumber,
-    num? isPhoneProvided,
+    dynamic isPhoneProvided,
     // num? isEmailProvided,
   }) {
     _userToken = userToken;
@@ -41,22 +41,22 @@ class AuthModel {
   }
 
   String? _userToken;
-  num? isPhoneValidated;
-  num? isEmailValidated;
-  num? _changePin;
+  dynamic isPhoneValidated;
+  dynamic isEmailValidated;
+  dynamic _changePin;
   String? _refreshToken;
   String? _phoneNumber;
-  num? isPhoneProvided;
-  num? isEmailProvided;
+  dynamic isPhoneProvided;
+  dynamic isEmailProvided;
 
   AuthModel copyWith({
     String? userToken,
-    num? isPhoneValidated,
-    num? isEmailValidated,
-    num? changePin,
+    dynamic isPhoneValidated,
+    dynamic isEmailValidated,
+    dynamic changePin,
     String? refreshToken,
-    num? isPhoneProvided,
-    num? isEmailProvided,
+    dynamic isPhoneProvided,
+    dynamic isEmailProvided,
   }) =>
       AuthModel(
         userToken: userToken ?? _userToken,
@@ -70,7 +70,7 @@ class AuthModel {
 
   String? get userToken => _userToken;
 
-  num? get changePin => _changePin;
+  dynamic get changePin => _changePin;
 
   String? get refreshToken => _refreshToken;
 

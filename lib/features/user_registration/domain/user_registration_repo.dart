@@ -7,5 +7,8 @@ abstract class UserRegistrationRepo {
     String country,
     String city,
     String? email,
+    String? countryCode,
+    String? password,
+    String? confirmPassword,
   );
 }
