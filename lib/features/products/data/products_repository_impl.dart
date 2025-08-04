@@ -109,7 +109,7 @@ class ProductsRepositoryImpl implements ProductRepository {
         final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
         print(queryString);
         final products = await apiProvider.get(
-            "${isUserBusiness ? EndPoints.businessProducts.url : EndPoints.products.url}?${queryString ?? 'subCat=$subCatId'}");
+            "${isUserBusiness ? EndPoints.businessProducts.url : EndPoints.products.url}?${queryString ?? 'subCategory=$subCatId'}");
         // final response = await http.get(
         //   Uri.https(
         //     "api.commercepal.com:2096",

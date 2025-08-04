@@ -107,7 +107,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
     OrderSumm = TranslationService.translate("Order Summary");
     ShipFee = TranslationService.translate("Shipping Fee");
     OrderTot = TranslationService.translate("Order Total");
-    ShipBill = TranslationService.translate("Continue");
+    ShipBill = TranslationService.translate("Payment");
 
     // Use await to get the actual string value from the futures
     OSumm = await OrderSumm;

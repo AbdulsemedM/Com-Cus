@@ -131,7 +131,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                                     .bodyLarge
                                     ?.copyWith(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 12),
+                                        fontSize: 16),
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               );
@@ -161,15 +161,15 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                       productId: widget.productId,
                       imageUrl: mainPics[0],
                       currentCountry: currentCountryForm,
-
                     ),
                   ),
                   _buildDeliveryEstimate(context),
                   const SizedBox(height: 10),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    child: ProductGridWidget(products: recommendedProd),
-                  ),
+                  if (recommendedProd.isEmpty != true)
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: ProductGridWidget(products: recommendedProd),
+                    ),
                 ],
               ),
             ),
@@ -275,15 +275,14 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       // final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       // if (isUserLoggedIn) {
       //   final token = await prefsData.readData(PrefsKeys.userToken.name);
-      final httpClient = await createInsecureHttpClient();
-      final response = await httpClient.get(
+      // final httpClient = await createInsecureHttpClient();
+      final response = await http.get(
         Uri.https(
-          "196.188.172.179:2096",
+          "api.commercepal.com",
           "/prime/api/v1/data/products/temp/${widget.productId}",
         ),
         headers: <String, String>{},
       );
-
       var data = jsonDecode(response.body);
       // print(data);
 
@@ -303,6 +302,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
           myPriceRange = data["QuantityRanges"] != null
               ? parseQuantityRanges(
                   List<Map<String, dynamic>>.from(data["QuantityRanges"]),
+                  currentCountryCode,
                   currentCountry)
               : [
                   Prices(
@@ -358,17 +358,17 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                 additionalItemPrice: config.additionalItemPrice,
                 originalPrice: config.originalPrice));
           }
-          final prod = data['RecommendedItems'];
-          final prodObjs =
-              ProductsDto.fromJson(prod, currentCountry, currentCountryCode);
-          if (prodObjs.details?.isEmpty == true) {
-            throw 'No products found';
+          if (data['RecommendedItems']['details'].isEmpty == false) {
+            final prod = data['RecommendedItems'];
+            final prodObjs =
+                ProductsDto.fromJson(prod, currentCountry, currentCountryCode);
+            if (prodObjs.details?.isEmpty == true) {}
+            print("hrreeerr");
+            recommendedProd = prodObjs.details!
+                .where((element) => element.productId != null)
+                .map((e) => e.toProduct())
+                .toList();
           }
-          print("hrreeerr");
-          recommendedProd = prodObjs.details!
-              .where((element) => element.productId != null)
-              .map((e) => e.toProduct())
-              .toList();
           loading = false;
         });
         // Handle the case when statusCode is '000'
@@ -388,8 +388,8 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
     }
   }
 
-  List<Prices> parseQuantityRanges(
-      List<Map<String, dynamic>> quantityRanges, String country) {
+  List<Prices> parseQuantityRanges(List<Map<String, dynamic>> quantityRanges,
+      String country, String currency) {
     List<Prices> pricesList = [];
 
     for (int i = 0; i < quantityRanges.length; i++) {
@@ -398,15 +398,20 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       // Get the prices array
       var prices = quantityRanges[i]['Price']['prices'] as List;
       // Select price based on country
-      var priceData = prices.firstWhere((p) => p['currencyCode'] == (country))
-          as Map<String, dynamic>;
+      print("parsing the quantity");
+      print(prices);
+      var priceData1 = prices.firstWhere((p) => p['countryCode'] == (country))
+          as Map<dynamic, dynamic>;
+      var priceData2 = priceData1["prices"] as List<dynamic>;
+      var priceData =
+          priceData2.firstWhere((p) => p['currencyCode'] == currency);
 
       // Convert to string to handle both int and double values
-      var price = priceData['originalPrice'].toString();
+      var price = priceData['price'].toString();
       // Ensure baseMarkup is handled as double
-      var baseMarkup = (priceData['baseMarkup'] is int)
-          ? (priceData['baseMarkup'] as int).toDouble()
-          : priceData['baseMarkup'] as double;
+      // var baseMarkup = (priceData['baseMarkup'] is int)
+      //     ? (priceData['baseMarkup'] as int).toDouble()
+      //     : priceData['baseMarkup'] as double;
 
       String? maxQuantity;
       if (i == quantityRanges.length - 1) {
@@ -422,7 +427,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
           originalPrice: price,
           minOr: minQuantity,
           maxOr: maxQuantity,
-          baseMarkup: baseMarkup));
+          baseMarkup: 0));
     }
     return pricesList;
   }

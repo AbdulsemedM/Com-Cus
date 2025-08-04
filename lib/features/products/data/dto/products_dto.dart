@@ -42,7 +42,14 @@ class ProductsDto {
       json['products'].forEach((v) {
         _details?.add(ProductDetails.fromJson(v, currency, country));
       });
-    } else {
+    } else if (json['responseData'] != null &&
+        json['responseData']['content'] != null) {
+      // Case 1: products exist under responseData
+      json['responseData']['content'].forEach((v) {
+        _details?.add(ProductDetails.fromJson(v, currency, country));
+      });
+    }
+    {
       // Case 4: No products found
       // print("No products found in the response.");
     }
@@ -221,7 +228,7 @@ class ProductDetails {
     print(json['Provider']);
     print(currency);
     print(country);
-    String pid = json['ProductId'].toString();
+    String pid = json['productId'].toString();
     try {
       if (json['prices'] != null && json['prices'] is List) {
         var prices = json['prices'] as List;
@@ -262,7 +269,6 @@ class ProductDetails {
             _currency = fin['currencyCode'];
           }
         } else if (country == "AE") {
-          
           // For Arab emirates, find price with isMainCurrency = true
           var mainPrice = prices.firstWhere(
             (price) => price['countryCode'] == "AE",
@@ -298,9 +304,7 @@ class ProductDetails {
             _unitPrice = fin['price'];
             _currency = fin['currencyCode'];
           }
-         
-        }  else if (country == "KE") {
-          
+        } else if (country == "KE") {
           // For Kenya, find price with isMainCurrency = true
           var mainPrice = prices.firstWhere(
             (price) => price['countryCode'] == "KE",
@@ -336,7 +340,6 @@ class ProductDetails {
             _unitPrice = fin['price'];
             _currency = fin['currencyCode'];
           }
-         
         } else if (country == "SO") {
           print("did we got here");
           // For Somalia, find price with isMainCurrency = true
@@ -359,15 +362,14 @@ class ProductDetails {
             );
             _unitPrice = fin['price'];
             _currency = fin['currencyCode'];
-          }else if (currency == "AED") {
+          } else if (currency == "AED") {
             var fin = mainPrice.firstWhere(
               (price) => price['currencyCode'] == "AED",
               orElse: () => mainPrice.first,
             );
             _unitPrice = fin['price'];
             _currency = fin['currencyCode'];
-          }
-           else if (currency == "KES") {
+          } else if (currency == "KES") {
             var fin = mainPrice.firstWhere(
               (price) => price['currencyCode'] == "KES",
               orElse: () => mainPrice.first,
@@ -382,9 +384,8 @@ class ProductDetails {
             _unitPrice = fin['price'];
             _currency = fin['currencyCode'];
           }
-         
         } else {
-         var mainPrice = prices.firstWhere(
+          var mainPrice = prices.firstWhere(
             (price) => price['countryCode'] == "XX",
             orElse: () => prices.first,
           );
@@ -410,8 +411,7 @@ class ProductDetails {
             );
             _unitPrice = fin['price'];
             _currency = fin['currencyCode'];
-          }
-           else if (currency == "KES") {
+          } else if (currency == "KES") {
             var fin = mainPrice.firstWhere(
               (price) => price['currencyCode'] == "KES",
               orElse: () => mainPrice.first,

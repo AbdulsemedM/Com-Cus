@@ -21,7 +21,7 @@ class _MinOrderPricePageState extends State<MinOrderPricePage> {
         borderRadius: BorderRadius.circular(10),
       ),
       width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.width * 0.15,
+      height: MediaQuery.of(context).size.width * 0.10,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(

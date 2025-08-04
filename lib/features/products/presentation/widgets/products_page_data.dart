@@ -119,7 +119,7 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                 child: GridView.count(
                   controller: scrollController,
                   crossAxisCount: 2,
-                  childAspectRatio: 0.76,
+                  childAspectRatio: 0.95,
                   children: List.generate(
                     products.length + (isLoadingMore ? 1 : 0),
                     (index) {

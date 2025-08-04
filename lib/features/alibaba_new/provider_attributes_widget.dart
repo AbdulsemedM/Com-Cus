@@ -472,6 +472,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                   title: Text(
                     attribute.OriginalValue.toString(),
                     style: TextStyle(
+                      fontSize: 10,
                       color: canSelect ? Colors.black : Colors.grey,
                     ),
                   ),
@@ -480,6 +481,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                     children: [
                       IconButton(
                         icon: Icon(
+                          size: 16,
                           Icons.remove_circle_outline,
                           color: canSelect ? null : Colors.grey,
                         ),
@@ -523,6 +525,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                           )),
                       IconButton(
                         icon: Icon(
+                          size: 16,
                           Icons.add_circle_outline,
                           color: canSelect ? null : Colors.grey,
                         ),
@@ -639,8 +642,9 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
           child: GridView.builder(
             shrinkWrap: true,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              mainAxisSpacing: 0.1,
               crossAxisCount: 4,
-              childAspectRatio: 1,
+              childAspectRatio: 1.2,
             ),
             itemCount: items.length,
             itemBuilder: (context, index) {

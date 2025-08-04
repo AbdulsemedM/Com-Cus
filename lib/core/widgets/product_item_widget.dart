@@ -75,8 +75,8 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                           ),
                           child: CachedNetworkImage(
                             fit: BoxFit.fill,
-                            height: 170,
-                            width: 160,
+                            height: 140,
+                            width: 130,
                             placeholder: (_, __) => Container(
                               color: AppColors.bg1,
                             ),
@@ -232,8 +232,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                   // if (widget.product.quantity! > 0)
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 4.0, horizontal: 9),
+                    padding: const EdgeInsets.symmetric(horizontal: 9),
                     child:
                         // _cartItemCheck
                         //     ? Text('data')

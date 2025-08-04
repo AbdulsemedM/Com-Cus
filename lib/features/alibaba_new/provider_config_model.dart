@@ -71,7 +71,7 @@ class ProviderConfigModel {
         originalPrice: (selectedPrice['price'] as num).toDouble(),
         baseMarkup: 0,
         tieredPrices: tieredPrices,
-        additionalItemPrice: additionalItemPrice);
+        additionalItemPrice: double.parse(additionalItemPrice.toString()));
   }
 }
 
