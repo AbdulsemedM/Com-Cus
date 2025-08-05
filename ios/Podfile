@@ -1,7 +1,7 @@
- # Uncomment this line to define a global platform for your project
 platform :ios, '14.0'
 
-# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
+source 'https://cdn.cocoapods.org/'
+
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 project 'Runner', {
@@ -28,17 +28,23 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 flutter_ios_podfile_setup
 
 target 'Runner' do
-  use_frameworks!
-  use_modular_headers!
+  use_frameworks! :linkage => :static
 
-  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
+
+  # ✅ Only pin AppAuth — do NOT pin GoogleUtilities
+  pod 'AppAuth', '~> 1.7.4'
+  # pod 'GoogleMaps'
+  # pod 'GoogleUtilities/UserDefaults', '= 8.0.0' # Try this first
+  # pod 'GoogleUtilities/UserDefaults', '~> 8.0'
+  # pod 'GoogleUtilities/UserDefaults', '~> 7.8'
 end
 
 post_install do |installer|
   installer.generated_projects.each do |project|
     project.targets.each do |target|
       target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
       end
     end
   end
@@ -46,7 +52,6 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
 
-    # Permission_handler configuration
     target.build_configurations.each do |config|
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         '$(inherited)',
@@ -56,11 +61,5 @@ post_install do |installer|
         'PERMISSION_CONTACTS=1',
       ]
     end
-    # End of the permission_handler configuration
   end
-end
-
-target 'OneSignalNotificationServiceExtension' do
-  use_frameworks!
-  pod 'OneSignalXCFramework', '>= 2.5.2', '< 6.0'
 end

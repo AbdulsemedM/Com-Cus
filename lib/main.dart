@@ -11,7 +11,7 @@ import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+// import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
@@ -30,11 +30,11 @@ void main() async {
   Upgrader.clearSavedSettings();
 
   // Initialize OneSignal after Flutter is initialized
-  await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  await OneSignal.shared.setAppId('c02d769f-6576-472a-8eb1-cd5d300e53b9');
-  bool accepted =
-      await OneSignal.shared.promptUserForPushNotificationPermission();
-  print("Accepted Permission: $accepted");
+  // await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  // await OneSignal.shared.setAppId('c02d769f-6576-472a-8eb1-cd5d300e53b9');
+  // bool accepted =
+  //     await OneSignal.shared.promptUserForPushNotificationPermission();
+  // print("Accepted Permission: $accepted");
   await Permission.notification.isDenied.then((isDenied) {
     if (isDenied) {
       Permission.notification.request();
@@ -80,7 +80,7 @@ void main() async {
     //   sound: true,
     // );
   }
-   try {
+  try {
     await Firebase.initializeApp();
   } catch (e) {
     print('Failed to initialize Firebase: $e');
