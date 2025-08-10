@@ -175,19 +175,20 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
                               // color: Colors.blue,
                               width: 250.0,
                               height: 250.0,
-                              child: WebView(
-                                gestureNavigationEnabled: true,
-                                initialUrl: url,
-                                javascriptMode: JavascriptMode.unrestricted,
-                                onWebViewCreated:
-                                    (WebViewController webViewController) {
-                                  _webViewController = webViewController;
+                              child: WebViewWidget(
+                                controller: _webViewController,
+                                // gestureNavigationEnabled: true,
+                                // initialUrl: url,
+                                // javascriptMode: JavascriptMode.unrestricted,
+                                // onWebViewCreated:
+                                //     (WebViewController webViewController) {
+                                //   _webViewController = webViewController;
 
-                                  // Enable zooming gestures using JavaScript
-                                  _webViewController.evaluateJavascript('''
-                                    document.querySelector('meta[name="viewport"]').content = 'width=device-width, initial-scale=1, maximum-scale=5.0, user-scalable=yes';
-                                  ''');
-                                },
+                                //   // Enable zooming gestures using JavaScript
+                                //   _webViewController.runJavaScript('''
+                                //     document.querySelector('meta[name="viewport"]').content = 'width=device-width, initial-scale=1, maximum-scale=5.0, user-scalable=yes';
+                                //   ''');
+                                // },
                               ),
                             ),
                           ),

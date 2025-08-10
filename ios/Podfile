@@ -1,6 +1,7 @@
-platform :ios, '14.0'
+source 'https://cdn.cocoapods.org/'             # main default source
+platform :ios, '15.0'
 
-source 'https://cdn.cocoapods.org/'
+# source 'https://github.com/CocoaPods/Specs.git' # fallback source
 
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
@@ -32,19 +33,23 @@ target 'Runner' do
 
   flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
 
+  # $FirebaseMessagingVersion = '10.25.0'
+  # pod 'FirebaseMessaging', $FirebaseMessagingVersion
   # ✅ Only pin AppAuth — do NOT pin GoogleUtilities
   pod 'AppAuth', '~> 1.7.4'
   # pod 'GoogleMaps'
   # pod 'GoogleUtilities/UserDefaults', '= 8.0.0' # Try this first
   # pod 'GoogleUtilities/UserDefaults', '~> 8.0'
   # pod 'GoogleUtilities/UserDefaults', '~> 7.8'
+  # pod 'GoogleUtilities/Environment', '~> 7.12'
+
 end
 
 post_install do |installer|
   installer.generated_projects.each do |project|
     project.targets.each do |target|
       target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
       end
     end
   end
