@@ -52,6 +52,7 @@ extension Url on EndPoints {
       'https://api.commercepal.com:2096/prime/api/v1/app/mobile';
   static String baseUrl2 = 'https://api.commercepal.com:2096/prime/api/v1';
   static String baseUrl4 = 'https://api.commercepal.com/prime/api/v1';
+  static String baseUrl5 = 'https://api.commercepal.com/api/v2';
   static String baseUrlCustomer =
       'https://api.commercepal.com:2096/prime/api/v1/customer';
   static String baseUrlCustomer2 =
@@ -90,7 +91,7 @@ extension Url on EndPoints {
       case EndPoints.searchProduct:
         return "$baseUrl/search-products";
       case EndPoints.login:
-        return "$baseUrl2/authenticate";
+        return "$baseUrl5/auth/login";
       case EndPoints.addresses:
         return "$baseUrl2/customer/get-delivery-address";
       case EndPoints.checkOut:

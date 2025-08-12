@@ -31,10 +31,14 @@ class LoginRepositoryImpl implements LoginRepository {
 
           // store auth credentials
           print("credetial stored");
-          await prefsData.writeData(
-              PrefsKeys.userToken.name, responseObject.userToken!);
-          await prefsData.writeData(
-              "refresh_token", responseObject.refreshToken!);
+          if (responseObject.userToken != null) {
+            await prefsData.writeData(
+                PrefsKeys.userToken.name, responseObject.userToken!);
+          }
+          if (responseObject.refreshToken != null) {
+            await prefsData.writeData(
+                "refresh_token", responseObject.refreshToken!);
+          }
           await prefsData.writeData(
               PrefsKeys.auth.name, jsonEncode(decodedResponse));
 
@@ -58,18 +62,28 @@ class LoginRepositoryImpl implements LoginRepository {
           throw decodedResponse['statusDescription'];
         }
       } else {
-        final request = {"email": email, "password": pass};
+        final request = {"emailOrPhone": email, "password": pass};
+        print("here is the request");
+
         final response = await apiProvider.post(request, EndPoints.login.url);
-        final decodedResponse = jsonDecode(response);
-        if (decodedResponse['statusCode'] == '000') {
-          final responseObject = LoginDto.fromJson(decodedResponse);
+        // final decodedResponse = jsonDecode(response);
+
+        if (response['statusCode'] == '000') {
+          final responseObject = LoginDto.fromJson(response);
 
           // store auth credentials
-          await prefsData.writeData(
-              PrefsKeys.userToken.name, responseObject.userToken!);
-          await prefsData.writeData(
-              "refresh_token", responseObject.refreshToken!);
-          await prefsData.writeData(PrefsKeys.auth.name, response);
+          if (responseObject.userToken != null) {
+            await prefsData.writeData(
+                PrefsKeys.userToken.name, responseObject.userToken!);
+          }
+          print("here is the response");
+          print(response.runtimeType);
+          print("isithere");
+          if (responseObject.refreshToken != null) {
+            await prefsData.writeData(
+                "refresh_token", responseObject.refreshToken!);
+          }
+          await prefsData.writeData(PrefsKeys.auth.name, jsonEncode(response));
 
           // get user details
           print("here goes the login");
@@ -79,16 +93,17 @@ class LoginRepositoryImpl implements LoginRepository {
             await prefsData.writeData(PrefsKeys.user.name, jsonEncode(uObj));
 
             // attach phone number
-            decodedResponse['phoneNumber'] = uObj.details?.phoneNumber;
+            response['phoneNumber'] = uObj.details?.phoneNumber;
           } else {
             // clear token in case user is not found
             await prefsData.nuke();
+            print(userResponse['statusMessage']);
             throw userResponse['statusMessage'];
           }
 
-          return AuthModel.fromJson(decodedResponse);
+          return AuthModel.fromJson(response);
         } else {
-          throw decodedResponse['statusMessage'];
+          throw response['statusMessage'];
         }
       }
     } catch (e) {

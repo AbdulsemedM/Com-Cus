@@ -45,17 +45,8 @@ class _ImageSliderState extends State<ImageSlider> {
                 margin: EdgeInsets.all(5.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  child: Image.network(
-                    url,
-                    fit: BoxFit.fitHeight,
-                    width: 1000.0,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 1000.0,
-                        color: Colors.grey[200],
-                      );
-                    },
-                  ),
+                  child:
+                      Image.network(url, fit: BoxFit.fitHeight, width: 1000.0),
                 ),
               );
             }).toList(),
@@ -109,13 +100,6 @@ class _ImageSliderState extends State<ImageSlider> {
                                     width: 80,
                                     height: 80,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        width: 80,
-                                        height: 80,
-                                        color: Colors.grey[200],
-                                      );
-                                    },
                                   ),
                                 ),
                               ),
@@ -177,11 +161,6 @@ class AllImagesScreen extends StatelessWidget {
                 child: Image.network(
                   attribute.ImageUrl!,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[200],
-                    );
-                  },
                 ),
               ),
             );
