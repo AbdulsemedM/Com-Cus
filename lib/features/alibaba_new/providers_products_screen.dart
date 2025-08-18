@@ -44,6 +44,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
   @override
   void initState() {
     super.initState();
+    print(widget.productId);
     fetchProductItem();
     // Initialize deep link handling
     DeepLinkService.initUniLinks(context);
@@ -276,6 +277,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       // if (isUserLoggedIn) {
       //   final token = await prefsData.readData(PrefsKeys.userToken.name);
       // final httpClient = await createInsecureHttpClient();
+      print("here we go");
       final response = await http.get(
         Uri.https(
           "api.commercepal.com",

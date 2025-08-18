@@ -99,6 +99,8 @@ class CheckOutRepoImpl implements CheckOutRepo {
       return 'Alibaba';
     } else if (input.startsWith('az')) {
       return 'Amazon';
+    } else if (input.startsWith('ae')) {
+      return 'Aliexpress';
     } else {
       return 'Commercepal';
     }
@@ -139,7 +141,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
       };
       // print("hererequest");
       // print(request);
-     // <<<<<<< New-Providers
+      // <<<<<<< New-Providers
       // final response = await apiProvider.post(
       //     request,
       //     isUserBusiness
@@ -160,11 +162,11 @@ class CheckOutRepoImpl implements CheckOutRepo {
             "Content-type": "application/json; charset=utf-8"
           });
       var response = jsonDecode(checkout.body);
-        //       final response = await apiProvider.post(
-        //           request,
-        //           isUserBusiness
-        //               ? EndPoints.businessCheckOut.url
-        //               : EndPoints.checkOut.url);
+      //       final response = await apiProvider.post(
+      //           request,
+      //           isUserBusiness
+      //               ? EndPoints.businessCheckOut.url
+      //               : EndPoints.checkOut.url);
       print("orderrefhere");
       print(response);
       // print(response['orderRef']);

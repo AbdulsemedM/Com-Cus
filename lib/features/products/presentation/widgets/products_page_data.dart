@@ -135,7 +135,8 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                                 arguments: {"p_id": prod.id},
                               );
                             } else if (prod.provider == "Alibaba" ||
-                                prod.provider == "Shein") {
+                                prod.provider == "Shein" ||
+                                prod.provider == "Aliexpress") {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
