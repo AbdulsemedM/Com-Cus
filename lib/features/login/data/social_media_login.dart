@@ -38,6 +38,6 @@ Future<Map<String, dynamic>> getUserToken(
     GlobalCredential.setGlobalString(data);
     return data;
   } catch (e) {
-    throw e.toString();
+    throw "Something went wrong please try again or contact our support team!";
   }
 }

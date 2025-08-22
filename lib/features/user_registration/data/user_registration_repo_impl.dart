@@ -132,11 +132,12 @@ class UserRegistrationRepoImpl implements UserRegistrationRepo {
         print(objResponse['statusMessage']);
         return objResponse['statusMessage'];
       } else {
-        throw objResponse['statusMessage'];
+        throw objResponse['statusMessage'] ??
+            "Something went wrong please try again or contact our support team!";
       }
     } catch (e) {
       print(e.toString());
-      rethrow;
+      throw "Something went wrong please try again or contact our support team!";
     }
   }
 

@@ -63,11 +63,19 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
   double calculateTotalPrice(
       double itemPrice, String baseMarkup, int quantity) {
+    if (baseMarkup == "0.0") {
+      return double.parse((itemPrice * quantity).toStringAsFixed(2));
+    }
     double totalPrice = 0; // Initialize total price to 0
     List<dynamic> tieredPrices = parseTieredPrices(baseMarkup);
     // for (var price in tieredPrices) {
+    //   print("the prices");
     //   print(price);
     // }
+    print("this are the required items");
+    print(itemPrice);
+    print(baseMarkup);
+    print(quantity);
 
     for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
       if (itemIndex == 1) {

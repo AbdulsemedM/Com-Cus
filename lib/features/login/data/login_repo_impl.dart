@@ -54,12 +54,14 @@ class LoginRepositoryImpl implements LoginRepository {
           } else {
             // clear token in case user is not found
             await prefsData.nuke();
-            throw userResponse['statusDescription'];
+            throw userResponse['statusDescription'] ??
+                "Something went wrong please try again or contact our support team!";
           }
 
           return AuthModel.fromJson(decodedResponse);
         } else {
-          throw decodedResponse['statusDescription'];
+          throw decodedResponse['statusDescription'] ??
+              "Something went wrong please try again or contact our support team!";
         }
       } else {
         final request = {"emailOrPhone": email, "password": pass};
@@ -98,16 +100,18 @@ class LoginRepositoryImpl implements LoginRepository {
             // clear token in case user is not found
             await prefsData.nuke();
             print(userResponse['statusMessage']);
-            throw userResponse['statusMessage'];
+            throw userResponse['statusMessage'] ??
+                "Something went wrong please try again or contact our support team!";
           }
 
           return AuthModel.fromJson(response);
         } else {
-          throw response['statusMessage'];
+          throw response['statusMessage'] ??
+              "Something went wrong please try again or contact our support team!";
         }
       }
     } catch (e) {
-      rethrow;
+      throw "Something went wrong please try again or contact our support team!";
     }
   }
 

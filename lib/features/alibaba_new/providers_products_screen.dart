@@ -90,35 +90,37 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : SingleChildScrollView(
+          : CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ImageSlider(
+              slivers: [
+                // Image Slider
+                SliverToBoxAdapter(
+                  child: ImageSlider(
                     imageUrls: mainPics,
                     attributes: myProdAttr,
                     onShowAllImages: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductAttributesWidget(
-                            myProdAttr: myProdAttr,
-                            myPriceRange: myPriceRange,
-                            myConfig: myConfigs,
-                            productName: prodName,
-                            productId: widget.productId,
-                            imageUrl: mainPics[0],
-                            currentCountry: currentCountryForm,
-                          ),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => ProductAttributesWidget(
+                      //       myProdAttr: myProdAttr,
+                      //       myPriceRange: myPriceRange,
+                      //       myConfig: myConfigs,
+                      //       productName: prodName,
+                      //       productId: widget.productId,
+                      //       imageUrl: mainPics[0],
+                      //       currentCountry: currentCountryForm,
+                      //     ),
+                      //   ),
+                      // );
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 18, vertical: 10),
+                ),
+
+                // Product Name
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
                     child: Row(
                       children: [
                         Expanded(
@@ -132,7 +134,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                                     .bodyLarge
                                     ?.copyWith(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16),
+                                        fontSize: 12),
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               );
@@ -142,37 +144,53 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                       ],
                     ),
                   ),
-                  SingleChildScrollView(
+                ),
+
+                // Min Order Price Page
+                SliverToBoxAdapter(
+                  child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: MinOrderPricePage(
                       currentCountryForm: currentCountryForm,
                       price: myPriceRange,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Container(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.6,
-                    ),
-                    child: ProductAttributesWidget(
-                      myProdAttr: myProdAttr,
-                      myPriceRange: myPriceRange,
-                      myConfig: myConfigs,
-                      productName: prodName,
-                      productId: widget.productId,
-                      imageUrl: mainPics[0],
-                      currentCountry: currentCountryForm,
-                    ),
+                ),
+
+                // Spacing
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 10),
+                ),
+
+                // Product Attributes Widget - Now integrated as sliver
+                SliverToBoxAdapter(
+                  child: ProductAttributesWidget(
+                    myProdAttr: myProdAttr,
+                    myPriceRange: myPriceRange,
+                    myConfig: myConfigs,
+                    productName: prodName,
+                    productId: widget.productId,
+                    imageUrl: mainPics[0],
+                    currentCountry: currentCountryForm,
                   ),
-                  _buildDeliveryEstimate(context),
-                  const SizedBox(height: 10),
-                  if (recommendedProd.isEmpty != true)
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      child: ProductGridWidget(products: recommendedProd),
-                    ),
-                ],
-              ),
+                ),
+
+                // Delivery Estimate
+                SliverToBoxAdapter(
+                  child: _buildDeliveryEstimate(context),
+                ),
+
+                // Spacing
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 10),
+                ),
+
+                // Recommended Products - Now integrated as sliver
+                if (recommendedProd.isEmpty != true)
+                  SliverToBoxAdapter(
+                    child: ProductGridWidget(products: recommendedProd),
+                  ),
+              ],
             ),
       // bottomNavigationBar: Padding(
       //   padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
@@ -281,11 +299,12 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       final response = await http.get(
         Uri.https(
           "api.commercepal.com",
-          "/prime/api/v1/data/products/temp/${widget.productId}",
+          "/api/v2/products/${widget.productId}",
         ),
         headers: <String, String>{},
       );
       var data = jsonDecode(response.body);
+      data = data['responseData']['content'];
       // print(data);
 
       if (data['statusCode'] == '000') {
@@ -375,6 +394,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
         });
         // Handle the case when statusCode is '000'
       } else {
+        print(response.body);
         setState(() {
           loading = true;
         });

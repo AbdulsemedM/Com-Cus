@@ -41,6 +41,7 @@ class UnderItemWidget extends StatelessWidget {
                     child: CachedNetworkImage(
                       fit: BoxFit.fill,
                       height: 120,
+                      width: 140,
                       placeholder: (_, __) => Container(
                         color: AppColors.bg1,
                       ),
@@ -64,8 +65,10 @@ class UnderItemWidget extends StatelessWidget {
                         return const Text(
                             "..."); // Show loading indicator for hint
                       } else if (snapshot.hasError) {
+                        String errorText = "${item?.name}";
+                        String displayText = errorText.length > 20 ? errorText.substring(0, 20) : errorText;
                         return Text(
-                          "${item?.name}",
+                          displayText,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
@@ -76,8 +79,10 @@ class UnderItemWidget extends StatelessWidget {
                                   fontWeight: FontWeight.normal),
                         ); // Show error for hint
                       } else {
+                        String translatedText = snapshot.data ?? "${item?.name}";
+                        String displayText = translatedText.length > 20 ? translatedText.substring(0, 20) : translatedText;
                         return Text(
-                          snapshot.data ?? "${item?.name}",
+                          displayText,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)

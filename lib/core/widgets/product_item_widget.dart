@@ -76,7 +76,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                           child: CachedNetworkImage(
                             fit: BoxFit.fill,
                             height: 140,
-                            width: 130,
+                            width: 160,
                             placeholder: (_, __) => Container(
                               color: AppColors.bg1,
                             ),

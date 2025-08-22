@@ -343,10 +343,10 @@ class ProductsRepositoryImpl implements ProductRepository {
       // final products = await apiProvider.get(
       //     "${isUserBusiness ? EndPoints.businessSearchProducts.url : EndPoints.searchProduct.url}?reqName=$search");
       print("searching the new api");
-      final response = await client.get(
+      final response = await http.get(
         Uri.https(
-          "196.188.172.179:2096",
-          "/prime/api/v1/data/products/temp",
+          "api.commercepal.com",
+          "/api/v2/products/search",
           {
             'page': size == null ? "1" : "2",
             'size': size != null ? size.toString() : '100',
@@ -365,6 +365,8 @@ class ProductsRepositoryImpl implements ProductRepository {
       // final String currentCountry = countryManager.country;
 
       var products = jsonDecode(response.body);
+      products = products['responseData']['content'];
+
       // print("Current country from prod: ${currentCountry}"); // Added this line
       print(products);
       if (products["statusCode"] == "000") {

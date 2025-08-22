@@ -636,6 +636,9 @@ class _LoginPageState extends State<LoginPage> {
                           onClick: () {
                             if (_formKey.currentState!.validate()) {
                               FocusScope.of(context).unfocus();
+                              if(_emailOrPhone!.startsWith("0")){
+                                _emailOrPhone = _emailOrPhone!.substring(1);
+                              }
 
                               ctx.read<LoginCubit>().loginUser(
                                   isPhoneMode

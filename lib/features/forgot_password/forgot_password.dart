@@ -153,10 +153,23 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                     if (value?.isEmpty == true) {
                                       return 'Phone number is required';
                                     }
-                                    return null;
+                                    if (!(value!.startsWith("9") ||
+                                        value.startsWith("7") ||
+                                        value.startsWith("07") ||
+                                        value.startsWith("09"))) {
+                                      return "Please enter a valid phone number";
+                                    }
+                                    if ((value.length != 9 ||
+                                        value.length != 10)) {
+                                      return null;
+                                    }
+                                    return "Please enter a valid phone number";
                                   },
                                   onChanged: (value) {
                                     setState(() {
+                                      if (value.startsWith("0")) {
+                                        value = value.substring(1);
+                                      }
                                       emailAddress =
                                           "+${selectedCountry.phoneCode}$value";
                                     });
@@ -193,6 +206,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           if (!emailRegExp.hasMatch(value!)) {
                             return 'Enter a valid email address';
                           }
+
                           return null;
                         },
                         onChanged: (value) {

@@ -171,8 +171,8 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
       final double unitPrice = double.parse(applicablePrice.originalPrice);
       final double totalPrice = unitPrice * combination.quantity;
       var c = matchingConfig?.tieredPrices;
-      // print("the c");
-      // print(c);
+      print("the c");
+      print(c);
       c?.add(matchingConfig?.additionalItemPrice);
       // Add to cart
       // setState(() {
@@ -402,12 +402,10 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                 },
               ),
             ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final attribute = items[index];
+          Column(
+            children: items.asMap().entries.map((entry) {
+              final index = entry.key;
+              final attribute = entry.value;
               bool isSelected = selectedAttributes[propertyName] == attribute;
               bool canSelect = _canSelectLastAttribute();
 
@@ -537,7 +535,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                   ),
                 ),
               );
-            },
+            }).toList(),
           ),
 
           // Display selected combinations
@@ -701,253 +699,235 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
   Widget build(BuildContext context) {
     // Check if attributes are empty
     if (widget.myProdAttr.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(
-          title: FutureBuilder(
-            future: TranslationService.translate("Order Quantity"),
-            builder: (context, snapshot) {
-              return Text(
-                snapshot.data ?? "Order Quantity",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              );
-            },
-          ),
-          actions: const [
-            CartWidget(),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Form(
-                key: myKey,
-                child: TextFormField(
-                  controller: simpleQuantityController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: InputDecoration(
-                    labelText: "Enter Quantity",
-                    border: OutlineInputBorder(),
-                    helperText:
-                        "Minimum Order: ${widget.myPriceRange[0].minOr}",
-                  ),
-                  validator: (value) => _validateQuantity(value!),
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Form(
+              key: myKey,
+              child: TextFormField(
+                controller: simpleQuantityController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  labelText: "Enter Quantity",
+                  border: OutlineInputBorder(),
+                  helperText: "Minimum Order: ${widget.myPriceRange[0].minOr}",
                 ),
+                validator: (value) => _validateQuantity(value!),
               ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.colorPrimaryDark,
-                  minimumSize: Size(double.infinity, 48),
-                ),
-                onPressed: () {
-                  if (myKey.currentState!.validate()) {
-                    int quantity = int.parse(simpleQuantityController.text);
-                    if (quantity >= int.parse(widget.myPriceRange[0].minOr)) {
-                      // Find applicable price range with proper error handling
-                      Prices applicablePrice;
-                      try {
-                        applicablePrice = widget.myPriceRange.firstWhere(
-                          (price) {
-                            final int minQuantity = int.parse(price.minOr);
-                            final int? maxQuantity = price.maxOr != null
-                                ? int.parse(price.maxOr!)
-                                : null;
-                            return quantity >= minQuantity &&
-                                (maxQuantity == null ||
-                                    quantity <= maxQuantity);
-                          },
-                          orElse: () => widget.myPriceRange[
-                              0], // Default to first price range if no match
-                        );
-                      } catch (e) {
-                        // Fallback to first price range if any error occurs
-                        applicablePrice = widget.myPriceRange[0];
-                      }
-
-                      // Create cart item
-                      myCart.add(CartItem(
-                        baseMarkup: applicablePrice.baseMarkup.toString(),
-                        currency: widget.currentCountry == "ETB" ? "ETB" : "\$",
-                        description: "provider",
-                        subProductId: "0",
-                        name: widget.productName.toString(),
-                        price: applicablePrice.originalPrice.toString(),
-                        image: widget.imageUrl.toString(),
-                        productId: widget.productId.toString(),
-                        quantity: quantity,
-                        createdAt: DateTime.now().toIso8601String(),
-                      ));
-
-                      // // Add to cart
-                      _addToCart();
-                    } else {
-                      displaySnack(context, "Minimum order quantity not met");
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.colorPrimaryDark,
+                minimumSize: Size(double.infinity, 48),
+              ),
+              onPressed: () {
+                if (myKey.currentState!.validate()) {
+                  int quantity = int.parse(simpleQuantityController.text);
+                  if (quantity >= int.parse(widget.myPriceRange[0].minOr)) {
+                    // Find applicable price range with proper error handling
+                    Prices applicablePrice;
+                    try {
+                      applicablePrice = widget.myPriceRange.firstWhere(
+                        (price) {
+                          final int minQuantity = int.parse(price.minOr);
+                          final int? maxQuantity = price.maxOr != null
+                              ? int.parse(price.maxOr!)
+                              : null;
+                          return quantity >= minQuantity &&
+                              (maxQuantity == null || quantity <= maxQuantity);
+                        },
+                        orElse: () => widget.myPriceRange[
+                            0], // Default to first price range if no match
+                      );
+                    } catch (e) {
+                      // Fallback to first price range if any error occurs
+                      applicablePrice = widget.myPriceRange[0];
                     }
+                    print("the applicable price");
+                    print(applicablePrice.originalPrice);
+                    // Create cart item
+                    myCart.add(CartItem(
+                      baseMarkup: applicablePrice.baseMarkup.toString(),
+                      currency: widget.currentCountry == "ETB"
+                          ? "ETB"
+                          : widget.currentCountry == "USD"
+                              ? "\$"
+                              : widget.currentCountry == "KES"
+                                  ? "KES"
+                                  : widget.currentCountry == "AED"
+                                      ? "AED"
+                                      : widget.currentCountry == "SOS"
+                                          ? "SOS"
+                                          : "\$",
+                      description: "provider",
+                      subProductId: "0",
+                      name: widget.productName.toString(),
+                      price: applicablePrice.originalPrice.toString(),
+                      image: widget.imageUrl.toString(),
+                      productId: widget.productId.toString(),
+                      quantity: quantity,
+                      createdAt: DateTime.now().toIso8601String(),
+                    ));
+
+                    // // Add to cart
+                    _addToCart();
+                  } else {
+                    displaySnack(context, "Minimum order quantity not met");
                   }
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.shopping_cart, color: AppColors.bg1),
-                    SizedBox(width: 8),
-                    FutureBuilder(
-                      future: TranslationService.translate("Add to Cart"),
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ?? "Add to Cart",
-                          style: TextStyle(color: AppColors.bg1),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                }
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.shopping_cart, color: AppColors.bg1),
+                  SizedBox(width: 8),
+                  FutureBuilder(
+                    future: TranslationService.translate("Add to Cart"),
+                    builder: (context, snapshot) {
+                      return Text(
+                        snapshot.data ?? "Add to Cart",
+                        style: TextStyle(color: AppColors.bg1),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
 
     // Return original widget if attributes are not empty
-    return Container(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.8,
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: FutureBuilder(
-                future: TranslationService.translate(
-                    "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})"),
-                builder: (context, snapshot) {
-                  return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: _isMinOrderMet()
-                          ? Colors.green.withOpacity(0.1)
-                          : Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: FutureBuilder(
+            future: TranslationService.translate(
+                "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})"),
+            builder: (context, snapshot) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: _isMinOrderMet()
+                      ? Colors.green.withOpacity(0.1)
+                      : Colors.red.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  snapshot.data ??
+                      "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: _isMinOrderMet() ? Colors.green : Colors.red,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Column(
+          children: groupedAttributes.keys.map((propertyName) {
+            final items = groupedAttributes[propertyName]!;
+            return _buildAttributeGrid(propertyName, items);
+          }).toList(),
+        ),
+        SizedBox(height: 10),
+        if (_areAllGroupsSelected())
+          Column(
+            children: [
+              Container(
+                  color: Colors.amber[300],
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FutureBuilder(
+                      future: TranslationService.translate(
+                          "Minimum Order: ${widget.myPriceRange[0].minOr}"),
+                      builder: (context, snapshot) {
+                        return Text(snapshot.data ??
+                            "Minimum Order: ${widget.myPriceRange[0].minOr}");
+                      },
                     ),
-                    child: Text(
-                      snapshot.data ??
-                          "Total Quantity: $totalQuantity (Minimum Order: ${widget.myPriceRange[0].minOr})",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: _isMinOrderMet() ? Colors.green : Colors.red,
-                      ),
+                  )),
+            ],
+          ),
+        if (myCart.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FutureBuilder(
+                  future: TranslationService.translate("Selected Attributes:"),
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? "Selected Attributes:",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    );
+                  },
+                ),
+                const SizedBox(height: 8),
+                ...myCart.map((entry) {
+                  final attribute = widget.myConfig
+                      .firstWhere((attr) => attr.id == entry.subProductId);
+
+                  return ListTile(
+                    title: Text(
+                      "${attribute.vid}",
+                    ),
+                    subtitle: FutureBuilder(
+                      future: TranslationService.translate(
+                          "Quantity: ${entry.quantity}"),
+                      builder: (context, snapshot) {
+                        return Text(
+                            snapshot.data ?? "Quantity: ${entry.quantity}");
+                      },
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => _removeAttribute(entry),
                     ),
                   );
-                },
-              ),
+                }).toList(),
+              ],
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: groupedAttributes.keys.length,
-              itemBuilder: (context, index) {
-                final propertyName = groupedAttributes.keys.elementAt(index);
-                final items = groupedAttributes[propertyName]!;
-                return _buildAttributeGrid(propertyName, items);
-              },
-            ),
-            SizedBox(height: 10),
-            if (_areAllGroupsSelected())
-              Column(
-                children: [
-                  Container(
-                      color: Colors.amber[300],
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: FutureBuilder(
-                          future: TranslationService.translate(
-                              "Minimum Order: ${widget.myPriceRange[0].minOr}"),
-                          builder: (context, snapshot) {
-                            return Text(snapshot.data ??
-                                "Minimum Order: ${widget.myPriceRange[0].minOr}");
-                          },
-                        ),
-                      )),
-                ],
-              ),
-            if (myCart.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FutureBuilder(
-                      future:
-                          TranslationService.translate("Selected Attributes:"),
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ?? "Selected Attributes:",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 8),
-                    ...myCart.map((entry) {
-                      final attribute = widget.myConfig
-                          .firstWhere((attr) => attr.id == entry.subProductId);
-
-                      return ListTile(
-                        title: Text(
-                          "${attribute.vid}",
-                        ),
-                        subtitle: FutureBuilder(
-                          future: TranslationService.translate(
-                              "Quantity: ${entry.quantity}"),
-                          builder: (context, snapshot) {
-                            return Text(
-                                snapshot.data ?? "Quantity: ${entry.quantity}");
-                          },
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () => _removeAttribute(entry),
-                        ),
-                      );
-                    }).toList(),
-                  ],
+          ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.colorPrimaryDark),
+            onPressed: _isMinOrderMet() ? _addToCartItems : null,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.shopping_cart,
+                  color: AppColors.bg1,
                 ),
-              ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.colorPrimaryDark),
-                onPressed: _isMinOrderMet() ? _addToCartItems : null,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.shopping_cart,
-                      color: AppColors.bg1,
-                    ),
-                    SizedBox(width: 8),
-                    FutureBuilder(
-                      future: TranslationService.translate("Add to Cart"),
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data ?? "Add to Cart",
-                          style: TextStyle(color: AppColors.bg1),
-                        );
-                      },
-                    ),
-                  ],
+                SizedBox(width: 8),
+                FutureBuilder(
+                  future: TranslationService.translate("Add to Cart"),
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? "Add to Cart",
+                      style: TextStyle(color: AppColors.bg1),
+                    );
+                  },
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 

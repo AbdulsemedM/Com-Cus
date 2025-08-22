@@ -477,6 +477,10 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
 
   double calculateTotalPrice(
       double itemPrice, String baseMarkup, int quantity) {
+    if (baseMarkup == "0.0") {
+      totalCartPrice = itemPrice * quantity;
+      return double.parse((itemPrice * quantity).toStringAsFixed(2));
+    }
     double totalPrice = 0; // Initialize total price to 0
     List<dynamic> tieredPrices = parseTieredPrices(baseMarkup);
     // for (var price in tieredPrices) {

@@ -109,13 +109,13 @@ class _ImageSliderState extends State<ImageSlider> {
                         },
                       ),
                     ),
-                    if (widget.attributes!.length > 5)
-                      TextButton(
-                        onPressed: () {
-                          widget.onShowAllImages();
-                        },
-                        child: Text('Show More'),
-                      ),
+                    // if (widget.attributes!.length > 5)
+                    //   TextButton(
+                    //     onPressed: () {
+                    //       widget.onShowAllImages();
+                    //     },
+                    //     child: Text('Show More'),
+                    //   ),
                   ],
                 ),
               ),
