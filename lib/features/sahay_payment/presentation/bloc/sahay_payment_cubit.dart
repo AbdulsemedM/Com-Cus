@@ -51,10 +51,9 @@ class SahayPaymentCubit extends Cubit<SahayPaymentState> {
           await phoneNumberUtil.passPhoneToIso(phoneNumber, 'ET');
       if (_name == null) {
         confirmUser(parsePhoneNumber!);
-      } else if (_transRef == null) {
-        checkOut(parsePhoneNumber!);
       } else {
-        completeOrder(otp);
+        // Skip OTP verification and go directly to paymentCheckOut
+        directPaymentCheckOut(parsePhoneNumber!);
       }
     } catch (e) {
       emit(SahayPaymentState.error(e.toString()));
@@ -66,6 +65,16 @@ class SahayPaymentCubit extends Cubit<SahayPaymentState> {
       emit(const SahayPaymentState.loading());
       final response =
           await sahayPayRepo.confirmPaymentCheckOut(_transRef!, otp!);
+      emit(SahayPaymentState.success(response));
+    } catch (e) {
+      emit(SahayPaymentState.error(e.toString()));
+    }
+  }
+
+  void directPaymentCheckOut(String phoneNumber) async {
+    try {
+      emit(const SahayPaymentState.loading());
+      final response = await sahayPayRepo.paymentCheckOut(phoneNumber);
       emit(SahayPaymentState.success(response));
     } catch (e) {
       emit(SahayPaymentState.error(e.toString()));

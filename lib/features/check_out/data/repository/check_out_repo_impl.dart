@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:commercepal/app/data/network/api_provider.dart';
 import 'package:commercepal/app/data/network/end_points.dart';
@@ -131,7 +132,8 @@ class CheckOutRepoImpl implements CheckOutRepo {
                   "itemComment": "",
                   if (value != "none") "promotionId": value,
                   // "promotionId": "",
-                  "provider": determineProvider(e.productId ?? "")
+                  "provider": determineProvider(e.productId ?? ""),
+                  "channel": Platform.isIOS ? "IOS" : "ANDROID",
 
                   // "productId": e.productId,
                   // "subProductId": e.subProductId,

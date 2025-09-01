@@ -65,6 +65,8 @@ class SahayPayRepoImpl implements SahayPayRepo {
         if (resObject.transRef == null) {
           throw 'Unable to get transaction ref! Try again';
         }
+        await cartDao.nuke();
+
         return resObject.transRef!;
       } else {
         throw response['statusDescription'];

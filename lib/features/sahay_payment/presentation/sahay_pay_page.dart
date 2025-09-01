@@ -61,7 +61,7 @@ class _SahayPayPageState extends State<SahayPayPage> {
     enterHint = Translations.translatedText(
         "Enter your phone number below", GlobalStrings.getGlobalString());
     nameHint = Translations.translatedText(
-        "User name", GlobalStrings.getGlobalString());
+        "Account Holder", GlobalStrings.getGlobalString());
     secondHint = Translations.translatedText(
         "Enter OTP sent to the above phone number",
         GlobalStrings.getGlobalString());
@@ -135,14 +135,15 @@ class _SahayPayPageState extends State<SahayPayPage> {
               });
             }
 
-            if (state is SahayPaymentStateOtp) {
-              setState(() {
-                _displayOtp = true;
-              });
-            }
+            // Skip OTP display since we're going directly to payment checkout
+            // if (state is SahayPaymentStateOtp) {
+            //   setState(() {
+            //     _displayOtp = true;
+            //   });
+            // }
 
             if (state is SahayPaymentStateSuccess) {
-              displaySnack(context, state.message);
+              displaySnack(context, "Order placed seccessfully");
 
               Navigator.of(context).pushNamedAndRemoveUntil(
                   DashboardPage.routeName, (Route<dynamic> route) => false);
@@ -185,7 +186,8 @@ class _SahayPayPageState extends State<SahayPayPage> {
                     ),
                     if (_displayConfirmation != null)
                       _buildConfirmationWidget(_displayConfirmation!),
-                    if (_displayOtp) _buildOtpWidget(),
+                    // OTP widget removed since we skip OTP verification
+                    // if (_displayOtp) _buildOtpWidget(),
                     AppButtonWidget(
                         isLoading: state is SahayPaymentStateLoading,
                         onClick: () {
@@ -194,7 +196,7 @@ class _SahayPayPageState extends State<SahayPayPage> {
 
                             ctx
                                 .read<SahayPaymentCubit>()
-                                .submitRequest(_phoneNumber, _otp);
+                                .submitRequest(_phoneNumber, null);
                           }
                         })
                   ],
@@ -208,42 +210,130 @@ class _SahayPayPageState extends State<SahayPayPage> {
   }
 
   Widget _buildConfirmationWidget(String name) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(
-          height: 5,
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
         ),
-        const Divider(),
-        const SizedBox(
-          height: 5,
-        ),
-        Text(
-          dHint,
-          style: Theme.of(context)
-              .textTheme
-              .titleSmall
-              ?.copyWith(color: AppColors.secondaryTextColor),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Text(
-          name,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium
-              ?.copyWith(color: Colors.black),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        if (_displayOtp == false) const Divider(),
-        if (_displayOtp == false)
-          const SizedBox(
-            height: 5,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            gradient: LinearGradient(
+              colors: [
+                AppColors.colorPrimary.withOpacity(0.1),
+                AppColors.colorPrimary.withOpacity(0.05),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
-      ],
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.colorPrimary,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.account_circle,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Account Holder Confirmed',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                  color: AppColors.colorPrimary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Ready to proceed with payment',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                  color: AppColors.secondaryTextColor,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: AppColors.colorPrimary.withOpacity(0.2),
+                      width: 1,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        dHint,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(
+                              color: AppColors.secondaryTextColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(
+                              color: AppColors.colorPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
