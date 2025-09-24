@@ -55,7 +55,9 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
 
     final Map args = ModalRoute.of(context)?.settings.arguments as Map;
     _cashType = args['cash_type'];
+    print(_cashType);
     _cashTypeName = args['cash_type_name'];
+    print(_cashTypeName);
     if (args['payment_instruction'] != null) {
       _instructions =
           (args['payment_instruction'] as String).convertStringToList('data');

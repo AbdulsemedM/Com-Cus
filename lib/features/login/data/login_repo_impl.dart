@@ -25,19 +25,22 @@ class LoginRepositoryImpl implements LoginRepository {
       print(pass);
       if (pass == "social media") {
         var decodedResponse = GlobalCredential.getGlobalString();
+        print("decodedResponse");
+        print(decodedResponse);
         // final decodedResponse = jsonDecode(response);
         if (decodedResponse['statusCode'] == '000') {
           final responseObject = LoginDto.fromJson(decodedResponse);
-
+          print("responseObject.userToken");
+          print(decodedResponse['userToken']);
           // store auth credentials
           print("credetial stored");
-          if (responseObject.userToken != null) {
+          if (decodedResponse['userToken'] != null) {
             await prefsData.writeData(
-                PrefsKeys.userToken.name, responseObject.userToken!);
+                PrefsKeys.userToken.name, decodedResponse['userToken']);
           }
-          if (responseObject.refreshToken != null) {
+          if (decodedResponse['refreshToken'] != null) {
             await prefsData.writeData(
-                "refresh_token", responseObject.refreshToken!);
+                "refresh_token", decodedResponse['refreshToken']);
           }
           await prefsData.writeData(
               PrefsKeys.auth.name, jsonEncode(decodedResponse));

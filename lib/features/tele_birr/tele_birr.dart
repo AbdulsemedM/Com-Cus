@@ -99,6 +99,18 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
   @override
   void initState() {
     super.initState();
+    _webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
+          onWebResourceError: (WebResourceError error) {},
+        ),
+      );
     fetchTelebirr();
     fetchHints();
   }
@@ -297,6 +309,8 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
             message = data['statusMessage'] ?? '';
             loading = false;
           });
+          // Load the URL into the WebViewController
+          _webViewController.loadRequest(Uri.parse(url));
           return true;
         } else {
           // Retry logic
