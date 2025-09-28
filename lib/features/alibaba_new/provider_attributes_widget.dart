@@ -560,9 +560,37 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                   ),
                   SizedBox(height: 8),
                   ...selectedCombinations.map((combo) {
+                    // Calculate price for this combination
+                    double comboPrice = _calculateCombinationPrice(combo);
+                    String currencySymbol = widget.currentCountry == "ETB"
+                        ? "ETB"
+                        : widget.currentCountry == "USD"
+                            ? "\$"
+                            : widget.currentCountry == "KES"
+                                ? "KES"
+                                : widget.currentCountry == "AED"
+                                    ? "AED"
+                                    : widget.currentCountry == "SOS"
+                                        ? "SOS"
+                                        : "\$";
+                    
                     return Card(
                       child: ListTile(
-                        title: Text(combo.displayText),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(combo.displayText),
+                            SizedBox(height: 4),
+                            Text(
+                              "$currencySymbol ${comboPrice.toStringAsFixed(2)}",
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.green[700],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -1156,5 +1184,111 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     print("totalPrice: $totalPrice");
     // Round to 2 decimal places
     return double.parse((totalPrice).toStringAsFixed(2));
+  }
+
+  // Helper method to calculate price for a specific combination
+  double _calculateCombinationPrice(AttributeCombination combo) {
+    try {
+      // Get the configuration for this combination
+      var combinationVids =
+          combo.attributes.values.map((attr) => attr.Vid).toList();
+      
+      print("Calculating price for combination VIDs: $combinationVids");
+
+      ProviderConfigModel? matchingConfig;
+      if (widget.myConfig.isNotEmpty) {
+        try {
+          matchingConfig = widget.myConfig.firstWhere((config) {
+            return combinationVids.every((vid) => config.vid.contains(vid));
+          });
+          print("Found matching config: ${matchingConfig.id}");
+        } catch (e) {
+          // No matching config found, try fallback approach
+          print("No exact match found, trying fallback approach");
+          
+          // Try to find a config that contains at least some of the VIDs
+          for (var config in widget.myConfig) {
+            bool hasAnyMatch = combinationVids.any((vid) => config.vid.contains(vid));
+            if (hasAnyMatch) {
+              matchingConfig = config;
+              print("Using fallback config: ${config.id}");
+              break;
+            }
+          }
+          
+          if (matchingConfig == null) {
+            print("No matching config found for combination: $combinationVids");
+            // Use the first available config as last resort
+            if (widget.myConfig.isNotEmpty) {
+              matchingConfig = widget.myConfig.first;
+              print("Using first available config as fallback: ${matchingConfig.id}");
+            }
+          }
+        }
+      }
+
+      if (matchingConfig != null) {
+        // Find applicable price range for this combination's quantity
+        Prices? applicablePrice;
+        try {
+          applicablePrice = widget.myPriceRange.firstWhere(
+            (price) {
+              final int minQuantity = int.parse(price.minOr);
+              final int? maxQuantity =
+                  price.maxOr != null ? int.parse(price.maxOr!) : null;
+
+              return combo.quantity >= minQuantity &&
+                  (maxQuantity == null || combo.quantity <= maxQuantity);
+            },
+            orElse: () => widget.myPriceRange.first,
+          );
+        } catch (e) {
+          print("Error finding price range, using first: $e");
+          applicablePrice = widget.myPriceRange.isNotEmpty ? widget.myPriceRange.first : null;
+        }
+
+        if (applicablePrice != null) {
+          // Create the tiered prices list with null safety
+          var tieredPrices = <double>[];
+          if (matchingConfig.tieredPrices != null && matchingConfig.tieredPrices!.isNotEmpty) {
+            tieredPrices = List<double>.from(matchingConfig.tieredPrices!);
+          }
+          if (matchingConfig.additionalItemPrice != null) {
+            tieredPrices.add(matchingConfig.additionalItemPrice!);
+          }
+          
+          print("Tiered prices: $tieredPrices");
+          print("Original price: ${matchingConfig.originalPrice}");
+          print("Quantity: ${combo.quantity}");
+          
+          // If no tiered prices available, use original price calculation
+          if (tieredPrices.isEmpty) {
+            double unitPrice = double.parse(applicablePrice.originalPrice);
+            double totalPrice = unitPrice * combo.quantity;
+            print("Using simple calculation: $unitPrice * ${combo.quantity} = $totalPrice");
+            return totalPrice;
+          }
+          
+          // Calculate total price using the existing logic
+          double calculatedPrice = calculateTotalPrice(
+            double.parse(matchingConfig.originalPrice.toString()),
+            tieredPrices.toString(),
+            combo.quantity,
+          );
+          
+          print("Calculated price: $calculatedPrice");
+          return calculatedPrice;
+        } else {
+          print("No applicable price range found");
+        }
+      } else {
+        print("No matching config found at all");
+      }
+      
+      return 0.0;
+    } catch (e) {
+      print("Error calculating combination price: $e");
+      return 0.0;
+    }
   }
 }

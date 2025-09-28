@@ -305,7 +305,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       );
       var data = jsonDecode(response.body);
       data = data['responseData']['content'];
-      // print(data);
+      print(response.request);
 
       if (data['statusCode'] == '000') {
         setState(() async {
