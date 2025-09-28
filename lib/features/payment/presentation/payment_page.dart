@@ -25,6 +25,7 @@ import 'package:commercepal/features/payment/presentation/bloc/payment_state.dar
 import 'package:commercepal/features/rays_microfinance/rays_microfinance.dart';
 import 'package:commercepal/features/sahay_payment/presentation/sahay_pay_page.dart';
 import 'package:commercepal/features/tele_birr/tele_birr.dart';
+import 'package:commercepal/features/telebirr_new/telebirr_new.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:commercepal/features/translation/translations.dart';
@@ -262,7 +263,7 @@ class _PaymentPageState extends State<PaymentPage> {
       // displaySnack(context, 'Will be available soon.');
       // if (url != null) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const TeleBirrPayment()));
+          MaterialPageRoute(builder: (context) => const TeleBirrNewPayment()));
       // }
     } else if (e.name!.toLowerCase().contains("rays microfinance") == true) {
       Navigator.pushNamed(context, RaysMicrofinance.routeName);
