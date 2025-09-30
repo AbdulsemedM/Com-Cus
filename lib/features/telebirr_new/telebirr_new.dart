@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
+import '../../core/cart-core/dao/cart_dao.dart';
+
 class TeleBirrNewPayment extends StatefulWidget {
   static const routeName = "/telebirr_new_payment";
 
@@ -232,7 +234,9 @@ class _TeleBirrNewPaymentState extends State<TeleBirrNewPayment> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
+                final cartDao = getIt<CartDao>();
+                await cartDao.nuke();
                 Navigator.of(context).pop(); // Close dialog
                 Navigator.of(context).pushNamedAndRemoveUntil(
                   '/dashboard', // Assuming this is the homepage route
@@ -350,8 +354,8 @@ class _TeleBirrNewPaymentState extends State<TeleBirrNewPayment> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Image.asset(
-                             'assets/images/download.png',
-                             fit: BoxFit.cover,
+                            'assets/images/download.png',
+                            fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return Container(
                                 decoration: BoxDecoration(
