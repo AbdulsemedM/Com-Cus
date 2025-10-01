@@ -52,7 +52,7 @@
             <string>Editor</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>com.googleusercontent.apps.842396421818-vic25tc3ps0s8e5oirdglaj99chhe5li</string>
+                <string>com.googleusercontent.apps.842396421818-ak3ugpi44r8c0ckorr1dvlm4a8623fh5</string>
             </array>
         </dict>
     </array>
@@ -64,7 +64,7 @@
     <key>FacebookDisplayName</key>
     <string>CommercePal</string>
     <key>GIDClientID</key>
-    <string>842396421818-vic25tc3ps0s8e5oirdglaj99chhe5li.apps.googleusercontent.com</string>
+    <string>842396421818-ak3ugpi44r8c0ckorr1dvlm4a8623fh5.apps.googleusercontent.com</string>
 
     <key>LSApplicationQueriesSchemes</key>
     <array>
