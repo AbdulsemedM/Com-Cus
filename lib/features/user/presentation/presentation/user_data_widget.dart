@@ -37,6 +37,7 @@ import '../../../../core/models/user_model.dart';
 import '../../../dashboard/bloc/dashboard_cubit.dart';
 import '../../../special_order/presentantion/list_special_orders_page.dart';
 import '../../../user_orders/presentation/user_orders_page.dart';
+import '../../../user_orders_new/presentation/user_orders_new_page.dart';
 import 'user_menu_item.dart';
 import 'widgets/personal_business_acc_widegt.dart';
 
@@ -320,7 +321,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                         builder: (context) => LoginPage(fromCart: false)));
                 // Navigator.pushNamed(context, LoginPage.routeName);
               } else {
-                Navigator.pushNamed(context, UserOrdersPage.routeName);
+                Navigator.pushNamed(context, UserOrdersNewPage.routeName);
               }
             },
           ),

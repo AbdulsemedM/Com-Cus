@@ -32,6 +32,7 @@ import '../../features/reset_password/presentation/reset_pass_page.dart';
 import '../../features/sahay_payment/presentation/sahay_pay_page.dart';
 import '../../features/set_password/presentation/user_set_password_page.dart';
 import '../../features/special_order/presentantion/list_special_orders_page.dart';
+import '../../features/user_orders_new/presentation/user_orders_new_page.dart';
 
 final GlobalKey<NavigatorState> navigationKey = GlobalKey<NavigatorState>();
 
@@ -47,6 +48,7 @@ final Map<String, WidgetBuilder> routes = {
   SahayPayPage.routeName: (context) => const SahayPayPage(),
   CashPaymentPage.routeName: (context) => const CashPaymentPage(),
   UserOrdersPage.routeName: (context) => const UserOrdersPage(),
+  UserOrdersNewPage.routeName: (context) => const UserOrdersNewPage(),
   OrderTrackingPage.routeName: (context) => const OrderTrackingPage(),
   AddressesPage.routeName: (context) => const AddressesPage(),
   AddAddressPage.routeName: (context) => const AddAddressPage(),
