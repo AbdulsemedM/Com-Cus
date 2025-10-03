@@ -733,19 +733,68 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Form(
-              key: myKey,
-              child: TextFormField(
-                controller: simpleQuantityController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: InputDecoration(
-                  labelText: "Enter Quantity",
-                  border: OutlineInputBorder(),
-                  helperText: "Minimum Order: ${widget.myPriceRange[0].minOr}",
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Quantity",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                validator: (value) => _validateQuantity(value!),
-              ),
+                SizedBox(height: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey[300]!),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.remove_circle_outline),
+                        onPressed: () {
+                          setState(() {
+                            int currentQuantity = int.tryParse(simpleQuantityController.text) ?? 0;
+                            if (currentQuantity > 0) {
+                              simpleQuantityController.text = (currentQuantity - 1).toString();
+                            }
+                          });
+                        },
+                      ),
+                      Container(
+                        width: 80,
+                        child: Text(
+                          simpleQuantityController.text,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add_circle_outline),
+                        onPressed: () {
+                          setState(() {
+                            int currentQuantity = int.tryParse(simpleQuantityController.text) ?? 0;
+                            simpleQuantityController.text = (currentQuantity + 1).toString();
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  "Minimum Order: ${widget.myPriceRange[0].minOr}",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 16),
             ElevatedButton(
@@ -754,9 +803,8 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                 minimumSize: Size(double.infinity, 48),
               ),
               onPressed: () {
-                if (myKey.currentState!.validate()) {
-                  int quantity = int.parse(simpleQuantityController.text);
-                  if (quantity >= int.parse(widget.myPriceRange[0].minOr)) {
+                int quantity = int.tryParse(simpleQuantityController.text) ?? 0;
+                if (quantity >= int.parse(widget.myPriceRange[0].minOr)) {
                     // Find applicable price range with proper error handling
                     Prices applicablePrice;
                     try {
@@ -807,8 +855,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                   } else {
                     displaySnack(context, "Minimum order quantity not met");
                   }
-                }
-              },
+                },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
