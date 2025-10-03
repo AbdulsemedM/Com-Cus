@@ -1,6 +1,9 @@
 import 'package:commercepal/features/addresses/presentation/addresses_page.dart';
 import 'package:commercepal/features/addresses/presentation/search_places.dart';
 import 'package:commercepal/features/affiliate_register/presentation/affiliate_register_page.dart';
+import 'package:commercepal/features/affiliate_register/data/affiliate_register_repository_impl.dart';
+import 'package:commercepal/features/affiliate_register/presentation/bloc/affiliate_register_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:commercepal/features/alibaba_new/providers_products_screen.dart';
 import 'package:commercepal/features/cash_payment/presentation/cash_payment_page.dart';
 import 'package:commercepal/features/cbe_birr/cbe_birr.dart';
@@ -55,7 +58,12 @@ final Map<String, WidgetBuilder> routes = {
   AddAddressPage.routeName: (context) => const AddAddressPage(),
   EditAddressPage.routeName: (context) => const EditAddressPage(),
   UserRegistrationPage.routeName: (context) => const UserRegistrationPage(),
-  AffiliateRegisterPage.routeName: (context) => const AffiliateRegisterPage(),
+  AffiliateRegisterPage.routeName: (context) => BlocProvider(
+    create: (context) => AffiliateRegisterCubit(
+      repository: AffiliateRegisterRepositoryImpl(),
+    ),
+    child: const AffiliateRegisterPage(),
+  ),
   UserSetPasswordPage.routeName: (context) => const UserSetPasswordPage(),
   ValidatePhoneEmailPage.routeName: (context) => const ValidatePhoneEmailPage(),
   ForceUpdatePage.routeName: (context) => const ForceUpdatePage(),
