@@ -10,6 +10,7 @@ import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
 // import 'package:commercepal/features/check_out/presentation/check_out_page.dart';
+import 'package:commercepal/features/affiliate_register/presentation/affiliate_register_page.dart';
 import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:commercepal/features/forgot_password/forgot_password.dart';
 import 'package:commercepal/features/login/data/social_media_login.dart';
@@ -394,15 +395,15 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Image.asset(
                         Assets.appIcon,
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        height: MediaQuery.of(context).size.height * 0.25,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        height: MediaQuery.of(context).size.height * 0.18,
                       ),
                       Text(
                         lHint,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       // Add segmented button for phone/email selection
                       Padding(
@@ -429,7 +430,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
 
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 15),
 
                       // Replace the existing TextFormField with conditional rendering
                       if (isPhoneMode)
@@ -629,14 +630,14 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       AppButtonWidget(
                           isLoading: state is LoginStateLoading,
                           onClick: () {
                             if (_formKey.currentState!.validate()) {
                               FocusScope.of(context).unfocus();
-                              if(_emailOrPhone!.startsWith("0")){
+                              if (_emailOrPhone!.startsWith("0")) {
                                 _emailOrPhone = _emailOrPhone!.substring(1);
                               }
 
@@ -653,7 +654,7 @@ class _LoginPageState extends State<LoginPage> {
                             }
                           }),
                       Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(6.0),
                         child: FutureBuilder<String>(
                           future: TranslationService.translate(
                               "or sign in with"), // Translate hint
@@ -731,7 +732,7 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 40.0),
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: InkWell(
                           onTap: () {
                             Navigator.pushNamed(
@@ -773,7 +774,170 @@ class _LoginPageState extends State<LoginPage> {
                           //   ),
                           // ),
                         ),
-                      )
+                      ),
+                      // Creative NEW Badge positioned above affiliate button
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          // Affiliate Registration Button with Creative Design
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 15.0, top: 25.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFF8B1538), // Primary color
+                                    Color(0xFFB91C47), // Lighter shade
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF8B1538).withOpacity(0.3),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(15),
+                                  onTap: () async {
+                                    final result = await Navigator.pushNamed(
+                                      context,
+                                      AffiliateRegisterPage.routeName,
+                                    );
+                                    // If registration was successful, show success message
+                                    if (result == true) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Affiliate registration successful! Please login with your credentials.'),
+                                          backgroundColor: Colors.green,
+                                          duration: Duration(seconds: 3),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 24.0,
+                                      vertical: 16.0,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        // Twinkling star icon
+                                        TwinklingIcon(
+                                          icon: Icons.star,
+                                          color: Colors.amber,
+                                          size: 20,
+                                        ),
+                                        const SizedBox(width: 12),
+
+                                        // Main text
+                                        FutureBuilder<String>(
+                                          future: TranslationService.translate(
+                                              "Become Affiliate Partner"),
+                                          builder: (context, snapshot) {
+                                            return Text(
+                                              snapshot.data ??
+                                                  "Become Affiliate Partner",
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                letterSpacing: 0.5,
+                                              ),
+                                            );
+                                          },
+                                        ),
+
+                                        const SizedBox(width: 12),
+
+                                        // Arrow icon with subtle animation
+                                        AnimatedContainer(
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          child: const Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Colors.white,
+                                            size: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // Creative "NEW" Badge positioned at top-right corner
+                          Positioned(
+                            top: 0,
+                            right: 20,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFFFF6B35), // Vibrant orange
+                                    Color(0xFFFF8E53), // Lighter orange
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFFFF6B35).withOpacity(0.4),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Sparkle icon
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: TwinklingIcon(
+                                      icon: Icons.auto_awesome,
+                                      color: Colors.white,
+                                      size: 14,
+                                    ),
+                                  ),
+                                  
+                                  // NEW text with pulsing animation
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                      vertical: 6.0,
+                                    ),
+                                    child: PulsingBadge(
+                                      text: "NEW",
+                                    ),
+                                  ),
+                                  
+                                  // Fire icon
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: TwinklingIcon(
+                                      icon: Icons.local_fire_department,
+                                      color: Colors.white,
+                                      size: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -793,6 +957,168 @@ class NotificationManager {
       badge: true,
       sound: true,
       provisional: false,
+    );
+  }
+}
+
+// Custom Twinkling Icon Widget
+class TwinklingIcon extends StatefulWidget {
+  final IconData icon;
+  final Color color;
+  final double size;
+
+  const TwinklingIcon({
+    Key? key,
+    required this.icon,
+    required this.color,
+    required this.size,
+  }) : super(key: key);
+
+  @override
+  _TwinklingIconState createState() => _TwinklingIconState();
+}
+
+class _TwinklingIconState extends State<TwinklingIcon>
+    with TickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+    _animation = Tween<double>(
+      begin: 0.3,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _animation.value,
+          child: Icon(
+            widget.icon,
+            color: widget.color,
+            size: widget.size,
+          ),
+        );
+      },
+    );
+  }
+}
+
+// Custom Pulsing Badge Widget
+class PulsingBadge extends StatefulWidget {
+  final String text;
+
+  const PulsingBadge({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  _PulsingBadgeState createState() => _PulsingBadgeState();
+}
+
+class _PulsingBadgeState extends State<PulsingBadge>
+    with TickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _opacityAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.2,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.elasticOut,
+    ));
+
+    _opacityAnimation = Tween<double>(
+      begin: 0.7,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _scaleAnimation.value,
+          child: Opacity(
+            opacity: _opacityAnimation.value,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xFFFFD700), // Gold
+                    Color(0xFFFFA500), // Orange
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.amber.withOpacity(0.6),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Text(
+                widget.text,
+                style: const TextStyle(
+                  color: Colors.black87,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
