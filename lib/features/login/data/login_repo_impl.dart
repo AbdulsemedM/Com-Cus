@@ -45,6 +45,9 @@ class LoginRepositoryImpl implements LoginRepository {
           await prefsData.writeData(
               PrefsKeys.auth.name, jsonEncode(decodedResponse));
 
+          print("this is for affiliate");
+          print(decodedResponse);
+
           // get user details
           print("getting user detail");
           final userResponse = await apiProvider.get(EndPoints.userDetails.url);

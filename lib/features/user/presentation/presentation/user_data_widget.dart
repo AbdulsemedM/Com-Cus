@@ -4,7 +4,9 @@ import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/cart-core/dao/cart_dao.dart';
 import 'package:commercepal/core/translator/translator.dart';
+import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:commercepal/features/addresses/presentation/addresses_page.dart';
+import 'package:commercepal/features/affiliate_register/presentation/affiliate_register_page.dart';
 import 'package:commercepal/features/change_password/presentation/change_password_page.dart';
 import 'package:commercepal/features/commercepal_coins/commecepal_coins.dart';
 import 'package:commercepal/features/contact_us/contact_us.dart';
@@ -27,16 +29,22 @@ import 'package:commercepal/features/validate_phone_email/presentation/validate_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:device_info_plus/device_info_plus.dart';
 
 import '../../../../app/di/injector.dart';
 import '../../../../core/models/user_model.dart';
+import '../../../../core/data/prefs_data.dart';
+import '../../../../core/data/prefs_data_impl.dart';
 import '../../../dashboard/bloc/dashboard_cubit.dart';
-import '../../../special_order/presentantion/list_special_orders_page.dart';
-import '../../../user_orders/presentation/user_orders_page.dart';
+// import '../../../special_order/presentantion/list_special_orders_page.dart;
+// import '../../../user_orders/presentation/user_orders_page.dart;
 import '../../../user_orders_new/presentation/user_orders_new_page.dart';
 import 'user_menu_item.dart';
 import 'widgets/personal_business_acc_widegt.dart';
@@ -60,12 +68,16 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   String? _selectedCurrency;
   final countryManager = CountryManager();
   String _selectedCountry = "US";
+  List<String> userRoles = [];
+  bool isAffiliate = false;
+  
   @override
   void initState() {
     super.initState();
     checkToken();
     _loadSelectedCurrency();
     _loadSelectedCountry();
+    _loadUserRoles();
     setState(() {
       dropdownValue = list.first;
     });
@@ -126,6 +138,82 @@ class _UserDataWidgetState extends State<UserDataWidget> {
     });
     // if (valid == "logout") {}
   }
+
+  Future<void> _loadUserRoles() async {
+    try {
+      final prefsData = getIt<PrefsData>();
+      final authDataString = await prefsData.readData(PrefsKeys.auth.name);
+      
+      if (authDataString != null) {
+        final authData = jsonDecode(authDataString);
+        
+        if (authData['responseData'] != null && 
+            authData['responseData']['meta'] != null &&
+            authData['responseData']['meta']['roles'] != null) {
+          
+          final roles = List<String>.from(authData['responseData']['meta']['roles']);
+          
+          setState(() {
+            userRoles = roles;
+            isAffiliate = roles.contains('AFFILIATE');
+          });
+          
+          print('User roles loaded: $userRoles');
+          print('Is affiliate: $isAffiliate');
+        }
+      }
+    } catch (e) {
+      print('Error loading user roles: $e');
+    }
+  }
+
+  void _showAffiliateRegistrationModal() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AffiliateRegistrationModal(
+          onRegistrationComplete: (bool success) {
+            if (success) {
+              // Refresh user roles to update the UI
+              _loadUserRoles();
+            }
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _launchAffiliateUrl() async {
+    final Uri url = Uri.parse('https://affiliate.commercepal.com/auth/login');
+    
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(
+          url,
+          mode: LaunchMode.inAppWebView,
+          webViewConfiguration: const WebViewConfiguration(
+            enableJavaScript: true,
+            enableDomStorage: true,
+          ),
+        );
+      } else {
+        // Fallback to external browser if in-app web view is not available
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      }
+    } catch (e) {
+      print('Error launching affiliate URL: $e');
+      // Show error message to user
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Unable to open affiliate dashboard'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+  
   // void setLangCode() async {
   //   setState(() async {
   //     langCode = await getStoredLang();
@@ -301,6 +389,38 @@ class _UserDataWidgetState extends State<UserDataWidget> {
               },
             ),
           ),
+          // Show "Become Affiliate" button only if user is not already an affiliate
+          if (!isAffiliate)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  AppButtonWidget(
+                    text: "Become Affiliate",
+                    onClick: () {
+                      Navigator.of(context).pushNamed(AffiliateRegisterPage.routeName);
+                    },
+                  ),
+                  Positioned(
+                    top: -8,
+                    right: 20,
+                    child: _BlinkingNewBadge(),
+                  ),
+                ],
+              ),
+            ),
+          // Show affiliate status if user is already an affiliate
+          if (isAffiliate)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10),
+              child: AppButtonWidget(
+                text: "Affiliate Dashboard",
+                onClick: () {
+                  _launchAffiliateUrl();
+                },
+              ),
+            ),
 
           const SizedBox(
             height: 15,
@@ -801,7 +921,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                     }
                   },
                 ),
-              ),    
+              ),
             ],
           ),
         );
@@ -1119,6 +1239,451 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           backgroundColor: Colors.red,
         ),
       );
+    }
+  }
+}
+
+class _BlinkingNewBadge extends StatefulWidget {
+  @override
+  _BlinkingNewBadgeState createState() => _BlinkingNewBadgeState();
+}
+
+class _BlinkingNewBadgeState extends State<_BlinkingNewBadge>
+    with TickerProviderStateMixin {
+  late AnimationController _blinkController;
+  late AnimationController _pulseController;
+  late AnimationController _rotateController;
+  late Animation<double> _blinkAnimation;
+  late Animation<double> _pulseAnimation;
+  late Animation<double> _rotateAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // Blink animation (opacity)
+    _blinkController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+    _blinkAnimation = Tween<double>(
+      begin: 0.3,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _blinkController,
+      curve: Curves.easeInOut,
+    ));
+
+    // Pulse animation (scale)
+    _pulseController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+    _pulseAnimation = Tween<double>(
+      begin: 0.8,
+      end: 1.1,
+    ).animate(CurvedAnimation(
+      parent: _pulseController,
+      curve: Curves.elasticOut,
+    ));
+
+    // Rotate animation
+    _rotateController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+    _rotateAnimation = Tween<double>(
+      begin: 0.0,
+      end: 0.1,
+    ).animate(CurvedAnimation(
+      parent: _rotateController,
+      curve: Curves.easeInOut,
+    ));
+
+    // Start animations with different intervals
+    _startAnimations();
+  }
+
+  void _startAnimations() {
+    // Blink animation - repeats every 800ms
+    _blinkController.repeat(reverse: true);
+    
+    // Pulse animation - repeats every 1200ms
+    _pulseController.repeat(reverse: true);
+    
+    // Rotate animation - subtle wiggle every 2 seconds
+    _rotateController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _blinkController.dispose();
+    _pulseController.dispose();
+    _rotateController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: Listenable.merge([_blinkAnimation, _pulseAnimation, _rotateAnimation]),
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _pulseAnimation.value,
+          child: Transform.rotate(
+            angle: _rotateAnimation.value,
+            child: Opacity(
+              opacity: _blinkAnimation.value,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFFFFD700), // Gold
+                      Color(0xFFFFA500), // Orange
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.amber.withOpacity(0.6),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                    BoxShadow(
+                      color: Colors.yellow.withOpacity(0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: const Text(
+                  'NEW',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// Affiliate Registration Modal Widget
+class AffiliateRegistrationModal extends StatefulWidget {
+  final Function(bool) onRegistrationComplete;
+
+  const AffiliateRegistrationModal({
+    Key? key,
+    required this.onRegistrationComplete,
+  }) : super(key: key);
+
+  @override
+  _AffiliateRegistrationModalState createState() => _AffiliateRegistrationModalState();
+}
+
+class _AffiliateRegistrationModalState extends State<AffiliateRegistrationModal> {
+  String selectedCommissionType = 'Percentage';
+  final TextEditingController referralCodeController = TextEditingController();
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Register as Affiliate',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 24),
+            
+            // Commission Type Section
+            const Text(
+              'Commission Type',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                children: [
+                  _buildCommissionOption('Percentage'),
+                  const Divider(height: 1),
+                  _buildCommissionOption('Fixed'),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Referral Code Section
+            Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    'Referral Code (Optional)',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: referralCodeController,
+              maxLength: 5,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.grey.shade300),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.grey.shade300),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Colors.blue),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                counterText: '', // Hide the character counter
+                helperText: 'Maximum 5 characters',
+                helperStyle: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 12,
+                ),
+              ),
+              onChanged: (value) {
+                // Additional validation can be added here if needed
+                if (value.length > 5) {
+                  referralCodeController.text = value.substring(0, 5);
+                  referralCodeController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: referralCodeController.text.length),
+                  );
+                }
+              },
+            ),
+            
+            const SizedBox(height: 32),
+            
+            // Action Buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: isLoading ? null : () => Navigator.of(context).pop(),
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: isLoading ? null : _registerAffiliate,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF8B1538),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : const Text(
+                          'Register',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCommissionOption(String type) {
+    final isSelected = selectedCommissionType == type;
+    return InkWell(
+      onTap: () {
+        setState(() {
+          selectedCommissionType = type;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        color: isSelected ? Colors.blue : Colors.transparent,
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                type,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: isSelected ? Colors.white : Colors.black87,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _registerAffiliate() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final success = await AffiliateService.registerAffiliate(
+        commissionType: selectedCommissionType.toUpperCase(),
+        referralCode: referralCodeController.text.trim(),
+      );
+
+      if (success) {
+        widget.onRegistrationComplete(true);
+        if (mounted) {
+          Navigator.of(context).pop();
+          
+          // Show success message
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Successfully registered as affiliate!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Registration failed: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    referralCodeController.dispose();
+    super.dispose();
+  }
+}
+
+// Affiliate Service Class
+class AffiliateService {
+  static const String _baseUrl = 'api.commercepal.com';
+  static const String _affiliateEndpoint = '/api/v2/affiliates/register';
+
+  static Future<bool> registerAffiliate({
+    required String commissionType,
+    required String referralCode,
+  }) async {
+    try {
+      final prefsData = getIt<PrefsData>();
+      final token = await prefsData.readData(PrefsKeys.userToken.name);
+      
+      // Get device ID
+      final deviceInfo = DeviceInfoPlugin();
+      String deviceId = 'device-98765'; // Default fallback
+      
+      try {
+        final androidInfo = await deviceInfo.androidInfo;
+        deviceId = androidInfo.id ?? 'device-98765';
+      } catch (e) {
+        print('Error getting device ID: $e');
+      }
+
+      final payload = {
+        'commissionType': commissionType,
+        'deviceId': deviceId,
+        'referralCode': referralCode.isEmpty ? 'asdf' : referralCode,
+        'registrationChannel': 'WEB',
+      };
+
+      final uri = Uri.https(_baseUrl, _affiliateEndpoint);
+      
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(payload),
+      );
+
+      print('Affiliate Registration Response Status: ${response.statusCode}');
+      print('Affiliate Registration Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        
+        if (jsonData['statusCode'] == '000') {
+          return true;
+        } else {
+          throw Exception(jsonData['statusMessage'] ?? 'Registration failed');
+        }
+      } else {
+        throw Exception('Failed to register affiliate: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error registering affiliate: $e');
+      rethrow;
     }
   }
 }
