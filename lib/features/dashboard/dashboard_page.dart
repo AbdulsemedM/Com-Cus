@@ -333,9 +333,21 @@ class _DashboardPageState extends State<DashboardPage> {
 
     bool isMandatory = false;
 
-    if (latestVersionParts[0] > currentVersionParts[0] ||
-        latestVersionParts[1] > currentVersionParts[1]) {
-      isMandatory = true;
+    // Force update if major version (first digit) or minor version (second digit) changes
+    // For example: 4.3.5 -> if 4 changes or 3 changes, force update
+    // If only patch version (third digit) changes, suggest but don't force
+    if (latestVersionParts.isNotEmpty && currentVersionParts.isNotEmpty) {
+      // Check major version (first digit)
+      if (latestVersionParts[0] > currentVersionParts[0]) {
+        isMandatory = true;
+      }
+      // Check minor version (second digit) only if major versions are the same
+      else if (latestVersionParts[0] == currentVersionParts[0] &&
+               latestVersionParts.length > 1 && currentVersionParts.length > 1 &&
+               latestVersionParts[1] > currentVersionParts[1]) {
+        isMandatory = true;
+      }
+      // If only patch version (third digit) changes, isMandatory remains false
     }
 
     return UpdateInfo(latestVersion: latestVersion, isMandatory: isMandatory);
