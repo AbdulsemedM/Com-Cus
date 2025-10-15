@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class M_Pessa extends StatefulWidget {
   const M_Pessa({super.key});
@@ -68,7 +69,7 @@ class _M_PessaState extends State<M_Pessa> {
           "Enter your phone number below", GlobalStrings.getGlobalString());
       pHint = await physicalAddressHintFuture;
     } catch (e) {
-      print('Error fetching hints: $e');
+      appLog('Error fetching hints: $e');
       pHint = "Enter your phone number below"; // Fallback text
     }
 
@@ -229,7 +230,7 @@ class _M_PessaState extends State<M_Pessa> {
                                 pNumber = value;
                                 final completePhoneNumber =
                                     '${_selectedCountry?.phoneCode}$pNumber';
-                                print(
+                                appLog(
                                     "completePhoneNumber: $completePhoneNumber");
                               });
                             },
@@ -264,7 +265,7 @@ class _M_PessaState extends State<M_Pessa> {
                                     // final prefsData = getIt<PrefsData>();
                                     // final isUserLoggedIn = await prefsData
                                     //     .contains(PrefsKeys.userToken.name);
-                                    print(pNumber);
+                                    appLog(pNumber);
                                     await sendData();
                                   }
                                 },
@@ -310,12 +311,12 @@ class _M_PessaState extends State<M_Pessa> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      // print(isUserLoggedIn);
+      // appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         bool isit = await hasUserSwitchedToBusiness();
         final orderRef = await prefsData.readData("order_ref");
-        // print(orderRef);
+        // appLog(orderRef);
         Map<String, dynamic> payload = {
           "ServiceCode": "CHECKOUT",
           "PaymentType": "M_PESA",
@@ -325,7 +326,7 @@ class _M_PessaState extends State<M_Pessa> {
           "Currency": "ETB",
           "PhoneNumber": pNumber
         };
-        print(payload);
+        appLog(payload);
 
         final response = await http.post(
           Uri.https(
@@ -337,12 +338,12 @@ class _M_PessaState extends State<M_Pessa> {
         );
 
         var data = jsonDecode(response.body);
-        print(data);
+        appLog(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("epg_done", "yes");
-          // print(data['PaymentUrl']);
+          // appLog(data['PaymentUrl']);
           setState(() {
             loading = false;
           });
@@ -368,7 +369,7 @@ class _M_PessaState extends State<M_Pessa> {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });
@@ -395,10 +396,10 @@ class _M_PessaState extends State<M_Pessa> {
       // if (await canLaunch(url)) {
       await launch(url);
       // } else {
-      // print("Could not launch $url");
+      // appLog("Could not launch $url");
       // }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
     }
   }
 }

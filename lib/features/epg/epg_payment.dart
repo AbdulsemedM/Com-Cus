@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:commercepal/app/utils/logger.dart';
 // import '../../../core/cart-core/dao/cart_dao.dart';
 
 class EPGPayment extends StatefulWidget {
@@ -48,9 +49,9 @@ class _EPGPaymentState extends State<EPGPayment> {
     pHint = await physicalAddressHintFuture;
     // cHint = await subcityHint;
     // aHint = await addAddHint;
-    // print("herrerererere");
-    // print(pHint);
-    // print(cHint);
+    // appLog("herrerererere");
+    // appLog(pHint);
+    // appLog(cHint);
 
     setState(() {
       loading = false;
@@ -145,11 +146,11 @@ class _EPGPaymentState extends State<EPGPayment> {
                                     if (regExp1.hasMatch(pNumber!)) {
                                       pNumber = pNumber!
                                           .replaceFirst(RegExp('^0'), '251');
-                                      // print(pNumber);
+                                      // appLog(pNumber);
                                     } else if (regExp2.hasMatch(pNumber!)) {
                                       pNumber = pNumber!
                                           .replaceFirst(RegExp(r'^\+'), '');
-                                      // print(pNumber);
+                                      // appLog(pNumber);
                                     }
                                     var done = await sendPassword();
                                     if (done) {}
@@ -206,7 +207,7 @@ class _EPGPaymentState extends State<EPGPayment> {
           "OrderRef": orderRef,
           "Currency": "ETB"
         };
-        // print(payload);
+        // appLog(payload);
 
         final response = await http.post(
           Uri.https(
@@ -218,7 +219,7 @@ class _EPGPaymentState extends State<EPGPayment> {
         );
 
         var data = jsonDecode(response.body);
-        // print(data);
+        // appLog(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -248,7 +249,7 @@ class _EPGPaymentState extends State<EPGPayment> {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });
@@ -275,10 +276,10 @@ class _EPGPaymentState extends State<EPGPayment> {
       // if (await canLaunch(url)) {
       await launch(url);
       // } else {
-      // print("Could not launch $url");
+      // appLog("Could not launch $url");
       // }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
     }
   }
 }

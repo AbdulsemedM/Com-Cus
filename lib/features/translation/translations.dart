@@ -5,6 +5,7 @@ import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:translator/translator.dart';
 import 'package:http/http.dart' as http;
 import 'package:html_unescape/html_unescape.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class Translations {
   static final languages = <String>[
@@ -38,16 +39,16 @@ class Translations {
   //     return text; // Return the original text if target language is English
   //   }
   //   try {
-  //     print("trans;ated");
+  //     appLog("trans;ated");
   //     String result = await TranslationService.translate(text);
-  //     print(result);
+  //     appLog(result);
   //     return result;
   //   } catch (e) {
   //     return text; // Return the original text if target language is English
   //   }
   //   // Translation translation =
   //   //     await GoogleTranslator().translate(text, to: targetLanguage);
-  //   // print(translation.text);
+  //   // appLog(translation.text);
   //   // return translation.text;
   // }
 
@@ -63,8 +64,8 @@ class Translations {
         "AIzaSyDMF4wUeCijWhaWHt4mFfzegHcYootjUFY"; // Replace with your API key
     final url = 'https://translation.googleapis.com/language/translate/v2';
     final unescape = HtmlUnescape();
-    print(text);
-    print(targetLanguage);
+    appLog(text);
+    appLog(targetLanguage);
     final response = await http.post(
       Uri.parse(url),
       headers: {
@@ -76,14 +77,14 @@ class Translations {
         'key': apiKey,
       }),
     );
-    // print(response);
-    print(response.body);
+    // appLog(response);
+    appLog(response.body);
     if (response.statusCode == 200) {
       final decoded = json.decode(response.body);
       final translatedText =
           decoded['data']['translations'][0]['translatedText'];
       final unescapedText = unescape.convert(translatedText);
-      print(unescapedText);
+      appLog(unescapedText);
       return unescapedText;
     } else {
       return text;

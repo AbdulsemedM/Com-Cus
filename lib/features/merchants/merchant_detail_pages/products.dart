@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rate_in_stars/rate_in_stars.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class MerchantProducts extends StatefulWidget {
   final String id;
@@ -458,11 +459,11 @@ class _MerchantProductsState extends State<MerchantProducts> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      print('herererererinabout');
+      appLog('herererererinabout');
       var datas = jsonDecode(response.body);
-      print(datas);
+      appLog(datas);
       if (datas['statusCode'] == "000") {
-        print("hereare");
+        appLog("hereare");
         setState(() {
           for (var i in datas['data']['products']) {
             myMerchantProducts.add(MerchantProds(
@@ -482,7 +483,7 @@ class _MerchantProductsState extends State<MerchantProducts> {
             //   throw 'No special orders found';
           }
         });
-        print(myMerchantProducts.length);
+        appLog(myMerchantProducts.length);
         setState(() {
           myMerchant = MerchantProf(
               merchantName: datas['data']['merchantAbout']['merchantName'],
@@ -493,7 +494,7 @@ class _MerchantProductsState extends State<MerchantProducts> {
                   ['physicalAddress'],
               shopImage: datas['data']['merchantAbout']['shopImage']);
         });
-        // print(myMerchant!.merchantName);
+        // appLog(myMerchant!.merchantName);
         setState(() {
           loading = false;
         });
@@ -505,7 +506,7 @@ class _MerchantProductsState extends State<MerchantProducts> {
         loading = false;
       });
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       rethrow;
     }
   }

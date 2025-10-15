@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/core-phonenumber/phone_number_utils.dart';
 import '../../domain/login_repository.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @injectable
 class LoginCubit extends Cubit<LoginState> {
@@ -30,18 +31,18 @@ class LoginCubit extends Cubit<LoginState> {
         emailOrPhone =
             (await phoneNumberUtils.passPhoneToIso(emailOrPhone, "ET"))!;
       }
-      print("emailOrPhone");
-      print(emailOrPhone);
+      appLog("emailOrPhone");
+      appLog(emailOrPhone);
       final authResponse = await loginRepository.login(emailOrPhone, pass);
-      print("hereistheauth");
-      print(authResponse.isPhoneProvided);
+      appLog("hereistheauth");
+      appLog(authResponse.isPhoneProvided);
       if (authResponse.isPhoneProvided == 0) {
-        print("emmited");
+        appLog("emmited");
         emit(const LoginState.providePhone('phone'));
         return;
       }
       if (authResponse.isEmailProvided == 0) {
-        print("emmited");
+        appLog("emmited");
         emit(const LoginState.providePhone('email'));
         return;
       }
@@ -49,12 +50,12 @@ class LoginCubit extends Cubit<LoginState> {
         emit(LoginState.setPin(authResponse.phoneNumber!));
         return;
       }
-      print("hereistheauth1");
+      appLog("hereistheauth1");
       emit(const LoginState.success("Success"));
     } catch (e) {
       emit(LoginState.error(e.toString()));
-      print("isithere");
-      print(e.toString());
+      appLog("isithere");
+      appLog(e.toString());
     }
   }
 }

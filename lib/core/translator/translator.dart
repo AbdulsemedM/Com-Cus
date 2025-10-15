@@ -6,9 +6,10 @@ import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:google_translate/google_translate.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 Future<String> translateText(text, sourceLanguage, targetLanguage) async {
-  print(text);
+  appLog(text);
 
   GoogleTranslate googleTranslate = GoogleTranslate();
   final String result = await googleTranslate.translate(
@@ -16,7 +17,7 @@ Future<String> translateText(text, sourceLanguage, targetLanguage) async {
     sourceLanguage: sourceLanguage,
     targetLanguage: targetLanguage,
   );
-  print(result);
+  appLog(result);
   return result;
 }
 
@@ -39,7 +40,7 @@ Future<String> fetchUser1({int retryCount = 0, BuildContext? context}) async {
       );
 
       var data = jsonDecode(response.body);
-      print(data);
+      appLog(data);
 
       if (data['statusCode'] == '000') {
         // Handle the case when statusCode is '000'
@@ -55,7 +56,7 @@ Future<String> fetchUser1({int retryCount = 0, BuildContext? context}) async {
     }
     return "logout";
   } catch (e) {
-    print(e.toString());
+    appLog(e.toString());
     // setState(() {
     //   loading = false;
     // });

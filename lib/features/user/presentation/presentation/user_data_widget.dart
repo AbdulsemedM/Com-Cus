@@ -48,6 +48,7 @@ import '../../../dashboard/bloc/dashboard_cubit.dart';
 import '../../../user_orders_new/presentation/user_orders_new_page.dart';
 import 'user_menu_item.dart';
 import 'widgets/personal_business_acc_widegt.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class UserDataWidget extends StatefulWidget {
   final UserModel userModel;
@@ -70,7 +71,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
   String _selectedCountry = "US";
   List<String> userRoles = [];
   bool isAffiliate = false;
-  
+
   @override
   void initState() {
     super.initState();
@@ -143,27 +144,27 @@ class _UserDataWidgetState extends State<UserDataWidget> {
     try {
       final prefsData = getIt<PrefsData>();
       final authDataString = await prefsData.readData(PrefsKeys.auth.name);
-      
+
       if (authDataString != null) {
         final authData = jsonDecode(authDataString);
-        
-        if (authData['responseData'] != null && 
+
+        if (authData['responseData'] != null &&
             authData['responseData']['meta'] != null &&
             authData['responseData']['meta']['roles'] != null) {
-          
-          final roles = List<String>.from(authData['responseData']['meta']['roles']);
-          
+          final roles =
+              List<String>.from(authData['responseData']['meta']['roles']);
+
           setState(() {
             userRoles = roles;
             isAffiliate = roles.contains('AFFILIATE');
           });
-          
-          print('User roles loaded: $userRoles');
-          print('Is affiliate: $isAffiliate');
+
+          appLog('User roles loaded: $userRoles');
+          appLog('Is affiliate: $isAffiliate');
         }
       }
     } catch (e) {
-      print('Error loading user roles: $e');
+      appLog('Error loading user roles: $e');
     }
   }
 
@@ -185,7 +186,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
 
   Future<void> _launchAffiliateUrl() async {
     final Uri url = Uri.parse('https://affiliate.commercepal.com/auth/login');
-    
+
     try {
       if (await canLaunchUrl(url)) {
         await launchUrl(
@@ -201,7 +202,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
         await launchUrl(url, mode: LaunchMode.externalApplication);
       }
     } catch (e) {
-      print('Error launching affiliate URL: $e');
+      appLog('Error launching affiliate URL: $e');
       // Show error message to user
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -213,13 +214,13 @@ class _UserDataWidgetState extends State<UserDataWidget> {
       }
     }
   }
-  
+
   // void setLangCode() async {
   //   setState(() async {
   //     langCode = await getStoredLang();
   //   });
-  //   print("hereerlang");
-  //   print(langCode);
+  //   appLog("hereerlang");
+  //   appLog(langCode);
   // }
 
   @override
@@ -374,7 +375,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                 getIt<DashboardCubit>()..checkIfUserIsABusiness(),
             child: BlocBuilder<DashboardCubit, DashboardState>(
               builder: (ctx, state) {
-                // print(state.isBusiness);
+                // appLog(state.isBusiness);
                 return state is DashboardBusinessState && state.isBusiness
                     ? const Padding(
                         padding:
@@ -392,14 +393,16 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           // Show "Become Affiliate" button only if user is not already an affiliate
           if (!isAffiliate)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10),
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
                   AppButtonWidget(
                     text: "Become Affiliate",
                     onClick: () {
-                      Navigator.of(context).pushNamed(AffiliateRegisterPage.routeName);
+                      Navigator.of(context)
+                          .pushNamed(AffiliateRegisterPage.routeName);
                     },
                   ),
                   Positioned(
@@ -413,7 +416,8 @@ class _UserDataWidgetState extends State<UserDataWidget> {
           // Show affiliate status if user is already an affiliate
           if (isAffiliate)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10),
               child: AppButtonWidget(
                 text: "Affiliate Dashboard",
                 onClick: () {
@@ -480,7 +484,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                     MaterialPageRoute(
                         builder: (context) => const InviteFriends()));
                 // String? link = await getReferralLink();
-                // print(link);
+                // appLog(link);
                 // Share.share("Check out this app: $link");
               }
               // Navigator.push(context,
@@ -1151,7 +1155,7 @@ class _UserDataWidgetState extends State<UserDataWidget> {
                     onTap: () async {
                       String selectedLocale =
                           locale[index]['locale'].toString();
-                      print(selectedLocale);
+                      appLog(selectedLocale);
 
                       // Persist the selected locale and update state
                       SharedPreferences prefs =
@@ -1260,7 +1264,7 @@ class _BlinkingNewBadgeState extends State<_BlinkingNewBadge>
   @override
   void initState() {
     super.initState();
-    
+
     // Blink animation (opacity)
     _blinkController = AnimationController(
       duration: const Duration(milliseconds: 800),
@@ -1307,10 +1311,10 @@ class _BlinkingNewBadgeState extends State<_BlinkingNewBadge>
   void _startAnimations() {
     // Blink animation - repeats every 800ms
     _blinkController.repeat(reverse: true);
-    
+
     // Pulse animation - repeats every 1200ms
     _pulseController.repeat(reverse: true);
-    
+
     // Rotate animation - subtle wiggle every 2 seconds
     _rotateController.repeat(reverse: true);
   }
@@ -1326,7 +1330,8 @@ class _BlinkingNewBadgeState extends State<_BlinkingNewBadge>
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: Listenable.merge([_blinkAnimation, _pulseAnimation, _rotateAnimation]),
+      animation: Listenable.merge(
+          [_blinkAnimation, _pulseAnimation, _rotateAnimation]),
       builder: (context, child) {
         return Transform.scale(
           scale: _pulseAnimation.value,
@@ -1387,10 +1392,12 @@ class AffiliateRegistrationModal extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AffiliateRegistrationModalState createState() => _AffiliateRegistrationModalState();
+  _AffiliateRegistrationModalState createState() =>
+      _AffiliateRegistrationModalState();
 }
 
-class _AffiliateRegistrationModalState extends State<AffiliateRegistrationModal> {
+class _AffiliateRegistrationModalState
+    extends State<AffiliateRegistrationModal> {
   String selectedCommissionType = 'Percentage';
   final TextEditingController referralCodeController = TextEditingController();
   bool isLoading = false;
@@ -1416,7 +1423,7 @@ class _AffiliateRegistrationModalState extends State<AffiliateRegistrationModal>
               ),
             ),
             const SizedBox(height: 24),
-            
+
             // Commission Type Section
             const Text(
               'Commission Type',
@@ -1440,9 +1447,9 @@ class _AffiliateRegistrationModalState extends State<AffiliateRegistrationModal>
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Referral Code Section
             Row(
               children: [
@@ -1475,7 +1482,8 @@ class _AffiliateRegistrationModalState extends State<AffiliateRegistrationModal>
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: Colors.blue),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 counterText: '', // Hide the character counter
                 helperText: 'Maximum 5 characters',
                 helperStyle: TextStyle(
@@ -1493,15 +1501,16 @@ class _AffiliateRegistrationModalState extends State<AffiliateRegistrationModal>
                 }
               },
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Action Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: isLoading ? null : () => Navigator.of(context).pop(),
+                  onPressed:
+                      isLoading ? null : () => Navigator.of(context).pop(),
                   child: const Text(
                     'Cancel',
                     style: TextStyle(
@@ -1517,7 +1526,8 @@ class _AffiliateRegistrationModalState extends State<AffiliateRegistrationModal>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF8B1538),
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -1528,7 +1538,8 @@ class _AffiliateRegistrationModalState extends State<AffiliateRegistrationModal>
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
                       : const Text(
@@ -1590,7 +1601,7 @@ class _AffiliateRegistrationModalState extends State<AffiliateRegistrationModal>
         widget.onRegistrationComplete(true);
         if (mounted) {
           Navigator.of(context).pop();
-          
+
           // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -1637,16 +1648,16 @@ class AffiliateService {
     try {
       final prefsData = getIt<PrefsData>();
       final token = await prefsData.readData(PrefsKeys.userToken.name);
-      
+
       // Get device ID
       final deviceInfo = DeviceInfoPlugin();
       String deviceId = 'device-98765'; // Default fallback
-      
+
       try {
         final androidInfo = await deviceInfo.androidInfo;
         deviceId = androidInfo.id ?? 'device-98765';
       } catch (e) {
-        print('Error getting device ID: $e');
+        appLog('Error getting device ID: $e');
       }
 
       final payload = {
@@ -1657,7 +1668,7 @@ class AffiliateService {
       };
 
       final uri = Uri.https(_baseUrl, _affiliateEndpoint);
-      
+
       final response = await http.post(
         uri,
         headers: {
@@ -1667,12 +1678,12 @@ class AffiliateService {
         body: jsonEncode(payload),
       );
 
-      print('Affiliate Registration Response Status: ${response.statusCode}');
-      print('Affiliate Registration Response Body: ${response.body}');
+      appLog('Affiliate Registration Response Status: ${response.statusCode}');
+      appLog('Affiliate Registration Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        
+
         if (jsonData['statusCode'] == '000') {
           return true;
         } else {
@@ -1682,7 +1693,7 @@ class AffiliateService {
         throw Exception('Failed to register affiliate: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error registering affiliate: $e');
+      appLog('Error registering affiliate: $e');
       rethrow;
     }
   }

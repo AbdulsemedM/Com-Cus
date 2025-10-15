@@ -9,6 +9,7 @@ import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 import '../../core/cart-core/dao/cart_dao.dart';
 
@@ -130,7 +131,7 @@ class _TeleBirrNewPaymentState extends State<TeleBirrNewPayment> {
         "OrderRef": orderRef,
         "Currency": "ETB"
       };
-      print(payload);
+      appLog(payload);
 
       final response = await http.post(
         Uri.https(
@@ -145,7 +146,7 @@ class _TeleBirrNewPaymentState extends State<TeleBirrNewPayment> {
       );
 
       var data = jsonDecode(response.body);
-      print('Payment response: $data');
+      appLog('Payment response: $data');
 
       if (data['statusCode'] == '000') {
         _showSuccessDialog();
@@ -154,7 +155,7 @@ class _TeleBirrNewPaymentState extends State<TeleBirrNewPayment> {
             'Payment initiation failed. Please try again.');
       }
     } catch (e) {
-      print('Payment error: $e');
+      appLog('Payment error: $e');
       _showErrorDialog('An error occurred. Please try again.');
     } finally {
       setState(() {

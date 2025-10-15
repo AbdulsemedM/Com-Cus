@@ -17,6 +17,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:image/image.dart' as img;
+import 'package:commercepal/app/utils/logger.dart';
 
 class TeleBirrPayment extends StatefulWidget {
   static const routeName = "/telebirr_payment";
@@ -65,9 +66,9 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
     bHint = await capturetHint;
     dHint = await loadingHint;
     mHint = await messageHint;
-    print("herrerererere");
-    print(pHint);
-    print(cHint);
+    appLog("herrerererere");
+    appLog(pHint);
+    appLog(cHint);
 
     setState(() {
       loading = false;
@@ -258,13 +259,13 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
             prefs.setString("epg_done", "yes");
-            print('Screenshot saved to gallery successfully!');
+            appLog('Screenshot saved to gallery successfully!');
           } else {
-            print('Failed to save screenshot to gallery.');
+            appLog('Failed to save screenshot to gallery.');
           }
         });
       } else {
-        print('Failed to capture screenshot.');
+        appLog('Failed to capture screenshot.');
       }
     });
   }
@@ -274,10 +275,10 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
       setState(() {
         loading = true;
       });
-      print('hereweare');
+      appLog('hereweare');
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final orderRef = await prefsData.readData("order_ref");
@@ -289,7 +290,7 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
           "OrderRef": orderRef,
           "Currency": "ETB"
         };
-        print(payload);
+        appLog(payload);
 
         final response = await http.post(
           Uri.https(
@@ -301,7 +302,7 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
         );
 
         var data = jsonDecode(response.body);
-        print(data);
+        appLog(data);
 
         if (data['statusCode'] == '000') {
           setState(() {
@@ -333,7 +334,7 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
       return false;
     } catch (e) {
       message = e.toString();
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

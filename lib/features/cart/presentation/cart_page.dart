@@ -32,6 +32,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/widgets/product_price_widget.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -61,13 +62,13 @@ class _CartPageState extends State<CartPage> {
 
   double calculateTotalPrice(
       double itemPrice, String baseMarkup, int quantity) {
-        if(baseMarkup == "0.0"){
-          return double.parse((itemPrice*quantity).toStringAsFixed(2));
-        }
+    if (baseMarkup == "0.0") {
+      return double.parse((itemPrice * quantity).toStringAsFixed(2));
+    }
     double totalPrice = 0; // Initialize total price to 0
     List<dynamic> tieredPrices = parseTieredPrices(baseMarkup);
     // for (var price in tieredPrices) {
-    //   print(price);
+    //   appLog(price);
     // }
 
     for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
@@ -87,7 +88,7 @@ class _CartPageState extends State<CartPage> {
         totalPrice += tieredPrices[5];
       }
     }
-    print("totalPrice: $totalPrice");
+    appLog("totalPrice: $totalPrice");
     // Round to 2 decimal places
     return double.parse((totalPrice).toStringAsFixed(2));
   }
@@ -108,7 +109,7 @@ class _CartPageState extends State<CartPage> {
     final cartState = context.read<CartCoreCubit>().state;
     cartState.maybeWhen(
       cartItems: (items) async {
-        print('Checking Cart Items:');
+        appLog('Checking Cart Items:');
         final now = DateTime.now();
         final sixHoursAgo = now.subtract(const Duration(hours: 6));
         try {
@@ -117,9 +118,9 @@ class _CartPageState extends State<CartPage> {
             if (createdAt.isBefore(sixHoursAgo)) {
               // Remove item if it's older than 6 hours
               context.read<CartCoreCubit>().deleteItem(item);
-              print('Removed expired item: ${item.name}');
+              appLog('Removed expired item: ${item.name}');
             } else {
-              print('Valid item: ${item.name}, Created: ${item.createdAt}');
+              appLog('Valid item: ${item.name}, Created: ${item.createdAt}');
             }
           }
         } catch (e) {
@@ -127,20 +128,20 @@ class _CartPageState extends State<CartPage> {
           await cartDao.nuke();
         }
       },
-      orElse: () => print('No items available or loading'),
+      orElse: () => appLog('No items available or loading'),
     );
 
     // Listen to state changes to print cart items
     final cartState2 = context.read<CartCoreCubit>().state;
     cartState2.maybeWhen(
       cartItems: (items) {
-        print('Fetched Cart Items:');
+        appLog('Fetched Cart Items:');
         for (var item in items) {
-          print(
+          appLog(
               'Item: ${item.name}, Quantity: ${item.quantity}, Price: ${item.createdAt}');
         }
       },
-      orElse: () => print('No items available or loading'),
+      orElse: () => appLog('No items available or loading'),
     );
 
     setState(() {
@@ -152,8 +153,8 @@ class _CartPageState extends State<CartPage> {
     // Use await to get the actual string value from the futures
     sCart = await Shopping;
     it = await items;
-    // print("herrerererere");
-    // print(sCart);
+    // appLog("herrerererere");
+    // appLog(sCart);
 
     setState(() {
       loading = false;
@@ -175,13 +176,13 @@ class _CartPageState extends State<CartPage> {
             "Authorization": "Bearer $token",
             "Content-type": "application/json; charset=utf-8"
           });
-      print("fetchAddresses");
-      print(addresses.body);
+      appLog("fetchAddresses");
+      appLog(addresses.body);
       final addressesResponse = jsonDecode(addresses.body);
       if (addressesResponse['statusCode'] == '000') {
         final aObject = AddressesDto.fromJson(addressesResponse);
-        print("addressesResponse");
-        print(aObject.data);
+        appLog("addressesResponse");
+        appLog(aObject.data);
         if (aObject.data?.isEmpty == true) {
           getLocation();
           return;
@@ -238,9 +239,9 @@ class _CartPageState extends State<CartPage> {
           orElse: () => const SizedBox(),
           error: (error) => HomeErrorWidget(error: error),
           cartItems: (cartItems) {
-            // print("cartItems");
-            // print(cartItems[0].createdAt);
-            // print(cartItems[0].baseMarkup);
+            // appLog("cartItems");
+            // appLog(cartItems[0].createdAt);
+            // appLog(cartItems[0].baseMarkup);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -316,7 +317,7 @@ class _CartPageState extends State<CartPage> {
                     String valid = await fetchUser1(context: context);
                     if (valid == "logout") {
                       displaySnack(context, "Login to your account.");
-                      print(
+                      appLog(
                           "CartPage: Navigating to login with from_cart=true");
                       Navigator.push(
                           context,
@@ -351,7 +352,7 @@ class _CartPageState extends State<CartPage> {
   //   try {
   //     await prefs.remove("promocode");
   //   } catch (e) {
-  //     print(e.toString());
+  //     appLog(e.toString());
   //   }
   //   try {
   //     setState(() {
@@ -371,7 +372,7 @@ class _CartPageState extends State<CartPage> {
   //       );
 
   //       var data = jsonDecode(response.body);
-  //       print(data);
+  //       appLog(data);
 
   //       if (data['statusCode'] == '000') {
   //         // Handle the case when statusCode is '000'
@@ -398,7 +399,7 @@ class _CartPageState extends State<CartPage> {
   //       }
   //     }
   //   } catch (e) {
-  //     print(e.toString());
+  //     appLog(e.toString());
   //     setState(() {
   //       loading = false;
   //     });
@@ -412,20 +413,20 @@ class _CartPageState extends State<CartPage> {
       setState(() {
         loading = true;
       });
-      // print("here we go");
+      // appLog("here we go");
       var status = await Permission.location.request();
-      print(status.isPermanentlyDenied);
+      appLog(status.isPermanentlyDenied);
       if (status.isGranted) {
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
-        print("position");
-        print(position);
+        appLog("position");
+        appLog(position);
         setState(() {
           final latitude = position.latitude;
           final longitude = position.longitude;
-          // print(latitude);
-          // print(longitude);
+          // appLog(latitude);
+          // appLog(longitude);
           if (latitude != null && longitude != null) {
             getAddressFromLatLng(latitude.toString(), longitude.toString());
           } else {
@@ -436,8 +437,8 @@ class _CartPageState extends State<CartPage> {
             });
           }
         });
-        // print(latitude);
-        // print(longitude);
+        // appLog(latitude);
+        // appLog(longitude);
       } else {
         displaySnack(
             context, "Please add your address by pressing \"Add Address\"");
@@ -451,7 +452,7 @@ class _CartPageState extends State<CartPage> {
       setState(() {
         loading = false;
       });
-      print('Error getting location: $e');
+      appLog('Error getting location: $e');
     }
   }
 
@@ -461,12 +462,12 @@ class _CartPageState extends State<CartPage> {
 
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
-      // print(placemarks);
-      // print("object");
+      // appLog(placemarks);
+      // appLog("object");
       for (Placemark placemark in placemarks) {
         String street = placemark.street ??
             ""; // Access the "Street" property and handle null values
-        print("Street: $street");
+        appLog("Street: $street");
       }
 
       if (placemarks.isNotEmpty) {
@@ -480,7 +481,7 @@ class _CartPageState extends State<CartPage> {
         String locality = place.locality ?? '';
         String subLocal = place.subLocality ?? '';
         String country = place.country ?? '';
-        // print(
+        // appLog(
         //     "Street: $street, SubLocality: $subLocality, Locality: $locality, SubLocal: $subLocal, Country: $country");
         try {
           setState(() {
@@ -502,7 +503,7 @@ class _CartPageState extends State<CartPage> {
             "latitude": latitude,
             "longitude": longitude
           };
-          // print(payload);
+          // appLog(payload);
           final prefsData = getIt<PrefsData>();
           final isUserLoggedIn =
               await prefsData.contains(PrefsKeys.userToken.name);
@@ -518,7 +519,7 @@ class _CartPageState extends State<CartPage> {
             );
 
             var data = jsonDecode(response.body);
-            // print(data);
+            // appLog(data);
 
             if (data['statusCode'] == '000') {
               setState(() {
@@ -533,7 +534,7 @@ class _CartPageState extends State<CartPage> {
             }
           }
         } catch (e) {
-          print(e.toString());
+          appLog(e.toString());
           setState(() {
             loading = false;
           });
@@ -551,7 +552,7 @@ class _CartPageState extends State<CartPage> {
         return "No street address found";
       }
     } catch (e) {
-      print("Error getting address: $e");
+      appLog("Error getting address: $e");
       return "No street address found";
     }
   }

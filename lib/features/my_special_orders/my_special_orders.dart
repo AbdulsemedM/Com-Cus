@@ -11,6 +11,7 @@ import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 // import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class NewSpecialOrders extends StatefulWidget {
@@ -225,7 +226,7 @@ class _NewSpecialOrdersState extends State<NewSpecialOrders> {
         ]),
       )),
     );
-  } 
+  }
 
   // Future<void> _initOneSignal() async {
   //   await OneSignal.shared.setAppId('c02d769f-6576-472a-8eb1-cd5d300e53b9');
@@ -240,8 +241,8 @@ class _NewSpecialOrdersState extends State<NewSpecialOrders> {
   //       .then((value) => value?.userId ?? "");
   //   setState(() {
   //     String _deviceToken = deviceToken;
-  //     debugPrint("here is the token");
-  //     debugPrint(_deviceToken);
+  //     debugappLog("here is the token");
+  //     debugappLog(_deviceToken);
   //   });
   // }
 
@@ -252,7 +253,7 @@ class _NewSpecialOrdersState extends State<NewSpecialOrders> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
@@ -265,9 +266,9 @@ class _NewSpecialOrdersState extends State<NewSpecialOrders> {
             'Content-Type': 'application/json; charset=UTF-8',
           },
         );
-        print('hererererer');
+        appLog('hererererer');
         var datas = jsonDecode(response.body);
-        print(datas);
+        appLog(datas);
         if (datas['statusCode'] == "000") {
           for (var i in datas['data']) {
             if (i['status'] != 3) {
@@ -283,7 +284,7 @@ class _NewSpecialOrdersState extends State<NewSpecialOrders> {
             // if (myOrders.isEmpty) {
             //   throw 'No special orders found';
           }
-          print(myOrders.length);
+          appLog(myOrders.length);
         } else {
           throw datas['statusDescription'] ?? 'Error fetching special orders';
         }
@@ -293,7 +294,7 @@ class _NewSpecialOrdersState extends State<NewSpecialOrders> {
         loading = false;
       });
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       rethrow;
     }
   }

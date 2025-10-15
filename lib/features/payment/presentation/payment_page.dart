@@ -36,6 +36,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../app/utils/assets.dart';
 import '../../customer_loan/presentation/customer_loan_page.dart';
 import 'loan_payment_period_bs.dart';
+import 'package:commercepal/app/utils/logger.dart';
 // import 'package:http/http.dart' as http;
 
 class PaymentPage extends StatefulWidget {
@@ -55,7 +56,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
     final Map args = ModalRoute.of(context)?.settings.arguments as Map;
     currency = args['currency'];
-    print(currency);
+    appLog(currency);
   }
 
   var loading = false;
@@ -151,7 +152,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                     return InkWell(
                                       onTap: () async {
                                         if (item.hasVariant != null) {
-                                          print(item.name);
+                                          appLog(item.name);
                                           if (item.hasVariant!) {
                                             var variant =
                                                 await showVariantsDialog(
@@ -167,10 +168,10 @@ class _PaymentPageState extends State<PaymentPage> {
                                                   iconUrl: variant.iconUrl,
                                                   paymentType:
                                                       variant.paymentType);
-                                              // print(e.name);
-                                              // print(e.paymentMethod);
-                                              // print(e.paymentInstruction);
-                                              // print(e.paymentType);
+                                              // appLog(e.name);
+                                              // appLog(e.paymentMethod);
+                                              // appLog(e.paymentInstruction);
+                                              // appLog(e.paymentType);
                                               _redirectUserBasedOnPaymentMethod(
                                                   e, context);
                                             }
@@ -234,7 +235,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
   void _redirectUserBasedOnPaymentMethod(
       PaymentMethodItem e, BuildContext context) {
-    print(e);
+    appLog(e);
     if (e.name!.toLowerCase().contains("sahay") == true) {
       Navigator.pushNamed(context, SahayPayPage.routeName, arguments: {
         "cash_type": e.name,
@@ -277,7 +278,7 @@ class _PaymentPageState extends State<PaymentPage> {
           MaterialPageRoute(
               builder: (context) => const CommercepalCoinsCheckout()));
     } else if (e.paymentMode == PaymentMode.loan) {
-      print(e.name!.toLowerCase());
+      appLog(e.name!.toLowerCase());
       _showModalBottomSheet(context, e.id!, (MarkUpItem markUpItem) {
         Navigator.pushNamed(context, CustomerLoanPage.routeName, arguments: {
           "name": "Loan payment via ${e.name}",
@@ -321,7 +322,7 @@ class _PaymentPageState extends State<PaymentPage> {
         e.name!.toLowerCase().contains("sahal") ||
         e.name!.toLowerCase().contains("waafi djibouti") ||
         e.name!.toLowerCase().contains("waafi international") == true) {
-      print("Waafi Payment");
+      appLog("Waafi Payment");
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -335,10 +336,10 @@ class _PaymentPageState extends State<PaymentPage> {
                 },
               )));
     } else {
-      // print("it is e-birr");
-      // print(e.paymentType);
-      // print(e.name);
-      // print(e.paymentInstruction);
+      // appLog("it is e-birr");
+      // appLog(e.paymentType);
+      // appLog(e.name);
+      // appLog(e.paymentInstruction);
       Navigator.pushNamed(context, CashPaymentPage.routeName, arguments: {
         "cash_type": e.paymentType,
         "cash_type_name": e.name,

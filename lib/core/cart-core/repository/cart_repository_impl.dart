@@ -11,6 +11,7 @@ import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:dio/dio.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @Injectable(as: CartRepository)
 class CartRepositoryImpl implements CartRepository {
@@ -20,33 +21,33 @@ class CartRepositoryImpl implements CartRepository {
 
   @override
   Future addToCart(CartItem cartItem) async {
-    print("cartIteminaddtocart");
-    print(cartItem.createdAt);
-    print(cartItem.baseMarkup);
+    appLog("cartIteminaddtocart");
+    appLog(cartItem.createdAt);
+    appLog(cartItem.baseMarkup);
     try {
       final exist =
           await cartDao.getCartItemBySubProductId(cartItem.subProductId!);
       var pros = await cartDao.getAllItems();
       for (var i in pros) {
-        print("it exists");
-        print(i.baseMarkup);
-        print(i.createdAt);
+        appLog("it exists");
+        appLog(i.baseMarkup);
+        appLog(i.createdAt);
       }
       if (exist == null) {
         await cartDao.insert(cartItem);
         var pros = await cartDao.getAllItems();
         for (var i in pros) {
-          // print(i.subProductId);
-          print(i.createdAt);
+          // appLog(i.subProductId);
+          appLog(i.createdAt);
         }
       } else {
-        print("it doesn't exists");
+        appLog("it doesn't exists");
         // change item quantity
         exist.quantity = (exist.quantity! + 1);
         await cartDao.insert(exist);
       }
     } catch (e) {
-      print("the errir");
+      appLog("the errir");
       Fimber.e(e.toString());
       rethrow;
     }
@@ -103,8 +104,8 @@ class CartRepositoryImpl implements CartRepository {
   //     final addressesResponse = jsonDecode(response);
   //     if (addressesResponse['statusCode'] == '000') {
   //       final aObject = AddressesDto.fromJson(addressesResponse);
-  //       print("addressesResponse");
-  //       print(aObject.data);
+  //       appLog("addressesResponse");
+  //       appLog(aObject.data);
   //       if (aObject.data?.isEmpty == true) {
   //         return;
   //       }
@@ -117,9 +118,9 @@ class CartRepositoryImpl implements CartRepository {
   // void clearCart() async {
   //   try {
   //     await cartDao.nuke();
-  //     print('All cart items deleted successfully');
+  //     appLog('All cart items deleted successfully');
   //   } catch (e) {
-  //     print('Failed to clear cart: $e');
+  //     appLog('Failed to clear cart: $e');
   //   }
   // }
 

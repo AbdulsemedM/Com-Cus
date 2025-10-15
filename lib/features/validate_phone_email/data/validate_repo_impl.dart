@@ -6,6 +6,7 @@ import 'package:commercepal/features/validate_phone_email/domain/validate_repo.d
 import 'package:injectable/injectable.dart';
 
 import '../../../core/data/prefs_data.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @Injectable(as: ValidateRepo)
 class ValidateRepoImpl implements ValidateRepo {
@@ -36,7 +37,7 @@ class ValidateRepoImpl implements ValidateRepo {
       final payload = {"user": user, "type": type, "code": otp};
       final response =
           await apiProvider.post(payload, EndPoints.validateOtp.url);
-      print(response['statusCode']);
+      appLog(response['statusCode']);
       if (response['statusCode'] == '000') {
         // update status
         final authStatus = await AuthModel.getAuthStatus(prefsData);

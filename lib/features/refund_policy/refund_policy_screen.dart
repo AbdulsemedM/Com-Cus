@@ -3,6 +3,7 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class RefundPolicyScreen extends StatefulWidget {
   const RefundPolicyScreen({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class _RefundPolicyScreenState extends State<RefundPolicyScreen> {
         isLoading = false;
       });
     } catch (e) {
-      print('Error loading PDF: $e');
+      appLog('Error loading PDF: $e');
       setState(() {
         isLoading = false;
       });
@@ -64,7 +65,7 @@ class _RefundPolicyScreenState extends State<RefundPolicyScreen> {
                   pageSnap: true,
                   fitPolicy: FitPolicy.BOTH,
                   onError: (error) {
-                    print('Error: $error');
+                    appLog('Error: $error');
                   },
                 ),
     );

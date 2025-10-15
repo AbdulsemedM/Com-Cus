@@ -12,6 +12,7 @@ import '../../../../app/di/injector.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/input_decorations.dart';
 import '../bloc/special_order_cubit.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class SpecialOrderForm extends StatefulWidget {
   const SpecialOrderForm({Key? key}) : super(key: key);
@@ -55,9 +56,9 @@ class _SpecialOrderFormState extends State<SpecialOrderForm> {
     tHint = await totalHint;
     sHint = await shippmentHint;
     prHint = await proccessingHint;
-    print("herrerererere");
-    print(pHint);
-    print(cHint);
+    appLog("herrerererere");
+    appLog(pHint);
+    appLog(cHint);
 
     setState(() {
       loading = false;

@@ -1,6 +1,7 @@
 import 'package:commercepal/app/utils/country_manager/get_country.dart';
 import 'package:commercepal/app/utils/country_manager/ip_api.dart';
 import 'package:commercepal/app/utils/country_manager/permission_handler.dart';
+import 'package:commercepal/app/utils/logger.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +29,7 @@ class CountryManager {
                     ? "SOS"
                     : 'USD';
     await prefs.setString(_currencyKey, currency);
-    print(
+    appLog(
         "Loaded country from preferences: $_country with currency: $currency");
   }
 
@@ -41,19 +42,19 @@ class CountryManager {
       Position? position = await getUserLocation();
       if (position != null) {
         country = await getCountryUsingNominatim();
-        print("Country from Nominatim: $country");
+        appLog("Country from Nominatim: $country");
       }
 
       // Fallback to IP-based country
       if (country == null) {
-        print("Falling back to IP-based geolocation...");
+        appLog("Falling back to IP-based geolocation...");
         country = await getCountryFromIP();
-        print("Country from IP: $country");
+        appLog("Country from IP: $country");
       }
 
       // Fallback to default country if all else fails
       country ??= _defaultCountry;
-      print("Country fallback: $country");
+      appLog("Country fallback: $country");
 
       // Update in-memory and persistent storage
       _country = country;
@@ -67,9 +68,9 @@ class CountryManager {
               ? "AED"
               : 'USD';
       await prefs.setString(_currencyKey, currency);
-      print("Stored currency: $currency");
+      appLog("Stored currency: $currency");
     } catch (e) {
-      print("Error fetching country: $e");
+      appLog("Error fetching country: $e");
     }
   }
 }

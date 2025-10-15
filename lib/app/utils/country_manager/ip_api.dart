@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:commercepal/app/utils/logger.dart';
 
 Future<String?> getCountryFromIP() async {
   try {
@@ -10,7 +11,7 @@ Future<String?> getCountryFromIP() async {
       return data['countryCode']; // e.g., 'US'
     }
   } catch (e) {
-    print('Error fetching country from IP: $e');
+    appLog('Error fetching country from IP: $e');
   }
   return null;
 }

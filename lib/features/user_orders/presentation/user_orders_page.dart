@@ -14,6 +14,7 @@ import 'package:commercepal/features/user_orders/presentation/widgets/user_order
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class UserOrdersPage extends StatefulWidget {
   static const routeName = "/user_orders";
@@ -44,8 +45,8 @@ class _UserOrdersPageState extends State<UserOrdersPage> {
 
     // Use await to get the actual string value from the futures
     cHint = await subcityHint;
-    print("herrerererere");
-    print(cHint);
+    appLog("herrerererere");
+    appLog(cHint);
 
     setState(() {
       loading = false;

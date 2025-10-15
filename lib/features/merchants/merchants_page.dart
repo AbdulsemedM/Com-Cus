@@ -2,6 +2,7 @@ import 'package:commercepal/features/merchants/merchant_product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:commercepal/app/utils/logger.dart';
 
 class MerchantSearchPage extends StatefulWidget {
   const MerchantSearchPage({Key? key}) : super(key: key);
@@ -50,7 +51,7 @@ class _MerchantSearchPageState extends State<MerchantSearchPage> {
       },
     );
     var datas = jsonDecode(response.body);
-    print(datas);
+    appLog(datas);
     if (datas['statusCode'] == '000') {
       for (var i in datas['data']['data']) {
         _filteredMerchants.add(Merchant(

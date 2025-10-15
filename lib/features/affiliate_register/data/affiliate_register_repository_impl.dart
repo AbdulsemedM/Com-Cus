@@ -6,6 +6,7 @@ import 'package:commercepal/features/affiliate_register/data/dto/affiliate_regis
 import 'package:commercepal/app/di/injector.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class AffiliateRegisterRepositoryImpl implements AffiliateRegisterRepository {
   static const String _baseUrl = 'api.commercepal.com';
@@ -29,15 +30,15 @@ class AffiliateRegisterRepositoryImpl implements AffiliateRegisterRepository {
         body: jsonEncode(request.toJson()),
       );
 
-      print('Affiliate Registration Request: ${response.request}');
+      appLog('Affiliate Registration Request: ${response.request}');
 
-      print('Affiliate Registration Response Status: ${response.statusCode}');
-      print('Affiliate Registration Response Body: ${response.body}');
+      appLog('Affiliate Registration Response Status: ${response.statusCode}');
+      appLog('Affiliate Registration Response Body: ${response.body}');
 
       final jsonData = jsonDecode(response.body);
       return AffiliateRegisterResponseDto.fromJson(jsonData);
     } catch (e) {
-      print('Error registering affiliate: $e');
+      appLog('Error registering affiliate: $e');
       return AffiliateRegisterResponseDto(
         statusCode: 'ERROR',
         statusMessage: 'Network error occurred. Please try again.',

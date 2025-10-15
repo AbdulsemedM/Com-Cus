@@ -5,6 +5,7 @@ import 'package:commercepal/features/selected_product/domain/selected_product_re
 import 'package:injectable/injectable.dart';
 
 import '../../../core/session/domain/session_repo.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @Injectable(as: SelectedProductRepo)
 class SelectedProductPageRepositoryImpl implements SelectedProductRepo {
@@ -22,14 +23,14 @@ class SelectedProductPageRepositoryImpl implements SelectedProductRepo {
       final response = await apiProvider.get(
           "${hasUserSwitchedToBusiness ? EndPoints.businessProducts.url : EndPoints.productsDetails.url}?product=$prodId");
 
-      print(hasUserSwitchedToBusiness
+      appLog(hasUserSwitchedToBusiness
           ? EndPoints.businessProducts.url
           : EndPoints.productsDetails.url);
       if (response['statusCode'] == "000") {
-        print(response);
+        appLog(response);
         final productObj = SelectedProductDto.fromJson(response);
-        print("selected product is featched");
-        print(productObj.details!.first);
+        appLog("selected product is featched");
+        appLog(productObj.details!.first);
         // TODO: add check if product exists, anyway this '.first' handles the exception for us
         return productObj.details!.first;
       } else {

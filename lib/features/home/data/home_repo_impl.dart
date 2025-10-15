@@ -8,6 +8,7 @@ import '../../../app/data/network/end_points.dart';
 import '../domain/home_repostory.dart';
 import '../domain/schema_settings_model.dart';
 import 'schema_settings_dto.dart';
+import 'package:commercepal/app/utils/logger.dart';
 // import 'package:http/http.dart' as http;
 
 @Injectable(as: HomeRepository)
@@ -37,13 +38,13 @@ class HomeRepositoryImpl implements HomeRepository {
         //     "Content-type": "application/json; charset=utf-8",
         //   },
         // );
-        // print("here isntne");
-        // print(response.body);
+        // appLog("here isntne");
+        // appLog(response.body);
         //////////////////////////////////////////////////////////////////////////////////////////////
         final homeCatalogue =
             await apiProvider.get("${EndPoints.mobileCatalogue.url}?target=4");
-        print("i'm back again hh");
-        print(homeCatalogue);
+        appLog("i'm back again hh");
+        appLog(homeCatalogue);
 
         // await countryManager.loadCountryFromPreferences();
         // final String currentCountry = countryManager.country;
@@ -51,47 +52,47 @@ class HomeRepositoryImpl implements HomeRepository {
         final String currentCountry = prefs.getString("currency") ?? "ETB";
         final homeCatalogueObject =
             MobileCatalogueDto.fromJson(homeCatalogue, currentCountry);
-        // print("Newobject");
-        // print(homeCatalogueObject.catalogue);
+        // appLog("Newobject");
+        // appLog(homeCatalogueObject.catalogue);
 
         schemas?.where((element) {
           // Debug the `targetId` property
-          // print("Filtering schema: targetId = ${element.targetId}");
+          // appLog("Filtering schema: targetId = ${element.targetId}");
           return element.targetId == 4;
         }).forEach((sectionElement) {
-          // print("Processing sectionElement: $sectionElement");
+          // appLog("Processing sectionElement: $sectionElement");
 
           sectionElement.schemaSections?.forEach((schemeSectionElement) {
-            // print(
+            // appLog(
             //     "Processing schemeSectionElement: key = ${schemeSectionElement.key}, runtimeType = ${schemeSectionElement.key.runtimeType}");
 
             // Debug matching logic
             final matchingCatalogueElement =
                 homeCatalogueObject.catalogue?.where((catalogueElement) {
-              // print(
+              // appLog(
               //     "Checking catalogueElement: key = ${catalogueElement.key}, runtimeType = ${catalogueElement.key.runtimeType}");
               return catalogueElement.key.toString() ==
                   schemeSectionElement.key.toString();
             }).first;
 
             if (matchingCatalogueElement == null) {
-              // print(
+              // appLog(
               //     "No matching catalogueElement found for key: ${schemeSectionElement.key}");
             } else {
-              // print(
+              // appLog(
               //     "Matching catalogueElement found: $matchingCatalogueElement");
             }
 
             // Map items and debug
             schemeSectionElement.items =
                 matchingCatalogueElement?.items?.map((e) {
-              // print("Mapping item: $e");
+              // appLog("Mapping item: $e");
               final schemaItem = e.toSchemaItem();
-              // print("Mapped to schemaItem: $schemaItem");
+              // appLog("Mapped to schemaItem: $schemaItem");
               return schemaItem;
             }).toList();
 
-            // print(
+            // appLog(
             //     "Final schemeSectionElement.items: ${schemeSectionElement.items}");
           });
         });
@@ -101,8 +102,8 @@ class HomeRepositoryImpl implements HomeRepository {
         throw apiResponse['statusMessage'];
       }
     } catch (e) {
-      print("I'm the error admit");
-      print(e);
+      appLog("I'm the error admit");
+      appLog(e);
       rethrow;
     }
   }

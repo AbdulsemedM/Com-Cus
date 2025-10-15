@@ -65,7 +65,7 @@
 
 //   await Future.forEach(stringsToTranslate.entries, (entry) async {
 //     try {
-//       print(entry.value);
+//       appLog(entry.value);
 //       Translation translation =
 //           await GoogleTranslator().translate(entry.value, to: language);
 //       translatedStrings[entry.key] = translation.text;
@@ -85,13 +85,13 @@
 //             decoded['data']['translations'][0]['translatedText'];
 //         final unescapedText = HtmlUnescape().convert(translatedText);
 //         translatedStrings[entry.key] = unescapedText;
-//         print(unescapedText);
+//         appLog(unescapedText);
 //       } else {
 //         throw Exception('Failed to translate text');
 //       }
 //     } catch (e) {
 //       translatedStrings[entry.key] = entry.value;
-//       print('Translation failed for ${entry.key}: $e');
+//       appLog('Translation failed for ${entry.key}: $e');
 //     }
 //   });
 // }

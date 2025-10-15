@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 Future<String> getStoredLang() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -10,7 +11,7 @@ class GlobalStrings {
 
   static void setGlobalString(String value) {
     _globalString = value;
-    print("set Success");
+    appLog("set Success");
   }
 
   static String getGlobalString() {

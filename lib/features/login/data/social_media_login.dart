@@ -2,6 +2,7 @@ import "dart:convert";
 
 import "package:commercepal/features/login/global_credential/global_credential.dart";
 import "package:http/http.dart" as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 Future<Map<String, dynamic>> getUserToken(
     String channel,
@@ -21,7 +22,7 @@ Future<Map<String, dynamic>> getUserToken(
       "lastName": lastName,
       "deviceId": deviceId
     };
-    print(request);
+    appLog(request);
     final response = await http.post(
       Uri.https(
         "api.commercepal.com:2096",
@@ -33,8 +34,8 @@ Future<Map<String, dynamic>> getUserToken(
       },
     );
     var data = jsonDecode(response.body);
-    print("here we go agaiiina");
-    print(data);
+    appLog("here we go agaiiina");
+    appLog(data);
     GlobalCredential.setGlobalString(data);
     return data;
   } catch (e) {

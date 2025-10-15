@@ -30,7 +30,7 @@ class _MinOrderPricePageState extends State<MinOrderPricePage> {
             widget.price.length,
             (index) {
               final priceItem = widget.price[index];
-              // print(priceItem.minOr);
+              // appLog(priceItem.minOr);
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Column(

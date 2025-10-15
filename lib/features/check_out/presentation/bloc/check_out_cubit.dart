@@ -13,6 +13,7 @@ import '../../../../core/cart-core/repository/cart_repository.dart';
 import '../../data/models/address.dart';
 import '../../domain/check_out_repo.dart';
 import 'check_out_state.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @injectable
 class CheckOutCubit extends Cubit<CheckOutState> {
@@ -136,8 +137,8 @@ class CheckOutCubit extends Cubit<CheckOutState> {
   void validateCheckOut() {
     try {
       // check if address is selected if user is not business
-      print("the selected address");
-      print(_selectedAddress?.name);
+      appLog("the selected address");
+      appLog(_selectedAddress?.name);
       if (_selectedAddress == null && !_isUserBusiness) {
         throw 'Select one shipping address to continue';
       }

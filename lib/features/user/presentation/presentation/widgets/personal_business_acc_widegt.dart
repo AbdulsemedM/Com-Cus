@@ -8,6 +8,7 @@ import '../../../../../core/widgets/app_button.dart';
 import '../../../../dashboard/bloc/dashboard_cubit.dart';
 import '../../../../dashboard/bloc/dashboard_state.dart';
 import '../../../../dashboard/dashboard_page.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class PersonalBusinessAccWidget extends StatefulWidget {
   const PersonalBusinessAccWidget({
@@ -33,7 +34,7 @@ class _PersonalBusinessAccWidgetState extends State<PersonalBusinessAccWidget> {
             displaySnack(context, "Switching your account...");
           }
           if (state is DashboardUserSwicthedState) {
-            print("heree wew go");
+            appLog("heree wew go");
             if (state.switched) {
               if (mounted) {
                 setState(() {

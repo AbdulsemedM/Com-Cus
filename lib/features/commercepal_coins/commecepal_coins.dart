@@ -8,6 +8,7 @@ import 'package:commercepal/features/commercepal_coins/withdraw_coins_page.dart'
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class CommecepalCoins extends StatefulWidget {
   const CommecepalCoins({super.key});
@@ -242,7 +243,7 @@ class _CommecepalCoinsState extends State<CommecepalCoins> {
             }
             loading = false;
           });
-          // print(trnxs.length);
+          // appLog(trnxs.length);
         } else {
           if (retryCount < 5) {
             // Retry after num + 1 seconds
@@ -258,7 +259,7 @@ class _CommecepalCoinsState extends State<CommecepalCoins> {
         }
       }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });
@@ -284,7 +285,7 @@ class _CommecepalCoinsState extends State<CommecepalCoins> {
         );
 
         var data = jsonDecode(response.body);
-        // print(data);
+        // appLog(data);
 
         if (data['statusCode'] == '000') {
           setState(() {
@@ -311,7 +312,7 @@ class _CommecepalCoinsState extends State<CommecepalCoins> {
       setState(() {
         loading = true;
       });
-      print(e.toString());
+      appLog(e.toString());
 
       // Handle other exceptions
     }

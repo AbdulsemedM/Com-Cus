@@ -1,6 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:commercepal/app/utils/logger.dart';
 
 Future<String?> getCountryUsingNominatim() async {
   try {
@@ -23,7 +24,7 @@ Future<String?> getCountryUsingNominatim() async {
       return data['address']['country_code'].toUpperCase(); // e.g., 'US'
     }
   } catch (e) {
-    print('Error fetching country: $e');
+    appLog('Error fetching country: $e');
   }
   return null;
 }

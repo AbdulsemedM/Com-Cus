@@ -32,6 +32,7 @@ import 'title_widget.dart';
 import 'top_brand_widget_item.dart';
 import 'top_category_widget.dart';
 import 'under_item_widget.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class HomePageDataWidget extends StatefulWidget {
   final SchemaSettingsModel schema;
@@ -78,9 +79,9 @@ class _HomePageDataWidgetState extends State<HomePageDataWidget> {
     eHint = await dealHint;
     fHint = await specialHint;
     gHint = await orderHint;
-    print("herrerererere");
-    print(pHint);
-    print(cHint);
+    appLog("herrerererere");
+    appLog(pHint);
+    appLog(cHint);
 
     setState(() {
       loading = false;

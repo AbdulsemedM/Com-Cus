@@ -15,6 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../core/session/presentation/session_bloc.dart';
 import '../features/splash/splash_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -108,14 +109,14 @@ class _AppState extends State<App> {
         countries.add(
             CountryData(countryCode: b['countryCode'], country: b['country']));
       }
-      print(countries.length);
+      appLog(countries.length);
       setState(() {
         _isCountryFetched = true;
         loading = false;
       });
       return true; // Return true if data is fetched successfully
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

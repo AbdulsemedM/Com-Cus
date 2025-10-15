@@ -10,6 +10,7 @@ import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class RaysMarkupDialog extends StatefulWidget {
   final String period;
@@ -68,7 +69,7 @@ class _RaysMarkupDialogState extends State<RaysMarkupDialog> {
                         "channel": Platform.isIOS ? "IOS" : "ANDROID"
                         // "email": email // incase for facebook
                       };
-                      print(body);
+                      appLog(body);
                       try {
                         final prefsData = getIt<PrefsData>();
                         final isUserLoggedIn =
@@ -86,7 +87,7 @@ class _RaysMarkupDialogState extends State<RaysMarkupDialog> {
                             },
                           );
                           var data = jsonDecode(response.body);
-                          print(data);
+                          appLog(data);
                           if (data['statusCode'] == '000') {
                             displaySnack(
                                 context, "Loan provided successfully.");

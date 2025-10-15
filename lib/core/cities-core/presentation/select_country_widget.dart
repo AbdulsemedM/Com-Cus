@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app/di/injector.dart';
 import 'bloc/city_core_cubit.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class SelectCountryWidget extends StatefulWidget {
   final Function selectedCountry;
@@ -39,8 +40,8 @@ class _SelectCountryWidgetState extends State<SelectCountryWidget> {
 
     // Use await to get the actual string value from the futures
     cHint = await subcityHint;
-    print("herrerererere");
-    print(cHint);
+    appLog("herrerererere");
+    appLog(cHint);
 
     setState(() {
       loading = false;

@@ -5,6 +5,7 @@ import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/features/merchants/merchant_product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class AboutMerchant extends StatefulWidget {
   final String id;
@@ -91,7 +92,8 @@ class _AboutMerchantState extends State<AboutMerchant> {
                                   width: double.infinity,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    myMerchant!.businessPhoneNumber, // Replace with your phone number
+                                    myMerchant!
+                                        .businessPhoneNumber, // Replace with your phone number
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
@@ -125,11 +127,11 @@ class _AboutMerchantState extends State<AboutMerchant> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      print('herererererinabout');
+      appLog('herererererinabout');
       var datas = jsonDecode(response.body);
-      print(datas);
+      appLog(datas);
       if (datas['statusCode'] == "000") {
-        print("hereare");
+        appLog("hereare");
         // setState(() {
         //   for (var i in datas['data']['products']) {
         //     myMerchantProducts.add(MerchantProds(
@@ -149,7 +151,7 @@ class _AboutMerchantState extends State<AboutMerchant> {
         //     //   throw 'No special orders found';
         //   }
         // });
-        // print(myMerchantProducts.length);
+        // appLog(myMerchantProducts.length);
         setState(() {
           myMerchant = MerchantProf(
               merchantName: datas['data']['merchantAbout']['merchantName'],
@@ -160,7 +162,7 @@ class _AboutMerchantState extends State<AboutMerchant> {
                   ['physicalAddress'],
               shopImage: datas['data']['merchantAbout']['shopImage']);
         });
-        print(myMerchant!.merchantName);
+        appLog(myMerchant!.merchantName);
         setState(() {
           loading = false;
         });
@@ -172,7 +174,7 @@ class _AboutMerchantState extends State<AboutMerchant> {
         loading = false;
       });
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       rethrow;
     }
   }

@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/session/domain/session_repo.dart';
 import '../domain/products_repository.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @Injectable(as: ProductRepository)
 class ProductsRepositoryImpl implements ProductRepository {
@@ -29,10 +30,10 @@ class ProductsRepositoryImpl implements ProductRepository {
   Future<List<Product>> getProducts(
       num? subCatId, Map? queryParams, bool? filter) async {
     if (filter == true) {
-      print(queryParams!['maxPrice']);
+      appLog(queryParams!['maxPrice']);
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         try {
           final token = await prefsData.readData(PrefsKeys.userToken.name);
@@ -52,11 +53,11 @@ class ProductsRepositoryImpl implements ProductRepository {
               'Content-Type': 'application/json; charset=UTF-8',
             },
           );
-          print('hererererer');
+          appLog('hererererer');
           var datas = jsonDecode(response.body);
-          print(datas);
+          appLog(datas);
           final products = datas['data']['products'];
-          print(products);
+          appLog(products);
           if (datas['statusCode'] == '000') {
             final myProducts = {
               "statusDescription": "success",
@@ -73,7 +74,7 @@ class ProductsRepositoryImpl implements ProductRepository {
                 prefs.getString("country") ?? "ET";
             final prodObjs = ProductsDto.fromJson(
                 myProducts, currentCountry, currentCountryCode);
-            print("yesss");
+            appLog("yesss");
             if (prodObjs.details?.isEmpty == true) {
               throw 'No products found';
             }
@@ -95,7 +96,7 @@ class ProductsRepositoryImpl implements ProductRepository {
       }
     } else {
       try {
-        print("this is the query params");
+        appLog("this is the query params");
         String? queryString;
         queryParams?.forEach((key, value) {
           // check if there is a value
@@ -107,7 +108,7 @@ class ProductsRepositoryImpl implements ProductRepository {
           }
         });
         final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
-        print(queryString);
+        appLog(queryString);
         final products = await apiProvider.get(
             "${isUserBusiness ? EndPoints.businessProducts.url : EndPoints.products.url}?${queryString ?? 'subCategory=$subCatId'}");
         // final response = await http.get(
@@ -125,10 +126,9 @@ class ProductsRepositoryImpl implements ProductRepository {
         //     'Content-Type': 'application/json; charset=UTF-8',
         //   },
         // );
-        
 
-        print("this is the products");
-        print(products);
+        appLog("this is the products");
+        appLog(products);
         // var products = jsonDecode(response.body);
         // await countryManager.loadCountryFromPreferences();
         // final String currentCountry = countryManager.country;
@@ -142,14 +142,14 @@ class ProductsRepositoryImpl implements ProductRepository {
           if (prodObjs.details?.isEmpty == true) {
             throw 'No products found';
           }
-          // print(prodObjs.details!
+          // appLog(prodObjs.details!
           //     .where((element) => element.quantity != 0)
           //     .map((e) => e.toProduct())
           //     .toList()[0]
           //     .currency);
-          print("hrreeerr");
-          // print(jsonDecode(products));
-          print("hrreeerr");
+          appLog("hrreeerr");
+          // appLog(jsonDecode(products));
+          appLog("hrreeerr");
           return prodObjs.details!
               .where((element) => element.productId != null)
               .map((e) => e.toProduct())
@@ -161,7 +161,7 @@ class ProductsRepositoryImpl implements ProductRepository {
           throw products['statusMessage'];
         }
       } catch (e) {
-        print(e.toString());
+        appLog(e.toString());
         rethrow;
       }
     }
@@ -169,8 +169,8 @@ class ProductsRepositoryImpl implements ProductRepository {
 
   @override
   Future<List<Product>> searchByImage(String? image) async {
-    print("here is the image");
-    print(image);
+    appLog("here is the image");
+    appLog(image);
     if (image!.startsWith("http")) {
       try {
         var request = http.MultipartRequest(
@@ -186,16 +186,16 @@ class ProductsRepositoryImpl implements ProductRepository {
         // request.files.add(file);
         var response = await request.send();
         // Logging request details
-        print("Request URL: ${request.url}");
-        print("Request method: ${request.method}");
-        print("Request headers: ${request.headers}");
-        print("Request fields: ${request.fields}");
-        print("Request files: ${request.files.map((file) => file.filename)}");
+        appLog("Request URL: ${request.url}");
+        appLog("Request method: ${request.method}");
+        appLog("Request headers: ${request.headers}");
+        appLog("Request fields: ${request.fields}");
+        appLog("Request files: ${request.files.map((file) => file.filename)}");
         var responseBody = await response.stream.bytesToString();
-        print(responseBody);
+        appLog(responseBody);
         // Add your logic to handle the response here
         var products = jsonDecode(responseBody);
-        print(products["statusCode"]);
+        appLog(products["statusCode"]);
         if (products["statusCode"] == "000") {
           // await countryManager.loadCountryFromPreferences();
           // final String currentCountry = countryManager.country;
@@ -207,8 +207,8 @@ class ProductsRepositoryImpl implements ProductRepository {
           if (prodObjs.details?.isEmpty == true) {
             throw 'No products found by that image URL';
           }
-          print("New count");
-          print(prodObjs.details!.length);
+          appLog("New count");
+          appLog(prodObjs.details!.length);
           return prodObjs.details!.map((e) {
             return e.toProduct();
           }).toList();
@@ -220,7 +220,7 @@ class ProductsRepositoryImpl implements ProductRepository {
         }
         // ...
       } catch (e) {
-        print(e.toString());
+        appLog(e.toString());
         rethrow;
         // Add your error handling logic here
         // ...
@@ -240,16 +240,16 @@ class ProductsRepositoryImpl implements ProductRepository {
         request.files.add(file);
         var response = await request.send();
         // Logging request details
-        print("Request URL: ${request.url}");
-        print("Request method: ${request.method}");
-        print("Request headers: ${request.headers}");
-        print("Request fields: ${request.fields}");
-        print("Request files: ${request.files.map((file) => file.filename)}");
+        appLog("Request URL: ${request.url}");
+        appLog("Request method: ${request.method}");
+        appLog("Request headers: ${request.headers}");
+        appLog("Request fields: ${request.fields}");
+        appLog("Request files: ${request.files.map((file) => file.filename)}");
         var responseBody = await response.stream.bytesToString();
-        print(responseBody);
+        appLog(responseBody);
         // Add your logic to handle the response here
         var products = jsonDecode(responseBody);
-        print(products["statusCode"]);
+        appLog(products["statusCode"]);
         if (products["statusCode"] == "000") {
           // await countryManager.loadCountryFromPreferences();
           // final String currentCountry = countryManager.country;
@@ -261,8 +261,8 @@ class ProductsRepositoryImpl implements ProductRepository {
           if (prodObjs.details?.isEmpty == true) {
             throw 'No products found by that image';
           }
-          print("New count");
-          print(prodObjs.details!.length);
+          appLog("New count");
+          appLog(prodObjs.details!.length);
           return prodObjs.details!.map((e) {
             return e.toProduct();
           }).toList();
@@ -274,7 +274,7 @@ class ProductsRepositoryImpl implements ProductRepository {
         }
         // ...
       } catch (e) {
-        print(e.toString());
+        appLog(e.toString());
         rethrow;
         // Add your error handling logic here
         // ...
@@ -311,16 +311,16 @@ class ProductsRepositoryImpl implements ProductRepository {
         var response = await request.send();
         var responseBody = await response.stream.bytesToString();
 
-        print(response);
+        appLog(response);
 
         if (responseBody == '000') {
-          print('Image uploaded successfully');
+          appLog('Image uploaded successfully');
         } else {
-          print('Failed to upload image. Status code: ${response.statusCode}');
-          print('Error message: $responseBody');
+          appLog('Failed to upload image. Status code: ${response.statusCode}');
+          appLog('Error message: $responseBody');
         }
       } catch (error) {
-        print('Error uploading image: $error');
+        appLog('Error uploading image: $error');
       }
     }
 
@@ -339,10 +339,10 @@ class ProductsRepositoryImpl implements ProductRepository {
     final client = await createInsecureHttpClient();
     try {
       final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
-      print(size);
+      appLog(size);
       // final products = await apiProvider.get(
       //     "${isUserBusiness ? EndPoints.businessSearchProducts.url : EndPoints.searchProduct.url}?reqName=$search");
-      print("searching the new api");
+      appLog("searching the new api");
       final response = await http.get(
         Uri.https(
           "api.commercepal.com",
@@ -358,7 +358,7 @@ class ProductsRepositoryImpl implements ProductRepository {
           // 'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      print(response.request?.url);
+      appLog(response.request?.url);
 
       // final countryManager = CountryManager();
       // await countryManager.loadCountryFromPreferences();
@@ -367,8 +367,8 @@ class ProductsRepositoryImpl implements ProductRepository {
       var products = jsonDecode(response.body);
       products = products['responseData']['content'];
 
-      // print("Current country from prod: ${currentCountry}"); // Added this line
-      print(products);
+      // appLog("Current country from prod: ${currentCountry}"); // Added this line
+      appLog(products);
       if (products["statusCode"] == "000") {
         // await countryManager.loadCountryFromPreferences();
         // final String currentCountry = countryManager.country;
@@ -380,8 +380,8 @@ class ProductsRepositoryImpl implements ProductRepository {
         if (prodObjs.details?.isEmpty == true) {
           throw 'No products found by that name';
         }
-        print("New count");
-        print(prodObjs.details!.length);
+        appLog("New count");
+        appLog(prodObjs.details!.length);
         return prodObjs.details!.map((e) {
           return e.toProduct();
         }).toList();
@@ -392,7 +392,7 @@ class ProductsRepositoryImpl implements ProductRepository {
         throw products['statusMessage'];
       }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       rethrow;
     }
   }

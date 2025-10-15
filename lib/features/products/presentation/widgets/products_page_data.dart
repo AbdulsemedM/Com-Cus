@@ -15,6 +15,7 @@ import '../../../dashboard/widgets/home_loading_widget.dart';
 import '../../domain/product.dart';
 import '../cubit/product_cubit.dart';
 import '../cubit/product_state.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class ProductsPageData extends StatefulWidget {
   final num? subCatId;
@@ -128,7 +129,7 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                           product: products[index],
                           onItemClick: (Product prod) {
                             if (prod.provider == "Commercepal") {
-                              print("it's true it's commercepal profuct");
+                              appLog("it's true it's commercepal profuct");
                               Navigator.pushNamed(
                                 context,
                                 SelectedProductPage.routeName,
@@ -147,11 +148,11 @@ class _ProductsStatePageState extends State<ProductsStatePage> {
                                 ),
                               );
                             } else {
-                              print(prod.id
+                              appLog(prod.id
                                   ?.toString()
                                   .contains(RegExp(r'^[0-9]+$')));
-                              print("it's true it's product");
-                              print(prod.provider);
+                              appLog("it's true it's product");
+                              appLog(prod.provider);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

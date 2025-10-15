@@ -57,7 +57,7 @@
 //   void handleReferralLink(Uri url) {
 //     // Extract the userId from the URL and use it as needed
 //     final String userId = url.queryParameters['userId']!;
-//     print('Referral User ID: $userId');
+//     appLog('Referral User ID: $userId');
 //   }
 
 //   @override

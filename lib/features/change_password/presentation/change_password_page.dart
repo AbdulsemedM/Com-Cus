@@ -50,7 +50,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     pHint = await physicalAddressHintFuture;
     oHint = await oldHintFuture;
 
-    // print(pHint);
+    // appLog(pHint);
 
     setState(() {
       loading = false;

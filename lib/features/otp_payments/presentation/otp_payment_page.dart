@@ -14,6 +14,7 @@ import '../../dashboard/dashboard_page.dart';
 import '../../redirected_payment/presentation/redirection_dialog_box.dart';
 import 'bloc/otp_payment_cubit.dart';
 import 'bloc/otp_payment_state.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class OtpPaymentPage extends StatefulWidget {
   static const routeName = "/otp_page";
@@ -66,7 +67,7 @@ class _OtpPaymentPageState extends State<OtpPaymentPage> {
     // Use await to get the actual string value from the futures
     pHint = await physicalAddressHintFuture;
 
-    print(pHint);
+    appLog(pHint);
 
     setState(() {
       loading = false;

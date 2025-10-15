@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 Future<Position?> getUserLocation() async {
   bool serviceEnabled;
@@ -7,7 +8,7 @@ Future<Position?> getUserLocation() async {
   // Check if location services are enabled
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    print('Location services are disabled.');
+    appLog('Location services are disabled.');
     return null; // Location services disabled
   }
 
@@ -16,13 +17,13 @@ Future<Position?> getUserLocation() async {
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      print('Location permissions are denied.');
+      appLog('Location permissions are denied.');
       return null; // Permissions denied
     }
   }
 
   if (permission == LocationPermission.deniedForever) {
-    print('Location permissions are permanently denied.');
+    appLog('Location permissions are permanently denied.');
     return null; // Permissions permanently denied
   }
 

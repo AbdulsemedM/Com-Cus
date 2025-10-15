@@ -9,6 +9,7 @@ import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class AddProductReview extends StatefulWidget {
   final String pId;
@@ -195,13 +196,13 @@ class _AddProductReviewState extends State<AddProductReview> {
 
   Future<bool> sendData({int retryCount = 0}) async {
     try {
-      print('here we go again...');
+      appLog('here we go again...');
       setState(() {
         loading = true;
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         Map<String, dynamic> payload = {
@@ -211,7 +212,7 @@ class _AddProductReviewState extends State<AddProductReview> {
           "imageUrl": "http//imageUrl", //optional
           "videoUrl": "http//videoUrl" //optional
         };
-        print(payload);
+        appLog(payload);
 
         final response = await http.post(
           Uri.https(
@@ -223,7 +224,7 @@ class _AddProductReviewState extends State<AddProductReview> {
         );
 
         var data = jsonDecode(response.body);
-        print(data);
+        appLog(data);
 
         if (data['statusCode'] == '000') {
           setState(() {
@@ -252,7 +253,7 @@ class _AddProductReviewState extends State<AddProductReview> {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

@@ -12,6 +12,7 @@ import '../../../core/cities-core/presentation/select_country_widget.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/input_decorations.dart';
 import 'bloc/address_cubit.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class EditAddressPage extends StatefulWidget {
   static const routeName = "/edit_address_page";
@@ -50,9 +51,9 @@ class _EditAddressPageState extends State<EditAddressPage> {
     cHint = await subcityHint;
     aHint = await addAddHint;
     eAddr = await EditAddress;
-    print("herrerererere");
-    print(pHint);
-    print(cHint);
+    appLog("herrerererere");
+    appLog(pHint);
+    appLog(cHint);
 
     setState(() {
       loading = false;

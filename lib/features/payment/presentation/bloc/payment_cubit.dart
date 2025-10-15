@@ -35,7 +35,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     final loans = await customerLoanRepo.fetchFinancialInstitutions();
 // <<<<<<< New-Providers
 // =======
-//     print("passed");
+//     appLog("passed");
 // >>>>>>> main
     // add as payment method
     if (loanPaymentMode.isNotEmpty) {

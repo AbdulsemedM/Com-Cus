@@ -10,6 +10,7 @@ import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class ProvidePhoneNumberDialog extends StatefulWidget {
   final String provide;
@@ -115,12 +116,12 @@ class _ProvidePhoneNumberDialogState extends State<ProvidePhoneNumberDialog> {
                         if (regExp1.hasMatch(phoneNumberController.text)) {
                           phoneNumber = phoneNumberController.text
                               .replaceFirst(RegExp('^0'), '251');
-                          print(phoneNumber);
+                          appLog(phoneNumber);
                         } else if (regExp2
                             .hasMatch(phoneNumberController.text)) {
                           phoneNumber = phoneNumberController.text
                               .replaceFirst(RegExp(r'^\+'), '');
-                          print(phoneNumber);
+                          appLog(phoneNumber);
                         }
                         final body = {
                           "phoneNumber": phoneNumber,
@@ -133,7 +134,7 @@ class _ProvidePhoneNumberDialogState extends State<ProvidePhoneNumberDialog> {
                           "channel": Platform.isIOS ? "IOS" : "ANDROID"
                           // "email": email // incase for facebook
                         };
-                        print(body);
+                        appLog(body);
                         try {
                           final prefsData = getIt<PrefsData>();
                           final isUserLoggedIn = await prefsData
@@ -153,7 +154,7 @@ class _ProvidePhoneNumberDialogState extends State<ProvidePhoneNumberDialog> {
                               },
                             );
                             var data = jsonDecode(response.body);
-                            print(data);
+                            appLog(data);
                             if (data['statusCode'] == '000') {
                               displaySnack(context,
                                   "${widget.provide == "email" ? "Email" : "Phone Number"} provided successfully.");

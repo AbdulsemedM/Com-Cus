@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'package:commercepal/app/utils/logger.dart';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:get_it/get_it.dart';
@@ -44,7 +45,7 @@ class StorageClearer {
             try {
               await file.delete();
             } catch (e) {
-              print('Error deleting database file: $e');
+              appLog('Error deleting database file: $e');
             }
           }
         }
@@ -54,7 +55,7 @@ class StorageClearer {
       await getTemporaryDirectory();
       await getApplicationSupportDirectory();
     } catch (e) {
-      print('Error clearing storage: $e');
+      appLog('Error clearing storage: $e');
       rethrow;
     }
   }

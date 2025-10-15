@@ -23,6 +23,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/cart-core/domain/cart_item.dart';
 import '../data/models/address.dart';
+import 'package:commercepal/app/utils/logger.dart';
 // import 'package:http/http.dart' as http;
 
 class CheckOutPage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
 
     // Use await to get the actual string value from the futures
     it = await items;
-    // print("herrerererere");
+    // appLog("herrerererere");
 
     setState(() {
       loading = false;
@@ -114,8 +115,8 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
     SFee = await ShipFee;
     OTot = await OrderTot;
     SBill = await ShipBill;
-    // print("herrerererere");
-    // print(OSumm);
+    // appLog("herrerererere");
+    // appLog(OSumm);
 
     setState(() {
       loading = false;
@@ -154,7 +155,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
           state.maybeWhen(
               orElse: () {},
               error: (error) {
-                // print("hereisthererorror");
+                // appLog("hereisthererorror");
                 displaySnack(context, error);
               },
               addresses: (adds) {
@@ -179,7 +180,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                     currency = match
                         .group(1)!; // Get the matched currency symbol or code
                   }
-                  // print(currency);
+                  // appLog(currency);
                   _shippingFee = fee;
                 });
               },
@@ -423,7 +424,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                           height: 40,
                           child: ElevatedButton(
                             onPressed: () async {
-                              // print(_total);
+                              // appLog(_total);
                               // RegExp regExp = RegExp(r'\b\d+(\.\d+)?\b');
                               // Iterable<Match> matches =
                               //     regExp.allMatches(_total!);
@@ -432,13 +433,13 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
                               //   String numericPart = match.group(0)!;
                               final SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
-                              //   print(numericPart);
+                              //   appLog(numericPart);
                               try {
                                 await prefs.remove("promocode");
                               } catch (e) {
-                                print(e.toString());
+                                appLog(e.toString());
                               }
-                              //   print("setted");
+                              //   appLog("setted");
                               // }
                               ctx.read<CheckOutCubit>().validateCheckOut();
                             },
@@ -484,7 +485,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
     double totalPrice = 0; // Initialize total price to 0
     List<dynamic> tieredPrices = parseTieredPrices(baseMarkup);
     // for (var price in tieredPrices) {
-    //   print(price);
+    //   appLog(price);
     // }
 
     for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
@@ -504,7 +505,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
         totalPrice += tieredPrices[5];
       }
     }
-    print("totalPrice: $totalPrice");
+    appLog("totalPrice: $totalPrice");
     totalCartPrice += totalPrice;
     // Round to 2 decimal places
     return double.parse((totalPrice).toStringAsFixed(2));
@@ -515,9 +516,9 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   //     setState(() {
   //       loading = true;
   //     });
-  //     print("here we go");
+  //     appLog("here we go");
   //     var status = await Permission.location.request();
-  //     print(status.isPermanentlyDenied);
+  //     appLog(status.isPermanentlyDenied);
   //     if (status.isGranted) {
   //       Position position = await Geolocator.getCurrentPosition(
   //         desiredAccuracy: LocationAccuracy.high,
@@ -526,8 +527,8 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   //       setState(() {
   //         latitude = position.latitude;
   //         longitude = position.longitude;
-  //         print(latitude);
-  //         print(longitude);
+  //         appLog(latitude);
+  //         appLog(longitude);
   //         if (latitude != null && longitude != null) {
   //           getAddressFromLatLng(latitude.toString(), longitude.toString());
   //         } else {
@@ -536,8 +537,8 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   //         }
   //         loading = false;
   //       });
-  //       print(latitude);
-  //       print(longitude);
+  //       appLog(latitude);
+  //       appLog(longitude);
   //     } else {
   //       displaySnack(
   //           context, "Please add your address by pressing \"Add Address\"");
@@ -551,7 +552,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   //     setState(() {
   //       loading = false;
   //     });
-  //     print('Error getting location: $e');
+  //     appLog('Error getting location: $e');
   //   }
   // }
 
@@ -561,12 +562,12 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
 
   //   try {
   //     List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
-  //     print(placemarks);
-  //     print("object");
+  //     appLog(placemarks);
+  //     appLog("object");
   //     for (Placemark placemark in placemarks) {
   //       String street = placemark.street ??
   //           ""; // Access the "Street" property and handle null values
-  //       print("Street: $street");
+  //       appLog("Street: $street");
   //     }
 
   //     if (placemarks.isNotEmpty) {
@@ -590,7 +591,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   //           "latitude": latitude,
   //           "longitude": longitude
   //         };
-  //         print(payload);
+  //         appLog(payload);
   //         final prefsData = getIt<PrefsData>();
   //         final isUserLoggedIn =
   //             await prefsData.contains(PrefsKeys.userToken.name);
@@ -606,7 +607,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   //           );
 
   //           var data = jsonDecode(response.body);
-  //           print(data);
+  //           appLog(data);
 
   //           if (data['statusCode'] == '000') {
   //             setState(() {
@@ -618,7 +619,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   //           }
   //         }
   //       } catch (e) {
-  //         print(e.toString());
+  //         appLog(e.toString());
   //         setState(() {
   //           loading = false;
   //         });
@@ -636,7 +637,7 @@ class _CheckOutPageDataWidgetState extends State<CheckOutPageDataWidget> {
   //       return "No street address found";
   //     }
   //   } catch (e) {
-  //     print("Error getting address: $e");
+  //     appLog("Error getting address: $e");
   //     return "No street address found";
   //   }
   // }

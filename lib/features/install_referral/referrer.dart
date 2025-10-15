@@ -8,12 +8,13 @@ import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 // import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 Future<String> getReferralLink() async {
   try {
     final prefsData = getIt<PrefsData>();
     final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-    print(isUserLoggedIn);
+    appLog(isUserLoggedIn);
     if (isUserLoggedIn) {
       final token = await prefsData.readData(PrefsKeys.userToken.name);
       final response = await http.get(
@@ -26,9 +27,9 @@ Future<String> getReferralLink() async {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      print('hererererer');
+      appLog('hererererer');
       var datas = jsonDecode(response.body);
-      print(datas);
+      appLog(datas);
       if (datas['statusCode'] == "000") {
         final String userId = datas['referralCode'];
         if (Platform.isAndroid) {
@@ -37,10 +38,10 @@ Future<String> getReferralLink() async {
 
           return myReferrer;
         } else if (Platform.isIOS) {
-          print("hereis the link");
+          appLog("hereis the link");
           String myReferrer =
               'https://apps.apple.com/us/app/commercepal/id1669974212?$userId=$userId';
-          print(userId);
+          appLog(userId);
           return myReferrer;
         } else {
           return "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$userId";
@@ -50,7 +51,7 @@ Future<String> getReferralLink() async {
       }
     } else {}
   } catch (e) {
-    print(e.toString());
+    appLog(e.toString());
     return "https://play.google.com/store/apps/details?id=com.commercepal.commercepal";
   }
   return "https://play.google.com/store/apps/details?id=com.commercepal.commercepal";
@@ -58,8 +59,8 @@ Future<String> getReferralLink() async {
 
   // final referrer = await AndroidPlayInstallReferrer.installReferrer;
   // final utmParams = referrer.installReferrer; // Get the install referrer
-  // print(referrer.installReferrer);
-  // print(utmParams);
+  // appLog(referrer.installReferrer);
+  // appLog(utmParams);
   // final String userId = '2397883';
   // // Replace 'YOUR_APP_ID' with your actual app's package name
   // final playStoreLink =
@@ -85,7 +86,7 @@ Future<String> getReferralLink() async {
   // String newUrl =
   //     'https://play.google.com/store/apps/details?id=com.commercepal.commercepal&referrer=$referrer1';
 
-  // print(newUrl);
+  // appLog(newUrl);
   // // Append the utmParams to your Play Store link
   // final referralLink = '$playStoreLink&userId=2397883';
   // // final referralLink = '$playStoreLink&$utmParams';
@@ -93,13 +94,13 @@ Future<String> getReferralLink() async {
   //     Uri.parse(playStoreLink).queryParameters; // returns Map<String, String>
   // // Get the `utm_content` parameter.
   // String? utmContent = queryParams["utm_content"];
-  // print("hereee");
-  // print(utmContent);
-  // print(referralLink);
-  // print(updatedUri.toString());
+  // appLog("hereee");
+  // appLog(utmContent);
+  // appLog(referralLink);
+  // appLog(updatedUri.toString());
   // return updatedUri.toString();
   // } on PlatformException catch (e) {
-  //   print('Failed to retrieve install referrer: $e');
+  //   appLog('Failed to retrieve install referrer: $e');
   //   return "null";
   // }
 }

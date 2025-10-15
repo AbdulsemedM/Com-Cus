@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:rate_in_stars/rate_in_stars.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class FlashSaleDashboard extends StatefulWidget {
   const FlashSaleDashboard({super.key});
@@ -473,7 +474,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      // print(isUserLoggedIn);
+      // appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         // final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
@@ -487,9 +488,9 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
             'Content-Type': 'application/json; charset=UTF-8',
           },
         );
-        // print('hererererer');
+        // appLog('hererererer');
         var datas = jsonDecode(response.body);
-        // print(datas);
+        // appLog(datas);
         myFlashSaleProducts.clear();
         if (datas['statusCode'] == "000") {
           for (var i in datas['data']['products']) {
@@ -508,7 +509,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
               productRating: i['productRating'].toString(),
             ));
           }
-          // print(myFlashSaleProducts.length);
+          // appLog(myFlashSaleProducts.length);
         } else {
           throw datas['statusDescription'] ?? 'Error fetching Flash-Sales';
         }
@@ -521,7 +522,7 @@ class _FlashSaleDashboardState extends State<FlashSaleDashboard> {
       setState(() {
         loading = false;
       });
-      print(e.toString());
+      appLog(e.toString());
       rethrow;
     }
   }

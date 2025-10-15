@@ -80,17 +80,16 @@ class OtpPaymentRepoImp implements OtpPaymentRepo {
   @override
   Future<String> confirmPaymentCheckOut(String transRef, String otp) async {
     try {
-      final payLoad = {"TransRef": transRef, "OTP":otp};
+      final payLoad = {"TransRef": transRef, "OTP": otp};
 
       // Uri url = Uri.parse(EndPoints.amole.url);
-      // print(url);
+      // appLog(url);
 
       // String token = PrefsKeys.userToken.name;
       // Map<String, String> header = {
       //   'Authorization': 'Bearer $token',
       // };
-      final response = await apiProvider.post(
-          payLoad, EndPoints.amole.url);
+      final response = await apiProvider.post(payLoad, EndPoints.amole.url);
       if (response != null) {
         if (response['statusCode'] == '000') {
           await cartDao.nuke();

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 import '../login/presentation/login_page.dart';
 
@@ -192,7 +193,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
         "token": myOTP.toString(),
         "newPassword": _passwordController.text.trim()
       };
-      print(payload);
+      appLog(payload);
 
       final response = await http.post(
         Uri.https(
@@ -205,7 +206,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
       );
 
       var data = jsonDecode(response.body);
-      print(data);
+      appLog(data);
 
       if (data['statusCode'] == '000') {
         setState(() {
@@ -231,7 +232,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
         return false;
       }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

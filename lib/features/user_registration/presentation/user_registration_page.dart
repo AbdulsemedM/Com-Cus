@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/widgets/input_decorations.dart';
 import '../../set_password/presentation/user_set_password_page.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 // Local copy of countryList from country_picker package
 final List<Country> countryList = [
@@ -155,9 +156,9 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
     aHint = await addAddHint;
     dHint = await phoneHint;
     eHint = await emailHint;
-    print("herrerererere");
-    print(pHint);
-    print(cHint);
+    appLog("herrerererere");
+    appLog(pHint);
+    appLog(cHint);
 
     setState(() {
       loading = false;
@@ -270,14 +271,14 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                                     _phoneNumber!.isNotEmpty)
                                 ? '${_selectedCountry?.phoneCode}$_phoneNumber'
                                 : null;
-                            // print("completePhoneNumber: $_phoneNumber");
-                            // print("countryCode: ${_selectedCountry?.phoneCode}");
-                            // print("selectedCountry: ${_selectedCountry?.name}");
-                            // print("password: $_password");
-                            // print("confirmPassword: $_confirmPassword");
-                            // print("email: $_email");
-                            // print("fName: $_fName");
-                            // print("sName: $_sName");
+                            // appLog("completePhoneNumber: $_phoneNumber");
+                            // appLog("countryCode: ${_selectedCountry?.phoneCode}");
+                            // appLog("selectedCountry: ${_selectedCountry?.name}");
+                            // appLog("password: $_password");
+                            // appLog("confirmPassword: $_confirmPassword");
+                            // appLog("email: $_email");
+                            // appLog("fName: $_fName");
+                            // appLog("sName: $_sName");
                             ctx.read<UserRegistrationCubit>().createAccount(
                                 _fName,
                                 _sName,

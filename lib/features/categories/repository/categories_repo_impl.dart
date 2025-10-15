@@ -10,6 +10,7 @@ import '../dto/parent_categories_dto.dart';
 import '../../../core/models/category_model.dart';
 import '../models/parent_categories_model.dart';
 import 'categories_repo.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @Injectable(as: CategoriesRepo)
 class CategoriesRepoImpl implements CategoriesRepo {
@@ -28,37 +29,37 @@ class CategoriesRepoImpl implements CategoriesRepo {
           throw 'Parent categories not found';
         }
 
-//         print("Starting ParentCategoryModel mapping process...");
+//         appLog("Starting ParentCategoryModel mapping process...");
 
 //         final details = pCategoriesObject.details!;
-//         print("Details length: ${details.length}");
+//         appLog("Details length: ${details.length}");
 
 //         for (var i = 0; i < details.length; i++) {
 //           final detail = details[i];
-//           print("Processing detail at index $i: $detail");
+//           appLog("Processing detail at index $i: $detail");
 
 //           try {
 //             final parentCategoryModel = detail.toParentCategoryModel();
-//             print("Converted to ParentCategoryModel: $parentCategoryModel");
+//             appLog("Converted to ParentCategoryModel: $parentCategoryModel");
 //           } catch (e, stackTrace) {
-//             print("Error converting detail at index $i: $e\n$stackTrace");
+//             appLog("Error converting detail at index $i: $e\n$stackTrace");
 //           }
 //         }
 
 // // Mapping process
 //         final parentCategoryModels = details.map((e) {
-//           print("Mapping detail: $e");
+//           appLog("Mapping detail: $e");
 //           try {
 //             final parentCategoryModel = e.toParentCategoryModel();
-//             print("Successfully mapped: $parentCategoryModel");
+//             appLog("Successfully mapped: $parentCategoryModel");
 //             return parentCategoryModel;
 //           } catch (e, stackTrace) {
-//             print("Error during mapping: $e\n$stackTrace");
+//             appLog("Error during mapping: $e\n$stackTrace");
 //             rethrow; // Rethrow to identify breaking issues
 //           }
 //         }).toList();
 
-//         print("Final mapped list: ${parentCategoryModels.last.name}");
+//         appLog("Final mapped list: ${parentCategoryModels.last.name}");
 
         return pCategoriesObject.details!
             .map((e) => e.toParentCategoryModel())
@@ -78,41 +79,41 @@ class CategoriesRepoImpl implements CategoriesRepo {
           .get("${EndPoints.categories.url}?parentCat=$parentId");
       if (response['statusCode'] == "000") {
         final categories = CategoriesDto.fromJson(response);
-        print(response);
+        appLog(response);
         if (categories.details?.isEmpty == true) {
           throw 'Categories not found';
         }
         // Iterate through details step by step
-//         print("Starting mapping process...");
+//         appLog("Starting mapping process...");
 
 //         final details = categories.details!;
-//         print("Details length: ${details.length}");
+//         appLog("Details length: ${details.length}");
 //         for (var i = 0; i < details.length; i++) {
 //           final detail = details[i];
-//           print("Processing detail at index $i: $detail");
+//           appLog("Processing detail at index $i: $detail");
 
 //           try {
 //             final categoryModel = detail.toCategoryModel();
-//             print("Converted to CategoryModel: $categoryModel");
+//             appLog("Converted to CategoryModel: $categoryModel");
 //           } catch (e, stackTrace) {
-//             print("Error converting detail at index $i: $e\n$stackTrace");
+//             appLog("Error converting detail at index $i: $e\n$stackTrace");
 //           }
 //         }
 
 // // Collect all converted items into a list
 //         final categoryModels = details.map((e) {
-//           print("Mapping detail: $e");
+//           appLog("Mapping detail: $e");
 //           try {
 //             final categoryModel = e.toCategoryModel();
-//             print("Successfully mapped: $categoryModel");
+//             appLog("Successfully mapped: $categoryModel");
 //             return categoryModel;
 //           } catch (e, stackTrace) {
-//             print("Error during mapping: $e\n$stackTrace");
+//             appLog("Error during mapping: $e\n$stackTrace");
 //             rethrow; // Rethrow to identify breaking issues
 //           }
 //         }).toList();
 
-//         print("Final mapped list: $categoryModels.");
+//         appLog("Final mapped list: $categoryModels.");
 
         return categories.details!.map((e) => e.toCategoryModel()).toList();
       } else {

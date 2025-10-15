@@ -9,6 +9,7 @@ import 'package:commercepal/features/orders/models/orders_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class OrderScreen extends StatefulWidget {
   final String orderRef;
@@ -163,7 +164,7 @@ class _OrderScreenState extends State<OrderScreen> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
@@ -179,9 +180,9 @@ class _OrderScreenState extends State<OrderScreen> {
             "Authorization": "Bearer $token",
           },
         );
-        print('hererererer');
+        appLog('hererererer');
         var datas = jsonDecode(response.body);
-        print(datas);
+        appLog(datas);
         if (datas['statusCode'] == '000') {
           for (var i in datas['responseData']) {
             myOrders.add(OrdersModel.fromMap(i));
@@ -189,8 +190,8 @@ class _OrderScreenState extends State<OrderScreen> {
             // if (myOrders.isEmpty) {
             //   throw 'No special orders found';
           }
-          print("MyOrders");
-          print(myOrders.length);
+          appLog("MyOrders");
+          appLog(myOrders.length);
         } else {
           throw datas['statusDescription'] ?? 'Error fetching markups';
         }
@@ -200,7 +201,7 @@ class _OrderScreenState extends State<OrderScreen> {
         loading = false;
       });
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       rethrow;
     }
   }
@@ -213,7 +214,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
@@ -229,9 +230,9 @@ class _OrderScreenState extends State<OrderScreen> {
             "Authorization": "Bearer $token",
           },
         );
-        print('hererererer');
+        appLog('hererererer');
         var datas = jsonDecode(response.body);
-        print(datas);
+        appLog(datas);
         if (datas['statusCode'] == '000') {
           for (var i in datas['responseData']) {
             myOrderTimeline.add(OrderTimelineModel.fromMap(i));
@@ -239,8 +240,8 @@ class _OrderScreenState extends State<OrderScreen> {
             // if (myOrders.isEmpty) {
             //   throw 'No special orders found';
           }
-          print("MyOrderTimeline");
-          print(myOrderTimeline.length);
+          appLog("MyOrderTimeline");
+          appLog(myOrderTimeline.length);
         } else {
           throw datas['statusDescription'] ?? 'Error fetching markups';
         }
@@ -279,7 +280,7 @@ class _OrderScreenState extends State<OrderScreen> {
         loading = false;
       });
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

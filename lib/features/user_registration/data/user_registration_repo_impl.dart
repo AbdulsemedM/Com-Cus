@@ -14,6 +14,7 @@ import '../../../core/data/prefs_data.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/dto/Login_dto.dart';
 import '../domain/user_registration_repo.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @Injectable(as: UserRegistrationRepo)
 class UserRegistrationRepoImpl implements UserRegistrationRepo {
@@ -106,8 +107,8 @@ class UserRegistrationRepoImpl implements UserRegistrationRepo {
       if (referrer != null) {
         prefs.remove("referrer");
       }
-      print("the payload");
-      print(payload);
+      appLog("the payload");
+      appLog(payload);
       final response = await http.post(
         Uri.https("api.commercepal.com", "/api/v2/customers/register"),
         body: jsonEncode(payload), // convert Dart map to JSON string
@@ -116,7 +117,7 @@ class UserRegistrationRepoImpl implements UserRegistrationRepo {
         },
       );
 
-      print(response.body);
+      appLog(response.body);
       //  await http.post(
       //     Uri.parse("https://api.commercepal.com/api/v2/customers/register"),
       //   body: payload,
@@ -124,19 +125,19 @@ class UserRegistrationRepoImpl implements UserRegistrationRepo {
       //     'Content-Type': 'application/json',
       //   },
       // );
-      print(response.body);
+      appLog(response.body);
       // await apiProvider.post(payload, EndPoints.registration.url);
       final objResponse = jsonDecode(response.body);
-      // print(objResponse.runtimeType);
+      // appLog(objResponse.runtimeType);
       if (objResponse['statusCode'] == '000') {
-        print(objResponse['statusMessage']);
+        appLog(objResponse['statusMessage']);
         return objResponse['statusMessage'];
       } else {
         throw objResponse['statusMessage'] ??
             "Something went wrong please try again or contact our support team!";
       }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       throw "Something went wrong please try again or contact our support team!";
     }
   }

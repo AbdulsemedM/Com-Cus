@@ -12,6 +12,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:commercepal/app/utils/logger.dart';
 
 class InviteFriends extends StatefulWidget {
   const InviteFriends({super.key});
@@ -48,10 +49,10 @@ class _InviteFriendsState extends State<InviteFriends> {
       var load = await getReferralLink();
       setState(() {
         url = load;
-        print(url);
+        appLog(url);
       });
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
     } finally {
       setState(() {
         loading = false;
@@ -115,7 +116,7 @@ class _InviteFriendsState extends State<InviteFriends> {
         }
       }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
     } finally {
       setState(() {
         loading = false;
@@ -130,7 +131,7 @@ class _InviteFriendsState extends State<InviteFriends> {
           .where((contact) => contact.phones?.isNotEmpty ?? false)
           .map((contact) => contact.phones!.first.value ?? '')
           .toList();
-      print({'phoneNumbers': phoneNumbers});
+      appLog({'phoneNumbers': phoneNumbers});
       final prefsData = getIt<PrefsData>();
       final token = await prefsData.readData(PrefsKeys.userToken.name);
       final response = await http.post(
@@ -142,7 +143,7 @@ class _InviteFriendsState extends State<InviteFriends> {
         },
         body: json.encode({'phoneNumbers': phoneNumbers}),
       );
-      print(response.body);
+      appLog(response.body);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         Set<String> registeredPhoneNumbers = Set<String>.from(data
@@ -172,16 +173,16 @@ class _InviteFriendsState extends State<InviteFriends> {
           );
         }).toList();
 
-        print(contactInfos);
+        appLog(contactInfos);
 
         setState(() {
           _contactsInfo = contactInfos;
         });
       } else {
-        print('Failed to check registered users');
+        appLog('Failed to check registered users');
       }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
     } finally {
       setState(() {
         loading = false;
@@ -217,7 +218,7 @@ class _InviteFriendsState extends State<InviteFriends> {
       "appLink": url ??
           "https://play.google.com/store/apps/details?id=com.commercepal.commercepal&hl=en"
     };
-    print(body);
+    appLog(body);
 
     try {
       final prefsData = getIt<PrefsData>();
@@ -230,7 +231,7 @@ class _InviteFriendsState extends State<InviteFriends> {
             'Authorization': 'Bearer $token',
           },
           body: json.encode(body));
-      print(response.body);
+      appLog(response.body);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         displaySnack(context, "Invitation sent to $name successfully");
@@ -241,7 +242,7 @@ class _InviteFriendsState extends State<InviteFriends> {
         displaySnack(context, "Unable to send message, Please try again");
       }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       displaySnack(context, "Unable to send message, Please try again");
     }
   }

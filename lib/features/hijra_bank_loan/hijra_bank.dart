@@ -11,6 +11,7 @@ import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class HijraBankLoan extends StatefulWidget {
   static const routeName = "/rays_microfinance_payment";
@@ -62,9 +63,9 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     totalRaysPrice = extractNumber(prefs.getString("myRayTotalPrice") ??
         prefs.getString("myRayTotalPrice")!);
-    print(prefs.getString("newTotalPrice"));
-    print(prefs.getString("myRayTotalPrice")!);
-    print("here is the total ${extractNumber(totalRaysPrice)}");
+    appLog(prefs.getString("newTotalPrice"));
+    appLog(prefs.getString("myRayTotalPrice")!);
+    appLog("here is the total ${extractNumber(totalRaysPrice)}");
     setState(() {
       loading1 = true;
     });
@@ -84,9 +85,9 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
     cHint = await subcityHint;
     aHint = await addAddHint;
     bHint = await dbHint;
-    // print("herrerererere");
-    // print(pHint);
-    // print(cHint);
+    // appLog("herrerererere");
+    // appLog(pHint);
+    // appLog(cHint);
 
     setState(() {
       loading1 = false;
@@ -191,7 +192,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
                                   markup.Markup ==
                                   value, // Provide a default value if no match is found
                             );
-                            print(selectedMarkups!.RepaymentMonth);
+                            appLog(selectedMarkups!.RepaymentMonth);
                             sendData1();
                             // selectedMarkups.add(selectedMarkup);
                           }
@@ -354,11 +355,11 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
                                   if (regExp1.hasMatch(pNumber!)) {
                                     pNumber = pNumber!
                                         .replaceFirst(RegExp('^0'), '251');
-                                    print(pNumber);
+                                    appLog(pNumber);
                                   } else if (regExp2.hasMatch(pNumber!)) {
                                     pNumber = pNumber!
                                         .replaceFirst(RegExp(r'^\+'), '');
-                                    print(pNumber);
+                                    appLog(pNumber);
                                   }
                                   bool done = await sendData();
                                   if (done) {
@@ -418,10 +419,10 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
       setState(() {
         loading = true;
       });
-      print('hereweare');
+      appLog('hereweare');
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final orderRef = await prefsData.readData("order_ref");
@@ -429,7 +430,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
           "orderRef": orderRef,
           "period": selectedMarkups!.RepaymentMonth
         };
-        print(payload);
+        appLog(payload);
 
         final response = await http.post(
             Uri.https("pay.commercepal.com",
@@ -437,7 +438,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
             body: jsonEncode(payload),
             headers: <String, String>{"Authorization": "Bearer $token"});
         var data = jsonDecode(response.body);
-        print(data);
+        appLog(data);
 
         if (data['statusCode'] == '000') {
           setState(() {
@@ -447,7 +448,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
             amountBefore1 = data['amountBefore'].toString();
             loading = false;
           });
-          // print(transRef);
+          // appLog(transRef);
           return true;
           // Handle the case when statusCode is '000'
         } else {
@@ -475,7 +476,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
       return false;
     } catch (e) {
       message = e.toString();
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });
@@ -489,16 +490,16 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
       setState(() {
         loading = true;
       });
-      print('hereweare');
+      appLog('hereweare');
       // final SharedPreferences prefs = await SharedPreferences.getInstance();
       // String? amount = prefs.getString("rays")!;
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final orderRef = await prefsData.readData("order_ref");
-        // print(token);
+        // appLog(token);
         Map<String, dynamic> payload = {
           "ServiceCode": "LOAN-REQUEST",
           "PaymentType": "FINANCIAL_HALAL_PAY",
@@ -511,7 +512,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
           "Markup": int.parse(extractNumber1(selectedMarkups!.Markup)),
           "RepaymentMonth": selectedMarkups!.RepaymentMonth,
         };
-        print(payload);
+        appLog(payload);
 
         final response = await http.post(
           Uri.https(
@@ -522,7 +523,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
           headers: <String, String>{"Authorization": "Bearer $token"},
         );
         var data = jsonDecode(response.body);
-        print(data);
+        appLog(data);
 
         if (data['statusCode'] == '000') {
           setState(() {
@@ -534,7 +535,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
             totalRepaymentAmount = data['totalRepaymentAmount'];
             loading = false;
           });
-          // print(transRef);
+          // appLog(transRef);
           return true;
           // Handle the case when statusCode is '000'
         } else {
@@ -562,7 +563,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
       return false;
     } catch (e) {
       message = e.toString();
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });
@@ -576,10 +577,10 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
       setState(() {
         loading = true;
       });
-      print('hereweare');
+      appLog('hereweare');
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         Map<String, dynamic> payload = {
@@ -587,7 +588,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
           "otp": otpController.text,
           "TransRef": transRef,
         };
-        print(payload);
+        appLog(payload);
 
         final response = await http.post(
           Uri.https(
@@ -599,7 +600,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
         );
 
         var data = jsonDecode(response.body);
-        print(data);
+        appLog(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -630,7 +631,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
       return false;
     } catch (e) {
       message = e.toString();
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });
@@ -646,7 +647,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final response = await http.get(
           Uri.https(
@@ -657,9 +658,9 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
             'Content-Type': 'application/json; charset=UTF-8',
           },
         );
-        print('hererererer');
+        appLog('hererererer');
         var datas = jsonDecode(response.body);
-        print(datas);
+        appLog(datas);
         if (datas['statusCode'] == '000') {
           for (var i in datas['markups']) {
             myMarkups.add(RaysMarkup(
@@ -670,8 +671,8 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
             // if (myOrders.isEmpty) {
             //   throw 'No special orders found';
           }
-          print("MyMarkups");
-          print(myMarkups.length);
+          appLog("MyMarkups");
+          appLog(myMarkups.length);
         } else {
           throw datas['statusDescription'] ?? 'Error fetching markups';
         }
@@ -681,7 +682,7 @@ class _HijraBankLoanState extends State<HijraBankLoan> {
         loading = false;
       });
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       rethrow;
     }
   }

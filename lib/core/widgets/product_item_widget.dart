@@ -16,6 +16,7 @@ import '../../features/products/domain/product.dart';
 import '../../features/translation/get_lang.dart';
 import '../../features/translation/translations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class ProductItemWidget extends StatefulWidget {
   final double? width;
@@ -430,7 +431,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
 
   Future<bool> checkCart(BuildContext context, String id) async {
     List<CartItem> myItems = await context.read<CartCoreCubit>().getAllItem();
-    print(myItems.length);
+    appLog(myItems.length);
     for (CartItem item in myItems) {
       if (id == item.productId.toString()) {
         setState(() {

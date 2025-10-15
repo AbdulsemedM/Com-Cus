@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:commercepal/core/cart-core/domain/cart_item.dart';
 import 'package:commercepal/features/products/domain/product.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 SelectedProductDto selectedProductDtoFromJson(String str) =>
     SelectedProductDto.fromJson(json.decode(str));
@@ -169,20 +170,20 @@ class SelectedProductDetails {
   }
 
   SelectedProductDetails.fromJson(dynamic json) {
-    print(json);
+    appLog(json);
     _specialInstruction = json['SpecialInstruction'];
-    print("1");
+    appLog("1");
     if (json['subProducts'] != null) {
       _subProducts = [];
       json['subProducts'].forEach((v) {
         _subProducts?.add(SubProducts.fromJson(v));
       });
     }
-    print("2");
+    appLog("2");
     _offerPrice = json['offerPrice'];
-    print("3");
+    appLog("3");
     _actualPrice = json['actualPrice'];
-    print("4");
+    appLog("4");
     _productSubCategoryIdName = json['ProductSubCategoryIdName'];
     _productId = (json['ProductId']);
     _productName = json['productName'];
@@ -236,8 +237,8 @@ class SelectedProductDetails {
     //         .where((image) => image != null) // Filter out null and empty values
     //         .toList()
     //     : [];
-    print("image here");
-    // print(json['ProductImages'][5]);
+    appLog("image here");
+    // appLog(json['ProductImages'][5]);
     if (json['ProductImages'] != null) {
       _productImages = [];
       json['ProductImages'].forEach((x) {
@@ -254,7 +255,7 @@ class SelectedProductDetails {
     _mobileThumbnail = json['mobileThumbnail'];
     _productDescription = json['ProductDescription'];
     _isDiscounted = json['IsDiscounted'];
-    print("5");
+    appLog("5");
     _discountValue = json['DiscountValue'];
     _discountDescription = json['discountDescription'];
   }
@@ -919,8 +920,8 @@ class SubProducts {
   }
 
   SubProducts.fromJson(dynamic json) {
-    print(json);
-    print(json['SubProductId'].runtimeType);
+    appLog(json);
+    appLog(json['SubProductId'].runtimeType);
     _mobileImage = json['mobileImage'];
     _offerPrice = json['offerPrice'];
     _subProductImages = json['subProductImages'] != null
@@ -940,7 +941,7 @@ class SubProducts {
     _webImage = json['webImage'];
     _webThumbnail = json['webThumbnail'];
     _subProductId = json['SubProductId'].toString();
-    print("11");
+    appLog("11");
     _discountType = json['DiscountType'];
     _mobileThumbnail = json['mobileThumbnail'];
     _isDiscounted = json['IsDiscounted'];

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class Edahab extends StatefulWidget {
   const Edahab({super.key});
@@ -187,11 +188,11 @@ class _EdahabState extends State<Edahab> {
                                     // if (regExp1.hasMatch(pNumber!)) {
                                     //   pNumber = pNumber!
                                     //       .replaceFirst(RegExp('^0'), '251');
-                                    //   // print(pNumber);
+                                    //   // appLog(pNumber);
                                     // } else if (regExp2.hasMatch(pNumber!)) {
                                     //   pNumber = pNumber!
                                     //       .replaceFirst(RegExp(r'^\+'), '');
-                                    //   // print(pNumber);
+                                    //   // appLog(pNumber);
                                     // }
                                     // final prefsData = getIt<PrefsData>();
                                     // final isUserLoggedIn = await prefsData
@@ -241,12 +242,12 @@ class _EdahabState extends State<Edahab> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(pNumber);
+      appLog(pNumber);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         bool isit = await hasUserSwitchedToBusiness();
         final orderRef = await prefsData.readData("order_ref");
-        // print(orderRef);
+        // appLog(orderRef);
         Map<String, dynamic> payload = {
           "ServiceCode": "CHECKOUT",
           "PaymentType": "EDAHAB",
@@ -256,8 +257,8 @@ class _EdahabState extends State<Edahab> {
           "Currency": "ETB",
           "PhoneNumber": "65$pNumber"
         };
-        print("payload");
-        print(payload);
+        appLog("payload");
+        appLog(payload);
 
         final response = await http.post(
           Uri.https(
@@ -269,13 +270,13 @@ class _EdahabState extends State<Edahab> {
         );
 
         var data = jsonDecode(response.body);
-        print("data");
-        print(data);
+        appLog("data");
+        appLog(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("epg_done", "yes");
-          // print(data['PaymentUrl']);
+          // appLog(data['PaymentUrl']);
           setState(() {
             loading = false;
           });
@@ -301,7 +302,7 @@ class _EdahabState extends State<Edahab> {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });
@@ -328,10 +329,10 @@ class _EdahabState extends State<Edahab> {
       // if (await canLaunch(url)) {
       await launch(url);
       // } else {
-      // print("Could not launch $url");
+      // appLog("Could not launch $url");
       // }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
     }
   }
 }

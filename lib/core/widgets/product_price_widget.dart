@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app/utils/app_colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class ProductPriceWidget extends StatefulWidget {
   final bool displayVoucher;
@@ -51,8 +52,8 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
     hintTranslationFuture = TranslationService.translate("Ex: Test Promo-code");
     labelTranslationFuture = TranslationService.translate("Promo-Code");
     fetchHints();
-    // print("object");
-    // print(widget.items!.length);
+    // appLog("object");
+    // appLog(widget.items!.length);
   }
 
   void fetchHints() async {
@@ -70,9 +71,9 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
     tPrice = await totalPrice;
     sTit = await subTitle;
     bText = await butText;
-    // print("herrerererere");
-    // print(tPrice);
-    // print(sTit);
+    // appLog("herrerererere");
+    // appLog(tPrice);
+    // appLog(sTit);
 
     setState(() {
       loading = false;
@@ -333,7 +334,7 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
         loading = true;
       });
 
-      // print("hereeeewego");
+      // appLog("hereeeewego");
       Map<String, dynamic> payload = {
         "promoCode": promoCodeController.text,
         "items": []
@@ -346,7 +347,7 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
         };
         payload["items"].add(itemMap);
       }
-      // print(payload);
+      // appLog(payload);
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       if (isUserLoggedIn) {
@@ -359,9 +360,9 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
               "Authorization": "Bearer $token",
               "Content-type": "application/json; charset=utf-8"
             });
-        // print(response.body);
+        // appLog(response.body);
         var data = jsonDecode(response.body);
-        print(data);
+        appLog(data);
 
         if (data['statusCode'] == '000') {
           setState(() {
@@ -369,7 +370,7 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
                 data['priceSummary']['finalTotalCheckoutPrice'].toString();
             loading = false;
           });
-          // print(totalCheckoutPrice);
+          // appLog(totalCheckoutPrice);
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString("promocode", promoCodeController.text);
           prefs.setString("newTotalPrice", totalCheckoutPrice!);
@@ -385,7 +386,7 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
       setState(() {
         loading = false;
       });
-      print(e.toString());
+      appLog(e.toString());
       return false;
     } finally {
       setState(() {

@@ -10,6 +10,7 @@ import '../../../core/cart-core/dao/cart_dao.dart';
 import '../../../core/data/prefs_data.dart';
 import '../../../core/session/domain/session_repo.dart';
 import 'redirect_payment_model.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @Injectable(as: RedirectedPaymentRepo)
 class RedirectedPaymentRepoImp implements RedirectedPaymentRepo {
@@ -44,7 +45,7 @@ class RedirectedPaymentRepoImp implements RedirectedPaymentRepo {
       final orderRef = await prefsData.readData("order_ref");
       // final phone = await prefsData.readData(PrefsKeys.user.)
       final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
-      print('cash type $_getCashType(cashType)');
+      appLog('cash type $_getCashType(cashType)');
       var payLoad = {
         "ServiceCode": "CHECKOUT",
         "PaymentType": "EPG",
@@ -73,7 +74,7 @@ class RedirectedPaymentRepoImp implements RedirectedPaymentRepo {
     try {
       final orderRef = await prefsData.readData("order_ref");
       final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
-      print('cash type $_getCashType(cashType)');
+      appLog('cash type $_getCashType(cashType)');
 
       var payLoad = {
         "PaymentType": _getCashType(cashType),

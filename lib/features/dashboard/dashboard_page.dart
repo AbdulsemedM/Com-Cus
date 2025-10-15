@@ -59,8 +59,6 @@ class _DashboardPageState extends State<DashboardPage> {
     fetchLatestVersion();
   }
 
-
-
   var physicalAddressHintFuture;
   var subcityHint;
   var addAddHint;
@@ -87,9 +85,9 @@ class _DashboardPageState extends State<DashboardPage> {
     cHint = await subcityHint;
     aHint = await addAddHint;
     uHint = await userHint;
-    // print("herrerererere");
-    // print(pHint);
-    // print(cHint);
+    // appLog("herrerererere");
+    // appLog(pHint);
+    // appLog(cHint);
 
     setState(() {
       loading = false;
@@ -105,8 +103,8 @@ class _DashboardPageState extends State<DashboardPage> {
       if (args.containsKey("redirect_to")) {
         if (args['redirect_to'] == 'cart') {
           redirect = true;
-          // print(_hasUserSwitchedToBusiness);
-          // print("_hasUserSwitchedToBusiness");
+          // appLog(_hasUserSwitchedToBusiness);
+          // appLog("_hasUserSwitchedToBusiness");
           _selectedTab = _hasUserSwitchedToBusiness ? 1 : 2;
           setState(() {});
         }
@@ -138,7 +136,7 @@ class _DashboardPageState extends State<DashboardPage> {
               // adjust index to match new list
               if (state.switched) {
                 if (_selectedTab == 3) {
-                  // print(" Switched hererrer");
+                  // appLog(" Switched hererrer");
                   _selectedTab = _selectedTab - 1;
                 }
                 if (redirect) {
@@ -343,8 +341,9 @@ class _DashboardPageState extends State<DashboardPage> {
       }
       // Check minor version (second digit) only if major versions are the same
       else if (latestVersionParts[0] == currentVersionParts[0] &&
-               latestVersionParts.length > 1 && currentVersionParts.length > 1 &&
-               latestVersionParts[1] > currentVersionParts[1]) {
+          latestVersionParts.length > 1 &&
+          currentVersionParts.length > 1 &&
+          latestVersionParts[1] > currentVersionParts[1]) {
         isMandatory = true;
       }
       // If only patch version (third digit) changes, isMandatory remains false

@@ -3,6 +3,7 @@ import 'package:commercepal/app/utils/app_colors.dart';
 import 'package:commercepal/features/login/presentation/login_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class ResetPassword extends StatefulWidget {
   final String jwttoken;
@@ -185,7 +186,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         "email": widget.email,
         "password": password.toString(),
       };
-      print(payload);
+      appLog(payload);
 
       final response = await http.post(
         Uri.https(
@@ -197,7 +198,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       );
 
       var data = jsonDecode(response.body);
-      print(data);
+      appLog(data);
 
       if (data['statusCode'] == '000') {
         setState(() {
@@ -222,7 +223,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         return false;
       }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

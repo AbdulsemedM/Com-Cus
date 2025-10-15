@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class OrderTrackingPage extends StatefulWidget {
   static const routeName = "/order_tracking_page";
@@ -79,9 +80,9 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
     tHint = await totalHint;
     sHint = await shippmentHint;
     prHint = await proccessingHint;
-    print("herrerererere");
-    print(pHint);
-    print(cHint);
+    appLog("herrerererere");
+    appLog(pHint);
+    appLog(cHint);
 
     setState(() {
       loading = false;

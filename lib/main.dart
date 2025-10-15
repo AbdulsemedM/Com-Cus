@@ -17,11 +17,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:commercepal/app/utils/logger.dart';
 // import 'services/firebase_messaging_service.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print("Handling a background message: ${message.messageId}");
+  appLog("Handling a background message: ${message.messageId}");
 }
 
 void main() async {
@@ -34,7 +35,7 @@ void main() async {
   // await OneSignal.shared.setAppId('c02d769f-6576-472a-8eb1-cd5d300e53b9');
   // bool accepted =
   //     await OneSignal.shared.promptUserForPushNotificationPermission();
-  // print("Accepted Permission: $accepted");
+  // appLog("Accepted Permission: $accepted");
   await Permission.notification.isDenied.then((isDenied) {
     if (isDenied) {
       Permission.notification.request();
@@ -83,7 +84,7 @@ void main() async {
   try {
     await Firebase.initializeApp();
   } catch (e) {
-    print('Failed to initialize Firebase: $e');
+    appLog('Failed to initialize Firebase: $e');
   }
   runApp(const App());
 }

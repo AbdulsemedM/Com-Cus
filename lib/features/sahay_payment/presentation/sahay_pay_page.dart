@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/widgets/input_decorations.dart';
 import '../../dashboard/dashboard_page.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class SahayPayPage extends StatefulWidget {
   static const routeName = "/sahay_page";
@@ -34,18 +35,18 @@ class _SahayPayPageState extends State<SahayPayPage> {
   List<String> _paymentInstructionsT = [];
 
   void instr(List<String> trr) async {
-    print("funcallled");
+    appLog("funcallled");
     for (var e in trr) {
       addAddHint =
           await Translations.translatedText(e, GlobalStrings.getGlobalString());
-      print("funtranslated");
+      appLog("funtranslated");
       aHint = await addAddHint;
-      print(aHint);
+      appLog(aHint);
       setState(() {
         _paymentInstructionsT.add(addAddHint);
       });
     }
-    // print(_paymentInstructionsT);
+    // appLog(_paymentInstructionsT);
     // _paymentInstructionsT.add(aHint);
   }
 
@@ -73,10 +74,10 @@ class _SahayPayPageState extends State<SahayPayPage> {
     dHint = await nameHint;
     eHint = await secondHint;
     // aHint =  _paymentInstructionsT;
-    print("herrerererere");
-    print(pHint);
-    print(cHint);
-    print(aHint);
+    appLog("herrerererere");
+    appLog(pHint);
+    appLog(cHint);
+    appLog(aHint);
 
     setState(() {
       loading = false;
@@ -266,12 +267,10 @@ class _SahayPayPageState extends State<SahayPayPage> {
                           const SizedBox(height: 4),
                           Text(
                             'Ready to proceed with payment',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                  color: AppColors.secondaryTextColor,
-                                ),
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: AppColors.secondaryTextColor,
+                                    ),
                           ),
                         ],
                       ),
@@ -307,10 +306,7 @@ class _SahayPayPageState extends State<SahayPayPage> {
                     children: [
                       Text(
                         dHint,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.secondaryTextColor,
                               fontWeight: FontWeight.w500,
                             ),
@@ -318,10 +314,7 @@ class _SahayPayPageState extends State<SahayPayPage> {
                       const SizedBox(height: 8),
                       Text(
                         name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge
-                            ?.copyWith(
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               color: AppColors.colorPrimary,
                               fontWeight: FontWeight.bold,
                             ),
@@ -391,8 +384,8 @@ class _SahayPayPageState extends State<SahayPayPage> {
       //     'Payment Instruction', GlobalStrings.getGlobalString());
       // final trrr = _paymentInstructions.map((e) =>
       //     Translations.translatedText('- $e', GlobalStrings.getGlobalString()));
-      print("mytransssss");
-      print(_paymentInstructionsT);
+      appLog("mytransssss");
+      appLog(_paymentInstructionsT);
       return Container(
         padding: const EdgeInsets.all(10),
         decoration:

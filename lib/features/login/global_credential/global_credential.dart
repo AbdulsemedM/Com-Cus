@@ -1,9 +1,11 @@
+import 'package:commercepal/app/utils/logger.dart';
+
 class GlobalCredential {
   static Map<String, dynamic> _globalCredential = {};
 
   static void setGlobalString(Map<String, dynamic> value) {
     _globalCredential = value;
-    print("set Success");
+    appLog("set Success");
   }
 
   static Map<String, dynamic> getGlobalString() {

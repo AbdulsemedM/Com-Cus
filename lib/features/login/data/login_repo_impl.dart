@@ -11,6 +11,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../core/data/prefs_data.dart';
 import '../domain/login_repository.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @Injectable(as: LoginRepository)
 class LoginRepositoryImpl implements LoginRepository {
@@ -22,18 +23,18 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<AuthModel> login(String email, String pass) async {
     try {
-      print(pass);
+      appLog(pass);
       if (pass == "social media") {
         var decodedResponse = GlobalCredential.getGlobalString();
-        print("decodedResponse");
-        print(decodedResponse);
+        appLog("decodedResponse");
+        appLog(decodedResponse);
         // final decodedResponse = jsonDecode(response);
         if (decodedResponse['statusCode'] == '000') {
           final responseObject = LoginDto.fromJson(decodedResponse);
-          print("responseObject.userToken");
-          print(decodedResponse['userToken']);
+          appLog("responseObject.userToken");
+          appLog(decodedResponse['userToken']);
           // store auth credentials
-          print("credetial stored");
+          appLog("credetial stored");
           if (decodedResponse['userToken'] != null) {
             await prefsData.writeData(
                 PrefsKeys.userToken.name, decodedResponse['userToken']);
@@ -45,11 +46,11 @@ class LoginRepositoryImpl implements LoginRepository {
           await prefsData.writeData(
               PrefsKeys.auth.name, jsonEncode(decodedResponse));
 
-          print("this is for affiliate");
-          print(decodedResponse);
+          appLog("this is for affiliate");
+          appLog(decodedResponse);
 
           // get user details
-          print("getting user detail");
+          appLog("getting user detail");
           final userResponse = await apiProvider.get(EndPoints.userDetails.url);
           if (userResponse['statusCode'] == '000') {
             final uObj = UserModel.fromJson(userResponse);
@@ -71,7 +72,7 @@ class LoginRepositoryImpl implements LoginRepository {
         }
       } else {
         final request = {"emailOrPhone": email, "password": pass};
-        print("here is the request");
+        appLog("here is the request");
 
         final response = await apiProvider.post(request, EndPoints.login.url);
         // final decodedResponse = jsonDecode(response);
@@ -84,9 +85,9 @@ class LoginRepositoryImpl implements LoginRepository {
             await prefsData.writeData(
                 PrefsKeys.userToken.name, responseObject.userToken!);
           }
-          print("here is the response");
-          print(response.runtimeType);
-          print("isithere");
+          appLog("here is the response");
+          appLog(response.runtimeType);
+          appLog("isithere");
           if (responseObject.refreshToken != null) {
             await prefsData.writeData(
                 "refresh_token", responseObject.refreshToken!);
@@ -94,7 +95,7 @@ class LoginRepositoryImpl implements LoginRepository {
           await prefsData.writeData(PrefsKeys.auth.name, jsonEncode(response));
 
           // get user details
-          print("here goes the login");
+          appLog("here goes the login");
           final userResponse = await apiProvider.get(EndPoints.userDetails.url);
           if (userResponse['statusCode'] == '000') {
             final uObj = UserModel.fromJson(userResponse);
@@ -105,7 +106,7 @@ class LoginRepositoryImpl implements LoginRepository {
           } else {
             // clear token in case user is not found
             await prefsData.nuke();
-            print(userResponse['statusMessage']);
+            appLog(userResponse['statusMessage']);
             throw userResponse['statusMessage'] ??
                 "Something went wrong please try again or contact our support team!";
           }

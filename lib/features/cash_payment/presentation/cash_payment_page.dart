@@ -16,6 +16,7 @@ import 'package:country_picker/country_picker.dart';
 
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/input_decorations.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class CashPaymentPage extends StatefulWidget {
   static const routeName = "/cash_payment";
@@ -55,9 +56,9 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
 
     final Map args = ModalRoute.of(context)?.settings.arguments as Map;
     _cashType = args['cash_type'];
-    print(_cashType);
+    appLog(_cashType);
     _cashTypeName = args['cash_type_name'];
-    print(_cashTypeName);
+    appLog(_cashTypeName);
     if (args['payment_instruction'] != null) {
       _instructions =
           (args['payment_instruction'] as String).convertStringToList('data');
@@ -74,18 +75,18 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
   }
 
   void instr(List<String> trr) async {
-    // print("funcallled");
+    // appLog("funcallled");
     for (var e in trr) {
       addAddHint =
           await Translations.translatedText(e, GlobalStrings.getGlobalString());
-      // print("funtranslated");
+      // appLog("funtranslated");
       aHint = await addAddHint;
-      // print(aHint);
+      // appLog(aHint);
       setState(() {
         _paymentInstructionsT.add(addAddHint);
       });
     }
-    // print(_paymentInstructionsT);
+    // appLog(_paymentInstructionsT);
     // _paymentInstructionsT.add(aHint);
   }
 
@@ -111,7 +112,7 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
     bHint = await enterHint;
     dHint = await validateHint;
 
-    // print(pHint);
+    // appLog(pHint);
 
     setState(() {
       loading = false;
@@ -462,7 +463,7 @@ class _CashPaymentPageState extends State<CashPaymentPage> {
                           onClick: () {
                             if (_formKey.currentState?.validate() == true) {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              // print(_cashType);
+                              // appLog(_cashType);
                               ctx
                                   .read<CashPaymentCubit>()
                                   .submitCashPayment(_phoneNumber!, _cashType!);

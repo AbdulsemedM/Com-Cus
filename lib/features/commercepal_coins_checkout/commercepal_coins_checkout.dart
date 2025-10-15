@@ -9,6 +9,7 @@ import 'package:commercepal/features/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class CommercepalCoinsCheckout extends StatefulWidget {
   const CommercepalCoinsCheckout({super.key});
@@ -122,7 +123,7 @@ class _CommercepalCoinsCheckoutState extends State<CommercepalCoinsCheckout> {
       setState(() {
         loading = true;
       });
-      print(e.toString());
+      appLog(e.toString());
 
       // Handle other exceptions
     }
@@ -147,7 +148,7 @@ class _CommercepalCoinsCheckoutState extends State<CommercepalCoinsCheckout> {
           "OrderRef": orderRef,
           "Currency": "ETB"
         };
-        // print(payload);
+        // appLog(payload);
 
         final response = await http.post(
           Uri.https(
@@ -159,7 +160,7 @@ class _CommercepalCoinsCheckoutState extends State<CommercepalCoinsCheckout> {
         );
 
         var data = jsonDecode(response.body);
-        // print(data);
+        // appLog(data);
 
         if (data['statusCode'] == '000') {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -190,7 +191,7 @@ class _CommercepalCoinsCheckoutState extends State<CommercepalCoinsCheckout> {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

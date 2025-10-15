@@ -1,3 +1,4 @@
+import 'package:commercepal/app/utils/logger.dart';
 class ProviderConfigModel {
   final String id;
   final List<String> vid;
@@ -20,21 +21,21 @@ class ProviderConfigModel {
   // Factory constructor to create an instance from JSON
   factory ProviderConfigModel.fromJson(
       Map<String, dynamic> json, String country, String countryCode) {
-    // print(countryCode);
-    // print(json['Price']['prices'].firstWhere((p) => p['countryCode'] == countryCode));
+    // appLog(countryCode);
+    // appLog(json['Price']['prices'].firstWhere((p) => p['countryCode'] == countryCode));
     final pricesList = (json['Price']['prices'])
         .firstWhere((p) => p['countryCode'] == countryCode);
-    // print(pricesList);
+    // appLog(pricesList);
 
     // Determine the selected price based on country
     final selectedPrice = pricesList['prices'].firstWhere(
       (price) => price['currencyCode'] == country,
       orElse: () => {'price': json['Price']['OriginalPrice']},
     );
-    print("the first price");
-    print(selectedPrice['price']);
-    // print("selectedPrice");
-    // print(selectedPrice['baseMarkup']);
+    appLog("the first price");
+    appLog(selectedPrice['price']);
+    // appLog("selectedPrice");
+    // appLog(selectedPrice['baseMarkup']);
     // Extract all 'Vid' values from the 'Configurators' array
     final configurators = json['Configurators'] as List<dynamic>;
     final vidList =
@@ -43,8 +44,8 @@ class ProviderConfigModel {
     final tieredPrices = selectedPrice["priceConfig"]["tieredPrices"] as List;
     final additionalItemPrice =
         selectedPrice["priceConfig"]["additionalItemPrice"];
-    print("here is the string");
-    print(tieredPrices);
+    appLog("here is the string");
+    appLog(tieredPrices);
     // var c = tieredPrices.toString();
 
     // List<double> parseTieredPrices(String priceString) {
@@ -59,11 +60,11 @@ class ProviderConfigModel {
 
     // // Use the function
     // List<double> prices = parseTieredPrices(c);
-    // print("Parsed prices:");
+    // appLog("Parsed prices:");
     // for (var price in prices) {
-    //   print(price);
+    //   appLog(price);
     // }
-    print(additionalItemPrice);
+    appLog(additionalItemPrice);
 
     return ProviderConfigModel(
         id: json['Id'] as String,

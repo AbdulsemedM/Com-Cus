@@ -4,6 +4,7 @@ import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/utils/app_colors.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class AppButtonWidget extends StatefulWidget {
   final Function onClick;
@@ -37,8 +38,8 @@ class _AppButtonWidgetState extends State<AppButtonWidget> {
 
     // Use await to get the actual string value from the futures
     cHint = await subcityHint;
-    print("herrerererere");
-    print(cHint);
+    appLog("herrerererere");
+    appLog(cHint);
 
     setState(() {
       loading = false;

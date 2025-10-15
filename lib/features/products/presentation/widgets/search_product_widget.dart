@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../app/utils/app_colors.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class SearchProductWidget extends StatefulWidget {
   final ValueChanged<String>? onChanged;
@@ -159,7 +160,7 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
 
   Future<void> _onSearchPressed() async {
     if (searchController.text.isNotEmpty) {
-      print("Search complete for: ${searchController.text}");
+      appLog("Search complete for: ${searchController.text}");
       Navigator.pop(context); // Close the modal first
       // Wait for the ProductCubit search method to complete
       context.read<ProductCubit>().searchByImage(searchController.text);
@@ -179,7 +180,7 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
         _image = selectedImage;
       });
       // You can access the path of the selected image with _image.path
-      print("Selected image path: ${_image!.path}");
+      appLog("Selected image path: ${_image!.path}");
       Navigator.pop(context);
       context.read<ProductCubit>().searchByImage(_image!.path);
     }
@@ -187,10 +188,10 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
 
   Future<void> _takeImage() async {
     if (await Permission.camera.request().isGranted) {
-      print("permission granted");
+      appLog("permission granted");
       // Process selectedImage here
     } else {
-      print("permission not granted");
+      appLog("permission not granted");
     }
     final XFile? selectedImage = await _picker.pickImage(
       source:
@@ -204,7 +205,7 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
         _image = selectedImage;
       });
       // You can access the path of the selected image with _image.path
-      print("Selected image path: ${_image!.path}");
+      appLog("Selected image path: ${_image!.path}");
       Navigator.pop(context);
       context.read<ProductCubit>().searchByImage(_image!.path);
     }

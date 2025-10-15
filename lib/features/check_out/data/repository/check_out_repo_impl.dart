@@ -15,6 +15,7 @@ import '../../../../core/data/prefs_data.dart';
 import '../../../../core/data/prefs_data_impl.dart';
 import '../../../../core/session/domain/session_repo.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 @Injectable(as: CheckOutRepo)
 class CheckOutRepoImpl implements CheckOutRepo {
@@ -68,7 +69,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
       final addressesResponse = jsonDecode(response);
       if (addressesResponse['statusCode'] == '000') {
         final aObject = AddressesDto.fromJson(addressesResponse);
-        print("addressesResponse");
+        appLog("addressesResponse");
         if (aObject.data?.isEmpty == true) {
           throw "No addresses found. Click 'Add address' to add one";
         }
@@ -87,8 +88,8 @@ class CheckOutRepoImpl implements CheckOutRepo {
         throw addressesResponse['statusDescription'];
       }
     } catch (e) {
-      print("error in fetchAddresses");
-      print(e.toString());
+      appLog("error in fetchAddresses");
+      appLog(e.toString());
       rethrow;
     }
   }
@@ -113,9 +114,9 @@ class CheckOutRepoImpl implements CheckOutRepo {
     String? value;
     try {
       value = prefs.getString('promocode') ?? 'none';
-      // print('Value from SharedPreferences: $value');
+      // appLog('Value from SharedPreferences: $value');
     } catch (e) {
-      print('Error accessing SharedPreferences: $e');
+      appLog('Error accessing SharedPreferences: $e');
     }
     try {
       final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
@@ -141,19 +142,19 @@ class CheckOutRepoImpl implements CheckOutRepo {
                 })
             .toList()
       };
-      // print("hererequest");
-      // print(request);
+      // appLog("hererequest");
+      // appLog(request);
       // <<<<<<< New-Providers
       // final response = await apiProvider.post(
       //     request,
       //     isUserBusiness
       //         ? EndPoints.businessCheckOut.url
       //         : EndPoints.checkOut.url);
-      // print(request);
+      // appLog(request);
       final prefsData = getIt<PrefsData>();
       // final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print("request");
-      print(request);
+      appLog("request");
+      appLog(request);
       final token = await prefsData.readData(PrefsKeys.userToken.name);
       final checkout = await http.post(
           Uri.https(
@@ -169,12 +170,12 @@ class CheckOutRepoImpl implements CheckOutRepo {
       //           isUserBusiness
       //               ? EndPoints.businessCheckOut.url
       //               : EndPoints.checkOut.url);
-      print("orderrefhere");
-      print(response);
-      // print(response['orderRef']);
+      appLog("orderrefhere");
+      appLog(response);
+      // appLog(response['orderRef']);
       // final cResponse = jsonDecode(response);
-      // print("decoded");
-      // print(cResponse);
+      // appLog("decoded");
+      // appLog(cResponse);
       if (response['statusCode'] == '000') {
         final orderRef = response['orderRef'];
         // save it
@@ -183,19 +184,19 @@ class CheckOutRepoImpl implements CheckOutRepo {
             response['priceSummary']['deliveryFee'].toString());
         return orderRef;
       } else {
-        // print("here is the error");
+        // appLog("here is the error");
         throw response['statusDescription'];
       }
     } catch (e) {
-      print("error in generateOrderRef");
-      // print(e.toString());
+      appLog("error in generateOrderRef");
+      // appLog(e.toString());
       rethrow;
     }
   }
 
   @override
   Future<num> getDeliveryFee(String orderRef, int? addressId) async {
-    // print("getDeliveryFee");
+    // appLog("getDeliveryFee");
     try {
       final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
       final payLoad = switch (isUserBusiness) {
@@ -206,8 +207,8 @@ class CheckOutRepoImpl implements CheckOutRepo {
           },
         true => {"orderRef": orderRef}
       };
-      // print("payLoad");
-      // print(payLoad);
+      // appLog("payLoad");
+      // appLog(payLoad);
       final prefsData = getIt<PrefsData>();
       // final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       final token = await prefsData.readData(PrefsKeys.userToken.name);
@@ -219,8 +220,8 @@ class CheckOutRepoImpl implements CheckOutRepo {
             "Authorization": "Bearer $token",
             "Content-type": "application/json; charset=utf-8"
           });
-      print("assign");
-      print(assign.body);
+      appLog("assign");
+      appLog(assign.body);
       var response = jsonDecode(assign.body);
       // final response = await apiProvider.post(
       //     payLoad,
@@ -228,23 +229,23 @@ class CheckOutRepoImpl implements CheckOutRepo {
       //         ? EndPoints.businessDeliveryFee.url
       //         : EndPoints.deliveryFee.url);
 // <<<<<<< New-Providers
-      // print(response['totalDeliveryFee']);
-      // print("The total delivery fee is here");
+      // appLog(response['totalDeliveryFee']);
+      // appLog("The total delivery fee is here");
       // // final dResponse = jsonDecode(response);
-      // print("The changed total delivery fee is here");
-      print(response);
+      // appLog("The changed total delivery fee is here");
+      appLog(response);
       if (response['statusCode'] == '000') {
         if (response['totalDeliveryFee'] == null) {
 // =======
 //       final dResponse = (response);
-//       // print("here comes the fee");
-//       // print(dResponse);
+//       // appLog("here comes the fee");
+//       // appLog(dResponse);
 //       if (dResponse['statusCode'] == '000') {
 //         if (dResponse['totalDeliveryFee'] == null) {
 // >>>>>>> main
           throw 'Unable to calculate delivery fee. Try again later';
         }
-        // print(resp['statusCode']);
+        // appLog(resp['statusCode']);
         // save delivery fee
         await pData.writeData(PrefsKeys.deliveryFee.name,
             response['totalDeliveryFee'].toString());
@@ -255,7 +256,7 @@ class CheckOutRepoImpl implements CheckOutRepo {
         // throw response['statusDescription'];
       }
     } catch (e) {
-      print("error in getDeliveryFee");
+      appLog("error in getDeliveryFee");
       rethrow;
     }
   }

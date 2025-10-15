@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 
 import '../../data/dto/selected_product_dto.dart';
 import '../../domain/selected_product_repository.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @injectable
 class SelectedProductCubit extends Cubit<SelectedProductState> {
@@ -23,7 +24,7 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
     try {
       emit(const SelectedProductState.loading());
       final response = await selectedProductRepo.getProductDetails(productId);
-      print("here is the error");
+      appLog("here is the error");
 
       _selectedProductDetails = response;
 
@@ -43,7 +44,7 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
               : _selectedProductDetails?.mobileImage;
       _selectedProductDetails?.priceBasedOnSubProducts =
           _selectedProductDetails?.subProducts?.first.offerPrice;
-      print(_selectedProductDetails?.productId);
+      appLog(_selectedProductDetails?.productId);
       _selectedProductDetails?.selectedSubProductId =
           _selectedProductDetails?.subProducts?.isNotEmpty == true
               ? _selectedProductDetails?.subProducts![0].subProductId.toString()
@@ -57,8 +58,8 @@ class SelectedProductCubit extends Cubit<SelectedProductState> {
 
       emit(SelectedProductState.product(_selectedProductDetails!));
     } catch (e) {
-      // print("here is the error");
-      print(e.toString());
+      // appLog("here is the error");
+      appLog(e.toString());
       emit(SelectedProductState.error(e.toString()));
     }
   }

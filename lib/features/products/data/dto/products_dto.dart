@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:commercepal/app/utils/country_manager/country_manager.dart';
 import 'package:commercepal/features/products/domain/product.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 ProductsDto productsDtoFromJson(String str) =>
     ProductsDto.fromJson(json.decode(str), null, null);
@@ -51,34 +52,34 @@ class ProductsDto {
     }
     {
       // Case 4: No products found
-      // print("No products found in the response.");
+      // appLog("No products found in the response.");
     }
 
     // Print details for debugging
-    // print("Parsed products count: ${_details?.length}");
+    // appLog("Parsed products count: ${_details?.length}");
   }
 
   ProductsDto.fromJson(dynamic json, String? currency, String? country) {
     _statusDescription = json['statusDescription'];
 
-    // print("counting");
+    // appLog("counting");
     try {
       parseProducts(json, currency, country);
     } catch (e) {
-      print("Error parsing products: $e");
+      appLog("Error parsing products: $e");
     }
-    // print(json['responseData']['products'] != null);
+    // appLog(json['responseData']['products'] != null);
     // if (json['responseData']['products'] != null) {
     //   _details = [];
     //   json['responseData']['products'].forEach((v) {
     //     _details?.add(ProductDetails.fromJson(v));
-    //     // print("counting");
-    //     // print(details!.length);
+    //     // appLog("counting");
+    //     // appLog(details!.length);
     //   });
     // } else if (json['details'] != null) {
     //   json['details'].forEach((v) {
     //     _details?.add(ProductDetails.fromJson(v));
-    //     print(details!.length);
+    //     appLog(details!.length);
     //   });
     // }
     _statusMessage = json['statusMessage'];
@@ -224,10 +225,10 @@ class ProductDetails {
 
   ProductDetails.fromJson(dynamic json, String? currency, String? country) {
     // countryManager.loadCountryFromPreferences();
-    print("the new country based search is here");
-    print(json['Provider']);
-    print(currency);
-    print(country);
+    appLog("the new country based search is here");
+    appLog(json['Provider']);
+    appLog(currency);
+    appLog(country);
     String pid = json['productId'].toString();
     try {
       if (json['prices'] != null && json['prices'] is List) {
@@ -341,7 +342,7 @@ class ProductDetails {
             _currency = fin['currencyCode'];
           }
         } else if (country == "SO") {
-          print("did we got here");
+          appLog("did we got here");
           // For Somalia, find price with isMainCurrency = true
           var mainPrice = prices.firstWhere(
             (price) => price['countryCode'] == "SO",
@@ -524,7 +525,7 @@ class ProductDetails {
       _merchantId = json['merchantId'] ?? "";
       _productId = pid;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
     }
   }
 

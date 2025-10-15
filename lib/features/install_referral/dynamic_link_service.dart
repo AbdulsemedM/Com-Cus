@@ -1,6 +1,7 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class DynamicLinkService {
   static Future<String> createDynamicLink(String productId) async {
@@ -43,7 +44,7 @@ class DynamicLinkService {
         _handleLink(dynamicLinkData, context);
       },
       onError: (error) {
-        print('Dynamic Link Failed: \${error.message}');
+        appLog('Dynamic Link Failed: \${error.message}');
       },
     );
   }
@@ -70,7 +71,7 @@ class DynamicLinkService {
         subject: 'CommercePal Product Share',
       );
     } catch (e) {
-      print('Error sharing product: $e');
+      appLog('Error sharing product: $e');
     }
   }
 }

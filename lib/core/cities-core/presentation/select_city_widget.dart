@@ -9,6 +9,7 @@ import '../../../app/utils/app_colors.dart';
 import '../../../app/utils/dialog_utils.dart';
 import 'bloc/city_core_cubit.dart';
 import 'bloc/city_core_state.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class SelectCityWidget extends StatefulWidget {
   final Function selectedCity;
@@ -38,8 +39,8 @@ class _SelectCityWidgetState extends State<SelectCityWidget> {
 
     // Use await to get the actual string value from the futures
     cHint = await subcityHint;
-    print("herrerererere");
-    print(cHint);
+    appLog("herrerererere");
+    appLog(cHint);
 
     setState(() {
       loading = false;

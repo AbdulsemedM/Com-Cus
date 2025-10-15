@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:commercepal/app/utils/logger.dart';
 
 enum PaymentMode { cash, loan, mobileMoney }
 
@@ -203,11 +204,11 @@ class PaymentMethodItem {
   }
 
   PaymentMethodItem.fromJson(dynamic json) {
-    print('hasVariant');
-    print(json['name']);
-    print(json['itemVariants']);
+    appLog('hasVariant');
+    appLog(json['name']);
+    appLog(json['itemVariants']);
     _hasVariant = json['hasVariant'];
-    if(json['itemVariants']!=null){
+    if (json['itemVariants'] != null) {
       _itemVariants = [];
       json['itemVariants'].forEach((v) {
         _itemVariants?.add(ItemVariant.fromJson(v));

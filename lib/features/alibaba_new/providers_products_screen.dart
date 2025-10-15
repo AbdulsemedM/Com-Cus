@@ -21,6 +21,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 // class Prices {
 //   final String price;
@@ -44,7 +45,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.productId);
+    appLog(widget.productId);
     fetchProductItem();
     // Initialize deep link handling
     DeepLinkService.initUniLinks(context);
@@ -262,9 +263,9 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       //                         if (value == true) {
       //                           setState(() {
       //                             addedToCart = true;
-      //                             print("added to cart");
-      //                             print("loading");
-      //                             print(loading);
+      //                             appLog("added to cart");
+      //                             appLog("loading");
+      //                             appLog(loading);
       //                           });
       //                         }
       //                       });
@@ -289,13 +290,13 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       setState(() {
         loading = true;
       });
-      // print(widget.productId);
+      // appLog(widget.productId);
       // final prefsData = getIt<PrefsData>();
       // final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       // if (isUserLoggedIn) {
       //   final token = await prefsData.readData(PrefsKeys.userToken.name);
       // final httpClient = await createInsecureHttpClient();
-      print("here we go");
+      appLog("here we go");
       final response = await http.get(
         Uri.https(
           "api.commercepal.com",
@@ -305,7 +306,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       );
       var data = jsonDecode(response.body);
       data = data['responseData']['content'];
-      print(response.request);
+      appLog(response.request);
 
       if (data['statusCode'] == '000') {
         setState(() async {
@@ -315,11 +316,11 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           final String currentCountry = prefs.getString("currency") ?? "ETB";
           final String currentCountryCode = prefs.getString("country") ?? "ET";
-          print(currentCountryCode);
-          print(currentCountry);
+          appLog(currentCountryCode);
+          appLog(currentCountry);
           currentCountryForm = currentCountry;
           prodName = data['OriginalTitle'];
-          print("the price range is here");
+          appLog("the price range is here");
           myPriceRange = data["QuantityRanges"] != null
               ? parseQuantityRanges(
                   List<Map<String, dynamic>>.from(data["QuantityRanges"]),
@@ -338,11 +339,11 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                     minOr: "1",
                   )
                 ];
-          print("my price range");
-          print(myPriceRange[0].originalPrice);
+          appLog("my price range");
+          appLog(myPriceRange[0].originalPrice);
           for (var attr in data['Attributes']) {
             if (attr['IsConfigurator'] == true) {
-              // print(attr['OriginalPropertyName']);
+              // appLog(attr['OriginalPropertyName']);
               myProdAttr.add(ProductAttributes(
                   Vid: attr['Vid'],
                   PropertyName: attr['PropertyName'],
@@ -355,8 +356,8 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
                   OriginalPropertyName: attr['OriginalPropertyName']));
             }
           }
-          print("here are the atributes");
-          print(myProdAttr);
+          appLog("here are the atributes");
+          appLog(myProdAttr);
 
           for (var attr in myProdAttr) {
             uniquePropertyNames.add(attr.PropertyName);
@@ -365,10 +366,10 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
           uniquePropertyNamesList = uniquePropertyNames.toList();
           final productInfoList = parseProviderConfigModelList(
               data['ConfiguredItems'], currentCountry, currentCountryCode);
-          print(productInfoList.length);
+          appLog(productInfoList.length);
           for (var item in productInfoList) {
-            print(item.vid);
-            print(item.originalPrice);
+            appLog(item.vid);
+            appLog(item.originalPrice);
           }
           for (var config in productInfoList) {
             myConfigs.add(ProviderConfigModel(
@@ -384,7 +385,7 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
             final prodObjs =
                 ProductsDto.fromJson(prod, currentCountry, currentCountryCode);
             if (prodObjs.details?.isEmpty == true) {}
-            print("hrreeerr");
+            appLog("hrreeerr");
             recommendedProd = prodObjs.details!
                 .where((element) => element.productId != null)
                 .map((e) => e.toProduct())
@@ -394,14 +395,14 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
         });
         // Handle the case when statusCode is '000'
       } else {
-        print(response.body);
+        appLog(response.body);
         setState(() {
           loading = true;
         });
         // Retry limit reached, handle accordingly
       }
     } catch (e) {
-      print("Error: ${e.toString()}");
+      appLog("Error: ${e.toString()}");
       setState(() {
         loading = true;
       });
@@ -420,8 +421,8 @@ class _ProvidersProductsScreenState extends State<ProvidersProductsScreen> {
       // Get the prices array
       var prices = quantityRanges[i]['Price']['prices'] as List;
       // Select price based on country
-      print("parsing the quantity");
-      print(prices);
+      appLog("parsing the quantity");
+      appLog(prices);
       var priceData1 = prices.firstWhere((p) => p['countryCode'] == (country))
           as Map<dynamic, dynamic>;
       var priceData2 = priceData1["prices"] as List<dynamic>;

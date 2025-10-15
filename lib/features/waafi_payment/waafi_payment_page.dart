@@ -14,6 +14,7 @@ import 'package:commercepal/features/translation/translations.dart';
 // import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 // import 'package:phone_number/phone_number.dart';
 
 class WaafiPaymentPage extends StatefulWidget {
@@ -274,8 +275,9 @@ class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
                                       //     return;
                                       //   }
                                       // }
-                                      print(_prefixNumber!.replaceAll('+', '') +
-                                          pNumber!);
+                                      appLog(
+                                          _prefixNumber!.replaceAll('+', '') +
+                                              pNumber!);
                                       bool done = await sendData(
                                           phoneNumber: _prefixNumber!
                                                   .replaceAll('+', '') +
@@ -301,7 +303,7 @@ class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
                                             context, "Something went wrong");
                                       }
                                     } catch (e) {
-                                      print(e.toString());
+                                      appLog(e.toString());
                                       displaySnack(context,
                                           'Error validating phone number');
                                       setState(() {
@@ -351,15 +353,15 @@ class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
       setState(() {
         loading = true;
       });
-      // print("phone number is $phoneNumber");
+      // appLog("phone number is $phoneNumber");
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      // print(isUserLoggedIn);
+      // appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         // bool isit = await hasUserSwitchedToBusiness();
         final orderRef = await prefsData.readData("order_ref");
-        // print(orderRef);
+        // appLog(orderRef);
         Map<String, dynamic> payload = {
           "ServiceCode": "CHECKOUT",
           "PaymentType": "WAAFIPAY",
@@ -370,7 +372,7 @@ class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
           "Currency": "USD",
           "PhoneNumber": phoneNumber
         };
-        print(payload);
+        appLog(payload);
 
         final response = await http.post(
           Uri.https(
@@ -382,12 +384,12 @@ class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
         );
 
         var data = jsonDecode(response.body);
-        print(data);
+        appLog(data);
 
         if (data['statusCode'] == '000') {
           final cartDao = getIt<CartDao>();
           await cartDao.nuke();
-          print(data['PaymentUrl']);
+          appLog(data['PaymentUrl']);
           setState(() {
             loading = false;
           });
@@ -415,7 +417,7 @@ class _WaafiPaymentPageState extends State<WaafiPaymentPage> {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

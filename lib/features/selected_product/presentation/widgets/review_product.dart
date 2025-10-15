@@ -6,6 +6,7 @@ import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/selected_product/presentation/widgets/product_review_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class ReviewProduct extends StatefulWidget {
   final String pId;
@@ -64,7 +65,7 @@ class _ReviewProductState extends State<ReviewProduct> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
@@ -77,9 +78,9 @@ class _ReviewProductState extends State<ReviewProduct> {
             'Content-Type': 'application/json; charset=UTF-8',
           },
         );
-        print('hererererer');
+        appLog('hererererer');
         var datas = jsonDecode(response.body);
-        print(datas);
+        appLog(datas);
         if (datas['statusCode'] == "000") {
           for (var i in datas['data']) {
             myReviews.add(ProductReview(
@@ -94,8 +95,8 @@ class _ReviewProductState extends State<ReviewProduct> {
           // if (myOrders.isEmpty) {
           //   throw 'No special orders found';
           // }
-          print("Here we go");
-          print(myReviews.length);
+          appLog("Here we go");
+          appLog(myReviews.length);
         } else {
           throw datas['statusDescription'] ?? 'Error fetching special orders';
         }
@@ -105,7 +106,7 @@ class _ReviewProductState extends State<ReviewProduct> {
         loading = false;
       });
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       rethrow;
     }
   }

@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../domain/products_repository.dart';
 import '../../utils/debouncer.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @injectable
 class ProductCubit extends Cubit<ProductState> {
@@ -19,8 +20,8 @@ class ProductCubit extends Cubit<ProductState> {
       emit(const ProductState.loading());
       final products =
           await productRepository.getProducts(subCatId, queryParam, filter);
-      print("herearequery");
-      print(products);
+      appLog("herearequery");
+      appLog(products);
       emit(ProductState.products(products));
     } catch (e) {
       emit(ProductState.error(e.toString()));

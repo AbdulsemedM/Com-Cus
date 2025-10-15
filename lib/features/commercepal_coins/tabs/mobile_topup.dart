@@ -8,6 +8,7 @@ import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/core/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class MobileTopup extends StatefulWidget {
   const MobileTopup({super.key});
@@ -124,11 +125,11 @@ class _MobileTopupState extends State<MobileTopup> {
                           if (regExp1.hasMatch(pNumberController.text)) {
                             pNumber = pNumberController.text
                                 .replaceFirst(RegExp('^0'), '251');
-                            // print(pNumber);
+                            // appLog(pNumber);
                           } else if (regExp2.hasMatch(pNumberController.text)) {
                             pNumber = pNumberController.text
                                 .replaceFirst(RegExp(r'^\+'), '');
-                            // print(pNumber);
+                            // appLog(pNumber);
                           }
                           var done = await submitForm(pNumber);
                           if (done) {
@@ -166,7 +167,7 @@ class _MobileTopupState extends State<MobileTopup> {
           "amount": amountController.text,
           "phoneNumber": pNumber
         };
-        // print(payload);
+        // appLog(payload);
 
         final response = await http.post(
           Uri.https(
@@ -181,7 +182,7 @@ class _MobileTopupState extends State<MobileTopup> {
         );
 
         var data = jsonDecode(response.body);
-        // print(data);
+        // appLog(data);
 
         if (data['statusCode'] == '000') {
           setState(() {
@@ -199,7 +200,7 @@ class _MobileTopupState extends State<MobileTopup> {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

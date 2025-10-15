@@ -16,6 +16,7 @@ import '../dashboard/widgets/home_loading_widget.dart';
 import 'presentation/cubit/home_state.dart';
 import 'presentation/widgets/home_data_widget.dart';
 // import 'package:install_referrer/install_referrer.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class DashboardHomePage extends StatefulWidget {
   const DashboardHomePage({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
   @override
   void initState() {
     super.initState();
-    // print("Start");
+    // appLog("Start");
     initDeepLinks();
   }
 
@@ -43,17 +44,17 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
   // }
   // Future<void> _getReferrer() async {
   //   try {
-  //     print("comeonplease");
+  //     appLog("comeonplease");
   //     final referrerDetails = await AndroidPlayInstallReferrer.installReferrer;
 
   //     String? referrer = referrerDetails.installReferrer;
   //     String? userId = _extractUserId(referrer);
-  //     print("hereitis $userId");
+  //     appLog("hereitis $userId");
   //     // if (userId != null) {
   //     //   _sendUserIdToApi(userId!);
   //     // }
   //   } catch (e) {
-  //     print('Failed to get referrer: $e');
+  //     appLog('Failed to get referrer: $e');
   //   }
   // }
 
@@ -66,16 +67,16 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
   // }
 
   Future<void> initDeepLinks() async {
-    print("here we go now\$newOne");
+    appLog("here we go now\$newOne");
     if (Platform.isAndroid) {
       try {
         ReferrerDetails referrerDetails =
             await AndroidPlayInstallReferrer.installReferrer;
-        print("referrerDetails: ${referrerDetails.toString()}");
+        appLog("referrerDetails: ${referrerDetails.toString()}");
         final referrer = await AndroidPlayInstallReferrer.installReferrer;
         if (referrer != null) {
           final utmParams = referrer.installReferrer;
-          print("Install Referrer: $utmParams");
+          appLog("Install Referrer: $utmParams");
           if (utmParams != null) {
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
@@ -84,25 +85,25 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
 
           // final playStoreLink =
           //     'https://play.google.com/store/apps/details?id=com.commercepal.commercepal&$utmParams';
-          // print("Play Store Link: $playStoreLink");
+          // appLog("Play Store Link: $playStoreLink");
 
           // // Append the utmParams to your Play Store link
           // final referralLink = '$playStoreLink&$utmParams';
-          // print("Referral Link: $referralLink");
+          // appLog("Referral Link: $referralLink");
 
           // Map<String, String> queryParams =
           //     Uri.parse(playStoreLink).queryParameters;
-          // print("queryParams: $queryParams");
+          // appLog("queryParams: $queryParams");
 
           // // Get the `utm_content` parameter.
           // String? utmContent = queryParams["utm_content"];
-          // print("hereee");
-          // print(utmContent);
+          // appLog("hereee");
+          // appLog(utmContent);
         } else {
-          print("Referrer is null");
+          appLog("Referrer is null");
         }
       } catch (e) {
-        print("Error retrieving install referrer: $e");
+        appLog("Error retrieving install referrer: $e");
       }
     } else if (Platform.isIOS) {
       _sub = uriLinkStream.listen((Uri? uri) async {
@@ -123,7 +124,7 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
     // final uri = Uri.parse('https://dummy.url/?$installReferrer');
     // final queryParams = uri.queryParameters;
     // userId = queryParams['userId'];
-    // print('User ID: $userId');
+    // appLog('User ID: $userId');
 
     // Use the retrieved user ID as needed
     // setState(() {
@@ -132,8 +133,8 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
   }
 
   // void openAppLink(Uri uri) {
-  //   print("end");
-  //   print(uri);
+  //   appLog("end");
+  //   appLog(uri);
   // }
 
   @override

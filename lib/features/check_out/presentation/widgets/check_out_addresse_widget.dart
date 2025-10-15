@@ -26,6 +26,7 @@ import '../../../dashboard/widgets/home_loading_widget.dart';
 import '../bloc/check_out_cubit.dart';
 import '../bloc/check_out_state.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 enum AddressSelectedChoices { selected, notSelcted }
 
@@ -84,8 +85,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
     Aut = await Automatic;
     Man = await Manual;
     Can = await Cancel;
-    // print("herrerererere");
-    // print(AAdd);
+    // appLog("herrerererere");
+    // appLog(AAdd);
 
     setState(() {
       loading = false;
@@ -445,21 +446,21 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
         setState(() {
           loading = true;
         });
-        // print("here we go");
+        // appLog("here we go");
         var status = await Permission.location.request();
-        print(status.isPermanentlyDenied);
+        appLog(status.isPermanentlyDenied);
         if (status.isGranted) {
           Position position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high,
           );
-          print("position");
-          print(position);
+          appLog("position");
+          appLog(position);
           setState(() {
             done1 = true;
             latitude = position.latitude;
             longitude = position.longitude;
-            // print(latitude);
-            // print(longitude);
+            // appLog(latitude);
+            // appLog(longitude);
             if (latitude != null && longitude != null) {
               getAddressFromLatLng(latitude.toString(), longitude.toString());
             } else {
@@ -468,8 +469,8 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             }
             loading = false;
           });
-          // print(latitude);
-          // print(longitude);
+          // appLog(latitude);
+          // appLog(longitude);
         } else {
           displaySnack(
               context, "Please add your address by pressing \"Add Address\"");
@@ -483,7 +484,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
         setState(() {
           loading = false;
         });
-        print('Error getting location: $e');
+        appLog('Error getting location: $e');
       }
     }
   }
@@ -494,12 +495,12 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
 
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
-      // print(placemarks);
-      // print("object");
+      // appLog(placemarks);
+      // appLog("object");
       for (Placemark placemark in placemarks) {
         String street = placemark.street ??
             ""; // Access the "Street" property and handle null values
-        print("Street: $street");
+        appLog("Street: $street");
       }
 
       if (placemarks.isNotEmpty) {
@@ -513,7 +514,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
         String locality = place.locality ?? '';
         String subLocal = place.subLocality ?? '';
         String country = place.country ?? '';
-        // print(
+        // appLog(
         //     "Street: $street, SubLocality: $subLocality, Locality: $locality, SubLocal: $subLocal, Country: $country");
         try {
           setState(() {
@@ -539,7 +540,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             "latitude": latitude,
             "longitude": longitude
           };
-          // print(payload);
+          // appLog(payload);
           final prefsData = getIt<PrefsData>();
           final isUserLoggedIn =
               await prefsData.contains(PrefsKeys.userToken.name);
@@ -555,7 +556,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             );
 
             var data = jsonDecode(response.body);
-            // print(data);
+            // appLog(data);
 
             if (data['statusCode'] == '000') {
               setState(() {
@@ -570,7 +571,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             }
           }
         } catch (e) {
-          print(e.toString());
+          appLog(e.toString());
           setState(() {
             loading = false;
           });
@@ -588,7 +589,7 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
         return "No street address found";
       }
     } catch (e) {
-      print("Error getting address: $e");
+      appLog("Error getting address: $e");
       return "No street address found";
     }
   }
@@ -598,11 +599,11 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
       setState(() {
         loading = true;
       });
-      // print("hereeee");
+      // appLog("hereeee");
 
       final response = await http.get(Uri.https(
           "api.commercepal.com:2096", "/prime/api/v1/service/cities"));
-      // print(response.body);
+      // appLog(response.body);
       var data = jsonDecode(response.body);
       cities.clear();
       for (var b in data['data']) {
@@ -611,13 +612,13 @@ class _CheckOutAddressesWidgetState extends State<CheckOutAddressesWidget> {
             cityName: b['cityName'],
             countryId: b['countryId']));
       }
-      // print(cities.length);
+      // appLog(cities.length);
       setState(() {
         loading = false;
       });
       // }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

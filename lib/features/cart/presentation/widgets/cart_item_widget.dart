@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../app/utils/app_colors.dart';
 import '../../../../core/cart-core/bloc/cart_core_cubit.dart';
 import '../../../../core/cart-core/domain/cart_item.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class CartItemWidget extends StatefulWidget {
   final CartItem cartItem;
@@ -32,8 +33,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
   @override
   void initState() {
     super.initState();
-    print("widget.cartItem.baseMarkup");
-    print(widget.cartItem.baseMarkup);
+    appLog("widget.cartItem.baseMarkup");
+    appLog(widget.cartItem.baseMarkup);
     _deleteCartItem();
     setState(() {
       _quantity = widget.cartItem.quantity ?? 1;
@@ -69,13 +70,13 @@ class _CartItemWidgetState extends State<CartItemWidget> {
     double totalPrice = 0; // Initialize total price to 0
     List<dynamic> tieredPrices = parseTieredPrices(baseMarkup);
     // for (var price in tieredPrices) {
-    //   print("the prices");
-    //   print(price);
+    //   appLog("the prices");
+    //   appLog(price);
     // }
-    print("this are the required items");
-    print(itemPrice);
-    print(baseMarkup);
-    print(quantity);
+    appLog("this are the required items");
+    appLog(itemPrice);
+    appLog(baseMarkup);
+    appLog(quantity);
 
     for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
       if (itemIndex == 1) {
@@ -94,7 +95,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
         totalPrice += tieredPrices[5];
       }
     }
-    print("totalPrice: $totalPrice");
+    appLog("totalPrice: $totalPrice");
     // Round to 2 decimal places
     return double.parse((totalPrice).toStringAsFixed(2));
   }
@@ -405,7 +406,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
   void _deleteCartItem() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? isdone = prefs.getString("epg_done");
-    print(isdone);
+    appLog(isdone);
     if (isdone == 'yes') {
       context.read<CartCoreCubit>().deleteItem(widget.cartItem);
       prefs.setString("epg_done", "no");
@@ -413,8 +414,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
   }
 
   void prints(CartItem myc) {
-    print("herererer");
-    print(myc.currency);
+    appLog("herererer");
+    appLog(myc.currency);
   }
 
   int? parsePositiveInteger(String value) {

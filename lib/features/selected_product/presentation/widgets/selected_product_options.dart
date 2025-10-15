@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../app/utils/app_colors.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class SelectedProductOptions extends StatefulWidget {
   final String title;
@@ -32,7 +33,7 @@ class _SelectedProductOptionsState extends State<SelectedProductOptions> {
   void initState() {
     super.initState();
     if (widget.title == 'Specifications') {
-      print(_open);
+      appLog(_open);
       _open = true;
     }
     tTitle = TranslationService.translate(widget.title);

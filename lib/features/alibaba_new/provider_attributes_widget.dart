@@ -12,6 +12,7 @@ import 'package:commercepal/features/translation/translation_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class AttributeCombination {
   final Map<String, ProductAttributes> attributes;
@@ -130,28 +131,28 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
       // Get the configuration for this combination
       var combinationVids =
           combination.attributes.values.map((attr) => attr.Vid).toList();
-      // print("combinationVids");
-      // print(combinationVids);
+      // appLog("combinationVids");
+      // appLog(combinationVids);
 
       ProviderConfigModel? matchingConfig;
       if (widget.myConfig.isNotEmpty) {
-        // print("the widget.myConfig");
+        // appLog("the widget.myConfig");
         // for (var config in widget.myConfig) {
-        //   print(config.tieredPrices);
+        //   appLog(config.tieredPrices);
         // }
-        // print(widget.myConfig.first.tieredPrices);
+        // appLog(widget.myConfig.first.tieredPrices);
         try {
           matchingConfig = widget.myConfig.firstWhere((config) {
             return combinationVids.every((vid) => config.vid.contains(vid));
           });
         } catch (e) {
           // No matching config found for this combination
-          print("No matching config found for combination: $combinationVids");
+          appLog("No matching config found for combination: $combinationVids");
           continue;
         }
       }
-      // print("matchingConfig");
-      // print(matchingConfig?.tieredPrices);
+      // appLog("matchingConfig");
+      // appLog(matchingConfig?.tieredPrices);
       // Find applicable price range for this combination's quantity
       final Prices applicablePrice = widget.myPriceRange.firstWhere(
         (price) {
@@ -164,15 +165,15 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
         },
         orElse: () => widget.myPriceRange.first,
       );
-      // print("applicablePrice");
-      // print(applicablePrice.price);
+      // appLog("applicablePrice");
+      // appLog(applicablePrice.price);
 
       // Calculate total price for this combination
       final double unitPrice = double.parse(applicablePrice.originalPrice);
       final double totalPrice = unitPrice * combination.quantity;
       var c = matchingConfig?.tieredPrices;
-      print("the c");
-      print(c);
+      appLog("the c");
+      appLog(c);
       c?.add(matchingConfig?.additionalItemPrice);
       // Add to cart
       // setState(() {
@@ -198,12 +199,12 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
         quantity: combination.quantity,
         createdAt: DateTime.now().toIso8601String(),
       ));
-      print("myCart");
-      print(myCart[0].createdAt);
-      print(myCart[0].merchantId);
-      print("myCart");
-      print(myCart[0].price);
-      print(calculateTotalPrice(
+      appLog("myCart");
+      appLog(myCart[0].createdAt);
+      appLog(myCart[0].merchantId);
+      appLog("myCart");
+      appLog(myCart[0].price);
+      appLog(calculateTotalPrice(
           double.parse(matchingConfig?.originalPrice.toString() ?? "0"),
           c.toString(),
           combination.quantity));
@@ -302,9 +303,9 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     // final List<String> selectedVidList =
     //     selectedVids.split(", ").map((vid) => vid.trim()).toList();
 
-    // print("theConfig.id");
+    // appLog("theConfig.id");
     // var myTheconfig;
-    // print(myTheconfig);
+    // appLog(myTheconfig);
     // if (widget.myConfig.isNotEmpty) {
     //   final ProviderConfigModel theConfig =
     //       widget.myConfig.firstWhere((config) {
@@ -336,7 +337,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     //   final double unitPrice = double.parse(applicablePrice.price);
     //   final double totalPrice = unitPrice * quantity;
 
-    //   print("Total Price: $totalPrice");
+    //   appLog("Total Price: $totalPrice");
     //   CartItem myItem = CartItem(
     //     currency: widget.currentCountry == "ETB" ? "ETB" : "\$",
     //     description: "provider",
@@ -351,14 +352,14 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     //   );
 
     //   // Debug print
-    //   print("Item added to cart: ${myItem.price}");
+    //   appLog("Item added to cart: ${myItem.price}");
 
     //   // Add to cart
     //   context.read<CartCoreCubit>().addCartItem(myItem);
     //   displaySnack(context, "Product added to cart successfully");
     // } else {
     //   // Handle the case where no price range matches
-    //   print("No price range matches the given quantity.");
+    //   appLog("No price range matches the given quantity.");
     // }
     // }
     // else {
@@ -573,7 +574,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                                     : widget.currentCountry == "SOS"
                                         ? "SOS"
                                         : "\$";
-                    
+
                     return Card(
                       child: ListTile(
                         title: Column(
@@ -756,9 +757,12 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                         icon: Icon(Icons.remove_circle_outline),
                         onPressed: () {
                           setState(() {
-                            int currentQuantity = int.tryParse(simpleQuantityController.text) ?? 0;
+                            int currentQuantity =
+                                int.tryParse(simpleQuantityController.text) ??
+                                    0;
                             if (currentQuantity > 0) {
-                              simpleQuantityController.text = (currentQuantity - 1).toString();
+                              simpleQuantityController.text =
+                                  (currentQuantity - 1).toString();
                             }
                           });
                         },
@@ -778,8 +782,11 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
                         icon: Icon(Icons.add_circle_outline),
                         onPressed: () {
                           setState(() {
-                            int currentQuantity = int.tryParse(simpleQuantityController.text) ?? 0;
-                            simpleQuantityController.text = (currentQuantity + 1).toString();
+                            int currentQuantity =
+                                int.tryParse(simpleQuantityController.text) ??
+                                    0;
+                            simpleQuantityController.text =
+                                (currentQuantity + 1).toString();
                           });
                         },
                       ),
@@ -805,57 +812,57 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
               onPressed: () {
                 int quantity = int.tryParse(simpleQuantityController.text) ?? 0;
                 if (quantity >= int.parse(widget.myPriceRange[0].minOr)) {
-                    // Find applicable price range with proper error handling
-                    Prices applicablePrice;
-                    try {
-                      applicablePrice = widget.myPriceRange.firstWhere(
-                        (price) {
-                          final int minQuantity = int.parse(price.minOr);
-                          final int? maxQuantity = price.maxOr != null
-                              ? int.parse(price.maxOr!)
-                              : null;
-                          return quantity >= minQuantity &&
-                              (maxQuantity == null || quantity <= maxQuantity);
-                        },
-                        orElse: () => widget.myPriceRange[
-                            0], // Default to first price range if no match
-                      );
-                    } catch (e) {
-                      // Fallback to first price range if any error occurs
-                      applicablePrice = widget.myPriceRange[0];
-                    }
-                    print("the applicable price");
-                    print(applicablePrice.originalPrice);
-                    // Create cart item
-                    myCart.add(CartItem(
-                      baseMarkup: applicablePrice.baseMarkup.toString(),
-                      currency: widget.currentCountry == "ETB"
-                          ? "ETB"
-                          : widget.currentCountry == "USD"
-                              ? "\$"
-                              : widget.currentCountry == "KES"
-                                  ? "KES"
-                                  : widget.currentCountry == "AED"
-                                      ? "AED"
-                                      : widget.currentCountry == "SOS"
-                                          ? "SOS"
-                                          : "\$",
-                      description: "provider",
-                      subProductId: "0",
-                      name: widget.productName.toString(),
-                      price: applicablePrice.originalPrice.toString(),
-                      image: widget.imageUrl.toString(),
-                      productId: widget.productId.toString(),
-                      quantity: quantity,
-                      createdAt: DateTime.now().toIso8601String(),
-                    ));
-
-                    // // Add to cart
-                    _addToCart();
-                  } else {
-                    displaySnack(context, "Minimum order quantity not met");
+                  // Find applicable price range with proper error handling
+                  Prices applicablePrice;
+                  try {
+                    applicablePrice = widget.myPriceRange.firstWhere(
+                      (price) {
+                        final int minQuantity = int.parse(price.minOr);
+                        final int? maxQuantity = price.maxOr != null
+                            ? int.parse(price.maxOr!)
+                            : null;
+                        return quantity >= minQuantity &&
+                            (maxQuantity == null || quantity <= maxQuantity);
+                      },
+                      orElse: () => widget.myPriceRange[
+                          0], // Default to first price range if no match
+                    );
+                  } catch (e) {
+                    // Fallback to first price range if any error occurs
+                    applicablePrice = widget.myPriceRange[0];
                   }
-                },
+                  appLog("the applicable price");
+                  appLog(applicablePrice.originalPrice);
+                  // Create cart item
+                  myCart.add(CartItem(
+                    baseMarkup: applicablePrice.baseMarkup.toString(),
+                    currency: widget.currentCountry == "ETB"
+                        ? "ETB"
+                        : widget.currentCountry == "USD"
+                            ? "\$"
+                            : widget.currentCountry == "KES"
+                                ? "KES"
+                                : widget.currentCountry == "AED"
+                                    ? "AED"
+                                    : widget.currentCountry == "SOS"
+                                        ? "SOS"
+                                        : "\$",
+                    description: "provider",
+                    subProductId: "0",
+                    name: widget.productName.toString(),
+                    price: applicablePrice.originalPrice.toString(),
+                    image: widget.imageUrl.toString(),
+                    productId: widget.productId.toString(),
+                    quantity: quantity,
+                    createdAt: DateTime.now().toIso8601String(),
+                  ));
+
+                  // // Add to cart
+                  _addToCart();
+                } else {
+                  displaySnack(context, "Minimum order quantity not met");
+                }
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -1208,7 +1215,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
     double totalPrice = 0; // Initialize total price to 0
     List<dynamic> tieredPrices = parseTieredPrices(baseMarkup);
     // for (var price in tieredPrices) {
-    //   print(price);
+    //   appLog(price);
     // }
 
     for (int itemIndex = 1; itemIndex <= quantity; itemIndex++) {
@@ -1228,7 +1235,7 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
         totalPrice += tieredPrices[5];
       }
     }
-    print("totalPrice: $totalPrice");
+    appLog("totalPrice: $totalPrice");
     // Round to 2 decimal places
     return double.parse((totalPrice).toStringAsFixed(2));
   }
@@ -1239,8 +1246,8 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
       // Get the configuration for this combination
       var combinationVids =
           combo.attributes.values.map((attr) => attr.Vid).toList();
-      
-      print("Calculating price for combination VIDs: $combinationVids");
+
+      appLog("Calculating price for combination VIDs: $combinationVids");
 
       ProviderConfigModel? matchingConfig;
       if (widget.myConfig.isNotEmpty) {
@@ -1248,27 +1255,30 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
           matchingConfig = widget.myConfig.firstWhere((config) {
             return combinationVids.every((vid) => config.vid.contains(vid));
           });
-          print("Found matching config: ${matchingConfig.id}");
+          appLog("Found matching config: ${matchingConfig.id}");
         } catch (e) {
           // No matching config found, try fallback approach
-          print("No exact match found, trying fallback approach");
-          
+          appLog("No exact match found, trying fallback approach");
+
           // Try to find a config that contains at least some of the VIDs
           for (var config in widget.myConfig) {
-            bool hasAnyMatch = combinationVids.any((vid) => config.vid.contains(vid));
+            bool hasAnyMatch =
+                combinationVids.any((vid) => config.vid.contains(vid));
             if (hasAnyMatch) {
               matchingConfig = config;
-              print("Using fallback config: ${config.id}");
+              appLog("Using fallback config: ${config.id}");
               break;
             }
           }
-          
+
           if (matchingConfig == null) {
-            print("No matching config found for combination: $combinationVids");
+            appLog(
+                "No matching config found for combination: $combinationVids");
             // Use the first available config as last resort
             if (widget.myConfig.isNotEmpty) {
               matchingConfig = widget.myConfig.first;
-              print("Using first available config as fallback: ${matchingConfig.id}");
+              appLog(
+                  "Using first available config as fallback: ${matchingConfig.id}");
             }
           }
         }
@@ -1290,51 +1300,54 @@ class _ProductAttributesWidgetState extends State<ProductAttributesWidget> {
             orElse: () => widget.myPriceRange.first,
           );
         } catch (e) {
-          print("Error finding price range, using first: $e");
-          applicablePrice = widget.myPriceRange.isNotEmpty ? widget.myPriceRange.first : null;
+          appLog("Error finding price range, using first: $e");
+          applicablePrice =
+              widget.myPriceRange.isNotEmpty ? widget.myPriceRange.first : null;
         }
 
         if (applicablePrice != null) {
           // Create the tiered prices list with null safety
           var tieredPrices = <double>[];
-          if (matchingConfig.tieredPrices != null && matchingConfig.tieredPrices!.isNotEmpty) {
+          if (matchingConfig.tieredPrices != null &&
+              matchingConfig.tieredPrices!.isNotEmpty) {
             tieredPrices = List<double>.from(matchingConfig.tieredPrices!);
           }
           if (matchingConfig.additionalItemPrice != null) {
             tieredPrices.add(matchingConfig.additionalItemPrice!);
           }
-          
-          print("Tiered prices: $tieredPrices");
-          print("Original price: ${matchingConfig.originalPrice}");
-          print("Quantity: ${combo.quantity}");
-          
+
+          appLog("Tiered prices: $tieredPrices");
+          appLog("Original price: ${matchingConfig.originalPrice}");
+          appLog("Quantity: ${combo.quantity}");
+
           // If no tiered prices available, use original price calculation
           if (tieredPrices.isEmpty) {
             double unitPrice = double.parse(applicablePrice.originalPrice);
             double totalPrice = unitPrice * combo.quantity;
-            print("Using simple calculation: $unitPrice * ${combo.quantity} = $totalPrice");
+            appLog(
+                "Using simple calculation: $unitPrice * ${combo.quantity} = $totalPrice");
             return totalPrice;
           }
-          
+
           // Calculate total price using the existing logic
           double calculatedPrice = calculateTotalPrice(
             double.parse(matchingConfig.originalPrice.toString()),
             tieredPrices.toString(),
             combo.quantity,
           );
-          
-          print("Calculated price: $calculatedPrice");
+
+          appLog("Calculated price: $calculatedPrice");
           return calculatedPrice;
         } else {
-          print("No applicable price range found");
+          appLog("No applicable price range found");
         }
       } else {
-        print("No matching config found at all");
+        appLog("No matching config found at all");
       }
-      
+
       return 0.0;
     } catch (e) {
-      print("Error calculating combination price: $e");
+      appLog("Error calculating combination price: $e");
       return 0.0;
     }
   }

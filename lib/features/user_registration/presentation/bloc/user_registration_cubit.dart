@@ -55,8 +55,8 @@ class UserRegistrationCubit extends Cubit<UserRegistrationState> {
           countryCode! + phoneNumber!, countryCode);
       await userRegistrationRepo.registerUser(fName!, sName!, phoneNumber,
           countryName, city, email, countryCode, password, confirmPassword);
-      // print("the iso phone is here");
-      // print(isoPhone);
+      // appLog("the iso phone is here");
+      // appLog(isoPhone);
       // return success with parsed phone number
       emit(UserRegistrationState.success(countryName + phoneNumber));
     } catch (e) {

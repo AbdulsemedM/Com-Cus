@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:phone_number/phone_number.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -261,7 +262,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                           //       phoneNumber,
                                           //   selectedCountry.countryCode,
                                           // );
-                                          print(selectedCountry.phoneCode +
+                                          appLog(selectedCountry.phoneCode +
                                               phoneNumber);
                                           if (!isValid) {
                                             displaySnack(context,
@@ -288,7 +289,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                             }
                                           }
                                         } catch (e) {
-                                          print(e.toString());
+                                          appLog(e.toString());
                                           displaySnack(context,
                                               'Error validating phone number');
                                           return;
@@ -332,7 +333,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       Map<String, dynamic> payload = {
         "emailOrPhone": phoneNumber ?? emailAddress.toString(),
       };
-      print(payload);
+      appLog(payload);
 
       final response = await http.post(
         Uri.https(
@@ -345,7 +346,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       );
 
       var data = jsonDecode(response.body);
-      print(data);
+      appLog(data);
 
       if (data['statusCode'] == '000') {
         setState(() {
@@ -371,7 +372,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         return false;
       }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });

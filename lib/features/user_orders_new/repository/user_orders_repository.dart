@@ -4,6 +4,7 @@ import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/user_orders_new/models/user_order_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class UserOrdersRepository {
   static const String _baseUrl = 'api.commercepal.com';
@@ -18,13 +19,13 @@ class UserOrdersRepository {
     try {
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      
+
       if (!isUserLoggedIn) {
         throw Exception('User not logged in');
       }
 
       final token = await prefsData.readData(PrefsKeys.userToken.name);
-      
+
       final queryParameters = {
         'status': status,
         'page': page.toString(),
@@ -33,7 +34,7 @@ class UserOrdersRepository {
       };
 
       final uri = Uri.https(_baseUrl, _ordersEndpoint, queryParameters);
-      
+
       final response = await http.get(
         uri,
         headers: {
@@ -42,13 +43,13 @@ class UserOrdersRepository {
         },
       );
 
-      print('Orders API Response Status: ${response.statusCode}');
-      print('Orders API Response Body: ${response.body}');
+      appLog('Orders API Response Status: ${response.statusCode}');
+      appLog('Orders API Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         final ordersResponse = UserOrdersResponse.fromJson(jsonData);
-        
+
         if (ordersResponse.statusCode == '000') {
           return ordersResponse;
         } else {
@@ -58,7 +59,7 @@ class UserOrdersRepository {
         throw Exception('Failed to fetch orders: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching orders: $e');
+      appLog('Error fetching orders: $e');
       rethrow;
     }
   }
@@ -68,7 +69,7 @@ class UserOrdersRepository {
       final prefsData = getIt<PrefsData>();
       return await prefsData.contains(PrefsKeys.userToken.name);
     } catch (e) {
-      print('Error checking login status: $e');
+      appLog('Error checking login status: $e');
       return false;
     }
   }

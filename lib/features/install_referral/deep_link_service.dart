@@ -1,6 +1,7 @@
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class DeepLinkService {
   static const String APP_SCHEME = 'commercepal';
@@ -24,7 +25,7 @@ class DeepLinkService {
         }
       });
     } catch (e) {
-      print('Deep link initialization error: $e');
+      appLog('Deep link initialization error: $e');
     }
   }
 
@@ -55,7 +56,7 @@ class DeepLinkService {
         subject: 'CommercePal Product Share',
       );
     } catch (e) {
-      print('Error sharing product: $e');
+      appLog('Error sharing product: $e');
     }
   }
 }

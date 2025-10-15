@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:http/http.dart' as http;
 
 import '../domain/payment_repo.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 @Injectable(as: PaymentRepo)
 class PaymentRepoImpl implements PaymentRepo {
@@ -38,20 +39,20 @@ class PaymentRepoImpl implements PaymentRepo {
       // final String currentCountry = prefs.getString("currency") ?? "";
       final response = await apiProvider.get(
           "${EndPoints.paymentModes.url}&currency=${currency!.trim() == "\$" ? "USD" : currency == "ETB" ? "ETB" : currency == "AED" ? "AED" : ""}");
-      print("${EndPoints.paymentModes.url}?currency=$currency");
+      appLog("${EndPoints.paymentModes.url}?currency=$currency");
       if (response['statusCode'] == '000') {
 // <<<<<<< New-Providers
-        // print(response);
-        // print("here we returned");
-        // print(rObject);
+        // appLog(response);
+        // appLog("here we returned");
+        // appLog(rObject);
 // =======
-//         print("response");
+//         appLog("response");
 // >>>>>>> main
         final rObject = PaymentModesDto.fromJson(response);
         if (rObject.data?.paymentMethods?.isEmpty == true) {
           throw 'Payment modes not found';
         }
-        // print(response);
+        // appLog(response);
         return rObject.data!.paymentMethods!;
       } else {
         throw response['statusDescription'];

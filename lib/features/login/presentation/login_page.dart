@@ -40,6 +40,7 @@ import '../../../app/utils/app_colors.dart';
 import '../../../core/widgets/input_decorations.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 // import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
@@ -97,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
     //   });
     // });
     // _googleSignIn.signInSilently();
-    print("initState _fromCart: ${widget.fromCart}");
+    appLog("initState _fromCart: ${widget.fromCart}");
     fetchHints();
     _handleSignOut();
     logOutFromFacebook();
@@ -107,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.post(
@@ -122,17 +123,17 @@ class _LoginPageState extends State<LoginPage> {
           body: jsonEncode({"deviceToken": deviceToken}),
         );
         var datas = jsonDecode(response.body);
-        print('hererererer is the token');
-        print(datas);
+        appLog('hererererer is the token');
+        appLog(datas);
         // if (datas['statusCode'] == "000") {}
       }
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
     }
   }
 
   initializePushNotification() async {
-    print("initializePushNotification");
+    appLog("initializePushNotification");
     if (Platform.isAndroid) {
       PushNotificationService pushNotificationService =
           PushNotificationService();
@@ -141,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
       pushNotificationService.startListeningForNewNotifications(context);
       // const storage = FlutterSecureStorage();
       // storage.read(key: 'fcmToken').then((value) {
-      print('FCM Token from dashboard: $token');
+      appLog('FCM Token from dashboard: $token');
       deviceToken = token ?? "";
       // BlocProvider.of<DashboardBloc>(context).add(SendFcmTokenEvent(token!));
       // });
@@ -150,18 +151,18 @@ class _LoginPageState extends State<LoginPage> {
       await NotificationManager().requestPermissions();
       String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
       if (apnsToken != null) {
-        print("APNS Token: $apnsToken");
+        appLog("APNS Token: $apnsToken");
       } else {
-        print("APNS token not available.");
+        appLog("APNS token not available.");
       }
       // Proceed to get FCM token
       String? fcmToken = await FirebaseMessaging.instance.getToken();
-      print("FCM Token: $fcmToken");
+      appLog("FCM Token: $fcmToken");
       deviceToken = fcmToken ?? "";
       // FirebaseMessaging.instance.requestPermission();
       // FirebaseMessaging _firebaseMessage = FirebaseMessaging.instance;
       // String? deviceToken = await _firebaseMessage.getToken();
-      // print("deviceToken from dashboard: $deviceToken");
+      // appLog("deviceToken from dashboard: $deviceToken");
     }
   }
 
@@ -172,18 +173,18 @@ class _LoginPageState extends State<LoginPage> {
 
     final OAuthCredential facebookAuthCredential =
         FacebookAuthProvider.credential(loginResult.accessToken!.token);
-    print("facebookAuthCredential");
-    print(facebookAuthCredential);
+    appLog("facebookAuthCredential");
+    appLog(facebookAuthCredential);
     var userData = await FacebookAuth.instance.getUserData();
-    print("hereistheemail");
+    appLog("hereistheemail");
     final String firstName = userData['name'] ?? "";
     // final String lastName = userData['last_name'];
     final String email = userData['email'] ?? "";
     final String id = userData['id'] ?? "";
-    print(firstName);
-    // print(lastName);
-    print(email);
-    print(id);
+    appLog(firstName);
+    // appLog(lastName);
+    appLog(email);
+    appLog(id);
     var channel = Platform.isIOS ? "IOS" : "ANDROID";
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     String deviceId;
@@ -223,8 +224,8 @@ class _LoginPageState extends State<LoginPage> {
     try {
       GoogleSignInAccount? account = await _googleSignIn.signIn();
       if (account != null) {
-        print('User is signed in!');
-        print('Display Name: ${account.photoUrl}');
+        appLog('User is signed in!');
+        appLog('Display Name: ${account.photoUrl}');
         var channel = Platform.isIOS ? "IOS" : "ANDROID";
         DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
         String id;
@@ -251,7 +252,7 @@ class _LoginPageState extends State<LoginPage> {
             deviceId);
       }
     } catch (error) {
-      print('Error signing in: $error');
+      appLog('Error signing in: $error');
     }
   }
 
@@ -262,12 +263,12 @@ class _LoginPageState extends State<LoginPage> {
   //       setState(() {
   //         name = _currentUser!.displayName;
   //       });
-  //       print('User is signed in!');
-  //       print('Display Name: ${_googleSignIn.currentUser!.displayName}');
+  //       appLog('User is signed in!');
+  //       appLog('Display Name: ${_googleSignIn.currentUser!.displayName}');
   //       // Here you can use the display name as needed, e.g., update UI
   //     }
   //   } catch (error) {
-  //     print('Error signing in: $error');
+  //     appLog('Error signing in: $error');
   //   }
   // }
   // Future<void> _handleSignIn() async {
@@ -277,13 +278,13 @@ class _LoginPageState extends State<LoginPage> {
   //         _currentUser = account;
   //       });
   //     });
-  //     print("Signed in");
-  //     // print(_currentUser!.displayName);
+  //     appLog("Signed in");
+  //     // appLog(_currentUser!.displayName);
   //     await _googleSignIn.signIn();
-  //     print("Signed in");
+  //     appLog("Signed in");
   //   } catch (error) {
-  //     print("here is the error");
-  //     print(error);
+  //     appLog("here is the error");
+  //     appLog(error);
   //   }
   // }
 
@@ -308,9 +309,9 @@ class _LoginPageState extends State<LoginPage> {
     aHint = await addAddHint;
     lHint = await LoginHint;
     caHint = await cAccountHint;
-    print("herrerererere");
-    print(pHint);
-    print(cHint);
+    appLog("herrerererere");
+    appLog(pHint);
+    appLog(cHint);
 
     setState(() {
       loading = false;
@@ -647,8 +648,8 @@ class _LoginPageState extends State<LoginPage> {
                                           _emailOrPhone!
                                       : _emailOrPhone!,
                                   _pass!);
-                              // print("loginUser");
-                              // print(isPhoneMode
+                              // appLog("loginUser");
+                              // appLog(isPhoneMode
                               //     ? selectedCountry.phoneCode + _emailOrPhone!
                               //     : _emailOrPhone!);
                             }
@@ -781,7 +782,8 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           // Affiliate Registration Button with Creative Design
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 15.0, top: 25.0),
+                            padding:
+                                const EdgeInsets.only(bottom: 15.0, top: 25.0),
                             child: Container(
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
@@ -795,7 +797,8 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(15),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(0xFF8B1538).withOpacity(0.3),
+                                    color: const Color(0xFF8B1538)
+                                        .withOpacity(0.3),
                                     blurRadius: 10,
                                     offset: const Offset(0, 4),
                                   ),
@@ -812,7 +815,8 @@ class _LoginPageState extends State<LoginPage> {
                                     );
                                     // If registration was successful, show success message
                                     if (result == true) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         const SnackBar(
                                           content: Text(
                                               'Affiliate registration successful! Please login with your credentials.'),
@@ -828,7 +832,8 @@ class _LoginPageState extends State<LoginPage> {
                                       vertical: 16.0,
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         // Twinkling star icon
                                         TwinklingIcon(
@@ -893,7 +898,8 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(20),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(0xFFFF6B35).withOpacity(0.4),
+                                    color: const Color(0xFFFF6B35)
+                                        .withOpacity(0.4),
                                     blurRadius: 8,
                                     offset: const Offset(0, 3),
                                   ),
@@ -911,7 +917,7 @@ class _LoginPageState extends State<LoginPage> {
                                       size: 14,
                                     ),
                                   ),
-                                  
+
                                   // NEW text with pulsing animation
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -922,7 +928,7 @@ class _LoginPageState extends State<LoginPage> {
                                       text: "NEW",
                                     ),
                                   ),
-                                  
+
                                   // Fire icon
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8.0),

@@ -19,6 +19,7 @@ import 'package:commercepal/features/alibaba_product_view/attribute_modal_screen
 import 'package:commercepal/features/alibaba_product_view/image_slider.dart';
 import 'package:commercepal/features/alibaba_product_view/minOrder_price.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class AlibabaProductsScreen extends StatefulWidget {
   final String productId;
@@ -40,7 +41,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
   String currentCountryForm = "";
   void handleImageSelected(int index) {
     // Handle the selected image index
-    // print('Selected image index: $index');
+    // appLog('Selected image index: $index');
   }
   final countryManager = CountryManager();
   String prodName = "";
@@ -275,7 +276,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
   }
 
   void handleProceed(List<Map<String, dynamic>> selectedItem) {
-    // print("from the home");
+    // appLog("from the home");
     double total = 0.0;
     for (var tot in selectedItem) {
       total += tot['price'] as double;
@@ -286,7 +287,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
       config = !config;
       totalPrice = total.toString();
     });
-    // print("Total price: $total");
+    // appLog("Total price: $total");
   }
 
   String sanitizeInput(String input) {
@@ -297,8 +298,8 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
     try {
       // Avoid calling setState unnecessarily
       // int loopCount = int.parse(priceRange[0].minOr);
-      // print("loopCount");
-      // print(loopCount);
+      // appLog("loopCount");
+      // appLog(loopCount);
       // for (int i = 0; i < loopCount; i++) {
       setState(() {
         if (myListItem.isNotEmpty) {
@@ -317,13 +318,14 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
       });
       // }
 
-      // print("The min order:");
-      // print(selectedItems.length);
+      // appLog("The min order:");
+      // appLog(selectedItems.length);
 
 // Attempt to parse `priceRange[0].price` and `priceRange[0].minOr` after trimming whitespace.
       try {
         // Sanitize and parse the price and min order values
-        double price = double.parse(sanitizeInput(priceRange[0].originalPrice.trim()));
+        double price =
+            double.parse(sanitizeInput(priceRange[0].originalPrice.trim()));
         double minOrder =
             double.parse(sanitizeInput(priceRange[0].minOr.trim()));
 
@@ -335,17 +337,17 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
           totalPrice = calculatedTotal.toString();
         });
 
-        // print("Total Price after calculation: $totalPrice");
+        // appLog("Total Price after calculation: $totalPrice");
       } catch (e) {
-        print("Error parsing values: ${e.toString()}");
+        appLog("Error parsing values: ${e.toString()}");
       }
 
       // if(priceRange[0].minOr != null ){
 
       // }
-      // print("Calculated total price: $totalPrice");
+      // appLog("Calculated total price: $totalPrice");
     } catch (e) {
-      print("Error: $e");
+      appLog("Error: $e");
     }
     return; // Ensures the function completes with a non-null return
   }
@@ -355,7 +357,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
       setState(() {
         loading = true;
       });
-      // print(widget.productId);
+      // appLog(widget.productId);
       // final prefsData = getIt<PrefsData>();
       // final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
       // if (isUserLoggedIn) {
@@ -369,7 +371,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
       );
 
       var data = jsonDecode(response.body);
-      // print(data);
+      // appLog(data);
 
       if (data['statusCode'] == '000') {
         setState(() async {
@@ -382,7 +384,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
           final String currentCountry = prefs.getString("currency") ?? "ETB";
           currentCountryForm = currentCountry;
           prodName = data['OriginalTitle'];
-          // print("the price range is here");
+          // appLog("the price range is here");
           myPriceRange = data["QuantityRanges"] != null
               ? parseQuantityRanges(
                   List<Map<String, dynamic>>.from(data["QuantityRanges"]),
@@ -397,14 +399,14 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
                     minOr: "1",
                   )
                 ];
-          // print(myPriceRange[0].minOr);
+          // appLog(myPriceRange[0].minOr);
           for (var attr in data['Attributes']) {
             if (attr['IsConfigurator'] == true
                 // &&
                 //     attr['MiniImageUrl'] != null &&
                 //     attr['ImageUrl'] != null
                 ) {
-              // print(attr['OriginalPropertyName']);
+              // appLog(attr['OriginalPropertyName']);
               myProdAttr.add(ProductAttributes(
                   Vid: attr['Vid'],
                   PropertyName: attr['PropertyName'],
@@ -417,8 +419,8 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
                   OriginalPropertyName: attr['OriginalPropertyName']));
             }
           }
-          // print("here are the atributes");
-          // print(myProdAttr);
+          // appLog("here are the atributes");
+          // appLog(myProdAttr);
           final productInfoList = parseConfiguratorInfoList(
               data['ConfiguredItems'], currentCountry);
           for (var config in productInfoList) {
@@ -432,7 +434,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
             myListItem = createListItems(myProdAttr, myConfigs);
           });
           calculateTotal(myPriceRange);
-          // print(myListItem.le);
+          // appLog(myListItem.le);
           loading = false;
         });
         // Handle the case when statusCode is '000'
@@ -446,7 +448,7 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
       setState(() {
         loading = true;
       });
-      print(e.toString());
+      appLog(e.toString());
 
       // Handle other exceptions
     }
@@ -474,8 +476,11 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
         maxQuantity = (quantityRanges[i + 1]['MinQuantity'] - 1).toString();
       }
 
-      pricesList
-          .add(Prices(originalPrice: price, minOr: minQuantity, maxOr: maxQuantity, baseMarkup: 0));
+      pricesList.add(Prices(
+          originalPrice: price,
+          minOr: minQuantity,
+          maxOr: maxQuantity,
+          baseMarkup: 0));
     }
     return pricesList;
   }
@@ -489,8 +494,8 @@ class _AlibabaProductsScreenState extends State<AlibabaProductsScreen> {
         orElse: () => ConfiguratorInfo(id: '', vid: '', originalPrice: 0.0),
       );
 
-      // print("Attributes");
-      // print(ListItem(
+      // appLog("Attributes");
+      // appLog(ListItem(
       //   id: matchingConfig.id,
       //   imageUrl: attribute.ImageUrl,
       //   title: attribute.Vid,
@@ -570,12 +575,12 @@ class checkOut_widget extends StatelessWidget {
                 isLoading: false,
                 text: "Add to Cart",
                 onClick: () async {
-                  // print(minOrder);
+                  // appLog(minOrder);
                   var mini = 0;
                   for (var i in selection) {
                     mini += int.parse(i['count'].toString());
                   }
-                  print(mini);
+                  appLog(mini);
                   if (int.parse(minOrder) <= mini) {
                     try {
                       // await countryManager.loadCountryFromPreferences();
@@ -584,10 +589,10 @@ class checkOut_widget extends StatelessWidget {
                           await SharedPreferences.getInstance();
                       final String currentCountry =
                           prefs.getString("currency") ?? "ETB";
-                      print(currentCountry);
+                      appLog(currentCountry);
                       for (var sel in selection) {
-                        print("the id heer");
-                        print(sel['count']);
+                        appLog("the id heer");
+                        appLog(sel['count']);
                         // Validate and parse 'id'
                         // final id =
                         //     sel['id'] != null && sel['id'].toString().isNotEmpty
@@ -618,7 +623,7 @@ class checkOut_widget extends StatelessWidget {
                         );
 
                         // Debug print
-                        print("Item added to cart: ${myItem.price}");
+                        appLog("Item added to cart: ${myItem.price}");
 
                         // Add to cart
                         context.read<CartCoreCubit>().addCartItem(myItem);
@@ -627,7 +632,7 @@ class checkOut_widget extends StatelessWidget {
                       // Show snack bar
                       displaySnack(context, "$prodName added to cart");
                     } catch (e) {
-                      print("Error: ${e.toString()}");
+                      appLog("Error: ${e.toString()}");
                     }
 
                     // if (myList != null && config) {

@@ -44,6 +44,7 @@ import '../data/dto/selected_product_dto.dart';
 import 'widgets/product_review_item_widget.dart';
 import 'widgets/selected_product_options.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class SelectedProductPage extends StatefulWidget {
   static const routeName = "/selected_product_page";
@@ -60,14 +61,14 @@ class _SelectedProductPageState extends State<SelectedProductPage> {
   @override
   void initState() {
     super.initState();
-    print("set first sub product as default");
+    appLog("set first sub product as default");
   }
 
   @override
   Widget build(BuildContext context) {
     final Map args = ModalRoute.of(context)?.settings.arguments as Map;
     id = args['p_id'];
-    print(id.runtimeType);
+    appLog(id.runtimeType);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -124,7 +125,7 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
   @override
   void initState() {
     super.initState();
-    print("set first sub product as default");
+    appLog("set first sub product as default");
     setState(() {
       _selectedFeature =
           widget.selectedProductDetails.subProducts?[0].subProductId ?? "-1";
@@ -854,7 +855,7 @@ class _SelectedProductDataWidgetState extends State<SelectedProductDataWidget> {
                               buttonText: "Add to cart",
                               onClick: () {
                                 added = true;
-                                print(added);
+                                appLog(added);
                                 context.read<CartCoreCubit>().addCartItem(
                                     widget.selectedProductDetails.toCartItem());
                                 displaySnack(context,

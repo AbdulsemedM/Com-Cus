@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:commercepal/app/utils/logger.dart';
 
 class MerchantBids extends StatefulWidget {
   // final String bidId;
@@ -146,7 +147,7 @@ class _MerchantBidsState extends State<MerchantBids> {
       });
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
-      print(isUserLoggedIn);
+      appLog(isUserLoggedIn);
       if (isUserLoggedIn) {
         final token = await prefsData.readData(PrefsKeys.userToken.name);
         final response = await http.get(
@@ -160,9 +161,9 @@ class _MerchantBidsState extends State<MerchantBids> {
             'Content-Type': 'application/json; charset=UTF-8',
           },
         );
-        print(widget.specialOrderId);
+        appLog(widget.specialOrderId);
         var datas = jsonDecode(response.body);
-        print(datas);
+        appLog(datas);
         if (datas['statusCode'] == "000") {
           myBids.clear();
           for (var i in datas['data']) {
@@ -176,7 +177,7 @@ class _MerchantBidsState extends State<MerchantBids> {
           // if (myBids.isEmpty) {
           //   throw 'No special orders found';
           // }
-          print(myBids.length);
+          appLog(myBids.length);
         } else {
           throw datas['statusDescription'] ?? 'Error fetching special orders';
         }
@@ -186,7 +187,7 @@ class _MerchantBidsState extends State<MerchantBids> {
         loading = false;
       });
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       rethrow;
     }
   }
@@ -196,7 +197,7 @@ class _MerchantBidsState extends State<MerchantBids> {
     TextEditingController phoneNumberController = TextEditingController();
     var loading1 = false;
     // bool selectedProxy = allMember.proxy;
-    // print(selectedProxy);
+    // appLog(selectedProxy);
     // fullNameController.text = allMember.fullName;
     // phoneNumberController.text = allMember.phoneNumber;
     String? _validateField(String? value) {
@@ -277,7 +278,7 @@ class _MerchantBidsState extends State<MerchantBids> {
                         "customerFeedback": fullNameController.text,
                         "additionalNote": phoneNumberController.text
                       };
-                      print(body);
+                      appLog(body);
                       try {
                         final prefsData = getIt<PrefsData>();
                         final isUserLoggedIn =
@@ -292,9 +293,9 @@ class _MerchantBidsState extends State<MerchantBids> {
                               headers: <String, String>{
                                 "Authorization": "Bearer $token"
                               });
-                          // print(response.body);
+                          // appLog(response.body);
                           var data = jsonDecode(response.body);
-                          print(data);
+                          appLog(data);
 
                           if (data['statusCode'] == '000') {
                             var unitPrice = data['data']['unitPrice'];
@@ -315,7 +316,7 @@ class _MerchantBidsState extends State<MerchantBids> {
                                 subProductId: subProductId,
                                 quantity: quantity);
                             context.read<CartCoreCubit>().addCartItem(myItem);
-                            debugPrint("added successfully");
+                            appLog("added successfully");
                             displaySnack(
                                 context, "Special order added to cart");
 

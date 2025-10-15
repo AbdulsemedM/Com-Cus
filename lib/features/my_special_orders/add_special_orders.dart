@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:commercepal/app/utils/logger.dart';
 
 class AddSpecialOrders extends StatefulWidget {
   const AddSpecialOrders({super.key});
@@ -160,7 +161,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                               focusedErrorBorder: InputBorder.none,
                               enabledBorder: InputBorder.none),
                           items: proCat.map((ProductCategory pro) {
-                            // print(pro.name);
+                            // appLog(pro.name);
                             return DropdownMenuItem<String>(
                               value: pro.id.toString(),
                               child: Text(
@@ -387,18 +388,18 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
           // prefs.setString("myImage", _image!.path);
           // Save the image to the gallery
           GallerySaver.saveImage(_image!.path).then((success) {
-            print("Image saved to gallery: $success");
-            print("hereweare");
-            print(_image);
+            appLog("Image saved to gallery: $success");
+            appLog("hereweare");
+            appLog(_image);
           });
         } else {
           _image = File(pickedFile.path);
           // prefs.setString("myImage", _image!.path);
-          print("herewego");
-          print(_image);
+          appLog("herewego");
+          appLog(_image);
         }
       } else {
-        print('No image selected.');
+        appLog('No image selected.');
       }
     });
   }
@@ -408,7 +409,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
       setState(() {
         loading = true;
       });
-      print("hereeeewego");
+      appLog("hereeeewego");
       Map<String, dynamic> payload = {
         "subCategoryId": int.parse(myProductSubCategory!),
         "ProductName": productName,
@@ -417,7 +418,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
         "LinkToProduct": link,
         "quantity": 1,
       };
-      print(payload);
+      appLog(payload);
 
       final prefsData = getIt<PrefsData>();
       final isUserLoggedIn = await prefsData.contains(PrefsKeys.userToken.name);
@@ -428,13 +429,13 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
                 "api.commercepal.com:2096", "prime/api/v1/special-orders"),
             body: jsonEncode(payload),
             headers: <String, String>{"Authorization": "Bearer $token"});
-        // print(response.body);
+        // appLog(response.body);
         var data = jsonDecode(response.body);
-        print(data);
+        appLog(data);
 
         if (data['statusCode'] == '000') {
           orderId = data["specialOrderId"].toString();
-          print(orderId);
+          appLog(orderId);
           // File imgShop = File(step2[5]);
           await uploadImage(
             imageFile: _image!.path,
@@ -456,7 +457,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
       setState(() {
         loading = false;
       });
-      print(e.toString());
+      appLog(e.toString());
       return false;
     } finally {
       setState(() {
@@ -490,16 +491,16 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
         var response = await request.send();
         var responseBody = await response.stream.bytesToString();
 
-        print(response);
+        appLog(response);
 
         if (responseBody == '000') {
-          print('Image uploaded successfully');
+          appLog('Image uploaded successfully');
         } else {
-          print('Failed to upload image. Status code: ${response.statusCode}');
-          print('Error message: $responseBody');
+          appLog('Failed to upload image. Status code: ${response.statusCode}');
+          appLog('Error message: $responseBody');
         }
       } catch (error) {
-        print('Error uploading image: $error');
+        appLog('Error uploading image: $error');
       }
     }
 
@@ -511,8 +512,8 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
       setState(() {
         loading = true;
       });
-      print("subcat");
-      print(id);
+      appLog("subcat");
+      appLog(id);
       final response = await http.get(Uri.https(
         "api.commercepal.com:2096",
         "/prime/api/v1/portal/category/GetSubCategories",
@@ -524,7 +525,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
         subCat.add(
             SubCategoryData(unique_name: b['name'], id: b['id'].toString()));
       }
-      print(subCat.length);
+      appLog(subCat.length);
       setState(() {
         loading = false;
       });
@@ -533,7 +534,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
       bool success = subCat.length > 0;
       return success;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });
@@ -550,7 +551,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
       setState(() {
         loading = true;
       });
-      print("product category");
+      appLog("product category");
       final response = await http.get(Uri.https(
         "api.commercepal.com:2096",
         "/prime/api/v1/portal/category/GetCategories",
@@ -561,7 +562,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
       for (var b in data['details']) {
         proCat.add(ProductCategory(name: b['name'], id: b['id'].toString()));
       }
-      print(proCat.length);
+      appLog(proCat.length);
       setState(() {
         loading = false;
       });
@@ -570,7 +571,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
       bool success = proCat.length > 0;
       return success;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });
@@ -587,7 +588,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
       setState(() {
         loading = true;
       });
-      print("parent category");
+      appLog("parent category");
       final response = await http.get(Uri.https(
         "api.commercepal.com:2096",
         "prime/api/v1/portal/category/GetParentCategories",
@@ -597,7 +598,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
       for (var b in data['details']) {
         parCat.add(ParentCategoryData(name: b['name'], id: b['id'].toString()));
       }
-      print(parCat.length);
+      appLog(parCat.length);
       setState(() {
         loading = false;
       });
@@ -606,7 +607,7 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
       bool success = parCat.length > 0;
       return success;
     } catch (e) {
-      print(e.toString());
+      appLog(e.toString());
       setState(() {
         loading = false;
       });
