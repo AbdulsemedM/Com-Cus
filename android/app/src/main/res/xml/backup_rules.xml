@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    SECURITY: Backup Rules Configuration
+    This file explicitly excludes sensitive data from Android backups
+    to prevent exposure of user credentials, payment info, and personal data.
+-->
+<full-backup-content>
+    <!-- Exclude all databases containing sensitive user data -->
+    <exclude domain="database" path="." />
+    
+    <!-- Exclude SharedPreferences files that may contain sensitive data -->
+    <exclude domain="sharedpref" path="." />
+    
+    <!-- Exclude external storage directories -->
+    <exclude domain="external" path="." />
+    
+    <!-- Exclude cache directories -->
+    <exclude domain="cache" path="." />
+    
+    <!-- Exclude files directory (may contain sensitive files) -->
+    <exclude domain="file" path="." />
+    
+    <!-- Exclude root directory -->
+    <exclude domain="root" path="." />
+    
+    <!-- Exclude no_backup directory -->
+    <exclude domain="no_backup" path="." />
+    
+    <!-- Exclude device_protected_storage -->
+    <exclude domain="device_protected_storage" path="." />
+    
+    <!-- Exclude credential_encrypted_storage -->
+    <exclude domain="credential_encrypted_storage" path="." />
+    
+    <!-- Exclude shared_storage -->
+    <exclude domain="shared_storage" path="." />
+</full-backup-content>

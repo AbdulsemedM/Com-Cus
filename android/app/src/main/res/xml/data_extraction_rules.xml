@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    SECURITY: Data Extraction Rules for Android 12+ (API 31+)
+    This file prevents data extraction through cloud backup and device transfer
+    to protect sensitive user information and credentials.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Disable cloud backup completely for maximum security -->
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
+        <exclude domain="cache" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="root" path="." />
+        <exclude domain="no_backup" path="." />
+        <exclude domain="device_protected_storage" path="." />
+        <exclude domain="credential_encrypted_storage" path="." />
+        <exclude domain="shared_storage" path="." />
+    </cloud-backup>
+    
+    <device-transfer>
+        <!-- Disable device transfer completely for maximum security -->
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
+        <exclude domain="cache" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="root" path="." />
+        <exclude domain="no_backup" path="." />
+        <exclude domain="device_protected_storage" path="." />
+        <exclude domain="credential_encrypted_storage" path="." />
+        <exclude domain="shared_storage" path="." />
+    </device-transfer>
+</data-extraction-rules>
