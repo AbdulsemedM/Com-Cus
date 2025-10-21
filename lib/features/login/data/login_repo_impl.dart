@@ -118,7 +118,7 @@ class LoginRepositoryImpl implements LoginRepository {
         }
       }
     } catch (e) {
-      throw "Something went wrong please try again or contact our support team!";
+      throw e.toString();
     }
   }
 

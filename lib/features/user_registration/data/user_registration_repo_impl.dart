@@ -130,15 +130,17 @@ class UserRegistrationRepoImpl implements UserRegistrationRepo {
       final objResponse = jsonDecode(response.body);
       // appLog(objResponse.runtimeType);
       if (objResponse['statusCode'] == '000') {
-        appLog(objResponse['statusMessage']);
+        // appLog(objResponse['statusMessage']);
         return objResponse['statusMessage'];
       } else {
+        // appLog(objResponse['statusMessage']);
+        // appLog("objResponse['statusMessage']");
         throw objResponse['statusMessage'] ??
             "Something went wrong please try again or contact our support team!";
       }
     } catch (e) {
       appLog(e.toString());
-      throw "Something went wrong please try again or contact our support team!";
+      throw e.toString();
     }
   }
 
