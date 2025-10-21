@@ -39,8 +39,11 @@ Future<String> getReferralLink() async {
           return myReferrer;
         } else if (Platform.isIOS) {
           appLog("hereis the link");
-          String myReferrer =
-              'https://apps.apple.com/us/app/commercepal/id1669974212?$userId=$userId';
+          // SECURITY FIX: Use proper URI construction to prevent injection
+          final uri = Uri.parse(
+                  'https://apps.apple.com/us/app/commercepal/id1669974212')
+              .replace(queryParameters: {'userId': userId});
+          String myReferrer = uri.toString();
           appLog(userId);
           return myReferrer;
         } else {

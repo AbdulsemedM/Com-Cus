@@ -97,20 +97,34 @@ class ProductsRepositoryImpl implements ProductRepository {
     } else {
       try {
         appLog("this is the query params");
-        String? queryString;
-        queryParams?.forEach((key, value) {
-          // check if there is a value
-          if (queryString != null) {
-            queryString = "&&$key=$value";
-          } else {
-            // first value
-            queryString = "$key=$value";
-          }
-        });
+
+        // SECURITY FIX: Use Uri class to properly encode query parameters
+        // This prevents query parameter injection attacks
         final isUserBusiness = await sessionRepo.hasUserSwitchedToBusiness();
-        appLog(queryString);
-        final products = await apiProvider.get(
-            "${isUserBusiness ? EndPoints.businessProducts.url : EndPoints.products.url}?${queryString ?? 'subCategory=$subCatId'}");
+        final baseUrl = isUserBusiness
+            ? EndPoints.businessProducts.url
+            : EndPoints.products.url;
+        final Map<String, String> queryParamsMap = {};
+
+        // Convert queryParams to properly encoded map
+        if (queryParams != null) {
+          queryParams.forEach((key, value) {
+            if (value != null) {
+              queryParamsMap[key.toString()] = value.toString();
+            }
+          });
+        }
+
+        // Add subCategory if no other params provided
+        if (queryParamsMap.isEmpty && subCatId != null) {
+          queryParamsMap['subCategory'] = subCatId.toString();
+        }
+
+        // Create properly encoded URI
+        final uri = Uri.parse(baseUrl).replace(queryParameters: queryParamsMap);
+        appLog("Secure URL: ${uri.toString()}");
+
+        final products = await apiProvider.get(uri.toString());
         // final response = await http.get(
         //   Uri.https(
         //     "api.commercepal.com:2096",
