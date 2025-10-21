@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,20 @@ Future<void> _showNotification(RemoteMessage message) async {
   AndroidNotification? android = message.notification?.android;
 
   if (notification != null && android != null) {
+    // Generate cryptographically secure notification ID
+    // Use message ID if available, otherwise generate secure random ID
+    int notificationId;
+    if (message.messageId != null && message.messageId!.isNotEmpty) {
+      // Use FCM message ID as base and add random component for uniqueness
+      notificationId =
+          message.messageId!.hashCode.abs() + Random.secure().nextInt(1000);
+    } else {
+      // Generate completely secure random ID
+      notificationId = Random.secure().nextInt(2147483647); // Max int32 value
+    }
+
     FlutterLocalNotificationsPlugin().show(
-      notification.hashCode,
+      notificationId,
       notification.title,
       notification.body,
       const NotificationDetails(
@@ -104,8 +117,7 @@ class PushNotificationService {
         final googlePlayServices = await GoogleApiAvailability.instance
             .checkGooglePlayServicesAvailability();
         if (googlePlayServices != GooglePlayServicesAvailability.success) {
-          appLog(
-              'Google Play Services not available: $googlePlayServices');
+          appLog('Google Play Services not available: $googlePlayServices');
           return null;
         }
 
@@ -165,8 +177,7 @@ class PushNotificationService {
 
     // 2. Foreground state (app is open and in view)
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      appLog(
-          'Foreground Message received: ${message.notification?.title}');
+      appLog('Foreground Message received: ${message.notification?.title}');
       _showNotification(message);
     });
 

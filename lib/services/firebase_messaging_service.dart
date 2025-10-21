@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -45,8 +46,20 @@ class FirebaseMessagingService {
       iOS: DarwinNotificationDetails(),
     );
 
+    // Generate cryptographically secure notification ID
+    // Use message ID if available, otherwise generate secure random ID
+    int notificationId;
+    if (message.messageId != null && message.messageId!.isNotEmpty) {
+      // Use FCM message ID as base and add random component for uniqueness
+      notificationId =
+          message.messageId!.hashCode.abs() + Random.secure().nextInt(1000);
+    } else {
+      // Generate completely secure random ID
+      notificationId = Random.secure().nextInt(2147483647); // Max int32 value
+    }
+
     await _flutterLocalNotificationsPlugin.show(
-      DateTime.now().millisecond,
+      notificationId,
       message.notification?.title ?? 'New Notification',
       message.notification?.body,
       notificationDetails,
