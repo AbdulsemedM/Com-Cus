@@ -23,16 +23,12 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<AuthModel> login(String email, String pass) async {
     try {
-      appLog(pass);
+      // SECURITY: Password logging removed to prevent exposure
       if (pass == "social media") {
         var decodedResponse = GlobalCredential.getGlobalString();
-        appLog("decodedResponse");
-        appLog(decodedResponse);
-        // final decodedResponse = jsonDecode(response);
+        appLog("Social media login response received");
+        // SECURITY: Full response logging removed to prevent token exposure
         if (decodedResponse['statusCode'] == '000') {
-          final responseObject = LoginDto.fromJson(decodedResponse);
-          appLog("responseObject.userToken");
-          appLog(decodedResponse['userToken']);
           // store auth credentials
           appLog("credetial stored");
           if (decodedResponse['userToken'] != null) {
@@ -47,7 +43,7 @@ class LoginRepositoryImpl implements LoginRepository {
               PrefsKeys.auth.name, jsonEncode(decodedResponse));
 
           appLog("this is for affiliate");
-          appLog(decodedResponse);
+          // SECURITY: Full response logging removed to prevent token exposure
 
           // get user details
           appLog("getting user detail");

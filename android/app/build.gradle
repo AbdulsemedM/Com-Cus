@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'
 
 def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
+def keystorePropertiesFile = rootProject.file('keystore.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
@@ -63,20 +63,27 @@ android {
 
     signingConfigs {
         release {
+            // PRODUCTION SIGNING: This configuration uses a release keystore
+            // for production builds. The keystore credentials are stored in
+            // keystore.properties for security.
             storeFile rootProject.file('release.keystore')
-            keyAlias 'commercepal'
-            keyPassword 'commercepal'
-            storePassword 'commercepal'
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storePassword keystoreProperties['storePassword']
         }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Production release build with proper signing
             signingConfig signingConfigs.release
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true  // Add resource shrinking for security
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            // Debug builds use auto-generated debug signing
+            // This is NOT used for production releases
         }
     }
 }

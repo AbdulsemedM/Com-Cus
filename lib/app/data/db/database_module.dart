@@ -21,8 +21,19 @@ abstract class DatabaseNodule {
   @lazySingleton
   FlutterSecureStorage createFlutterSecureStorag() {
     AndroidOptions getAndroidOptions() => const AndroidOptions(
-          encryptedSharedPreferences: true,
+          encryptedSharedPreferences: false, // Use Keystore instead
+          resetOnError: true, // Reset on keystore errors
+          keyCipherAlgorithm: KeyCipherAlgorithm.RSA_ECB_PKCS1Padding,
+          storageCipherAlgorithm: StorageCipherAlgorithm.AES_GCM_NoPadding,
         );
-    return FlutterSecureStorage(aOptions: getAndroidOptions());
+
+    IOSOptions getIOSOptions() => const IOSOptions(
+          accessibility: KeychainAccessibility.first_unlock_this_device,
+        );
+
+    return FlutterSecureStorage(
+      aOptions: getAndroidOptions(),
+      iOptions: getIOSOptions(),
+    );
   }
 }
