@@ -25,7 +25,8 @@
         android:allowBackup="false"
         android:fullBackupContent="@xml/backup_rules"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:pageSizeCompat="enabled">
         
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDQ2c_pOSOFYSjxGMwkFvCVWKjYOM9siow"/>

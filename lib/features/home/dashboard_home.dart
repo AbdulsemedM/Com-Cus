@@ -6,7 +6,7 @@ import 'package:android_play_install_referrer/android_play_install_referrer.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uni_links2/uni_links.dart';
+import 'package:app_links/app_links.dart';
 
 import '../../app/di/injector.dart';
 import 'domain/schema_settings_model.dart';
@@ -26,8 +26,8 @@ class DashboardHomePage extends StatefulWidget {
 }
 
 class _DashboardHomePageState extends State<DashboardHomePage> {
-  // late AppLinks _appLinks;
-  // StreamSubscription<Uri>? _linkSubscription;
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
   StreamSubscription? _sub;
   @override
   void initState() {
@@ -36,12 +36,11 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
     initDeepLinks();
   }
 
-  // @override
-  // void dispose() {
-  //   _linkSubscription?.cancel();
-
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _linkSubscription?.cancel();
+    super.dispose();
+  }
   // Future<void> _getReferrer() async {
   //   try {
   //     appLog("comeonplease");
@@ -106,7 +105,8 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
         appLog("Error retrieving install referrer: $e");
       }
     } else if (Platform.isIOS) {
-      _sub = uriLinkStream.listen((Uri? uri) async {
+      _appLinks = AppLinks();
+      _linkSubscription = _appLinks.uriLinkStream.listen((Uri uri) async {
         if (uri != null) {
           final userId = uri.queryParameters['userId'];
           if (userId != null) {
@@ -117,6 +117,7 @@ class _DashboardHomePageState extends State<DashboardHomePage> {
         }
       }, onError: (err) {
         // Handle errors
+        appLog("Error in deep link: $err");
       });
     }
 

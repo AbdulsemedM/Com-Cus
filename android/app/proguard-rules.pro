@@ -1,3 +1,7 @@
+# Google Play Core classes
+-keep class com.google.android.play.core.** { *; }
+-dontwarn com.google.android.play.core.**
+
 # Flutter Secure Storage
 -keep class com.it_nomads.fluttersecurestorage.** { *; }
 

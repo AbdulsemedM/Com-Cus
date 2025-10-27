@@ -7,7 +7,7 @@ import 'package:commercepal/app/utils/dialog_utils.dart';
 import 'package:commercepal/core/data/prefs_data.dart';
 import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:flutter/material.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+import 'package:gal/gal.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:commercepal/app/utils/logger.dart';
@@ -381,17 +381,16 @@ class _AddSpecialOrdersState extends State<AddSpecialOrders> {
     final pickedFile = await picker.pickImage(source: source);
     // final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    setState(() {
+    setState(() async {
       if (pickedFile != null) {
         if (source == ImageSource.camera) {
           _image = File(pickedFile.path);
           // prefs.setString("myImage", _image!.path);
           // Save the image to the gallery
-          GallerySaver.saveImage(_image!.path).then((success) {
-            appLog("Image saved to gallery: $success");
-            appLog("hereweare");
-            appLog(_image);
-          });
+          await Gal.putImage(_image!.path);
+          appLog("Image saved to gallery");
+          appLog("hereweare");
+          appLog(_image);
         } else {
           _image = File(pickedFile.path);
           // prefs.setString("myImage", _image!.path);

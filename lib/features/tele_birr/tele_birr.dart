@@ -10,7 +10,7 @@ import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/features/translation/get_lang.dart';
 import 'package:commercepal/features/translation/translations.dart';
 import 'package:flutter/material.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+import 'package:gal/gal.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -253,17 +253,10 @@ class _TeleBirrPaymentState extends State<TeleBirrPayment> {
         File(filePath).writeAsBytesSync(img.encodePng(decodedImage));
 
         // Save the screenshot to the gallery
-        GallerySaver.saveImage(filePath, albumName: 'YourAlbumName')
-            .then((result) async {
-          if (result != null && result) {
-            final SharedPreferences prefs =
-                await SharedPreferences.getInstance();
-            prefs.setString("epg_done", "yes");
-            appLog('Screenshot saved to gallery successfully!');
-          } else {
-            appLog('Failed to save screenshot to gallery.');
-          }
-        });
+        await Gal.putImage(filePath, album: 'YourAlbumName');
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("epg_done", "yes");
+        appLog('Screenshot saved to gallery successfully!');
       } else {
         appLog('Failed to capture screenshot.');
       }
