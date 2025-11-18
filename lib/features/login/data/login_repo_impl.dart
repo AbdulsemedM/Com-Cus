@@ -6,6 +6,7 @@ import 'package:commercepal/core/data/prefs_data_impl.dart';
 import 'package:commercepal/core/models/auth_model.dart';
 import 'package:commercepal/core/models/user_model.dart';
 import 'package:commercepal/core/dto/Login_dto.dart';
+import 'package:commercepal/core/utils/token_refresh_util.dart';
 import 'package:commercepal/features/login/global_credential/global_credential.dart';
 import 'package:injectable/injectable.dart';
 
@@ -17,6 +18,7 @@ import 'package:commercepal/app/utils/logger.dart';
 class LoginRepositoryImpl implements LoginRepository {
   final PrefsData prefsData;
   final ApiProvider apiProvider;
+  final TokenRefreshUtil _tokenRefreshUtil = TokenRefreshUtil();
 
   LoginRepositoryImpl(this.prefsData, this.apiProvider);
 
@@ -44,6 +46,15 @@ class LoginRepositoryImpl implements LoginRepository {
 
           appLog("this is for affiliate");
           // SECURITY: Full response logging removed to prevent token exposure
+
+          // Check if token is expired and refresh if needed (safety check)
+          if (decodedResponse['userToken'] != null) {
+            final isExpired = await _tokenRefreshUtil.isTokenExpired();
+            if (isExpired) {
+              appLog("Token expired immediately after login, attempting refresh...");
+              await _tokenRefreshUtil.refreshTokenIfNeeded();
+            }
+          }
 
           // get user details
           appLog("getting user detail");
@@ -89,6 +100,15 @@ class LoginRepositoryImpl implements LoginRepository {
                 "refresh_token", responseObject.refreshToken!);
           }
           await prefsData.writeData(PrefsKeys.auth.name, jsonEncode(response));
+
+          // Check if token is expired and refresh if needed (safety check)
+          if (responseObject.userToken != null) {
+            final isExpired = await _tokenRefreshUtil.isTokenExpired();
+            if (isExpired) {
+              appLog("Token expired immediately after login, attempting refresh...");
+              await _tokenRefreshUtil.refreshTokenIfNeeded();
+            }
+          }
 
           // get user details
           appLog("here goes the login");

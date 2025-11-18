@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:commercepal/core/data/prefs_data.dart';
+import 'package:commercepal/core/utils/token_refresh_util.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
@@ -9,6 +10,7 @@ enum PrefsKeys { user, userToken, auth, deliveryFee, userBusinessAcc }
 @Injectable(as: PrefsData)
 class PrefsDataImpl implements PrefsData {
   final FlutterSecureStorage flutterSecureStorage;
+  final TokenRefreshUtil _tokenRefreshUtil = TokenRefreshUtil();
 
   PrefsDataImpl(this.flutterSecureStorage);
 
@@ -20,8 +22,16 @@ class PrefsDataImpl implements PrefsData {
       // SECURITY: Validate JWT expiration for token keys
       if (key == PrefsKeys.userToken.name && value != null) {
         if (_isJwtExpired(value)) {
-          await deleteData(key);
-          return null;
+          // Attempt to refresh token before deleting
+          final refreshSuccess = await _tokenRefreshUtil.refreshTokenIfNeeded();
+          if (refreshSuccess) {
+            // Token was refreshed, read the new token
+            return await flutterSecureStorage.read(key: key);
+          } else {
+            // Refresh failed, delete token
+            await deleteData(key);
+            return null;
+          }
         }
       }
 

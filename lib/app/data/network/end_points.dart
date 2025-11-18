@@ -43,7 +43,8 @@ enum EndPoints {
   businessSearchProducts,
   businessDeliveryFee,
   businessCheckOut,
-  amole
+  amole,
+  refreshToken
 }
 
 extension Url on EndPoints {
@@ -164,6 +165,8 @@ extension Url on EndPoints {
         return "$businessBaseUrl/order/check-out";
       case EndPoints.amole:
         return "$payments/amole/fulfillment";
+      case EndPoints.refreshToken:
+        return "https://api.commercepal.com:2096/api/v2/auth/refresh";
       default:
         throw Exception('Url not set');
     }
