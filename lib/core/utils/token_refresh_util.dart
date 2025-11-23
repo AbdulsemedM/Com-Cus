@@ -14,8 +14,9 @@ class TokenRefreshUtil {
   factory TokenRefreshUtil() => _instance;
   TokenRefreshUtil._internal();
 
-  final PrefsData _prefsData = getIt<PrefsData>();
-  final ApiProvider _apiProvider = getIt<ApiProvider>();
+  // Lazy-load dependencies to avoid circular dependency issues
+  PrefsData get _prefsData => getIt<PrefsData>();
+  ApiProvider get _apiProvider => getIt<ApiProvider>();
   
   // Thread-safety: prevent concurrent refresh attempts
   bool _isRefreshing = false;

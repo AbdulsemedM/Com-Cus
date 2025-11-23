@@ -59,9 +59,14 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion flutter.minSdkVersion
-                targetSdkVersion 36
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        
+        // 16 KB page size support - ensure native libraries are aligned
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+        }
     }
 
     signingConfigs {
@@ -91,7 +96,7 @@ android {
     }
 
     // 16 KB page size support configuration
-    packagingOptions {
+    packaging {
         jniLibs {
             useLegacyPackaging = false
         }
@@ -107,6 +112,13 @@ android {
         }
         abi {
             enableSplit = false
+        }
+    }
+    
+    // Additional configuration for 16 KB page size support
+    splits {
+        abi {
+            enable false
         }
     }
 }

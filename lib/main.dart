@@ -36,11 +36,13 @@ void main() async {
   // bool accepted =
   //     await OneSignal.shared.promptUserForPushNotificationPermission();
   // appLog("Accepted Permission: $accepted");
-  await Permission.notification.isDenied.then((isDenied) {
-    if (isDenied) {
-      Permission.notification.request();
+  try {
+    if (await Permission.notification.isDenied) {
+      await Permission.notification.request();
     }
-  });
+  } catch (e) {
+    appLog('Error requesting notification permission: $e');
+  }
 
   await configureInjection(Environment.prod);
 
